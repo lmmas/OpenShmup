@@ -4,11 +4,13 @@ layout(location=0) in vec2 aPosition;
 layout(location=1) in vec2 aQuadSize;
 layout(location=2) in vec2 aTexturePosition;
 layout(location=3) in vec2 aTextureSize;
+layout(location=4) in int aTextureSlot;
 
 out VS_OUT{
     vec2 gQuadSize;
     vec2 gTexturePosition;
     vec2 gTextureSize;
+    int gTextureSlot;
 } vs_out;
 
 
@@ -31,9 +33,11 @@ in VS_OUT{
     vec2 gQuadSize;
     vec2 gTexturePosition;
     vec2 gTextureSize;
+    int gTextureSlot;
 }data_in[];
 
 out vec2 fTextureCoords;
+flat out int fTextureSlot;
 
 void build_quad(vec4 position, vec2 quadSize, vec2 texturePosition, vec2 textureSize){
     vec2 tempCoords = quadSize / 2.0f;
@@ -59,12 +63,12 @@ void main(){
 #type fragment
 #version 330 core
 
-uniform sampler2D TEX_SAMPLER;
+uniform sampler2D TEX_SAMPLER[32];
 in vec2 fTextureCoords;
+flat in int fTextureSlot;
 
 out vec4 color;
 
 void main(){
-    color = texture(TEX_SAMPLER, fTextureCoords);
-    //color = vec4(fTextureCoords, 0.0, 1.0);
+    color = texture(TEX_SAMPLER[fTextureSlot], fTextureCoords);
 }

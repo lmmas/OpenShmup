@@ -68,6 +68,18 @@ public class Shader {
             System.out.println(glGetShaderInfoLog(vertexID));
         }
 
+
+        int geometryID = -1;
+        if(geometrySource != null){
+            geometryID = glCreateShader(GL_GEOMETRY_SHADER);
+            glShaderSource(geometryID, geometrySource);
+            glCompileShader(geometryID);
+            success = glGetShaderi(geometryID, GL_COMPILE_STATUS);
+            if(success == GL_FALSE){
+                System.out.println(glGetShaderInfoLog(geometryID));
+            }
+        }
+
         int fragmentID = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentID, fragmentSource);
         glCompileShader(fragmentID);
@@ -78,27 +90,21 @@ public class Shader {
 
         shaderProgramID = glCreateProgram();
         glAttachShader(shaderProgramID, vertexID);
-        if(geometrySource != null){
-            int geometryID = glCreateShader(GL_GEOMETRY_SHADER);
-            glShaderSource(geometryID, geometrySource);
-            glCompileShader(geometryID);
-            success = glGetShaderi(geometryID, GL_COMPILE_STATUS);
-            if(success == GL_FALSE){
-                System.out.println(glGetShaderInfoLog(geometryID));
-            }
+        if(geometryID != -1){
             glAttachShader(shaderProgramID, geometryID);
         }
-
         glAttachShader(shaderProgramID, fragmentID);
         glLinkProgram(shaderProgramID);
 
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
-        if(success == GL_FALSE){
-            System.out.println(glGetProgramInfoLog(shaderProgramID));
-        }
+        assert(success == GL_TRUE):glGetProgramInfoLog(shaderProgramID);
+
         glDeleteShader(vertexID);
+        if (geometryID != -1){
+            glDeleteShader(geometryID);
+        }
         glDeleteShader(fragmentID);
-        //TODO refactor pour gérer mieux la geometry shader
+        validate();
     }
 
     public void validate(){
@@ -159,6 +165,12 @@ public class Shader {
                 glUniform4i(uniformLocation, vector[0], vector[1], vector[2], vector[3]);
                 break;
         }
+    }
+
+    public void uploadUniformIntArray(String uniformName, int[] array) {
+        int uniformLocation = glGetUniformLocation(shaderProgramID, uniformName);
+        use();
+        glUniform1iv(uniformLocation, array);
     }
 
     public void uploadUniform(String uniformName, int[] vector){

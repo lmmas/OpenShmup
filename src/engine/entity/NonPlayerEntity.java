@@ -1,6 +1,5 @@
-package entity;
+package engine.entity;
 
-import engine.LevelScene;
 import engine.visual.EntitySprite;
 
 public class NonPlayerEntity {

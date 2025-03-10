@@ -1,6 +1,6 @@
 import debug.DebugMethods;
 import edit.GameParameters;
-import edit.PlayerSettings;
+import engine.PlayerSettings;
 import engine.GlobalVars;
 import engine.TestScene;
 import engine.Scene;

@@ -17,11 +17,10 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
 
     final protected int vboStrideBytes;
     protected int batchSize = 100;
-    protected ArrayList<VBO> vbos;
+    protected ArrayList<VBO> vbos = new ArrayList<VBO>();
     protected LinkedList<V> visualList;
     public VAO(RenderType type, int drawingType, int vboStrideBytes){
         this.ID = glGenVertexArrays();
-        this.vbos = new ArrayList<VBO>();
         this.type = type;
         this.drawingType = drawingType;
         this.vboStrideBytes = vboStrideBytes;
@@ -90,6 +89,7 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
         }
 
         public void addPrimitive(P newPrimitive){
+            assert primitives.size() < batchSize: "Can't add primitive data to VBO";
             primitives.add(newPrimitive);
             newPrimitive.setVbo(this);
         }

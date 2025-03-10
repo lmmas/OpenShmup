@@ -1,12 +1,11 @@
 package engine;
 
-import engine.render.Shader;
 import engine.visual.SimpleSprite;
 import engine.visual.StaticImage;
 import engine.visual.Visual;
-import entity.FixedTrajectory;
-import entity.NonPlayerEntity;
-import entity.PlayerShip;
+import engine.entity.FixedTrajectory;
+import engine.entity.NonPlayerEntity;
+import engine.entity.PlayerShip;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;

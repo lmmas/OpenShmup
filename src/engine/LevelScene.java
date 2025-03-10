@@ -1,8 +1,8 @@
 package engine;
 
 import engine.visual.Visual;
-import entity.NonPlayerEntity;
-import entity.PlayerShip;
+import engine.entity.NonPlayerEntity;
+import engine.entity.PlayerShip;
 
 import java.util.LinkedList;
 

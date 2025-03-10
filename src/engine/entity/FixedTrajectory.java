@@ -1,4 +1,4 @@
-package entity;
+package engine.entity;
 
 import java.util.function.Function;
 

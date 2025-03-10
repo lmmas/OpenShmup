@@ -1,4 +1,4 @@
-package edit;
+package engine;
 
 final public class PlayerSettings {
     private static int windowWidth;

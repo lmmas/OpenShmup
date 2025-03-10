@@ -1,4 +1,4 @@
-package entity;
+package engine.entity;
 
 public interface Trajectory {
     public float getX(NonPlayerEntity entity);

@@ -1,5 +1,7 @@
 package edit;
 
+import engine.PlayerSettings;
+
 final public class GameParameters {
     private static int editionWidth;
     public static int getEditionWidth() {

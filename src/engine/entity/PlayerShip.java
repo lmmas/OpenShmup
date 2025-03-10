@@ -1,4 +1,4 @@
-package entity;
+package engine.entity;
 
 import engine.visual.EntitySprite;
 import engine.visual.SimpleSprite;

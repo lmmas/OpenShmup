@@ -6,51 +6,6 @@ import engine.render.Texture;
 
 abstract public class Image2D extends Visual<Image2D, Image2D.ImagePrimitive> {
     Texture texture;
-    public class ImagePrimitive extends Visual<Image2D, Image2D.ImagePrimitive>.Primitive{
-        private float imagePositionX = 0.0f;
-        public float getImagePositionX() {
-            return imagePositionX;
-        }
-
-        private float imagePositionY = 0.0f;
-        public float getImagePositionY() {
-            return imagePositionY;
-        }
-
-        private float imageSizeX = 0.0f;
-        public float getImageSizeX() {
-            return imageSizeX;
-        }
-
-        private float imageSizeY = 0.0f;
-        public float getImageSizeY() {
-            return imageSizeY;
-        }
-
-        private float texturePositionX = 0.0f;
-        public float getTexturePositionX() {
-            return texturePositionX;
-        }
-
-        private float texturePositionY = 0.0f;
-        public float getTexturePositionY() {
-            return texturePositionY;
-        }
-
-        private float textureSizeX = 1.0f;
-        public float getTextureSizeX() {
-            return textureSizeX;
-        }
-
-        private float textureSizeY = 1.0f;
-        public float getTextureSizeY() {
-            return textureSizeY;
-        }
-        public ImagePrimitive(){
-
-        }
-    }
-
     ImagePrimitive primitive;
     public void setPositionX(float imagePositionX) {
         primitive.imagePositionX = imagePositionX;
@@ -124,5 +79,54 @@ abstract public class Image2D extends Visual<Image2D, Image2D.ImagePrimitive> {
     }
     public ImagePrimitive getPrimitive(int primitiveIndex){
         return this.primitive;
+    }
+
+    public class ImagePrimitive extends Visual<Image2D, Image2D.ImagePrimitive>.Primitive{
+        private float imagePositionX = 0.0f;
+        public float getImagePositionX() {
+            return imagePositionX;
+        }
+
+        private float imagePositionY = 0.0f;
+        public float getImagePositionY() {
+            return imagePositionY;
+        }
+
+        private float imageSizeX = 0.0f;
+        public float getImageSizeX() {
+            return imageSizeX;
+        }
+
+        private float imageSizeY = 0.0f;
+        public float getImageSizeY() {
+            return imageSizeY;
+        }
+
+        private float texturePositionX = 0.0f;
+        public float getTexturePositionX() {
+            return texturePositionX;
+        }
+
+        private float texturePositionY = 0.0f;
+        public float getTexturePositionY() {
+            return texturePositionY;
+        }
+
+        private float textureSizeX = 1.0f;
+        public float getTextureSizeX() {
+            return textureSizeX;
+        }
+
+        private float textureSizeY = 1.0f;
+        public float getTextureSizeY() {
+            return textureSizeY;
+        }
+        public ImagePrimitive(){
+
+        }
+
+        public Texture getTexture(){
+            return Image2D.this.texture;
+        }
     }
 }

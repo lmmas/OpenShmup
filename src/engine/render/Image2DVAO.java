@@ -15,18 +15,24 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
         return new ImageVBO(image.getShader(), image.getTexture());
     }
     public Image2DVAO(RenderType type, int drawingType){
-        super(type, drawingType, 32);
+        super(type, drawingType, 36);
         this.batchSize = 100;
     }
 
     protected class ImageVBO extends VAO<Image2D, Image2D.ImagePrimitive>.VBO {
         protected ArrayList<Texture> textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
+        protected ArrayList<Integer> textureIndexes = new ArrayList<>();
         protected ByteBuffer dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
         protected static final int vertexAttributeCount = 8;
 
         public ImageVBO(Shader shader, Texture texture){
             super(shader);
             this.textures.add(texture);
+            int[] array = new int[GlobalVars.MAX_TEXTURE_SLOTS];
+            for(int i = 0; i < GlobalVars.MAX_TEXTURE_SLOTS; i++){
+                array[i] = i;
+            }
+            shader.uploadUniformIntArray("TEX_SAMPLER" , array);
         }
 
         public void draw(){
@@ -38,12 +44,14 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
             glEnableVertexAttribArray(3);
+            glEnableVertexAttribArray(4);
             shader.validate();
             glDrawArrays(GL_POINTS, 0, primitives.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);
             glDisableVertexAttribArray(3);
+            glDisableVertexAttribArray(4);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
@@ -65,13 +73,15 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
             glVertexAttribPointer(2, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
             glVertexAttribPointer(3, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength) * Float.BYTES);
+            glVertexAttribIPointer(3, 1, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         }
 
         public void uploadData(){
             dataBuffer.clear();
-            for(Image2D.ImagePrimitive image: primitives){
+            for(int i = 0; i < primitives.size() ; i++){
+                Image2D.ImagePrimitive image = primitives.get(i);
                 dataBuffer.putFloat(image.getImagePositionX());
                 dataBuffer.putFloat(image.getImagePositionY());
                 dataBuffer.putFloat(image.getImageSizeX());
@@ -80,12 +90,19 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
                 dataBuffer.putFloat(image.getTexturePositionY());
                 dataBuffer.putFloat(image.getTextureSizeX());
                 dataBuffer.putFloat(image.getTextureSizeY());
+                dataBuffer.putInt(textureIndexes.get(i));
             }
             dataBuffer.flip();
             glBindBuffer(GL_ARRAY_BUFFER, this.ID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             dataBuffer.flip();
+        }
+
+        @Override
+        public void addPrimitive(Image2D.ImagePrimitive newPrimitive) {
+            super.addPrimitive(newPrimitive);
+            textureIndexes.add(textures.indexOf(newPrimitive.getTexture()));
         }
     }
 }
