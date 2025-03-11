@@ -1,6 +1,6 @@
-package engine;
+package engine.scene;
 
-import engine.visual.Visual;
+import engine.graphics.Graphic;
 import engine.entity.NonPlayerEntity;
 import engine.entity.PlayerShip;
 
@@ -10,16 +10,13 @@ public class LevelScene extends Scene{
     PlayerShip playerShip;
     LinkedList<NonPlayerEntity> goodEntityList = new LinkedList<>();
     LinkedList<NonPlayerEntity> evilEntityList = new LinkedList<>();
-    protected long startingTimeMillis = System.currentTimeMillis();
-    protected float lastUpdateTime = 0.0f;
-
     public LevelScene(long window) {
         super(window);
     }
 
     public void addEntity(NonPlayerEntity entity){
-        Visual<?,?> sprite = (Visual<?,?>)entity.getSprite();
-        addVisual(sprite);
+        Graphic<?,?> sprite = (Graphic<?,?>)entity.getSprite();
+        addGraphic(sprite);
         if(entity.isEvil()){
             evilEntityList.add(entity);
         }
@@ -29,16 +26,20 @@ public class LevelScene extends Scene{
     }
     @Override
     public void update() {
-        float currentTimeSeconds = (float)(System.currentTimeMillis() - startingTimeMillis)/ 1000.0f;
+        float currentTimeSeconds = (float)(System.currentTimeMillis() - startingTimeMilis)/ 1000.0f;
         float deltaTime = currentTimeSeconds - lastUpdateTime;
+        lastUpdateTime = currentTimeSeconds;
+        for(SceneVisual visual: visualList){
+            visual.update();
+        }
         for(NonPlayerEntity entity: goodEntityList){
-            entity.actionsAndMoves(currentTimeSeconds);
+            entity.actionsAndMoves();
         }
         for(NonPlayerEntity entity: evilEntityList){
-            entity.actionsAndMoves(currentTimeSeconds);
+            entity.actionsAndMoves();
         }
         if(playerShip != null){
-            playerShip.actionsAndMoves(window, deltaTime);
+            playerShip.actionsAndMoves(window);
         }
         for(NonPlayerEntity entity: evilEntityList){
             entity.handleCollisions();
@@ -49,6 +50,5 @@ public class LevelScene extends Scene{
         if(playerShip!=null){
             playerShip.handleCollisions();
         }
-        lastUpdateTime = currentTimeSeconds;
     }
 }

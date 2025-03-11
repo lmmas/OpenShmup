@@ -1,10 +1,11 @@
-package engine.visual;
+package engine.graphics;
 
 import engine.render.RenderType;
 import engine.render.Shader;
 import engine.render.Texture;
+import engine.scene.Scene;
 
-abstract public class Image2D extends Visual<Image2D, Image2D.ImagePrimitive> {
+abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     Texture texture;
     ImagePrimitive primitive;
     public void setPositionX(float imagePositionX) {
@@ -62,13 +63,14 @@ abstract public class Image2D extends Visual<Image2D, Image2D.ImagePrimitive> {
         primitive.tellVboDataChanged();
     }
 
-    public Image2D(String textureFilepath, int layer, RenderType type, Shader shader){
-        super(layer, type, shader);
+    public Image2D(String textureFilepath, Scene scene, int layer, RenderType type, Shader shader){
+        super(scene, layer, type, shader);
         this.texture = Texture.loadTexture(textureFilepath);
         this.primitive = new ImagePrimitive();
+        scene.addGraphic(this);
     }
-    public Image2D(String textureFilepath, int layer, RenderType type){
-        this(textureFilepath, layer, type, Shader.loadShader("resources/shaders/simpleImage2D.glsl"));
+    public Image2D(String textureFilepath, Scene scene, int layer, RenderType type){
+        this(textureFilepath, scene, layer, type, Shader.loadShader("resources/shaders/simpleImage2D.glsl"));
     }
 
     public Texture getTexture() {
@@ -81,7 +83,7 @@ abstract public class Image2D extends Visual<Image2D, Image2D.ImagePrimitive> {
         return this.primitive;
     }
 
-    public class ImagePrimitive extends Visual<Image2D, Image2D.ImagePrimitive>.Primitive{
+    public class ImagePrimitive extends Graphic<Image2D, ImagePrimitive>.Primitive{
         private float imagePositionX = 0.0f;
         public float getImagePositionX() {
             return imagePositionX;

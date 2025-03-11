@@ -77,5 +77,8 @@ out vec4 fragColor;
 void main(){
 
     fragColor = texture(TEX_SAMPLER[fTextureSlot], fTextureCoords);
+    if(fTextureCoords[0] < 0.01 || fTextureCoords[0] > 0.99 || fTextureCoords[1] < 0.01 || fTextureCoords[1] > 0.99){
+        fragColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    }
     //fragColor = vec4(fTextureCoords, 1.0f, 0.0f);
 }

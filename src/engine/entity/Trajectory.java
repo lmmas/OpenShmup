@@ -1,6 +1,6 @@
 package engine.entity;
 
 public interface Trajectory {
-    public float getX(NonPlayerEntity entity);
-    public float getY(NonPlayerEntity entity);
+    float getX(NonPlayerEntity entity);
+    float getY(NonPlayerEntity entity);
 }

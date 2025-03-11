@@ -22,7 +22,8 @@ final public class PlayerSettings {
     public enum WindowMode{
         FULLSCREEN,
         WINDOWED
-    };
+    }
+
     private static WindowMode windowMode;
     public static WindowMode getWindowMode() {
         return windowMode;

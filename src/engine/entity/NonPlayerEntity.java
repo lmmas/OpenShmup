@@ -1,8 +1,11 @@
 package engine.entity;
 
-import engine.visual.EntitySprite;
+import engine.graphics.EntitySprite;
+import engine.scene.LevelScene;
+import engine.scene.Scene;
 
 public class NonPlayerEntity {
+    LevelScene scene;
     protected EntitySprite sprite;
     final protected float startingPosX;
     final protected float startingPosY;
@@ -16,7 +19,8 @@ public class NonPlayerEntity {
     final private float startingTimeSeconds;
     private float lifetimeSeconds;
 
-    public NonPlayerEntity(EntitySprite sprite, float startingPosX, float startingPosY, Trajectory trajectory, float sizeX, float sizeY, boolean evil, float startingTime) {
+    public NonPlayerEntity(LevelScene scene, EntitySprite sprite, float startingPosX, float startingPosY, Trajectory trajectory, float sizeX, float sizeY, boolean evil, float startingTime) {
+        this.scene = scene;
         this.sprite = sprite;
         this.startingPosX = startingPosX;
         this.startingPosY = startingPosY;
@@ -29,6 +33,7 @@ public class NonPlayerEntity {
         this.startingTimeSeconds = startingTime;
         sprite.setPosition(startingPosX, startingPosY);
         sprite.setSize(sizeX, sizeY);
+        scene.addEntity(this);
     }
 
     public EntitySprite getSprite() {
@@ -51,7 +56,8 @@ public class NonPlayerEntity {
         return evil;
     }
 
-    public void actionsAndMoves(float currentTimeSeconds){
+    public void actionsAndMoves(){
+        float currentTimeSeconds = scene.getLastUpdateTime();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         positionX = trajectory.getX(this);
         positionY = trajectory.getY(this);

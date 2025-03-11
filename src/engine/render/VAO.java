@@ -1,24 +1,21 @@
 package engine.render;
 
-import engine.visual.Visual;
+import engine.scene.Scene;
+import engine.graphics.Graphic;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive>{
-    protected engine.Scene scene;
+public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
+    protected Scene scene;
     protected int ID;
     protected RenderType type;
     final protected int drawingType;
     protected int layer;
-
-
     final protected int vboStrideBytes;
     protected int batchSize = 100;
     protected ArrayList<VBO> vbos = new ArrayList<VBO>();
-    protected LinkedList<V> visualList;
     public VAO(RenderType type, int drawingType, int vboStrideBytes){
         this.ID = glGenVertexArrays();
         this.type = type;
@@ -28,9 +25,9 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
     public int getID(){
         return ID;
     }
-    abstract protected VBO createVboFromVisual(V visual);
-    protected void addNewVboFromVisual(V visual){
-        VBO newVbo = createVboFromVisual(visual);
+    abstract protected VBO createVboFromGraphic(G graphic);
+    protected void addNewVboFromGraphic(G graphic){
+        VBO newVbo = createVboFromGraphic(graphic);
         vbos.add(newVbo);
     }
 
@@ -53,21 +50,21 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
         glBindVertexArray(0);
     }
 
-    public void addVisual(V newVisual){
-        int primitiveCount = newVisual.getPrimitiveCount();
+    public void addGraphic(G newGraphic){
+        int primitiveCount = newGraphic.getPrimitiveCount();
         for(int i = 0; i < primitiveCount; i++){
-            P newPrimitive = newVisual.getPrimitive(i);
+            P newPrimitive = newGraphic.getPrimitive(i);
             boolean newPrimitiveAllocated = false;
             int vboIndex = 0;
             while(!newPrimitiveAllocated && vboIndex < vbos.size()){
-                if (vbos.get(i).canReceivePrimitiveFrom(newVisual)){
+                if (vbos.get(i).canReceivePrimitiveFrom(newGraphic)){
                     vbos.get(i).addPrimitive(newPrimitive);
                     newPrimitiveAllocated = true;
                 }
                 vboIndex++;
             }
             if(!newPrimitiveAllocated){
-                addNewVboFromVisual(newVisual);
+                addNewVboFromGraphic(newGraphic);
                 vbos.getLast().addPrimitive(newPrimitive);
             }
         }
@@ -93,7 +90,7 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
             primitives.add(newPrimitive);
             newPrimitive.setVbo(this);
         }
-        abstract boolean canReceivePrimitiveFrom(V visual);
+        abstract boolean canReceivePrimitiveFrom(G graphic);
         abstract protected void setupVertexAttributes();
         abstract protected void uploadData();
         abstract protected void draw();
@@ -102,4 +99,3 @@ public abstract class VAO<V extends Visual<V,P>, P extends Visual<V,P>.Primitive
         }
     }
 }
-

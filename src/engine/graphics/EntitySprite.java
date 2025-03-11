@@ -1,8 +1,4 @@
-package engine.visual;
-
-import engine.render.RenderType;
-import engine.visual.SimpleSprite;
-import engine.visual.Visual;
+package engine.graphics;
 
 public interface EntitySprite{
     void setPosition(float positionX, float positionY);

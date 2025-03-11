@@ -1,18 +1,19 @@
 package engine.render;
 
 import engine.GlobalVars;
-import engine.visual.Image2D;
+import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
 abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
 
-    protected VBO createVboFromVisual(Image2D image){
-        return new ImageVBO(image.getShader(), image.getTexture());
+    protected VBO createVboFromGraphic(Image2D graphic){
+        return new ImageVBO(graphic.getShader(), graphic.getTexture());
     }
     public Image2DVAO(RenderType type, int drawingType){
         super(type, drawingType, 36);
@@ -28,24 +29,23 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
         public ImageVBO(Shader shader, Texture texture){
             super(shader);
             this.textures.add(texture);
-            int[] array = new int[GlobalVars.MAX_TEXTURE_SLOTS];
-            for(int i = 0; i < GlobalVars.MAX_TEXTURE_SLOTS; i++){
-                array[i] = i;
-            }
-            shader.uploadUniformIntArray("TEX_SAMPLER" , array);
         }
 
         public void draw(){
+            shader.use();
             for(int i = 0; i < textures.size(); i++){
                 textures.get(i).bind(i);
             }
+            int[] array = new int[32];
+            Arrays.setAll(array, i->i);
+            shader.uploadUniformIntArray("TEX_SAMPLER" , array);
+            shader.validate();
             glBindBuffer(GL_ARRAY_BUFFER, this.ID);
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
             glEnableVertexAttribArray(3);
             glEnableVertexAttribArray(4);
-            shader.validate();
             glDrawArrays(GL_POINTS, 0, primitives.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
@@ -56,10 +56,10 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
         }
 
         @Override
-        boolean canReceivePrimitiveFrom(Image2D image) {
-            if(primitives.size() >= batchSize * image.getPrimitiveCount() - 1)
+        boolean canReceivePrimitiveFrom(Image2D graphic) {
+            if(primitives.size() >= batchSize * graphic.getPrimitiveCount() - 1)
                 return false;
-            return image.getShader() == this.shader && (textures.contains(image.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
+            return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
         }
 
         public void setupVertexAttributes(){
@@ -73,7 +73,7 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
             glVertexAttribPointer(2, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
             glVertexAttribPointer(3, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength) * Float.BYTES);
-            glVertexAttribIPointer(3, 1, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
+            glVertexAttribIPointer(4, 1, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         }
@@ -102,7 +102,15 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
         @Override
         public void addPrimitive(Image2D.ImagePrimitive newPrimitive) {
             super.addPrimitive(newPrimitive);
-            textureIndexes.add(textures.indexOf(newPrimitive.getTexture()));
+            int textureIndex = textures.indexOf(newPrimitive.getTexture());
+            assert textures.size() < GlobalVars.MAX_TEXTURE_SLOTS || textureIndex != -1: "invalid primitive texture";
+            if(textureIndex != -1){
+                textureIndexes.add(textureIndex);
+            }
+            else{
+                textures.add(newPrimitive.getTexture());
+                textureIndexes.add(textures.size() - 1);
+            }
         }
     }
 }

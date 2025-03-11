@@ -1,9 +1,9 @@
+package engine;
+
 import debug.DebugMethods;
 import edit.GameParameters;
-import engine.PlayerSettings;
-import engine.GlobalVars;
-import engine.TestScene;
-import engine.Scene;
+import engine.scene.Scene;
+import engine.scene.TestScene;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -71,7 +71,7 @@ public class Game {
             org.lwjgl.system.Callback debugProc = GLUtil.setupDebugMessageCallback();
             GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
             glEnable(GL_BLEND);
-            glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glfwShowWindow(glfwWindow);
         }

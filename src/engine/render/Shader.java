@@ -64,9 +64,12 @@ public class Shader {
         glShaderSource(vertexID, vertexSource);
         glCompileShader(vertexID);
         int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
-        if(success == GL_FALSE){
-            System.out.println(glGetShaderInfoLog(vertexID));
+        assert success != GL_FALSE: glGetShaderInfoLog(vertexID);
+        String log = glGetShaderInfoLog(vertexID);
+        if (!log.isEmpty()) {
+            System.out.println("Vertex Shader Compilation Log:\n" + log);
         }
+
 
 
         int geometryID = -1;
@@ -75,8 +78,10 @@ public class Shader {
             glShaderSource(geometryID, geometrySource);
             glCompileShader(geometryID);
             success = glGetShaderi(geometryID, GL_COMPILE_STATUS);
-            if(success == GL_FALSE){
-                System.out.println(glGetShaderInfoLog(geometryID));
+            assert success != GL_FALSE: glGetShaderInfoLog(geometryID);
+            log = glGetShaderInfoLog(geometryID);
+            if (!log.isEmpty()) {
+                System.out.println("Geometry Shader Compilation Log:\n" + log);
             }
         }
 
@@ -84,8 +89,10 @@ public class Shader {
         glShaderSource(fragmentID, fragmentSource);
         glCompileShader(fragmentID);
         success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
-        if(success == GL_FALSE){
-            System.out.println(glGetShaderInfoLog(fragmentID));
+        assert success != GL_FALSE: glGetShaderInfoLog(fragmentID);
+        log = glGetShaderInfoLog(fragmentID);
+        if (!log.isEmpty()) {
+            System.out.println("Fragment Shader Compilation Log:\n" + log);
         }
 
         shaderProgramID = glCreateProgram();
@@ -97,7 +104,11 @@ public class Shader {
         glLinkProgram(shaderProgramID);
 
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
-        assert(success == GL_TRUE):glGetProgramInfoLog(shaderProgramID);
+        assert success != GL_FALSE: glGetProgramInfoLog(shaderProgramID);
+        log = glGetProgramInfoLog(shaderProgramID);
+        if (!log.isEmpty()) {
+            System.out.println("Shader Linking Log:\n" + log);
+        }
 
         glDeleteShader(vertexID);
         if (geometryID != -1){

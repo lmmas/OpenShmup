@@ -1,4 +1,4 @@
-package engine.visual;
+package engine.graphics;
 
 public record AnimationInfo(
         String filepath,
