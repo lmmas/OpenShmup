@@ -18,7 +18,7 @@ final public class PlayerShip {
 
     public PlayerShip(LevelScene scene){
         this.scene = scene;
-        this.sprite = new SimpleSprite("resources/textures/trollface_PNG15.png", scene, 4);
+        this.sprite = new SimpleSprite("resources/textures/Spaceship Pack/ship_5.png", scene, 4);
         sprite.setPosition(positionX, positionY);
         sprite.setSize(sizeX, sizeY);
     }
