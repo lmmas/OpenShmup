@@ -1,11 +1,17 @@
 package engine.graphics;
 
-import engine.render.RenderType;
-import engine.scene.Scene;
+public class Animation{
+    final private MovingImage image;
+    final private AnimationInfo info;
+    private float framePeriodSeconds;
+    private int frameIndex = 0;
+    private float timeOfLastFrame = 0.0f;
 
-abstract public class Animation extends Image2D{
-
-    public Animation(String textureFilepath, Scene scene, int layer, RenderType type) {
-        super(textureFilepath, scene, layer, type);
+    public Animation(MovingImage image, AnimationInfo info, float framePeriodSeconds) {
+        this.image = image;
+        this.info = info;
+        this.framePeriodSeconds = framePeriodSeconds;
     }
+
+
 }

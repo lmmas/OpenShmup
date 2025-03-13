@@ -1,5 +1,7 @@
 package engine.entity;
 
+import engine.Vec2D;
+
 import java.util.function.Function;
 
 public class FixedTrajectory implements Trajectory{
@@ -16,19 +18,15 @@ public class FixedTrajectory implements Trajectory{
     public FixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY) {
         this(trajectoryFunctionX, trajectoryFunctionY, true);
     }
-    @Override
-    public float getX(NonPlayerEntity entity) {
-        if(relativeTrajectory){
-            return entity.getStartingPosX() + trajectoryFunctionX.apply(entity.getLifetimeSeconds());
-        }
-        return trajectoryFunctionX.apply(entity.getLifetimeSeconds());
-    }
 
-    @Override
-    public float getY(NonPlayerEntity entity) {
+    public void update(NonPlayerEntity entity){
+        float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
+        float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
         if(relativeTrajectory){
-            return entity.getStartingPosY() + trajectoryFunctionY.apply(entity.getLifetimeSeconds());
+            Vec2D startingPosition = entity.getStartingPosition();
+            newPosX += startingPosition.x;
+            newPosY += startingPosition.y;
         }
-        return trajectoryFunctionY.apply(entity.getLifetimeSeconds());
+        entity.setPosition(newPosX, newPosY);
     }
 }

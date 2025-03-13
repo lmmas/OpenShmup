@@ -13,9 +13,7 @@ public class Texture {
     private final static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
     private final String filepath;
     private final int textureID;
-
     private final int width;
-
     private final int height;
 
     private Texture( String filepath){
@@ -37,12 +35,7 @@ public class Texture {
         this.width = width.get(0);
         this.height = height.get(0);
         assert image != null: "Could not load texture file '" + filepath + "'";
-        /*
-        System.out.println("channels: " + channels.get(0));
-        System.out.println("width: " + width.get(0));
-        System.out.println("height: " + height.get(0));
-        */
-        assert channels.get(0) == 3 || channels.get(0) == 4: "Invalid number of channels \"" + channels.get(0) + "\"";
+        assert channels.get(0) == 3 || channels.get(0) == 4: "Invalid number of channels :" + channels.get(0);
         if (channels.get(0) == 3) {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this.width, this.height,
                     0, GL_RGB, GL_UNSIGNED_BYTE, image);

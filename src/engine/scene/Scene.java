@@ -1,9 +1,9 @@
 package engine.scene;
 
 import engine.graphics.Graphic;
-import engine.graphics.SimpleSprite;
+import engine.graphics.MovingImage;
 import engine.graphics.StaticImage;
-import engine.render.SimpleSpriteVAO;
+import engine.render.MovingImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
 
@@ -26,9 +26,11 @@ abstract public class Scene {
     abstract public void handleInputs();
 
     public void update(){
-        sceneTime = timer.getTimeSeconds();
-        for(SceneVisual visual: visualList){
-            visual.update();
+        if(!timer.isPaused()){
+            sceneTime = timer.getTimeSeconds();
+            for(SceneVisual visual: visualList){
+                visual.update();
+            }
         }
     }
 
@@ -55,10 +57,10 @@ abstract public class Scene {
                             StaticImageVAO staticImageVAO = (StaticImageVAO)currentVAO;
                             staticImageVAO.addGraphic(newImage);
                         }
-                        case SIMPLE_SPRITE -> {
-                            SimpleSprite newSprite = (SimpleSprite) newGraphic;
-                            SimpleSpriteVAO simpleSpriteVAO = (SimpleSpriteVAO)currentVAO;
-                            simpleSpriteVAO.addGraphic(newSprite);
+                        case MOVING_IMAGE -> {
+                            MovingImage newImage = (MovingImage) newGraphic;
+                            MovingImageVAO movingImageVAO = (MovingImageVAO)currentVAO;
+                            movingImageVAO.addGraphic(newImage);
                         }
                     }
                     newGraphicAllocated = true;
@@ -84,11 +86,11 @@ abstract public class Scene {
                 vaoList.add(newVAO);
                 newVAO.addGraphic(newImage);
             }
-            case SIMPLE_SPRITE-> {
-                SimpleSprite newSprite = (SimpleSprite) graphic;
-                SimpleSpriteVAO newVAO = new SimpleSpriteVAO();
+            case MOVING_IMAGE -> {
+                MovingImage newImage = (MovingImage) graphic;
+                MovingImageVAO newVAO = new MovingImageVAO();
                 vaoList.add(newVAO);
-                newVAO.addGraphic(newSprite);
+                newVAO.addGraphic(newImage);
             }
         }
     }

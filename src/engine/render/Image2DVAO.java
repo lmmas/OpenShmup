@@ -1,6 +1,7 @@
 package engine.render;
 
 import engine.GlobalVars;
+import engine.Vec2D;
 import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;
 
@@ -82,14 +83,18 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             dataBuffer.clear();
             for(int i = 0; i < primitives.size() ; i++){
                 Image2D.ImagePrimitive image = primitives.get(i);
-                dataBuffer.putFloat(image.getImagePositionX());
-                dataBuffer.putFloat(image.getImagePositionY());
-                dataBuffer.putFloat(image.getImageSizeX());
-                dataBuffer.putFloat(image.getImageSizeY());
-                dataBuffer.putFloat(image.getTexturePositionX());
-                dataBuffer.putFloat(image.getTexturePositionY());
-                dataBuffer.putFloat(image.getTextureSizeX());
-                dataBuffer.putFloat(image.getTextureSizeY());
+                Vec2D imagePosition = image.getImagePosition();
+                Vec2D imageSize = image.getImageSize();
+                Vec2D texturePosition = image.getTexturePosition();
+                Vec2D textureSize = image.getTextureSize();
+                dataBuffer.putFloat(imagePosition.x);
+                dataBuffer.putFloat(imagePosition.y);
+                dataBuffer.putFloat(imageSize.x);
+                dataBuffer.putFloat(imageSize.y);
+                dataBuffer.putFloat(texturePosition.x);
+                dataBuffer.putFloat(texturePosition.y);
+                dataBuffer.putFloat(textureSize.x);
+                dataBuffer.putFloat(textureSize.y);
                 dataBuffer.putInt(textureIndexes.get(i));
             }
             dataBuffer.flip();

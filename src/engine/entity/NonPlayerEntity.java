@@ -1,33 +1,28 @@
 package engine.entity;
 
+import engine.Vec2D;
 import engine.graphics.EntitySprite;
 import engine.scene.LevelScene;
-import engine.scene.Scene;
 
 public class NonPlayerEntity {
-    LevelScene scene;
-    protected EntitySprite sprite;
-    final protected float startingPosX;
-    final protected float startingPosY;
-    protected Trajectory trajectory;
-    protected float positionX;
-    protected float positionY;
-    protected float sizeX;
-    protected float sizeY;
+    protected LevelScene scene;
+    final protected Vec2D startingPosition;
+    protected Vec2D position;
+    protected Vec2D size;
+    protected float orientationRadiants;
     protected boolean evil;
     protected int entityId;
+    protected float lifetimeSeconds;
+    protected EntitySprite sprite;
+    protected Trajectory trajectory;
     final private float startingTimeSeconds;
-    private float lifetimeSeconds;
 
     public NonPlayerEntity(LevelScene scene, EntitySprite sprite, float startingPosX, float startingPosY, Trajectory trajectory, float sizeX, float sizeY, boolean evil) {
         this.scene = scene;
         this.sprite = sprite;
-        this.startingPosX = startingPosX;
-        this.startingPosY = startingPosY;
-        this.positionX = startingPosX;
-        this.positionY = startingPosY;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        this.startingPosition = new Vec2D(startingPosX, startingPosY);
+        this.position = new Vec2D(startingPosX, startingPosY);
+        this.size = new Vec2D(sizeX, sizeY);
         this.trajectory = trajectory;
         this.evil = evil;
         this.startingTimeSeconds = scene.getSceneTime();
@@ -40,12 +35,16 @@ public class NonPlayerEntity {
         return sprite;
     }
 
-    public float getStartingPosX() {
-        return startingPosX;
+    public Vec2D getStartingPosition() {
+        return new Vec2D(startingPosition);
     }
 
-    public float getStartingPosY() {
-        return startingPosY;
+    public Vec2D getPosition(){
+        return new Vec2D(position);
+    }
+
+    public float getOrientationRadiants() {
+        return orientationRadiants;
     }
 
     final public float getLifetimeSeconds() {
@@ -56,12 +55,25 @@ public class NonPlayerEntity {
         return evil;
     }
 
-    public void actionsAndMoves(){
+    public void setPosition(float positionX, float positionY){
+        position.x = positionX;
+        position.y = positionY;
+        sprite.setPosition(position.x, position.y);
+    }
+
+    public void setSize(float sizeX, float sizeY){
+        this.size.x = sizeX;
+        this.size.y = sizeY;
+    }
+
+    public void setOrientationRadiants(float orientationRadiants) {
+        this.orientationRadiants = orientationRadiants;
+    }
+
+    public void update(){
         float currentTimeSeconds = scene.getSceneTime();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
-        positionX = trajectory.getX(this);
-        positionY = trajectory.getY(this);
-        sprite.setPosition(positionX, positionY);
+        trajectory.update(this);
     }
 
     public void handleCollisions(){

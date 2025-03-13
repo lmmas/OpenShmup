@@ -1,7 +1,7 @@
 package engine.entity;
 
 import engine.graphics.EntitySprite;
-import engine.graphics.SimpleSprite;
+import engine.graphics.MovingImage;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
 
@@ -19,7 +19,7 @@ final public class PlayerShip {
 
     public PlayerShip(LevelScene scene){
         this.scene = scene;
-        this.sprite = new SimpleSprite("resources/textures/Spaceship Pack/ship_5.png", scene, 4);
+        this.sprite = new MovingImage("resources/textures/Spaceship Pack/ship_5.png", scene, 4);
         sprite.setPosition(positionX, positionY);
         sprite.setSize(sizeX, sizeY);
     }

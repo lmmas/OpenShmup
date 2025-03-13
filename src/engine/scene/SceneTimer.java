@@ -1,7 +1,7 @@
 package engine.scene;
 
 public class SceneTimer {
-    private long referenceTime = 0;
+    private long referenceTimeMillis = 0;
     private boolean alreadyStarted = false;
     private long pausedTime = 0;
     private boolean isPaused = false;
@@ -13,8 +13,8 @@ public class SceneTimer {
     }
     public void start(){
         if(!alreadyStarted){
-            referenceTime = System.currentTimeMillis();
-            lastReadTimeMillis = referenceTime;
+            referenceTimeMillis = System.currentTimeMillis();
+            lastReadTimeMillis = referenceTimeMillis;
             alreadyStarted = true;
         }
     }
@@ -33,7 +33,7 @@ public class SceneTimer {
     public void resume(){
         if(alreadyStarted && isPaused){
             long pauseIntervalMillis = System.currentTimeMillis() - pausedTime;
-            referenceTime += pauseIntervalMillis;
+            referenceTimeMillis += pauseIntervalMillis;
             lastReadTimeMillis += pauseIntervalMillis;
             isPaused = false;
         }
@@ -56,7 +56,7 @@ public class SceneTimer {
                 lastSceneTime = sceneTime;
                 return sceneTime;
             }
-            return (float)(pausedTime - referenceTime) / 1000.0f;
+            return lastSceneTime;
         }
         return 0.0f;
     }

@@ -1,13 +1,13 @@
 package engine.scene;
 
-import engine.graphics.SimpleSprite;
+import engine.graphics.MovingImage;
 
 public class ScrollingBackGround implements SceneVisual{
     Scene scene;
-    private SimpleSprite image1;
+    private MovingImage image1;
     private float positionX1;
     private float positionY1;
-    private SimpleSprite image2;
+    private MovingImage image2;
     private float positionX2;
     private float positionY2;
     private float sizeX;
@@ -18,8 +18,8 @@ public class ScrollingBackGround implements SceneVisual{
 
     public ScrollingBackGround(String imagePath, Scene scene, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.scene = scene;
-        this.image1 = new SimpleSprite(imagePath, scene, 0);
-        this.image2 = new SimpleSprite(imagePath, scene, 0);
+        this.image1 = new MovingImage(imagePath, scene, 0);
+        this.image2 = new MovingImage(imagePath, scene, 0);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.positionX1 = 0.5f;

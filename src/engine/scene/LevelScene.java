@@ -52,23 +52,25 @@ public class LevelScene extends Scene{
     @Override
     public void update() {
         super.update();
-        for(NonPlayerEntity entity: goodEntityList){
-            entity.actionsAndMoves();
-        }
-        for(NonPlayerEntity entity: evilEntityList){
-            entity.actionsAndMoves();
-        }
-        if(playerShip != null){
-            playerShip.actionsAndMoves(window);
-        }
-        for(NonPlayerEntity entity: evilEntityList){
-            entity.handleCollisions();
-        }
-        for(NonPlayerEntity entity: goodEntityList){
-            entity.handleCollisions();
-        }
-        if(playerShip!=null){
-            playerShip.handleCollisions();
+        if(!timer.isPaused()){
+            for(NonPlayerEntity entity: goodEntityList){
+                entity.update();
+            }
+            for(NonPlayerEntity entity: evilEntityList){
+                entity.update();
+            }
+            if(playerShip != null){
+                playerShip.actionsAndMoves(window);
+            }
+            for(NonPlayerEntity entity: evilEntityList){
+                entity.handleCollisions();
+            }
+            for(NonPlayerEntity entity: goodEntityList){
+                entity.handleCollisions();
+            }
+            if(playerShip!=null){
+                playerShip.handleCollisions();
+            }
         }
     }
 
