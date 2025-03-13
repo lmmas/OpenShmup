@@ -2,6 +2,7 @@ package engine.entity;
 
 import engine.graphics.EntitySprite;
 import engine.graphics.SimpleSprite;
+import engine.scene.GameControl;
 import engine.scene.LevelScene;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -28,9 +29,9 @@ final public class PlayerShip {
     }
 
     public void actionsAndMoves(long window){
-        float currentTime = scene.getLastUpdateTime();
+        float currentTime = scene.getSceneTime();
         float deltaTime = currentTime - lastUpdateTime;
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        if (scene.getControlState(GameControl.MOVE_LEFT)) {
             positionX-=speed * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {

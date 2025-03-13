@@ -19,7 +19,7 @@ public class NonPlayerEntity {
     final private float startingTimeSeconds;
     private float lifetimeSeconds;
 
-    public NonPlayerEntity(LevelScene scene, EntitySprite sprite, float startingPosX, float startingPosY, Trajectory trajectory, float sizeX, float sizeY, boolean evil, float startingTime) {
+    public NonPlayerEntity(LevelScene scene, EntitySprite sprite, float startingPosX, float startingPosY, Trajectory trajectory, float sizeX, float sizeY, boolean evil) {
         this.scene = scene;
         this.sprite = sprite;
         this.startingPosX = startingPosX;
@@ -30,7 +30,7 @@ public class NonPlayerEntity {
         this.sizeY = sizeY;
         this.trajectory = trajectory;
         this.evil = evil;
-        this.startingTimeSeconds = startingTime;
+        this.startingTimeSeconds = scene.getSceneTime();
         sprite.setPosition(startingPosX, startingPosY);
         sprite.setSize(sizeX, sizeY);
         scene.addEntity(this);
@@ -57,7 +57,7 @@ public class NonPlayerEntity {
     }
 
     public void actionsAndMoves(){
-        float currentTimeSeconds = scene.getLastUpdateTime();
+        float currentTimeSeconds = scene.getSceneTime();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         positionX = trajectory.getX(this);
         positionY = trajectory.getY(this);

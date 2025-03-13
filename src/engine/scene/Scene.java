@@ -15,15 +15,18 @@ import java.util.TreeMap;
 abstract public class Scene {
     protected long window;
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers = new TreeMap<>();//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
-    protected long startingTimeMilis = System.currentTimeMillis();
-    protected float lastUpdateTime = 0.0f;
+    protected float sceneTime = 0.0f;
+    protected SceneTimer timer = new SceneTimer();
     ArrayList<SceneVisual> visualList = new ArrayList<>();
     public Scene(long window) {
         this.window = window;
+        timer.start();
     }
 
+    abstract public void handleInputs();
+
     public void update(){
-        lastUpdateTime = (float)(System.currentTimeMillis() - startingTimeMilis)/ 1000.0f;
+        sceneTime = timer.getTimeSeconds();
         for(SceneVisual visual: visualList){
             visual.update();
         }
@@ -89,9 +92,6 @@ abstract public class Scene {
             }
         }
     }
-    public float getLastUpdateTime() {
-        return lastUpdateTime;
-    }
 
     public void addVisual(SceneVisual visual){
         visualList.add(visual);
@@ -99,5 +99,13 @@ abstract public class Scene {
 
     public void removeVisual(SceneVisual visual){
         visualList.remove(visual);
+    }
+
+    public float getSceneTime() {
+        return sceneTime;
+    }
+
+    final public void setSpeed(float speed){
+        timer.setSpeed(speed);
     }
 }

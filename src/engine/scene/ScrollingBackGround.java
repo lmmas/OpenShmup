@@ -38,12 +38,12 @@ public class ScrollingBackGround implements SceneVisual{
         image1.setSize(sizeX, sizeY);
         image2.setPosition(positionX2, positionY2);
         image2.setSize(sizeX, sizeY);
-        this.lastUpdateTimeSeconds = scene.getLastUpdateTime();
+        this.lastUpdateTimeSeconds = scene.getSceneTime();
         scene.addVisual(this);
     }
 
     public void update(){
-        float currentime = scene.getLastUpdateTime();
+        float currentime = scene.getSceneTime();
         float deltaTime = currentime - lastUpdateTimeSeconds;
         if(horizontalScrolling){
             positionX1+= speed * deltaTime;
