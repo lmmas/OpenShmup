@@ -8,6 +8,7 @@ import engine.render.StaticImageVAO;
 import engine.render.VAO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,7 +18,7 @@ abstract public class Scene {
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers = new TreeMap<>();//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
     protected float sceneTime = 0.0f;
     protected SceneTimer timer = new SceneTimer();
-    ArrayList<SceneVisual> visualList = new ArrayList<>();
+    HashSet<SceneVisual> visualList = new HashSet<>();
     public Scene(long window) {
         this.window = window;
         timer.start();
@@ -99,8 +100,9 @@ abstract public class Scene {
         visualList.add(visual);
     }
 
-    public void removeVisual(SceneVisual visual){
+    public void deleteVisual(SceneVisual visual){
         visualList.remove(visual);
+        visual.delete();
     }
 
     public float getSceneTime() {

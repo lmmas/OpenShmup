@@ -1,10 +1,12 @@
-package engine.entity;
+package engine.entity.trajectory;
 
 import engine.Vec2D;
+import engine.entity.Entity;
+import engine.entity.Trajectory;
 
 import java.util.function.Function;
 
-public class FixedTrajectory implements Trajectory{
+public class FixedTrajectory implements Trajectory {
 
     final private Function<Float, Float> trajectoryFunctionX;
     final private Function<Float, Float> trajectoryFunctionY;
@@ -19,7 +21,7 @@ public class FixedTrajectory implements Trajectory{
         this(trajectoryFunctionX, trajectoryFunctionY, true);
     }
 
-    public void update(NonPlayerEntity entity){
+    public void update(Entity entity){
         float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
         float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
         if(relativeTrajectory){

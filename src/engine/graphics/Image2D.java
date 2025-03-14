@@ -51,7 +51,6 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         this.texture = Texture.getTexture(textureFilepath);
         texture.upload();
         this.primitive = new ImagePrimitive();
-        scene.addGraphic(this);
     }
     public Image2D(String textureFilepath, Scene scene, int layer, RenderType type){
         this(textureFilepath, scene, layer, type, Shader.loadShader("resources/shaders/simpleImage2D.glsl"));
