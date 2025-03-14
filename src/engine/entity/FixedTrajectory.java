@@ -29,4 +29,9 @@ public class FixedTrajectory implements Trajectory{
         }
         entity.setPosition(newPosX, newPosY);
     }
+
+    @Override
+    public Trajectory copyIfNotReusable() {
+        return this;
+    }
 }

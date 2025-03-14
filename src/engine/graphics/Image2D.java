@@ -48,7 +48,8 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
 
     public Image2D(String textureFilepath, Scene scene, int layer, RenderType type, Shader shader){
         super(scene, layer, type, shader);
-        this.texture = Texture.loadTexture(textureFilepath);
+        this.texture = Texture.getTexture(textureFilepath);
+        texture.upload();
         this.primitive = new ImagePrimitive();
         scene.addGraphic(this);
     }
@@ -64,6 +65,11 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     }
     public ImagePrimitive getPrimitive(int primitiveIndex){
         return this.primitive;
+    }
+
+    @Override
+    public void delete() {
+        primitive.delete();
     }
 
     public class ImagePrimitive extends Graphic<Image2D, ImagePrimitive>.Primitive{

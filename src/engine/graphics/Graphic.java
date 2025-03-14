@@ -39,6 +39,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     abstract public int getPrimitiveCount();
 
     abstract public P getPrimitive(int index);
+    abstract public void delete();
 
     abstract public class Primitive{
         VAO<G,P>.VBO currentVbo;
@@ -50,6 +51,9 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
             if(currentVbo!=null){
                 currentVbo.dataHasChanged();
             }
+        }
+        public void delete(){
+            currentVbo.removePrimitive((P) this);
         }
     }
 }

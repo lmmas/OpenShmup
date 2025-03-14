@@ -97,5 +97,8 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
         public void dataHasChanged(){
             dataHasChanged = true;
         }
+        public void removePrimitive(P primitive){
+            primitives.remove(primitive);
+        }
     }
 }

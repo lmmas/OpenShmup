@@ -1,7 +1,6 @@
 package engine.entity;
 
 import engine.Vec2D;
-import engine.graphics.EntitySprite;
 import engine.scene.LevelScene;
 
 public class NonPlayerEntity {
@@ -11,6 +10,7 @@ public class NonPlayerEntity {
     protected Vec2D size;
     protected float orientationRadiants;
     protected boolean evil;
+    protected boolean invincible = false;
     protected int entityId;
     protected float lifetimeSeconds;
     protected EntitySprite sprite;
@@ -23,7 +23,7 @@ public class NonPlayerEntity {
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
         this.size = new Vec2D(sizeX, sizeY);
-        this.trajectory = trajectory;
+        this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
         this.startingTimeSeconds = scene.getSceneTime();
         sprite.setPosition(startingPosX, startingPosY);
@@ -74,9 +74,14 @@ public class NonPlayerEntity {
         float currentTimeSeconds = scene.getSceneTime();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
+        sprite.update();
     }
 
     public void handleCollisions(){
 
+    }
+
+    public void delete(){
+        sprite.delete();
     }
 }

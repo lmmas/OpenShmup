@@ -2,6 +2,7 @@ package engine.render;
 
 import org.lwjgl.*;
 
+import java.io.FileNotFoundException;
 import java.nio.*;
 
 import static org.lwjgl.opengl.GL33.*;
@@ -16,10 +17,22 @@ public class Texture {
     private final int width;
     private final int height;
 
-    private Texture( String filepath){
-        this.filepath = filepath;
+    private Texture( String filepath) throws FileNotFoundException {
 
-        this.textureID = glGenTextures();
+        int[] widthArray = new int[1];
+        int[] heightArray = new int[1];
+        int[] channelNumber = new int[1];
+        boolean success = stbi_info(filepath, widthArray, heightArray, channelNumber);
+        if (success) {
+            this.width = widthArray[0];
+            this.height = heightArray[0];
+            this.filepath = filepath;
+            this.textureID = glGenTextures();
+        } else {
+            throw new FileNotFoundException(filepath);
+        }
+    }
+    public void upload(){
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -32,8 +45,6 @@ public class Texture {
         stbi_set_flip_vertically_on_load(true);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
-        this.width = width.get(0);
-        this.height = height.get(0);
         assert image != null: "Could not load texture file '" + filepath + "'";
         assert channels.get(0) == 3 || channels.get(0) == 4: "Invalid number of channels :" + channels.get(0);
         if (channels.get(0) == 3) {
@@ -44,15 +55,23 @@ public class Texture {
                     0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         }
         stbi_image_free(image);
-
     }
 
-    public static Texture loadTexture(String filepath){
+    public static Texture getTexture(String filepath){
         if(textureMap.containsKey(filepath)){
             return textureMap.get(filepath);
         }
         else{
-            Texture newTexture = new Texture(filepath);
+            Texture newTexture;
+            try {
+                newTexture = new Texture(filepath);
+            } catch (FileNotFoundException e) {
+                try {
+                    newTexture = new Texture("resources/textures/heart.png");
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
             textureMap.put(filepath, newTexture);
             return newTexture;
         }

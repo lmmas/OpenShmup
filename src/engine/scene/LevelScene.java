@@ -9,8 +9,8 @@ import java.util.HashSet;
 
 public class LevelScene extends Scene{
     protected PlayerShip playerShip;
-    protected HashSet<NonPlayerEntity> goodEntityList = new HashSet<>();
-    protected HashSet<NonPlayerEntity> evilEntityList = new HashSet<>();
+    protected HashSet<NonPlayerEntity> goodEntities = new HashSet<>();
+    protected HashSet<NonPlayerEntity> evilEntities = new HashSet<>();
     protected InputHandler inputHandler;
     protected boolean[] controlStates = new boolean[GameControl.values().length];
     protected boolean[] lastControlStates = new boolean[GameControl.values().length];
@@ -40,32 +40,32 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(NonPlayerEntity entity){
-        Graphic<?,?> sprite = (Graphic<?,?>)entity.getSprite();
-        addGraphic(sprite);
+        Graphic<?,?> entityGraphic = entity.getSprite().getGraphic();
+        addGraphic(entityGraphic);
         if(entity.isEvil()){
-            evilEntityList.add(entity);
+            evilEntities.add(entity);
         }
         else{
-            goodEntityList.add(entity);
+            goodEntities.add(entity);
         }
     }
     @Override
     public void update() {
         super.update();
         if(!timer.isPaused()){
-            for(NonPlayerEntity entity: goodEntityList){
+            for(NonPlayerEntity entity: goodEntities){
                 entity.update();
             }
-            for(NonPlayerEntity entity: evilEntityList){
+            for(NonPlayerEntity entity: evilEntities){
                 entity.update();
             }
             if(playerShip != null){
                 playerShip.actionsAndMoves(window);
             }
-            for(NonPlayerEntity entity: evilEntityList){
+            for(NonPlayerEntity entity: evilEntities){
                 entity.handleCollisions();
             }
-            for(NonPlayerEntity entity: goodEntityList){
+            for(NonPlayerEntity entity: goodEntities){
                 entity.handleCollisions();
             }
             if(playerShip!=null){
@@ -84,5 +84,15 @@ public class LevelScene extends Scene{
 
     public boolean getControlDeactivation(GameControl control){
         return (!controlStates[control.ordinal()]) && lastControlStates[control.ordinal()];
+    }
+
+    public void deleteEntity(NonPlayerEntity entity){
+        if(entity.isEvil()){
+            evilEntities.remove(entity);
+        }
+        else{
+            goodEntities.remove(entity);
+        }
+        entity.delete();
     }
 }
