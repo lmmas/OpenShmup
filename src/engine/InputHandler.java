@@ -8,9 +8,10 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class InputHandler {
     final private long window;
-    private HashMap<Integer, GameControl> inputList = new HashMap<>();
+    private HashMap<Integer, GameControl> inputList;
     public InputHandler(long window){
         this.window = window;
+        this.inputList = new HashMap<>();
         inputList.put(GLFW_KEY_LEFT, GameControl.MOVE_LEFT);
         inputList.put(GLFW_KEY_RIGHT, GameControl.MOVE_RIGHT);
         inputList.put(GLFW_KEY_UP, GameControl.MOVE_UP);

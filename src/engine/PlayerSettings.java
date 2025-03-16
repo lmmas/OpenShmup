@@ -1,12 +1,13 @@
 package engine;
 
 final public class PlayerSettings {
+    private static WindowMode windowMode;
     private static int windowWidth;
+
+    private static int windowHeight;
     public static int getWindowWidth() {
         return windowWidth;
     }
-
-    private static int windowHeight;
     public static int getWindowHeight() {
         return windowHeight;
     }
@@ -19,14 +20,12 @@ final public class PlayerSettings {
         windowWidth = width;
         windowHeight = height;
     }
+    public static WindowMode getWindowMode() {
+        return windowMode;
+    }
     public enum WindowMode{
         FULLSCREEN,
         WINDOWED
-    }
-
-    private static WindowMode windowMode;
-    public static WindowMode getWindowMode() {
-        return windowMode;
     }
 }
 

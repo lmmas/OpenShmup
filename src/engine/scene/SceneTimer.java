@@ -1,15 +1,21 @@
 package engine.scene;
 
 public class SceneTimer {
-    private long referenceTimeMillis = 0;
-    private boolean alreadyStarted = false;
-    private long pausedTime = 0;
-    private boolean isPaused = false;
-    private float lastSceneTime = 0.0f;
-    private long lastReadTimeMillis = 0;
-    private float speed = 1.0f;
+    private long referenceTimeMillis;
+    private boolean alreadyStarted;
+    private long pausedTime;
+    private boolean isPaused;
+    private float lastSceneTime;
+    private long lastReadTimeMillis;
+    private float speed;
     public SceneTimer(){
-
+        this.referenceTimeMillis = 0;
+        this.alreadyStarted = false;
+        this.pausedTime = 0;
+        this.isPaused = false;
+        this.lastSceneTime = 0.0f;
+        this.lastReadTimeMillis = 0;
+        this.speed = 1.0f;
     }
     public void start(){
         if(!alreadyStarted){

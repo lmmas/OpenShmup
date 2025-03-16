@@ -4,6 +4,7 @@ import engine.PlayerSettings;
 
 final public class GameParameters {
     private static int editionWidth;
+    private static int editionHeight;
     public static int getEditionWidth() {
         return editionWidth;
     }
@@ -11,7 +12,6 @@ final public class GameParameters {
         GameParameters.editionWidth = editionWidth;
     }
 
-    private static int editionHeight;
     public static int getEditionHeight() {
         return editionHeight;
     }

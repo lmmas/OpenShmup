@@ -6,7 +6,7 @@ import engine.graphics.MovingImage;
 import java.util.ArrayList;
 
 public class ScrollingBackGround implements SceneVisual{
-    Scene scene;
+    private Scene scene;
     private MovingImage image1;
     private float positionX1;
     private float positionY1;

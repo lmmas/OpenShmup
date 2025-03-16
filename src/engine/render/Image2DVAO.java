@@ -22,13 +22,16 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
     }
 
     protected class ImageVBO extends VAO<Image2D, Image2D.ImagePrimitive>.VBO {
-        protected ArrayList<Texture> textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
-        protected ArrayList<Integer> textureIndexes = new ArrayList<>();
-        protected ByteBuffer dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
-        protected static final int vertexAttributeCount = 8;
+        protected ArrayList<Texture> textures;
+        protected ArrayList<Integer> textureIndexes;
+        protected ByteBuffer dataBuffer;
+        protected static final int vertexAttributeCount = 9;
 
         public ImageVBO(Shader shader, Texture texture){
             super(shader);
+            this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
+            this.textureIndexes = new ArrayList<>();
+            this.dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
             this.textures.add(texture);
         }
 

@@ -10,14 +10,15 @@ public class Animation implements EntitySprite, SceneVisual {
     final private AnimationInfo info;
     final private boolean looping;
     private float framePeriodSeconds;
-    private int frameIndex = 0;
-    private float timeOfLastFrame = 0.0f;
+    private int frameIndex;
+    private float timeOfLastFrame;
 
     public Animation(Scene scene, int layer, AnimationInfo info, float framePeriodSeconds, boolean looping) {
         this.scene = scene;
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
+        this.frameIndex = 0;
         this.image = new MovingImage(info.filepath(), scene, layer);
         image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();

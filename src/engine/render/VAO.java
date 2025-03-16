@@ -14,13 +14,15 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
     final protected int drawingType;
     protected int layer;
     final protected int vboStrideBytes;
-    protected int batchSize = 100;
-    protected ArrayList<VBO> vbos = new ArrayList<VBO>();
+    protected int batchSize;
+    protected ArrayList<VBO> vbos;
     public VAO(RenderType type, int drawingType, int vboStrideBytes){
         this.ID = glGenVertexArrays();
         this.type = type;
         this.drawingType = drawingType;
         this.vboStrideBytes = vboStrideBytes;
+        this.batchSize = 100;
+        this.vbos = new ArrayList<>();
     }
     public int getID(){
         return ID;

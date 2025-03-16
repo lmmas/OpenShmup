@@ -19,7 +19,7 @@ abstract public class Scene {
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
     protected float sceneTime;
     protected SceneTimer timer;
-    HashSet<SceneVisual> visualList = new HashSet<>();
+    HashSet<SceneVisual> visualList;
     public Scene(Game game) {
         this.window = game.getWindow();
         this.layers = new TreeMap<>();

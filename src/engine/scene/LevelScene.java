@@ -13,15 +13,19 @@ public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
     final protected CustomEntityManager customEntityManager;
     protected PlayerShip playerShip;
-    protected HashSet<Entity> goodEntities = new HashSet<>();
-    protected HashSet<Entity> evilEntities = new HashSet<>();
-    protected boolean[] controlStates = new boolean[GameControl.values().length];
-    protected boolean[] lastControlStates = new boolean[GameControl.values().length];
+    protected HashSet<Entity> goodEntities;
+    protected HashSet<Entity> evilEntities;
+    protected boolean[] controlStates;
+    protected boolean[] lastControlStates;
     protected LevelTimeline timeline;
     public LevelScene(Game game) {
         super(game);
         this.inputHandler = game.getInputHandler();
         this.customEntityManager = game.getCustomEntityManager();
+        this.goodEntities = new HashSet<>();
+        this.evilEntities = new HashSet<>();
+        this.controlStates = new boolean[GameControl.values().length];
+        this.lastControlStates = new boolean[GameControl.values().length];
     }
 
     @Override
