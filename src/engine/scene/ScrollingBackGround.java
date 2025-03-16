@@ -1,6 +1,9 @@
 package engine.scene;
 
+import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
+
+import java.util.ArrayList;
 
 public class ScrollingBackGround implements SceneVisual{
     Scene scene;
@@ -42,6 +45,12 @@ public class ScrollingBackGround implements SceneVisual{
         scene.addVisual(this);
     }
 
+    @Override
+    public Graphic<?,?>[] getGraphics() {
+        return new MovingImage[]{image1,image2};
+    }
+
+    @Override
     public void update(){
         float currentime = scene.getSceneTime();
         float deltaTime = currentime - lastUpdateTimeSeconds;

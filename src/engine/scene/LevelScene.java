@@ -1,6 +1,8 @@
 package engine.scene;
 
+import engine.Game;
 import engine.InputHandler;
+import engine.entity.CustomEntityManager;
 import engine.graphics.Graphic;
 import engine.entity.Entity;
 import engine.entity.PlayerShip;
@@ -8,15 +10,18 @@ import engine.entity.PlayerShip;
 import java.util.HashSet;
 
 public class LevelScene extends Scene{
+    final protected InputHandler inputHandler;
+    final protected CustomEntityManager customEntityManager;
     protected PlayerShip playerShip;
     protected HashSet<Entity> goodEntities = new HashSet<>();
     protected HashSet<Entity> evilEntities = new HashSet<>();
-    protected InputHandler inputHandler;
     protected boolean[] controlStates = new boolean[GameControl.values().length];
     protected boolean[] lastControlStates = new boolean[GameControl.values().length];
-    public LevelScene(long window) {
-        super(window);
-        this.inputHandler = new InputHandler(window);
+    protected LevelTimeline timeline;
+    public LevelScene(Game game) {
+        super(game);
+        this.inputHandler = game.getInputHandler();
+        this.customEntityManager = game.getCustomEntityManager();
     }
 
     @Override
@@ -94,5 +99,9 @@ public class LevelScene extends Scene{
             goodEntities.remove(entity);
         }
         entity.delete();
+    }
+
+    public CustomEntityManager getCustomEntityManager() {
+        return customEntityManager;
     }
 }

@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.Game;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.Entity;
 import engine.graphics.Animation;
@@ -10,8 +11,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class TestScene extends LevelScene {
-    public TestScene(long window){
-        super(window);
+    public TestScene(Game game){
+        super(game);
 
         AnimationInfo testAnimInfo = new AnimationInfo("resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
 
@@ -23,6 +24,7 @@ public class TestScene extends LevelScene {
         this.playerShip = new PlayerShip(this);
 
         ScrollingBackGround background = new ScrollingBackGround("resources/textures/background.png", this, 1.0f, 1.0f, -0.1f, false);
+        addVisual(background);
     }
 
     @Override

@@ -2,6 +2,7 @@ package engine;
 
 import debug.DebugMethods;
 import edit.GameParameters;
+import engine.entity.CustomEntityManager;
 import engine.scene.Scene;
 import engine.scene.TestScene;
 import org.lwjgl.glfw.*;
@@ -17,21 +18,15 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Game {
     private long glfwWindow;
-
+    private final CustomEntityManager customEntityManager;
+    private final InputHandler inputHandler;
     private Scene currentScene;
-    public void run(){
-        GameParameters.useDefaultParameters();
-        init();
-        loop();
 
-        Callbacks.glfwFreeCallbacks(glfwWindow);
-        glfwDestroyWindow(glfwWindow);
-
-        glfwTerminate();
-        glfwSetErrorCallback(null).free();
+    public static void main(String[] args){
+        new Game().run();
     }
-
-    public void init(){
+    public Game(){
+        GameParameters.useDefaultParameters();
         GLFWErrorCallback.createPrint(System.err).set();
         assert glfwInit(): "Unable to initialize GLFW";
 
@@ -41,7 +36,6 @@ public class Game {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
         PlayerSettings.setResolution(1000, 1200);
         glfwWindow = glfwCreateWindow(PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight(), "OpenShmup", NULL, NULL);
@@ -60,7 +54,8 @@ public class Game {
             IntBuffer pHeight = stack.mallocInt(1);
 
             glfwGetWindowSize(glfwWindow, pWidth, pHeight);
-
+            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            assert vidmode != null: "glfwGetVideoMode failure";
             glfwSetWindowPos(glfwWindow,(vidmode.width() - pWidth.get(0)) / 2,(vidmode.height() - pHeight.get(0)) / 2);
 
             glfwMakeContextCurrent(glfwWindow);
@@ -76,22 +71,59 @@ public class Game {
             glfwShowWindow(glfwWindow);
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+
+        this.customEntityManager = new CustomEntityManager();
+        this.inputHandler = new InputHandler(glfwWindow);
+    }
+    public void run(){
+        init();
+        testInit();
+        loop();
+
+        Callbacks.glfwFreeCallbacks(glfwWindow);
+        glfwDestroyWindow(glfwWindow);
+
+        glfwTerminate();
+        glfwSetErrorCallback(null).free();
+    }
+
+    public void init(){
+
     }
 
     public void loop(){
-        TestScene testScene = new TestScene(glfwWindow);
         while(!glfwWindowShouldClose(glfwWindow)) {
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
-            testScene.handleInputs();
-            testScene.update();
-            testScene.draw();
+            testInLoop();
+            currentScene.handleInputs();
+            currentScene.update();
+            currentScene.draw();
             glfwSwapBuffers(glfwWindow);
             glfwPollEvents();
         }
     }
 
-    public static void main(String[] args){
-        new Game().run();
+    public long getWindow() {
+        return glfwWindow;
+    }
+
+    public CustomEntityManager getCustomEntityManager() {
+        return customEntityManager;
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void testInit(){
+        currentScene = new TestScene(this);
+    }
+    public void testInLoop(){
+
     }
 }

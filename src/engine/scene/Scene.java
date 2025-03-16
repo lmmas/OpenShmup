@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.Game;
 import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
 import engine.graphics.StaticImage;
@@ -15,12 +16,16 @@ import java.util.TreeMap;
 
 abstract public class Scene {
     protected long window;
-    protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers = new TreeMap<>();//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
-    protected float sceneTime = 0.0f;
-    protected SceneTimer timer = new SceneTimer();
+    protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
+    protected float sceneTime;
+    protected SceneTimer timer;
     HashSet<SceneVisual> visualList = new HashSet<>();
-    public Scene(long window) {
-        this.window = window;
+    public Scene(Game game) {
+        this.window = game.getWindow();
+        this.layers = new TreeMap<>();
+        this.sceneTime = 0.0f;
+        this.timer = new SceneTimer();
+        this.visualList = new HashSet<>();
         timer.start();
     }
 
@@ -98,6 +103,10 @@ abstract public class Scene {
 
     public void addVisual(SceneVisual visual){
         visualList.add(visual);
+        Graphic<?,?>[] newGraphics = visual.getGraphics();
+        for(Graphic<?,?> graphic: newGraphics){
+            addGraphic(graphic);
+        }
     }
 
     public void deleteVisual(SceneVisual visual){

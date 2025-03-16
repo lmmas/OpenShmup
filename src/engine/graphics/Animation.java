@@ -51,6 +51,11 @@ public class Animation implements EntitySprite, SceneVisual {
     }
 
     @Override
+    public Graphic<?, ?>[] getGraphics() {
+        return new Graphic[]{image};
+    }
+
+    @Override
     public void update() {
         float currentTime = scene.getSceneTime();
         if(currentTime >= timeOfLastFrame + framePeriodSeconds){

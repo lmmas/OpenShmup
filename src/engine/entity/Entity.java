@@ -78,6 +78,10 @@ public class Entity {
         this.orientationRadians = orientationRadians;
     }
 
+    public void setTrajectory(Trajectory trajectory) {
+        this.trajectory = trajectory;
+    }
+
     public void update(){
         float currentTimeSeconds = scene.getSceneTime();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
