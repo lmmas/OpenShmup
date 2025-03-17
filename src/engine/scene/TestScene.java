@@ -18,8 +18,8 @@ public class TestScene extends LevelScene {
 
         Entity testEntity = new Entity.Builder().setScene(this)
                 .setStartingPosition(0.5f, 0.5f).setSize(0.5f,0.5f)
-                .createSprite(3,testAnimInfo, 0.25f, true, false)
-                .createFixedTrajectory(t-> 0.3f * (float) cos(t) + 0.5f, t-> 0.3f * (float) sin(t) + 0.5f, false)
+                .createSprite(3,"resources/textures/troll-face-poster.png", false)
+                .createFixedTrajectory(t-> 0.2f * (float) cos(2 * t) + 0.5f, t-> 0.2f * (float) sin(2 * t) + 0.5f, false)
                 .build();
         this.playerShip = new PlayerShip(this);
 
@@ -30,10 +30,6 @@ public class TestScene extends LevelScene {
     @Override
     public void update() {
         super.update();
-        if(sceneTime > 5.00f){
-            for(Entity entity: evilEntities){
-                deleteEntity(entity);
-            }
-        }
+
     }
 }

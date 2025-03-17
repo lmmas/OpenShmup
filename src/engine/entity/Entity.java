@@ -1,6 +1,8 @@
 package engine.entity;
 
 import engine.Vec2D;
+import engine.entity.hitbox.Hitbox;
+import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
@@ -20,16 +22,18 @@ public class Entity {
     protected int entityId;
     protected float lifetimeSeconds;
     protected EntitySprite sprite;
+    protected Hitbox hitbox;
     protected Trajectory trajectory;
     final private float startingTimeSeconds;
 
-    public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory) {
+    public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox) {
         this.scene = scene;
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
         sprite.setPosition(startingPosX, startingPosY);
         this.size = new Vec2D(sizeX, sizeY);
         sprite.setSize(sizeX, sizeY);
+        this.hitbox = hitbox;
         this.orientationRadians = orientationRadians;
         sprite.setOrientation(orientationRadians);
         this.sprite = sprite;
@@ -66,12 +70,15 @@ public class Entity {
     public void setPosition(float positionX, float positionY){
         position.x = positionX;
         position.y = positionY;
-        sprite.setPosition(position.x, position.y);
+        sprite.setPosition(positionX, positionY);
+        hitbox.setPosition(positionX, positionY);
     }
 
     public void setSize(float sizeX, float sizeY){
         this.size.x = sizeX;
         this.size.y = sizeY;
+        sprite.setSize(sizeX, sizeY);
+        hitbox.setSize(sizeX, sizeY);
     }
 
     public void setOrientationRadians(float orientationRadians) {
@@ -105,6 +112,7 @@ public class Entity {
         private int id = 0;
         private boolean evil = true;
         private EntitySprite sprite = null;
+        private Hitbox hitbox = null;
         private Trajectory trajectory = Trajectory.DEFAULT();
         public Builder setScene(LevelScene scene){
             this.scene = scene;
@@ -178,8 +186,11 @@ public class Entity {
         }
 
         public Entity build(){
+            if(hitbox == null){
+                hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
+            }
             if(scene != null && sprite != null && trajectory !=null){
-                return new Entity(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory);
+                return new Entity(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox);
             }
             else{
                 throw new NullPointerException();
