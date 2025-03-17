@@ -1,9 +1,7 @@
 package engine.scene;
 
 import engine.Game;
-import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.Entity;
-import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
 import engine.entity.PlayerShip;
 
@@ -14,16 +12,16 @@ public class TestScene extends LevelScene {
     public TestScene(Game game){
         super(game);
 
-        AnimationInfo testAnimInfo = new AnimationInfo("resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
+        AnimationInfo testAnimInfo = new AnimationInfo("src/resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
 
         Entity testEntity = new Entity.Builder().setScene(this)
                 .setStartingPosition(0.5f, 0.5f).setSize(0.5f,0.5f)
-                .createSprite(3,"resources/textures/troll-face-poster.png", false)
+                .createSprite(3,"src/resources/textures/troll-face-poster.png", false)
                 .createFixedTrajectory(t-> 0.2f * (float) cos(2 * t) + 0.5f, t-> 0.2f * (float) sin(2 * t) + 0.5f, false)
                 .build();
         this.playerShip = new PlayerShip(this);
 
-        ScrollingBackGround background = new ScrollingBackGround("resources/textures/background.png", this, 1.0f, 1.0f, -0.1f, false);
+        ScrollingBackGround background = new ScrollingBackGround("src/resources/textures/background.png", this, 1.0f, 1.0f, -0.1f, false);
         addVisual(background);
     }
 

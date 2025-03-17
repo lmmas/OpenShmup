@@ -16,7 +16,7 @@ public class CustomEntityManager {
     public CustomEntityManager(){
         this.customEntities = new HashMap<>();
         BiFunction<LevelScene, Vec2D, Entity> entityConstructor1 = (scene, startingPosition) ->{
-            AnimationInfo testAnimInfo = new AnimationInfo("resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
+            AnimationInfo testAnimInfo = new AnimationInfo("src/resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
             return new Entity.Builder().setScene(scene)
                     .setStartingPosition(startingPosition.x, startingPosition.y).setSize(0.5f,0.5f)
                     .createSprite(3,testAnimInfo, 0.25f, true, false)

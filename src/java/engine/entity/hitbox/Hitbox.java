@@ -1,7 +1,6 @@
 package engine.entity.hitbox;
 
 import engine.Vec2D;
-import engine.entity.Entity;
 
 public abstract class Hitbox {
     final protected Vec2D position;

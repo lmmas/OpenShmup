@@ -8,7 +8,6 @@ import engine.graphics.Graphic;
 import engine.entity.Entity;
 import engine.entity.PlayerShip;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class LevelScene extends Scene{

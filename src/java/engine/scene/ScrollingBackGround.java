@@ -3,8 +3,6 @@ package engine.scene;
 import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
 
-import java.util.ArrayList;
-
 public class ScrollingBackGround implements SceneVisual{
     private Scene scene;
     private MovingImage image1;

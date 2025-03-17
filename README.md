@@ -1,5 +1,5 @@
 # OpenShmup
-Open-source game engine for shoot-them-ups
+Open-source game java.engine for shoot-them-ups
 
 **WIP**
 ## Features:

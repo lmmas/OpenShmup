@@ -1,6 +1,5 @@
 package engine.entity;
 
-import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.scene.LevelScene;
 

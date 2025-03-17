@@ -4,8 +4,6 @@ import engine.render.VAO;
 import engine.render.RenderType;
 import engine.scene.Scene;
 
-import java.util.ArrayList;
-
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
     final protected Scene scene;

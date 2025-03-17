@@ -67,7 +67,7 @@ public class Texture {
                 newTexture = new Texture(filepath);
             } catch (FileNotFoundException e) {
                 try {
-                    newTexture = new Texture("resources/textures/heart.png");
+                    newTexture = new Texture("src/resources/textures/heart.png");
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
