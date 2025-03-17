@@ -3,10 +3,12 @@ package engine.scene;
 import engine.Game;
 import engine.InputHandler;
 import engine.entity.CustomEntityManager;
+import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
 import engine.entity.Entity;
 import engine.entity.PlayerShip;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class LevelScene extends Scene{
@@ -72,10 +74,10 @@ public class LevelScene extends Scene{
                 playerShip.actionsAndMoves(window);
             }
             for(Entity entity: evilEntities){
-                entity.handleCollisions();
+                handleCollisions(entity);
             }
             for(Entity entity: goodEntities){
-                entity.handleCollisions();
+                handleCollisions(entity);
             }
             if(playerShip!=null){
                 playerShip.handleCollisions();
@@ -107,5 +109,22 @@ public class LevelScene extends Scene{
 
     public CustomEntityManager getCustomEntityManager() {
         return customEntityManager;
+    }
+
+    public void handleCollisions(Entity entity){
+        HashSet<Entity> ennemyList;
+        if(entity.isEvil()){
+            ennemyList = goodEntities;
+        }
+        else{
+            ennemyList = evilEntities;
+        }
+        SimpleHitBox hitBox = entity.getHitbox();
+        for(Entity ennemy: ennemyList){
+            SimpleHitBox ennemyHitbox = ennemy.getHitbox();
+            if(hitBox.intersects(ennemyHitbox)){
+                entity.damage(1);
+            }
+        }
     }
 }

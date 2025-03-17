@@ -1,11 +1,13 @@
 package engine.entity.hitbox;
 
+import engine.Vec2D;
+
 public class SimpleHitBox extends Hitbox{
     HitboxRectangle rectangle;
 
     public SimpleHitBox(float positionX, float positionY, float sizeX, float sizeY) {
         super(positionX, positionY, sizeX, sizeY);
-        updateBounds();
+        this.rectangle = new HitboxRectangle(new Vec2D(positionX, positionY), new Vec2D(sizeX, sizeY));
     }
 
     protected void updateBounds(){
@@ -15,7 +17,7 @@ public class SimpleHitBox extends Hitbox{
         this.rectangle.downBound = this.position.y - (this.size.y / 2);
     }
     @Override
-    boolean intersects(SimpleHitBox otherHitBox) {
+    public boolean intersects(SimpleHitBox otherHitBox) {
         return rectangle.intersects(otherHitBox.getRectangle());
     }
     protected HitboxRectangle getRectangle(){

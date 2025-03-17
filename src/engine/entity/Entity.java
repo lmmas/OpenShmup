@@ -1,7 +1,6 @@
 package engine.entity;
 
 import engine.Vec2D;
-import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.graphics.Animation;
@@ -22,11 +21,11 @@ public class Entity {
     protected int entityId;
     protected float lifetimeSeconds;
     protected EntitySprite sprite;
-    protected Hitbox hitbox;
+    protected SimpleHitBox hitbox;
     protected Trajectory trajectory;
     final private float startingTimeSeconds;
 
-    public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox) {
+    public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
         this.scene = scene;
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
@@ -66,6 +65,9 @@ public class Entity {
     public boolean isEvil() {
         return evil;
     }
+    public SimpleHitBox getHitbox(){
+        return hitbox;
+    }
 
     public void setPosition(float positionX, float positionY){
         position.x = positionX;
@@ -96,10 +98,13 @@ public class Entity {
         sprite.update();
     }
 
-    public void handleCollisions(){
-
+    public void damage(int damageAmount){
+        death();
     }
 
+    public void death(){
+        delete();
+    }
     public void delete(){
         sprite.delete();
     }
@@ -112,7 +117,7 @@ public class Entity {
         private int id = 0;
         private boolean evil = true;
         private EntitySprite sprite = null;
-        private Hitbox hitbox = null;
+        private SimpleHitBox hitbox = null;
         private Trajectory trajectory = Trajectory.DEFAULT();
         public Builder setScene(LevelScene scene){
             this.scene = scene;

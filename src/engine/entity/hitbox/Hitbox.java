@@ -6,7 +6,7 @@ import engine.entity.Entity;
 public abstract class Hitbox {
     final protected Vec2D position;
     final protected Vec2D size;
-    abstract boolean intersects(SimpleHitBox otherHitBox);
+    abstract public boolean intersects(SimpleHitBox otherHitBox);
     abstract protected void updateBounds();
     public Hitbox(float positionX, float positionY, float sizeX, float sizeY){
         this.position = new Vec2D(positionX, positionY);
@@ -29,6 +29,12 @@ public abstract class Hitbox {
         protected float rightBound;
         protected float upBound;
         protected float downBound;
+        public HitboxRectangle(Vec2D position, Vec2D size){
+            this.leftBound = position.x - (size.x / 2);
+            this.rightBound = position.x + (size.x / 2);
+            this.upBound = position.y + (size.y / 2);
+            this.downBound = position.y - (size.y / 2);
+        }
 
         public HitboxRectangle(float leftBound, float rightBound, float upBound, float downBound) {
             this.leftBound = leftBound;
