@@ -17,13 +17,13 @@ public class Entity {
     final protected Vec2D size;
     protected float orientationRadians;
     protected boolean evil;
-    protected boolean invincible = false;
+    protected boolean invincible;
     protected int entityId;
     protected float lifetimeSeconds;
     protected EntitySprite sprite;
     protected SimpleHitBox hitbox;
     protected Trajectory trajectory;
-    final private float startingTimeSeconds;
+    private float startingTimeSeconds;
 
     public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
         this.scene = scene;
@@ -38,6 +38,7 @@ public class Entity {
         this.sprite = sprite;
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
+        this.invincible = false;
         this.startingTimeSeconds = scene.getSceneTime();
         scene.addEntity(this);
     }
@@ -76,6 +77,10 @@ public class Entity {
         hitbox.setPosition(positionX, positionY);
     }
 
+    public void setStartingPosition(float startingPositionX, float startingPositionY){
+        startingPosition.x = startingPositionX;
+        startingPosition.y = startingPositionY;
+    }
     public void setSize(float sizeX, float sizeY){
         this.size.x = sizeX;
         this.size.y = sizeY;

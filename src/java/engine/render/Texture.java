@@ -1,5 +1,6 @@
 package engine.render;
 
+import engine.GlobalVars;
 import org.lwjgl.*;
 
 import java.io.FileNotFoundException;
@@ -67,7 +68,7 @@ public class Texture {
                 newTexture = new Texture(filepath);
             } catch (FileNotFoundException e) {
                 try {
-                    newTexture = new Texture("src/resources/textures/heart.png");
+                    newTexture = new Texture(GlobalVars.Paths.MissingTextureFile);
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }

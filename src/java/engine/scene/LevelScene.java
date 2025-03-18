@@ -2,7 +2,7 @@ package engine.scene;
 
 import engine.Game;
 import engine.InputHandler;
-import engine.entity.CustomEntityManager;
+import engine.EditorDataManager;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
 import engine.entity.Entity;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
-    final protected CustomEntityManager customEntityManager;
+    final protected EditorDataManager editorDataManager;
     protected PlayerShip playerShip;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
@@ -22,7 +22,7 @@ public class LevelScene extends Scene{
     public LevelScene(Game game) {
         super(game);
         this.inputHandler = game.getInputHandler();
-        this.customEntityManager = game.getCustomEntityManager();
+        this.editorDataManager = game.getCustomEntityManager();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.controlStates = new boolean[GameControl.values().length];
@@ -106,8 +106,8 @@ public class LevelScene extends Scene{
         entity.delete();
     }
 
-    public CustomEntityManager getCustomEntityManager() {
-        return customEntityManager;
+    public EditorDataManager getEditorDataManager() {
+        return editorDataManager;
     }
 
     public void handleCollisions(Entity entity){

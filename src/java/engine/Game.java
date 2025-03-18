@@ -2,9 +2,9 @@ package engine;
 
 import debug.DebugMethods;
 import edit.GameParameters;
-import engine.entity.CustomEntityManager;
 import engine.scene.Scene;
 import engine.scene.TestScene;
+import json.GameDataLoader;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -18,7 +18,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Game {
     private long glfwWindow;
-    private final CustomEntityManager customEntityManager;
+    private final EditorDataManager editorDataManager;
     private final InputHandler inputHandler;
     private Scene currentScene;
 
@@ -71,8 +71,7 @@ public class Game {
             glfwShowWindow(glfwWindow);
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-
-        this.customEntityManager = new CustomEntityManager();
+        this.editorDataManager = new EditorDataManager();
         this.inputHandler = new InputHandler(glfwWindow);
     }
     public void run(){
@@ -108,8 +107,8 @@ public class Game {
         return glfwWindow;
     }
 
-    public CustomEntityManager getCustomEntityManager() {
-        return customEntityManager;
+    public EditorDataManager getCustomEntityManager() {
+        return editorDataManager;
     }
 
     public InputHandler getInputHandler() {

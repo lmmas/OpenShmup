@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "type": "fixed",
+    "functionX": "0.3f * (float) cos(t) + 0.5f",
+    "functionY": "0.3f * (float) sin(t) + 0.5f"
+  }
+]
