@@ -184,7 +184,7 @@ public class GameDataLoader {
 
     private Function<Float, Float> convertToFunction(String expr) throws LambdaCreationException {
         LambdaFactory lambdaFactory = LambdaFactory.get(
-                LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.MathFloatOverloads.*")
+                LambdaFactoryConfiguration.get().withImports("static java.lang.Math.*")
         );
         return lambdaFactory.createLambda(
                 expr, new TypeReference<Function<Float, Float>>(){});
