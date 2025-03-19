@@ -5,6 +5,9 @@ out/
 *.iml
 /.idea/
 /target/
+/lib/openshmup-editor/target/
+/lib/openshmup-engine/target/
+/lib/openshmup-gamebuilder/target/
 
 ### Eclipse ###
 .apt_generated
