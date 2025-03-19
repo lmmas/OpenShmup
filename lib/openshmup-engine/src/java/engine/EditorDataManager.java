@@ -4,10 +4,12 @@ import engine.entity.Entity;
 import engine.entity.Trajectory;
 import engine.graphics.AnimationInfo;
 import engine.scene.LevelScene;
+import engine.scene.LevelTimeline;
 import json.GameDataLoader;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -17,6 +19,7 @@ import static java.lang.Math.sin;
 public class EditorDataManager {
     private HashMap<Integer, Function<LevelScene, Entity>> customEntities;
     private HashMap<Integer, Trajectory> customTrajectories;
+    private ArrayList<LevelTimeline> customLevels;
 
     public EditorDataManager(){
         this.customEntities = new HashMap<>();
@@ -55,5 +58,13 @@ public class EditorDataManager {
 
     public Trajectory getTrajectory(int id){
         return customTrajectories.get(id).copyIfNotReusable();
+    }
+
+    public void addTimeline(LevelTimeline timeline){
+        customLevels.add(timeline);
+    }
+
+    public LevelTimeline getTimeline(int index){
+        return customLevels.get(index);
     }
 }

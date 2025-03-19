@@ -8,16 +8,16 @@ import engine.scene.Spawnable;
 
 public record EntitySpawnInfo(EditorDataManager editorDataManager, int id, Vec2D startingPosition, Trajectory trajectory) implements Spawnable {
 
-    public EntitySpawnInfo(Game game, int id, float startingPositionX, float startingPositionY, Trajectory trajectory) {
-        this(game.getCustomEntityManager(), id, new Vec2D(startingPositionX, startingPositionY), trajectory);
+    public EntitySpawnInfo(EditorDataManager editorDataManager, int id, float startingPositionX, float startingPositionY, Trajectory trajectory) {
+        this(editorDataManager, id, new Vec2D(startingPositionX, startingPositionY), trajectory);
     }
 
-    public EntitySpawnInfo(Game game, int id, float startingPositionX, float startingPositionY) {
-        this(game.getCustomEntityManager(), id, new Vec2D(startingPositionX, startingPositionY), null);
+    public EntitySpawnInfo(EditorDataManager editorDataManager, int id, float startingPositionX, float startingPositionY) {
+        this(editorDataManager, id, new Vec2D(startingPositionX, startingPositionY), null);
     }
 
-    public EntitySpawnInfo(Game game, int id, float startingPositionX, float startingPositionY, int trajectoryId) {
-        this(game.getCustomEntityManager(), id, new Vec2D(startingPositionX, startingPositionY), game.getCustomEntityManager().getTrajectory(trajectoryId));
+    public EntitySpawnInfo(EditorDataManager editorDataManager, int id, float startingPositionX, float startingPositionY, int trajectoryId) {
+        this(editorDataManager, id, new Vec2D(startingPositionX, startingPositionY), editorDataManager.getTrajectory(trajectoryId));
     }
 
     public void spawn(LevelScene scene) {

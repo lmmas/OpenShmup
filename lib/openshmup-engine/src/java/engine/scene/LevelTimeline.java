@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.EditorDataManager;
 import engine.Game;
 import engine.entity.EntitySpawnInfo;
 import engine.entity.Trajectory;
@@ -8,12 +9,12 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class LevelTimeline {
-    final private Game game;
+    final private EditorDataManager editorDataManager;
     private final float levelDuration;
     private TreeMap<Float, ArrayList<Spawnable>> spawnList;
     private float nextSpawnTime;
-    public LevelTimeline(Game game, float levelDuration){
-        this.game = game;
+    public LevelTimeline(EditorDataManager editorDataManager, float levelDuration){
+        this.editorDataManager = editorDataManager;
         this.levelDuration= levelDuration;
         this.spawnList = new TreeMap<>();
         this.nextSpawnTime = -1.0f;
@@ -43,12 +44,12 @@ public class LevelTimeline {
     }
 
     public void addEntity(float time, int id, float startingPositionX, float startingPositionY, Trajectory trajectory){
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(game, id, startingPositionX, startingPositionY, trajectory);
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY, trajectory);
         addSpawnable(time, entitySpawnInfo);
     }
 
     public void addEntity(float time, int id, float startingPositionX, float startingPositionY){
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(game, id, startingPositionX, startingPositionY);
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY);
         addSpawnable(time, entitySpawnInfo);
     }
 }

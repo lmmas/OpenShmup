@@ -3,12 +3,15 @@ package json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.EditorDataManager;
+import engine.Game;
 import engine.GlobalVars;
 import engine.entity.Entity;
+import engine.entity.EntitySpawnInfo;
 import engine.entity.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.graphics.AnimationInfo;
 import engine.scene.LevelScene;
+import engine.scene.LevelTimeline;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
 import pl.joegreen.lambdaFromString.LambdaFactoryConfiguration;
@@ -46,7 +49,7 @@ public class GameDataLoader {
             String type = trajectoryNode.get("type").textValue();
 
             Trajectory newTrajectory;
-            if(Objects.equals(type, "fixed")) {
+            if(type.equals( "fixed")) {
                 checkForField(filepath, trajectoryNode, "functionX");
                 checkIfString(filepath, trajectoryNode.get("functionX"));
                 String functionXString = trajectoryNode.get("functionX").textValue();
@@ -182,6 +185,72 @@ public class GameDataLoader {
         }
     }
 
+
+    public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
+        JsonNode rootNode;
+        try {
+            rootNode = objectMapper.readTree(new File(filepath));
+        } catch (IOException e) {
+            throw new FileNotFoundException("custom entities file not found: filepath '" + filepath + "'");
+        }
+        checkIfObject(filepath, rootNode);
+        checkForField(filepath, rootNode, "duration");
+        checkIfFloat(filepath, rootNode.get("duration"));
+        float duration = rootNode.get("duration").floatValue();
+        checkForField(filepath, rootNode, "spawns");
+        JsonNode spawnsNode = rootNode.get("spawns");
+        checkIfArray(filepath, spawnsNode);
+        LevelTimeline newTimeline = new LevelTimeline(editorDataManager, duration);
+        for(JsonNode childNode: spawnsNode){
+            checkForField(filepath, childNode, "time");
+            checkIfFloat(filepath, childNode.get("time"));
+            float time = childNode.get("time").floatValue();
+
+            checkForField(filepath, childNode, "spawnable");
+            JsonNode spawnableNode = childNode.get("spawnable");
+            if(spawnableNode.isArray()){
+                for (JsonNode elementNode: spawnableNode){
+                    checkIfObject(filepath, spawnableNode);
+                    addSingleSpawnableToTimeline(filepath, editorDataManager, newTimeline, elementNode, time);
+                }
+            }
+            else{
+                checkIfObject(filepath, spawnableNode);
+                addSingleSpawnableToTimeline(filepath, editorDataManager,newTimeline, spawnableNode, time);
+            }
+        }
+    }
+
+    private void addSingleSpawnableToTimeline(String filepath, EditorDataManager editorDataManager,LevelTimeline timeline, JsonNode spawnableNode, float time){
+        checkForField(filepath, spawnableNode, "type");
+        checkIfString(filepath, spawnableNode.get("type"));
+        String type = spawnableNode.get("type").textValue();
+        if(type.equals("entity")){
+            checkForField(filepath, spawnableNode, "id");
+            checkIfInt(filepath, spawnableNode.get("id"));
+            int id = spawnableNode.get("id").intValue();
+
+            checkForField(filepath,spawnableNode , "startingPosition");
+            checkIfArray(filepath, spawnableNode.get("startingPosition"));
+            JsonNode positionNode = spawnableNode.get("startingPosition");
+            checkSize(filepath, positionNode, 2);
+            checkIfFloat(filepath, positionNode.get(0));
+            float startingPositionX = positionNode.get(0).floatValue();
+            float startingPositionY = positionNode.get(1).floatValue();
+
+            EntitySpawnInfo spawnInfo;
+            if(spawnableNode.has("trajectory")){
+                checkIfInt(filepath, spawnableNode.get("id"));
+                int trajectoryId = spawnableNode.get("id").intValue();
+                spawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY, trajectoryId);
+            }else{
+                spawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY);
+            }
+            timeline.addSpawnable(time, spawnInfo);
+        }else{
+            throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
+        }
+    }
     private Function<Float, Float> convertToFunction(String expr) throws LambdaCreationException {
         LambdaFactory lambdaFactory = LambdaFactory.get(
                 LambdaFactoryConfiguration.get().withImports("static java.lang.Math.*")
