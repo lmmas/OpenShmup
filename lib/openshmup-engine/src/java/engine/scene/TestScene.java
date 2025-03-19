@@ -10,7 +10,7 @@ import static java.lang.Math.sin;
 
 public class TestScene extends LevelScene {
     public TestScene(Game game){
-        super(game);
+        super(game, new LevelTimeline(game.getEditorDataManager(), 30.0f));
 
         AnimationInfo testAnimInfo = new AnimationInfo("Games/game1/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
 

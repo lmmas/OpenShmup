@@ -2,9 +2,9 @@ package engine;
 
 import debug.DebugMethods;
 import edit.GameParameters;
+import engine.scene.LevelScene;
 import engine.scene.Scene;
 import engine.scene.TestScene;
-import json.GameDataLoader;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -80,7 +80,7 @@ public class Game {
     }
     public void run(){
         init();
-        testInit();
+        //testInit();
         loop();
 
         Callbacks.glfwFreeCallbacks(glfwWindow);
@@ -91,7 +91,7 @@ public class Game {
     }
 
     public void init(){
-
+        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0));
     }
 
     public void loop(){
@@ -111,7 +111,7 @@ public class Game {
         return glfwWindow;
     }
 
-    public EditorDataManager getCustomEntityManager() {
+    public EditorDataManager getEditorDataManager() {
         return editorDataManager;
     }
 

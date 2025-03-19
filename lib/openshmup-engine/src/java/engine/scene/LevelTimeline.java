@@ -6,6 +6,7 @@ import engine.entity.EntitySpawnInfo;
 import engine.entity.Trajectory;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.TreeMap;
 
 public class LevelTimeline {
@@ -22,25 +23,31 @@ public class LevelTimeline {
 
     public void updateSpawning(LevelScene scene){
         float currentTime = scene.getSceneTime();
-        if(currentTime >= nextSpawnTime){
+        if(currentTime >= nextSpawnTime && currentTime < levelDuration){
             while(currentTime >= nextSpawnTime){
                 ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
                 assert spawnables != null :"bad spawnList access";
                 for(Spawnable spawnable: spawnables){
                     spawnable.spawn(scene);
                 }
-                nextSpawnTime = spawnList.higherKey(nextSpawnTime);
+                if(spawnList.higherKey(nextSpawnTime) != null){
+                    nextSpawnTime = spawnList.higherKey(nextSpawnTime);
+                }
+                else{
+                    nextSpawnTime = levelDuration;
+                }
             }
         }
     }
 
-    public float getNextSpawnTime(float currentTime){
-        return spawnList.higherKey(currentTime);
+    public Optional<Float> getNextSpawnTime(float currentTime){
+        return spawnList.higherKey(currentTime).describeConstable();
     }
 
     public void addSpawnable(float time, Spawnable spawnable){
         this.spawnList.computeIfAbsent(time, k -> new ArrayList<Spawnable>());
         this.spawnList.get(time).add(spawnable);
+        nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
     public void addEntity(float time, int id, float startingPositionX, float startingPositionY, Trajectory trajectory){

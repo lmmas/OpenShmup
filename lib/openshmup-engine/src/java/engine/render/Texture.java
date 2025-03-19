@@ -75,6 +75,7 @@ public class Texture {
                 }
             }
             textureMap.put(filepath, newTexture);
+            newTexture.upload();
             return newTexture;
         }
     }

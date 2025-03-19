@@ -9,6 +9,7 @@ import engine.entity.Entity;
 import engine.entity.PlayerShip;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
@@ -19,14 +20,16 @@ public class LevelScene extends Scene{
     protected boolean[] controlStates;
     protected boolean[] lastControlStates;
     protected LevelTimeline timeline;
-    public LevelScene(Game game) {
+
+    public LevelScene(Game game, LevelTimeline timeline) {
         super(game);
         this.inputHandler = game.getInputHandler();
-        this.editorDataManager = game.getCustomEntityManager();
+        this.editorDataManager = game.getEditorDataManager();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
+        this.timeline = timeline;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class LevelScene extends Scene{
     public void update() {
         super.update();
         if(!timer.isPaused()){
+            timeline.updateSpawning(this);
             for(Entity entity: goodEntities){
                 entity.update();
             }
@@ -73,10 +77,10 @@ public class LevelScene extends Scene{
                 playerShip.actionsAndMoves(window);
             }
             for(Entity entity: evilEntities){
-                handleCollisions(entity);
+                handleCollisions(entity, goodEntities);
             }
             for(Entity entity: goodEntities){
-                handleCollisions(entity);
+                handleCollisions(entity, evilEntities);
             }
             if(playerShip!=null){
                 playerShip.handleCollisions();
@@ -106,18 +110,7 @@ public class LevelScene extends Scene{
         entity.delete();
     }
 
-    public EditorDataManager getEditorDataManager() {
-        return editorDataManager;
-    }
-
-    public void handleCollisions(Entity entity){
-        HashSet<Entity> ennemyList;
-        if(entity.isEvil()){
-            ennemyList = goodEntities;
-        }
-        else{
-            ennemyList = evilEntities;
-        }
+    public void handleCollisions(Entity entity, HashSet<Entity> ennemyList){
         SimpleHitBox hitBox = entity.getHitbox();
         for(Entity ennemy: ennemyList){
             SimpleHitBox ennemyHitbox = ennemy.getHitbox();

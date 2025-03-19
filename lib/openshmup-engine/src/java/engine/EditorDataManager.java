@@ -36,9 +36,11 @@ public class EditorDataManager {
 
         this.customTrajectories = new HashMap<>();
         GameDataLoader gameDataLoader = new GameDataLoader();
+        this.customLevels = new ArrayList<>();
         try {
             gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
             gameDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
+            gameDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
         } catch (FileNotFoundException | IllegalArgumentException | LambdaCreationException e) {
             throw new RuntimeException(e);
         }
@@ -57,6 +59,7 @@ public class EditorDataManager {
     }
 
     public Trajectory getTrajectory(int id){
+        Trajectory trajectory = customTrajectories.get(id);
         return customTrajectories.get(id).copyIfNotReusable();
     }
 

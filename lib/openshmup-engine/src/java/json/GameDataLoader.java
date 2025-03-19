@@ -210,7 +210,7 @@ public class GameDataLoader {
             JsonNode spawnableNode = childNode.get("spawnable");
             if(spawnableNode.isArray()){
                 for (JsonNode elementNode: spawnableNode){
-                    checkIfObject(filepath, spawnableNode);
+                    checkIfObject(filepath, elementNode);
                     addSingleSpawnableToTimeline(filepath, editorDataManager, newTimeline, elementNode, time);
                 }
             }
@@ -219,6 +219,7 @@ public class GameDataLoader {
                 addSingleSpawnableToTimeline(filepath, editorDataManager,newTimeline, spawnableNode, time);
             }
         }
+        editorDataManager.addTimeline(newTimeline);
     }
 
     private void addSingleSpawnableToTimeline(String filepath, EditorDataManager editorDataManager,LevelTimeline timeline, JsonNode spawnableNode, float time){
@@ -240,8 +241,8 @@ public class GameDataLoader {
 
             EntitySpawnInfo spawnInfo;
             if(spawnableNode.has("trajectory")){
-                checkIfInt(filepath, spawnableNode.get("id"));
-                int trajectoryId = spawnableNode.get("id").intValue();
+                checkIfInt(filepath, spawnableNode.get("trajectory"));
+                int trajectoryId = spawnableNode.get("trajectory").intValue();
                 spawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY, trajectoryId);
             }else{
                 spawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY);
