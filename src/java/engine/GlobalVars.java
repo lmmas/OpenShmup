@@ -6,5 +6,6 @@ public class GlobalVars {
         final static public String MissingTextureFile = "src/resources/textures/heart.png";
         final static public String EditorTextureFolder = "src/resources/textures/";
         final static public String EditorCustomEntitiesFile = "src/resources/json/entities.json";
+        final static public String EditorCustomTrajectoriesFile = "src/resources/json/trajectories.json";
     }
 }

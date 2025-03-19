@@ -9,3 +9,4 @@ Open-source game java.engine for shoot-them-ups
 - entities
 - scrolling backgrounds
 - custom entity creation and spawning
+- custom entity storage in JSON config files
