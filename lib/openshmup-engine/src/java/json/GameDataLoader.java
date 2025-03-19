@@ -2,8 +2,8 @@ package json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.GlobalVars;
 import engine.EditorDataManager;
+import engine.GlobalVars;
 import engine.entity.Entity;
 import engine.entity.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class GameDataLoader {
     final private ObjectMapper objectMapper;
