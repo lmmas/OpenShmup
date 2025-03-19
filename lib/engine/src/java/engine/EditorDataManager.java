@@ -34,8 +34,8 @@ public class EditorDataManager {
         this.customTrajectories = new HashMap<>();
         GameDataLoader gameDataLoader = new GameDataLoader();
         try {
-            gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.EditorCustomTrajectoriesFile, this);
-            gameDataLoader.loadCustomEntities(GlobalVars.Paths.EditorCustomEntitiesFile, this);
+            gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
+            gameDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
         } catch (FileNotFoundException | IllegalArgumentException | LambdaCreationException e) {
             throw new RuntimeException(e);
         }

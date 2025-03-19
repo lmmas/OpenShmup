@@ -23,9 +23,13 @@ public class Game {
     private Scene currentScene;
 
     public static void main(String[] args){
-        new Game().run();
+        if(args.length != 1){
+            throw new IllegalArgumentException("invalid engine arguments");
+        }
+        new Game(args[0]).run();
     }
-    public Game(){
+    public Game(String gameFolder){
+        GlobalVars.Paths.setcustomGameFolder(gameFolder);
         GameParameters.useDefaultParameters();
         GLFWErrorCallback.createPrint(System.err).set();
         assert glfwInit(): "Unable to initialize GLFW";

@@ -30,6 +30,7 @@ public class Texture {
             this.filepath = filepath;
             this.textureID = glGenTextures();
         } else {
+            System.out.println(stbi_failure_reason());
             throw new FileNotFoundException(filepath);
         }
     }

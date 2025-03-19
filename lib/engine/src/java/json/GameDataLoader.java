@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class GameDataLoader {
     final private ObjectMapper objectMapper;
@@ -115,7 +117,7 @@ public class GameDataLoader {
 
                 checkForField(filepath, animationInfoNode, "fileName");
                 checkIfString(filepath, animationInfoNode.get("fileName"));
-                String animationFilepath = GlobalVars.Paths.EditorTextureFolder + animationInfoNode.get("fileName").textValue();
+                String animationFilepath = GlobalVars.Paths.editorTextureFolder + animationInfoNode.get("fileName").textValue();
 
                 checkForField(filepath, animationInfoNode, "frameCount");
                 checkIfInt(filepath, animationInfoNode.get("frameCount"));
@@ -160,7 +162,7 @@ public class GameDataLoader {
             else{
                 checkForField(filepath, spriteNode, "fileName");
                 checkIfString(filepath, spriteNode.get("fileName"));
-                String texturePath = GlobalVars.Paths.EditorTextureFolder + spriteNode.get("fileName").textValue();
+                String texturePath = GlobalVars.Paths.editorTextureFolder + spriteNode.get("fileName").textValue();
 
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, texturePath, orientable)));
             }
