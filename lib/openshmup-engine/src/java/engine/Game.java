@@ -29,6 +29,10 @@ public class Game {
     }
     public Game(String gameFolder){
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
+        this.editorDataManager = new EditorDataManager();
+        editorDataManager.loadGameParameters();
+        PlayerSettings.setResolution(GlobalVars.EditionParameters.getEditionWidth(), GlobalVars.EditionParameters.getEditionHeight());
+
         GLFWErrorCallback.createPrint(System.err).set();
         assert glfwInit(): "Unable to initialize GLFW";
 
@@ -39,7 +43,6 @@ public class Game {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        PlayerSettings.setResolution(1000, 1200);
         glfwWindow = glfwCreateWindow(PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight(), "OpenShmup", NULL, NULL);
         assert glfwWindow != NULL:"Unable to create GLFW Window";
 
@@ -64,7 +67,6 @@ public class Game {
             glfwSwapInterval(0);
             GL.createCapabilities();
             glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
-            glViewport(0, 0, PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight());
             org.lwjgl.system.Callback debugProc = GLUtil.setupDebugMessageCallback();
             GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
             glEnable(GL_BLEND);
@@ -73,7 +75,7 @@ public class Game {
             glfwShowWindow(glfwWindow);
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-        this.editorDataManager = new EditorDataManager();
+        editorDataManager.loadGameContents();
         this.inputHandler = new InputHandler(glfwWindow);
     }
     public void run(){

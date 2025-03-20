@@ -40,7 +40,7 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             for(int i = 0; i < textures.size(); i++){
                 textures.get(i).bind(i);
             }
-            int[] array = new int[GlobalVars.MAX_TEXTURE_SLOTS];
+            int[] array = new int[32];
             Arrays.setAll(array, i->i);
             shader.uploadUniformIntArray("TEX_SAMPLER" , array);
             shader.validate();

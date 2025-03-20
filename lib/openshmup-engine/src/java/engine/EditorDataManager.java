@@ -24,9 +24,21 @@ public class EditorDataManager {
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();
         this.customTimelines = new ArrayList<>();
+    }
+
+    void loadGameParameters(){
         EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
             editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
+            editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
+        } catch (FileNotFoundException | IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void loadGameContents(){
+        EditorDataLoader editorDataLoader = new EditorDataLoader();
+        try {
             editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
             editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
