@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.EditorDataManager;
 import engine.GlobalVars;
 import engine.entity.Entity;
+import engine.entity.EntityType;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
@@ -91,6 +92,15 @@ public class EditorDataLoader {
             checkIfObject(filepath, entityNode);
 
             int id = checkAndGetInt(filepath, entityNode, "id");
+            String entityTypeString = checkAndGetString(filepath, entityNode, "type");
+            EntityType entityType;
+            if(entityTypeString.equals("projectile")){
+                entityType = EntityType.PROJECTILE;
+            }else if(entityTypeString.equals("ship")){
+                entityType = EntityType.SHIP;
+            }else{
+                throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
+            }
 
             JsonNode sizeNode = checkAndGetArray(filepath, entityNode, "size");
             checkSize(filepath, sizeNode, 2);
@@ -98,9 +108,15 @@ public class EditorDataLoader {
             float sizeX = sizeNode.get(0).floatValue();
             float sizeY = sizeNode.get(1).floatValue();
 
-            AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene -> new Entity.Builder().setScene(levelScene));
-            customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setId(id)));
-            customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setSize(sizeX, sizeY)));
+            AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
+                    new Entity.Builder()
+                    .setScene(levelScene).setId(id).setType(entityType).setSize(sizeX, sizeY));
+
+            if(entityType == EntityType.SHIP && entityNode.has("hp")){
+                checkIfInt(filepath, entityNode.get("hp"));
+                int hp = entityNode.get("hp").intValue();
+                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setHitPoints(hp)));
+            }
 
             JsonNode spriteNode = checkAndGetObject(filepath, entityNode, "sprite");
             int layer = checkAndGetInt(filepath, spriteNode, "layer");
@@ -149,8 +165,8 @@ public class EditorDataLoader {
                     trajectory = editorDataManager.getTrajectory(trajectoryId);
                 }
                 else{
-                    String type = checkAndGetString(filepath, trajectoryNode, "type");
-                    if(type.equals("fixed")){
+                    String trajectoryType = checkAndGetString(filepath, trajectoryNode, "type");
+                    if(trajectoryType.equals("fixed")){
                         String functionXString = checkAndGetString(filepath, trajectoryNode, "functionX");
                         String functionYString = checkAndGetString(filepath, trajectoryNode, "functionY");
                         if(trajectoryNode.has("relative")){

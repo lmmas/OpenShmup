@@ -32,7 +32,6 @@ public class ScrollingBackGround implements SceneVisual {
         image2.setSize(sizeX, sizeY);
         setPosition(0.5f, 0.5f);
         this.lastUpdateTimeSeconds = scene.getSceneTime();
-        scene.addVisual(this);
     }
 
     @Override

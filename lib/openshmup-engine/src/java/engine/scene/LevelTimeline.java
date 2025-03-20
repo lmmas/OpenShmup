@@ -2,7 +2,6 @@ package engine.scene;
 
 import engine.EditorDataManager;
 import engine.scene.spawnable.EntitySpawnInfo;
-import engine.entity.trajectory.Trajectory;
 import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class LevelTimeline {
     final private EditorDataManager editorDataManager;
     private final float levelDuration;
     private TreeMap<Float, ArrayList<Spawnable>> spawnList;
-    private float nextSpawnTime;
+    private Float nextSpawnTime;
     public LevelTimeline(EditorDataManager editorDataManager, float levelDuration){
         this.editorDataManager = editorDataManager;
         this.levelDuration= levelDuration;
@@ -28,7 +27,7 @@ public class LevelTimeline {
                 ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
                 assert spawnables != null :"bad spawnList access";
                 for(Spawnable spawnable: spawnables){
-                    spawnable.spawn(editorDataManager, scene);
+                    spawnable.spawn(scene);
                 }
                 if(spawnList.higherKey(nextSpawnTime) != null){
                     nextSpawnTime = spawnList.higherKey(nextSpawnTime);

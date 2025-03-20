@@ -1,6 +1,5 @@
 package engine.scene.spawnable;
 
-import engine.EditorDataManager;
 import engine.Vec2D;
 import engine.scene.LevelScene;
 
@@ -14,7 +13,7 @@ public record SceneVisualSpawnInfo(
     }
 
     @Override
-    public void spawn(EditorDataManager editorDataManager, LevelScene scene) {
-        editorDataManager.buildCustomVisual(scene, id).setPosition(position.x, position.y);
+    public void spawn(LevelScene scene) {
+        scene.addVisual(this);
     }
 }

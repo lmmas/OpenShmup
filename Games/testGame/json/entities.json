@@ -1,6 +1,8 @@
 [
     {
         "id": 2,
+        "type": "ship",
+        "hp": 3,
         "size": [0.2, 0.2],
         "sprite": {
             "layer": 3,

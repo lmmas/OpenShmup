@@ -1,12 +1,15 @@
 package engine.scene;
 
+import engine.EditorDataManager;
 import engine.Game;
+import engine.Vec2D;
 import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
 import engine.graphics.StaticImage;
 import engine.render.MovingImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
+import engine.scene.spawnable.SceneVisualSpawnInfo;
 import engine.scene.visual.SceneVisual;
 
 import java.util.ArrayList;
@@ -17,12 +20,14 @@ import java.util.TreeMap;
 
 abstract public class Scene {
     protected long window;
+    final private EditorDataManager editorDataManager;
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
     protected float sceneTime;
     protected SceneTimer timer;
     HashSet<SceneVisual> visualList;
     public Scene(Game game) {
         this.window = game.getWindow();
+        this.editorDataManager = game.getEditorDataManager();
         this.layers = new TreeMap<>();
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
@@ -103,11 +108,18 @@ abstract public class Scene {
     }
 
     public void addVisual(SceneVisual visual){
-        visualList.add(visual);
         Graphic<?,?>[] newGraphics = visual.getGraphics();
         for(Graphic<?,?> graphic: newGraphics){
             addGraphic(graphic);
         }
+        visualList.add(visual);
+    }
+
+    public void addVisual(SceneVisualSpawnInfo spawnInfo){
+        SceneVisual newVisual = editorDataManager.buildCustomVisual(this, spawnInfo.id());
+        addVisual(newVisual);
+        Vec2D position = spawnInfo.position();
+        newVisual.setPosition(position.x, position.y);
     }
 
     public void deleteVisual(SceneVisual visual){

@@ -12,8 +12,9 @@ import engine.scene.LevelScene;
 
 import java.util.function.Function;
 
-public class Entity {
-    protected LevelScene scene;
+abstract public class Entity {
+    final protected LevelScene scene;
+    final protected EntityType type;
     final protected Vec2D startingPosition;
     final protected Vec2D position;
     final protected Vec2D size;
@@ -27,8 +28,9 @@ public class Entity {
     protected Trajectory trajectory;
     private float startingTimeSeconds;
 
-    public Entity(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
+    public Entity(LevelScene scene, EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
         this.scene = scene;
+        this.type = type;
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
         sprite.setPosition(startingPosX, startingPosY);
@@ -42,7 +44,10 @@ public class Entity {
         this.evil = evil;
         this.invincible = false;
         this.startingTimeSeconds = scene.getSceneTime();
-        scene.addEntity(this);
+    }
+
+    public EntityType getType(){
+        return type;
     }
 
     public EntitySprite getSprite() {
@@ -68,6 +73,15 @@ public class Entity {
     public boolean isEvil() {
         return evil;
     }
+
+    public boolean isInvincible(){
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
+    }
+
     public SimpleHitBox getHitbox(){
         return hitbox;
     }
@@ -104,16 +118,8 @@ public class Entity {
         trajectory.update(this);
         sprite.update();
     }
+    public void deathEvent(LevelScene scene){
 
-    public void damage(int damageAmount){
-        death();
-    }
-
-    public void death(){
-        delete();
-    }
-    public void delete(){
-        sprite.delete();
     }
 
     public static class Builder{
@@ -123,11 +129,23 @@ public class Entity {
         private float orientationRadians = 0.0f;
         private int id = 0;
         private boolean evil = true;
+        private EntityType type = null;
         private EntitySprite sprite = null;
         private SimpleHitBox hitbox = null;
+        private int hitPoints = 1;
         private Trajectory trajectory = Trajectory.DEFAULT();
         public Builder setScene(LevelScene scene){
             this.scene = scene;
+            return this;
+        }
+
+        public Builder setType(EntityType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder setHitPoints(int hp){
+            this.hitPoints = hp;
             return this;
         }
 
@@ -201,11 +219,12 @@ public class Entity {
             if(hitbox == null){
                 hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
             }
-            if(scene != null && sprite != null && trajectory !=null){
-                return new Entity(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox);
+            assert (scene != null && type != null && sprite != null && trajectory !=null): "Entity construction error: null fields";
+            if(type == EntityType.PROJECTILE){
+                return new Projectile(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox);
             }
             else{
-                throw new NullPointerException();
+                return new Ship(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, hitPoints);
             }
         }
     }

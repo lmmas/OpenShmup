@@ -2,7 +2,6 @@ package engine;
 
 public class GlobalVars {
     public static int MAX_TEXTURE_SLOTS;
-    final public static float SECONDS = 1.0f;
     public static class Paths{
         final static public String MissingTextureFile = "lib/openshmup-engine/src/resources/textures/missingTexture.png";
         static public String customGameFolder;
