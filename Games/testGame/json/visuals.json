@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1,
+        "layer": 0,
+        "type": "scrollingBackground",
+        "fileName": "background.png",
+        "size": [1,1],
+        "speed": 0.2,
+        "horizontalScrolling": false
+    }
+]

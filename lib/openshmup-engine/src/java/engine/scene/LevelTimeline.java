@@ -1,9 +1,9 @@
 package engine.scene;
 
 import engine.EditorDataManager;
-import engine.Game;
-import engine.entity.EntitySpawnInfo;
-import engine.entity.Trajectory;
+import engine.scene.spawnable.EntitySpawnInfo;
+import engine.entity.trajectory.Trajectory;
+import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class LevelTimeline {
                 ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
                 assert spawnables != null :"bad spawnList access";
                 for(Spawnable spawnable: spawnables){
-                    spawnable.spawn(scene);
+                    spawnable.spawn(editorDataManager, scene);
                 }
                 if(spawnList.higherKey(nextSpawnTime) != null){
                     nextSpawnTime = spawnList.higherKey(nextSpawnTime);
@@ -50,13 +50,13 @@ public class LevelTimeline {
         nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
-    public void addEntity(float time, int id, float startingPositionX, float startingPositionY, Trajectory trajectory){
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY, trajectory);
+    public void addEntity(float time, int id, float startingPositionX, float startingPositionY, int trajectoryId){
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, trajectoryId);
         addSpawnable(time, entitySpawnInfo);
     }
 
     public void addEntity(float time, int id, float startingPositionX, float startingPositionY){
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(editorDataManager, id, startingPositionX, startingPositionY);
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
         addSpawnable(time, entitySpawnInfo);
     }
 }

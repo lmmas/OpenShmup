@@ -1,4 +1,4 @@
-package engine.entity;
+package engine.entity.hitbox;
 
 import engine.graphics.Graphic;
 

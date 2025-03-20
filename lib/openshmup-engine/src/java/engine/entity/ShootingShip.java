@@ -1,6 +1,8 @@
 package engine.entity;
 
+import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
+import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelScene;
 
 public class ShootingShip extends Ship{

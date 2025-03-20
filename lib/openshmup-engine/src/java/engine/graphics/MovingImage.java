@@ -1,6 +1,6 @@
 package engine.graphics;
 
-import engine.entity.EntitySprite;
+import engine.entity.hitbox.EntitySprite;
 import engine.render.RenderType;
 import engine.render.Shader;
 import engine.scene.Scene;

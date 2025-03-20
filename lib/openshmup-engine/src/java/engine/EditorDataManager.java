@@ -1,49 +1,46 @@
 package engine;
 
 import engine.entity.Entity;
-import engine.entity.Trajectory;
-import engine.graphics.AnimationInfo;
+import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelScene;
 import engine.scene.LevelTimeline;
-import json.GameDataLoader;
-import pl.joegreen.lambdaFromString.LambdaCreationException;
+import engine.scene.Scene;
+import engine.scene.visual.SceneVisual;
+import json.EditorDataLoader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
 public class EditorDataManager {
-    private HashMap<Integer, Function<LevelScene, Entity>> customEntities;
+    private HashMap<Integer, Function<Scene, SceneVisual>> customVisuals;
     private HashMap<Integer, Trajectory> customTrajectories;
-    private ArrayList<LevelTimeline> customLevels;
+    private HashMap<Integer, Function<LevelScene, Entity>> customEntities;
+    private ArrayList<LevelTimeline> customTimelines;
 
     public EditorDataManager(){
+        this.customVisuals = new HashMap<>();
         this.customEntities = new HashMap<>();
-        Function<LevelScene, Entity> entityConstructor1 = (scene) ->{
-            AnimationInfo testAnimInfo = new AnimationInfo("src/resources/textures/enemy-medium.png", 2, 32, 16, 0, 0, 32, 0);
-            return new Entity.Builder().setScene(scene)
-                    .setSize(0.5f,0.5f)
-                    .createSprite(3,testAnimInfo, 0.25f, true, false)
-                    .createFixedTrajectory(t-> 0.3f * (float) cos(t) + 0.5f, t-> 0.3f * (float) sin(t) + 0.5f, false)
-                    .setId(1)
-                    .build();
-        };
-        addCustomEntity(1, entityConstructor1);
-
         this.customTrajectories = new HashMap<>();
-        GameDataLoader gameDataLoader = new GameDataLoader();
-        this.customLevels = new ArrayList<>();
+        this.customTimelines = new ArrayList<>();
+        EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
-            gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
-            gameDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
-            gameDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
-        } catch (FileNotFoundException | IllegalArgumentException | LambdaCreationException e) {
+            editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
+            editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
+            editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
+            editorDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
+        } catch (FileNotFoundException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addCustomVisual(int id, Function<Scene, SceneVisual> constructor){
+        customVisuals.put(id, constructor);
+    }
+
+    public SceneVisual buildCustomVisual(Scene scene, int id){
+        return customVisuals.get(id).apply(scene);
     }
 
     public void addCustomEntity(int id, Function<LevelScene, Entity> constructor){
@@ -64,10 +61,10 @@ public class EditorDataManager {
     }
 
     public void addTimeline(LevelTimeline timeline){
-        customLevels.add(timeline);
+        customTimelines.add(timeline);
     }
 
     public LevelTimeline getTimeline(int index){
-        return customLevels.get(index);
+        return customTimelines.get(index);
     }
 }

@@ -4,6 +4,7 @@ import engine.Game;
 import engine.entity.Entity;
 import engine.graphics.AnimationInfo;
 import engine.entity.PlayerShip;
+import engine.scene.visual.ScrollingBackGround;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -21,7 +22,7 @@ public class TestScene extends LevelScene {
                 .build();
         this.playerShip = new PlayerShip(this);
 
-        ScrollingBackGround background = new ScrollingBackGround("Games/game1/textures/background.png", this, 1.0f, 1.0f, -0.1f, false);
+        ScrollingBackGround background = new ScrollingBackGround("Games/game1/textures/background.png", this, 0, 1.0f, 1.0f, -0.1f, false);
         addVisual(background);
     }
 

@@ -1,5 +1,6 @@
 package engine.entity;
 
+import engine.entity.hitbox.EntitySprite;
 import engine.graphics.MovingImage;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;

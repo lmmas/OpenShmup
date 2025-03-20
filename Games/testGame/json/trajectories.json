@@ -2,7 +2,19 @@
     {
         "id": 1,
         "type": "fixed",
-        "functionX": "0.3f * (float) cos(t)",
-        "functionY": "0.3f * (float) sin(t)"
+        "functionX": "0.3f * cos(t)",
+        "functionY": "0.3f * sin(t)"
+    },
+    {
+        "id": 2,
+        "type": "fixed",
+        "functionX": "0",
+        "functionY": "0.3f * sin(2*t)"
+    },
+    {
+        "id": 3,
+        "type": "fixed",
+        "functionX": "0.3f * cos(2*t)",
+        "functionY": "0"
     }
 ]

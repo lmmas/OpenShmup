@@ -7,6 +7,7 @@ import engine.graphics.StaticImage;
 import engine.render.MovingImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
+import engine.scene.visual.SceneVisual;
 
 import java.util.ArrayList;
 import java.util.HashSet;

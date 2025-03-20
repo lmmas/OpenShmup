@@ -1,9 +1,10 @@
-package engine.scene;
+package engine.scene.visual;
 
 import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
+import engine.scene.Scene;
 
-public class ScrollingBackGround implements SceneVisual{
+public class ScrollingBackGround implements SceneVisual {
     private Scene scene;
     private MovingImage image1;
     private float positionX1;
@@ -17,16 +18,32 @@ public class ScrollingBackGround implements SceneVisual{
     private float speed;
     private float lastUpdateTimeSeconds;
 
-    public ScrollingBackGround(String imagePath, Scene scene, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+    public ScrollingBackGround(String imagePath, Scene scene, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.scene = scene;
-        this.image1 = new MovingImage(imagePath, scene, 0);
-        this.image2 = new MovingImage(imagePath, scene, 0);
+        this.image1 = new MovingImage(imagePath, scene, layer);
+        this.image2 = new MovingImage(imagePath, scene, layer);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.positionX1 = 0.5f;
         this.positionY1 = 0.5f;
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
+        image1.setSize(sizeX, sizeY);
+        image2.setSize(sizeX, sizeY);
+        setPosition(0.5f, 0.5f);
+        this.lastUpdateTimeSeconds = scene.getSceneTime();
+        scene.addVisual(this);
+    }
+
+    @Override
+    public Graphic<?,?>[] getGraphics() {
+        return new MovingImage[]{image1,image2};
+    }
+
+    @Override
+    public void setPosition(float positionX, float positionY) {
+        positionX1 = positionX;
+        positionY1 = positionY;
         if(horizontalScrolling){
             this.positionX2 = this.positionX1 - Math.signum(speed) * sizeX;
             this.positionY2 = positionY1;
@@ -36,16 +53,7 @@ public class ScrollingBackGround implements SceneVisual{
             this.positionY2 = positionY1 - Math.signum(speed) * sizeY;
         }
         image1.setPosition(positionX1, positionY1);
-        image1.setSize(sizeX, sizeY);
         image2.setPosition(positionX2, positionY2);
-        image2.setSize(sizeX, sizeY);
-        this.lastUpdateTimeSeconds = scene.getSceneTime();
-        scene.addVisual(this);
-    }
-
-    @Override
-    public Graphic<?,?>[] getGraphics() {
-        return new MovingImage[]{image1,image2};
     }
 
     @Override

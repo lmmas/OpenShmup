@@ -2,7 +2,6 @@ package engine.entity.trajectory;
 
 import engine.Vec2D;
 import engine.entity.Entity;
-import engine.entity.Trajectory;
 
 import java.util.function.Function;
 

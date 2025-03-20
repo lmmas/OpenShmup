@@ -1,8 +1,8 @@
 package engine.graphics;
 
-import engine.entity.EntitySprite;
+import engine.entity.hitbox.EntitySprite;
 import engine.scene.Scene;
-import engine.scene.SceneVisual;
+import engine.scene.visual.SceneVisual;
 
 public class Animation implements EntitySprite, SceneVisual {
     private Scene scene;

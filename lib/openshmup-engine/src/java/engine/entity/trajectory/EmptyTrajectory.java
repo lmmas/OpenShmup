@@ -1,7 +1,6 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.entity.Trajectory;
 
 public class EmptyTrajectory implements Trajectory {
     private static EmptyTrajectory instance = null;

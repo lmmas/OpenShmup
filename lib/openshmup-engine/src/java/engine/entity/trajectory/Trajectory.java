@@ -1,6 +1,6 @@
-package engine.entity;
+package engine.entity.trajectory;
 
-import engine.entity.trajectory.EmptyTrajectory;
+import engine.entity.Entity;
 
 public interface Trajectory {
     Trajectory copyIfNotReusable();

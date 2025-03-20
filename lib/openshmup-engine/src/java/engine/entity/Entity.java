@@ -1,8 +1,10 @@
 package engine.entity;
 
 import engine.Vec2D;
+import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.FixedTrajectory;
+import engine.entity.trajectory.Trajectory;
 import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
 import engine.graphics.MovingImage;
