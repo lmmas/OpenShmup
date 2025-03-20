@@ -30,7 +30,6 @@ public class EditorDataManager {
         EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
             editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
-            editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
         } catch (FileNotFoundException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
