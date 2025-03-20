@@ -5,6 +5,24 @@
         "hp": 3,
         "size": [0.2, 0.2],
         "sprite": {
+            "layer": 4,
+            "orientable": false,
+            "animationInfo": {
+                "fileName": "enemy-medium.png",
+                "frameCount": 2,
+                "frameSize": [32, 16],
+                "startingPosition": [0,0],
+                "stride": [32, 0]
+            },
+            "framePeriodSeconds": 0.25,
+            "looping": true
+        }
+    },
+    {
+        "id": 3,
+        "type": "projectile",
+        "size": [0.1, 0.1],
+        "sprite": {
             "layer": 3,
             "orientable": false,
             "animationInfo": {
