@@ -1,7 +1,6 @@
 package engine;
 
 import debug.DebugMethods;
-import edit.GameParameters;
 import engine.scene.LevelScene;
 import engine.scene.Scene;
 import engine.scene.TestScene;
@@ -30,7 +29,6 @@ public class Game {
     }
     public Game(String gameFolder){
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
-        GameParameters.useDefaultParameters();
         GLFWErrorCallback.createPrint(System.err).set();
         assert glfwInit(): "Unable to initialize GLFW";
 

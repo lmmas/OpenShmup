@@ -26,6 +26,7 @@ public class EditorDataManager {
         this.customTimelines = new ArrayList<>();
         EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
+            editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
             editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
             editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);

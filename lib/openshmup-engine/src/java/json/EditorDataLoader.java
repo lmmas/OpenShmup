@@ -30,12 +30,28 @@ public class EditorDataLoader {
         this.objectMapper = new ObjectMapper();
     }
 
+    public void loadGameParameters(String filepath) throws FileNotFoundException, IllegalArgumentException {
+        JsonNode rootNode;
+        try {
+            rootNode = objectMapper.readTree(new File(filepath));
+        } catch (IOException e) {
+            throw new FileNotFoundException("game Parameters file not found: filepath '" + filepath + "'");
+        }
+        checkIfObject(filepath, rootNode);
+
+        JsonNode resolutionNode = checkAndGetArray(filepath, rootNode, "resolution");
+        checkSize(filepath, resolutionNode, 2);
+        checkIfInt(filepath, resolutionNode.get(0));
+        int editionWitdth = resolutionNode.get(0).intValue();
+        int editionHeight = resolutionNode.get(1).intValue();
+        GlobalVars.EditionParameters.setEditionResolution(editionWitdth, editionHeight);
+    }
     public void loadCustomVisuals(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException{
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));
         } catch (IOException e) {
-            throw new FileNotFoundException("custom entities file not found: filepath '" + filepath + "'");
+            throw new FileNotFoundException("custom visuals file not found: filepath '" + filepath + "'");
         }
         checkIfArray(filepath, rootNode);
         for(JsonNode visualNode: rootNode){
@@ -162,13 +178,12 @@ public class EditorDataLoader {
             editorDataManager.addCustomEntity(id, customEntityConstructor);
         }
     }
-
     public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));
         } catch (IOException e) {
-            throw new FileNotFoundException("custom entities file not found: filepath '" + filepath + "'");
+            throw new FileNotFoundException("custom trajectories file not found: filepath '" + filepath + "'");
         }
         checkIfArray(filepath, rootNode);
         for(JsonNode trajectoryNode: rootNode){
@@ -195,13 +210,12 @@ public class EditorDataLoader {
             editorDataManager.addTrajectory(id, newTrajectory);
         }
     }
-
     public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));
         } catch (IOException e) {
-            throw new FileNotFoundException("custom entities file not found: filepath '" + filepath + "'");
+            throw new FileNotFoundException("custom timeline file not found: filepath '" + filepath + "'");
         }
         checkIfObject(filepath, rootNode);
         float duration = checkAndGetFloat(filepath, rootNode, "duration");
@@ -226,7 +240,6 @@ public class EditorDataLoader {
         }
         editorDataManager.addTimeline(newTimeline);
     }
-
     private void addSingleSpawnableToTimeline(String filepath, EditorDataManager editorDataManager,LevelTimeline timeline, JsonNode spawnableNode, float time){
         String type = checkAndGetString(filepath, spawnableNode, "type");
         if(type.equals("entity")){
