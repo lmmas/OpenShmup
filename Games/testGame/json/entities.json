@@ -43,7 +43,7 @@
                 "type": "entity",
                 "id": 3,
                 "trajectory": 1,
-                "startingPosition": [0, -0.1]
+                "startingPosition": [0, -0.03]
             }
         }
     },
