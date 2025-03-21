@@ -34,3 +34,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 */dependency-reduced-pom.xml
+/lib/openshmup-engine/dependency-reduced-pom.xml
