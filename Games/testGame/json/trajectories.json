@@ -20,7 +20,7 @@
     {
         "id": 12,
         "type": "fixed",
-        "functionX": "0.3f * cos(2*t)",
-        "functionY": "0"
+        "functionX": "0.1f * cos(2 * t)",
+        "functionY": "0.1f * -sin(2 * t)"
     }
 ]

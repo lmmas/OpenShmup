@@ -3,16 +3,16 @@
         "id": 0,
         "type": "ship",
         "hp": 300,
-        "size": [0.2, 0.2],
+        "size": [0.05, 0.08],
         "sprite": {
             "layer": 2,
             "orientable": false,
             "animationInfo": {
-                "fileName": "enemy-medium.png",
-                "frameCount": 2,
-                "frameSize": [32, 16],
-                "startingPosition": [0,0],
-                "stride": [32, 0]
+                "fileName": "ship.png",
+                "frameCount": 5,
+                "frameSize": [16, 24],
+                "startingPosition": [0,24],
+                "stride": [16, 0]
             },
             "framePeriodSeconds": 0.25,
             "looping": true
@@ -22,23 +22,23 @@
         "id": 2,
         "type": "ship",
         "hp": 3,
-        "size": [0.2, 0.2],
+        "size": [0.05, 0.05],
         "sprite": {
             "layer": 4,
             "orientable": false,
             "animationInfo": {
-                "fileName": "enemy-medium.png",
-                "frameCount": 2,
-                "frameSize": [32, 16],
-                "startingPosition": [0,0],
-                "stride": [32, 0]
+                "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
+                "frameCount": 6,
+                "frameSize": [16, 16],
+                "startingPosition": [1,451],
+                "stride": [18, 0]
             },
-            "framePeriodSeconds": 0.25,
+            "framePeriodSeconds": 0.2,
             "looping": true
         },
         "shot":{
             "shotPeriod": 1.0,
-            "firstShotTime": 5,
+            "firstShotTime": 2,
             "spawn": {
                 "type": "entity",
                 "id": 3,
@@ -50,7 +50,7 @@
     {
         "id": 3,
         "type": "projectile",
-        "size": [0.02, 0.02],
+        "size": [0.01, 0.01],
         "sprite": {
             "layer": 3,
             "orientable": false,

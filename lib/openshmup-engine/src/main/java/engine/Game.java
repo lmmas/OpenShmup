@@ -98,7 +98,7 @@ public class Game {
         while(!glfwWindowShouldClose(glfwWindow)) {
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
-            testInLoop();
+            //testInLoop();
             currentScene.handleInputs();
             currentScene.update();
             currentScene.draw();

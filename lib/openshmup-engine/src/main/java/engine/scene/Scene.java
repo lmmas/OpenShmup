@@ -22,6 +22,7 @@ abstract public class Scene {
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
     protected float sceneTime;
     protected SceneTimer timer;
+    protected float lastDrawTime = 0.0f;
     HashSet<SceneVisual> visualList;
     public Scene(Game game) {
         this.window = game.getWindow();
@@ -50,6 +51,9 @@ abstract public class Scene {
                 vao.draw();
             }
         }
+        float currentTime = timer.getTimeSeconds();
+        System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
+        lastDrawTime = currentTime;
     }
 
     public void addGraphic(Graphic<?,?> newGraphic){
