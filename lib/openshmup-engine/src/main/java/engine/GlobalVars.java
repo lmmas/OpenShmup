@@ -3,6 +3,7 @@ package engine;
 public class GlobalVars {
     public static int MAX_TEXTURE_SLOTS;
     public static float playerSpeed = 0.7f;
+
     public static class Paths{
         final static public String MissingTextureFile = "lib/openshmup-engine/src/main/resources/textures/missingTexture.png";
         static public String customGameFolder;
@@ -29,23 +30,6 @@ public class GlobalVars {
             final static public String editorCustomTrajectoriesFile = "/json/trajectories.json";
             final static public String editorCustomEntitiesFile = "/json/entities.json";
             final static public String editorCustomTimelineFile = "/json/timeline1.json";
-        }
-    }
-
-    static final public class EditionParameters {
-        private static int editionWidth;
-        private static int editionHeight;
-        public static int getEditionWidth() {
-            return editionWidth;
-        }
-
-        public static int getEditionHeight() {
-            return editionHeight;
-        }
-
-        public static  void setEditionResolution(int editionWidth, int editionHeight){
-            EditionParameters.editionWidth = editionWidth;
-            EditionParameters.editionHeight = editionHeight;
         }
     }
 }

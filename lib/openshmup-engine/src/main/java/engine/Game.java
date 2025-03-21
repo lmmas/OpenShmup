@@ -31,7 +31,7 @@ public class Game {
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
         this.editorDataManager = new EditorDataManager();
         editorDataManager.loadGameParameters();
-        PlayerSettings.setResolution(GlobalVars.EditionParameters.getEditionWidth(), GlobalVars.EditionParameters.getEditionHeight());
+        PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
 
         GLFWErrorCallback.createPrint(System.err).set();
         assert glfwInit(): "Unable to initialize GLFW";

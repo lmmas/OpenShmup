@@ -2,7 +2,7 @@
     {
         "id": 0,
         "type": "ship",
-        "hp": 300,
+        "hp": 3,
         "size": [0.05, 0.08],
         "sprite": {
             "layer": 2,

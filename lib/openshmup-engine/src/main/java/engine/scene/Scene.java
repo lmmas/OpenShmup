@@ -51,9 +51,9 @@ abstract public class Scene {
                 vao.draw();
             }
         }
-        float currentTime = timer.getTimeSeconds();
+        /*float currentTime = timer.getTimeSeconds();
         System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
-        lastDrawTime = currentTime;
+        lastDrawTime = currentTime;*/
     }
 
     public void addGraphic(Graphic<?,?> newGraphic){

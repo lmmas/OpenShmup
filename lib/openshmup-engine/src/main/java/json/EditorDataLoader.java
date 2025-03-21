@@ -2,8 +2,10 @@ package json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import engine.GameConfig;
 import engine.EditorDataManager;
 import engine.GlobalVars;
+import engine.Vec2D;
 import engine.entity.Entity;
 import engine.entity.EntityType;
 import engine.scene.spawnable.EntitySpawnInfo;
@@ -48,7 +50,32 @@ public class EditorDataLoader {
         checkIfInt(filepath, resolutionNode.get(0));
         int editionWitdth = resolutionNode.get(0).intValue();
         int editionHeight = resolutionNode.get(1).intValue();
-        GlobalVars.EditionParameters.setEditionResolution(editionWitdth, editionHeight);
+        GameConfig.setEditionResolution(editionWitdth, editionHeight);
+        JsonNode levelUINode = checkAndGetObject(filepath, rootNode, "levelUI");
+        JsonNode livesNode = checkAndGetObject(filepath, levelUINode, "lives");
+        String livesTextureName = checkAndGetString(filepath, livesNode, "fileName");
+        GameConfig.LevelUI.Lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + livesTextureName;
+
+        JsonNode livesSizeNode = checkAndGetArray(filepath, livesNode, "size");
+        checkSize(filepath, livesSizeNode, 2);
+        checkIfFloat(filepath, livesSizeNode.get(0));
+        float livesSizeX = livesSizeNode.get(0).floatValue();
+        float livesSizeY = livesSizeNode.get(1).floatValue();
+        GameConfig.LevelUI.Lives.size = new Vec2D(livesSizeX, livesSizeY);
+
+        JsonNode livesPositionNode = checkAndGetArray(filepath, livesNode, "position");
+        checkSize(filepath, livesPositionNode, 2);
+        checkIfFloat(filepath, livesPositionNode.get(0));
+        float livesPositionX = livesPositionNode.get(0).floatValue();
+        float livesPositionY = livesPositionNode.get(1).floatValue();
+        GameConfig.LevelUI.Lives.position = new Vec2D(livesPositionX, livesPositionY);
+
+        JsonNode livesStrideNode = checkAndGetArray(filepath, livesNode, "stride");
+        checkSize(filepath, livesStrideNode, 2);
+        checkIfFloat(filepath, livesStrideNode.get(0));
+        float livesStrideX = livesStrideNode.get(0).floatValue();
+        float livesStrideY = livesStrideNode.get(1).floatValue();
+        GameConfig.LevelUI.Lives.stride = new Vec2D(livesStrideX, livesStrideY);
     }
     public void loadCustomVisuals(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException{
         JsonNode rootNode;

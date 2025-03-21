@@ -1,22 +1,22 @@
 package engine.scene;
 
-import engine.Game;
-import engine.InputHandler;
-import engine.EditorDataManager;
-import engine.Vec2D;
+import engine.*;
 import engine.entity.*;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
+import engine.graphics.StaticImage;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneVisualSpawnInfo;
 import engine.scene.visual.SceneVisual;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
     final protected EditorDataManager editorDataManager;
-    protected ShootingShip playerShip;
+    protected Ship playerShip;
+    protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
@@ -30,6 +30,7 @@ public class LevelScene extends Scene{
         super(game);
         this.inputHandler = game.getInputHandler();
         this.editorDataManager = game.getEditorDataManager();
+        this.playerLives = new ArrayList<>();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
@@ -75,6 +76,9 @@ public class LevelScene extends Scene{
             newEntity.setStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
+            if(entitySpawn.id() == 0){
+                playerShip = (Ship) newEntity;
+            }
         }
         entitiesToSpawn.clear();
 
@@ -103,6 +107,7 @@ public class LevelScene extends Scene{
             deleteEntity(entity);
         }
         entitiesToRemove.clear();
+        updatePlayerLives();
         super.update();
     }
 
@@ -183,6 +188,30 @@ public class LevelScene extends Scene{
                         shipEntity.deathEvent();
                         entitiesToRemove.add(entity);
                     }
+                }
+            }
+        }
+    }
+
+    protected void updatePlayerLives(){
+        if(playerShip != null){
+            int playerHP = playerShip.getHP();
+            if(playerLives.size() != playerHP){
+                while(playerLives.size() < playerHP){
+                    StaticImage hpPoint = new StaticImage(GameConfig.LevelUI.Lives.textureFilepath, this, GameConfig.LevelUI.upperLayer);
+                    Vec2D position = GameConfig.LevelUI.Lives.position;
+                    Vec2D stride = GameConfig.LevelUI.Lives.stride;
+                    float pointPositionX = position.x + stride.x * playerLives.size();
+                    float pointPositionY = position.y + stride.y * playerLives.size();
+                    hpPoint.setPosition(pointPositionX, pointPositionY);
+                    Vec2D size = GameConfig.LevelUI.Lives.size;
+                    hpPoint.setSize(size.x, size.y);
+                    addGraphic(hpPoint);
+                    playerLives.add(hpPoint);
+                }
+                while(playerLives.size() > playerHP){
+                    playerLives.getLast().delete();
+                    playerLives.removeLast();
                 }
             }
         }

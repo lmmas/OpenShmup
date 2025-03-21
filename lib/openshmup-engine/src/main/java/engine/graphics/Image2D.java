@@ -5,6 +5,7 @@ import engine.render.RenderType;
 import engine.render.Shader;
 import engine.render.Texture;
 import engine.scene.Scene;
+import engine.scene.visual.SceneVisual;
 
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     Texture texture;
