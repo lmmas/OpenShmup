@@ -8,5 +8,4 @@ public interface EntitySprite{
     void setOrientation(float orientation);
     Graphic<?,?> getGraphic();
     void update();
-    void delete();
 }

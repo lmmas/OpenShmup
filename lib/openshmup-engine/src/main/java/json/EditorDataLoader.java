@@ -12,7 +12,9 @@ import engine.entity.trajectory.FixedTrajectory;
 import engine.graphics.AnimationInfo;
 import engine.scene.LevelScene;
 import engine.scene.LevelTimeline;
+import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneVisualSpawnInfo;
+import engine.scene.spawnable.Spawnable;
 import engine.scene.visual.ScrollingBackGround;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
@@ -22,6 +24,7 @@ import pl.joegreen.lambdaFromString.TypeReference;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -116,6 +119,31 @@ public class EditorDataLoader {
                 checkIfInt(filepath, entityNode.get("hp"));
                 int hp = entityNode.get("hp").intValue();
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setHitPoints(hp)));
+            }
+
+            if (entityType == EntityType.SHIP && entityNode.has("shot")){
+                JsonNode shotNode = checkAndGetObject(filepath, entityNode, "shot");
+                float shotPeriod = checkAndGetFloat(filepath, shotNode, "shotPeriod");
+
+                float firstShotTime = checkAndGetFloat(filepath, shotNode, "firstShotTime");
+
+                checkForField(filepath, shotNode, "spawn");
+                JsonNode spawnableNode = shotNode.get("spawn");
+                Spawnable shot;
+                if(spawnableNode.isArray()){
+                    ArrayList<Spawnable> spawnableList = new ArrayList<>(spawnableNode.size());
+                    for(JsonNode elementNode: spawnableNode){
+                        Spawnable spawnable = getSingleSpawnable(filepath, elementNode);
+                        spawnableList.add(spawnable);
+                    }
+                    Spawnable[] spawnables = spawnableList.toArray(Spawnable[]::new);
+                    shot = new MultiSpawnable(spawnables);
+                }
+                else {
+                    checkIfObject(filepath, spawnableNode);
+                    shot = getSingleSpawnable(filepath, spawnableNode);
+                }
+                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setShot(shot, shotPeriod, firstShotTime)));
             }
 
             JsonNode spriteNode = checkAndGetObject(filepath, entityNode, "sprite");
@@ -246,17 +274,19 @@ public class EditorDataLoader {
             if(spawnableNode.isArray()){
                 for (JsonNode elementNode: spawnableNode){
                     checkIfObject(filepath, elementNode);
-                    addSingleSpawnableToTimeline(filepath, editorDataManager, newTimeline, elementNode, time);
+                    Spawnable newSpawnable = getSingleSpawnable(filepath, elementNode);
+                    newTimeline.addSpawnable(time, newSpawnable);
                 }
             }
             else{
                 checkIfObject(filepath, spawnableNode);
-                addSingleSpawnableToTimeline(filepath, editorDataManager,newTimeline, spawnableNode, time);
+                Spawnable newSpawnable = getSingleSpawnable(filepath, spawnableNode);
+                newTimeline.addSpawnable(time, newSpawnable);
             }
         }
         editorDataManager.addTimeline(newTimeline);
     }
-    private void addSingleSpawnableToTimeline(String filepath, EditorDataManager editorDataManager,LevelTimeline timeline, JsonNode spawnableNode, float time){
+    private Spawnable getSingleSpawnable(String filepath, JsonNode spawnableNode){
         String type = checkAndGetString(filepath, spawnableNode, "type");
         if(type.equals("entity")){
             int id = checkAndGetInt(filepath, spawnableNode, "id");
@@ -274,7 +304,7 @@ public class EditorDataLoader {
             }else{
                 spawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
             }
-            timeline.addSpawnable(time, spawnInfo);
+            return spawnInfo;
         }else if(type.equals("visual")) {
             int id = checkAndGetInt(filepath, spawnableNode, "id");
 
@@ -284,7 +314,7 @@ public class EditorDataLoader {
             float positionX = positionNode.get(0).floatValue();
             float positionY = positionNode.get(1).floatValue();
             SceneVisualSpawnInfo spawnInfo = new SceneVisualSpawnInfo(id, positionX, positionY);
-            timeline.addSpawnable(time, spawnInfo);
+            return spawnInfo;
         }
         else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");

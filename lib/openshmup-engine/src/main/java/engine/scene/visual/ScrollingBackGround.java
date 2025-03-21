@@ -95,10 +95,4 @@ public class ScrollingBackGround implements SceneVisual {
         image2.setPosition(positionX2, positionY2);
         lastUpdateTimeSeconds = currentime;
     }
-
-    @Override
-    public void delete() {
-        image1.delete();
-        image2.delete();
-    }
 }

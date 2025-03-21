@@ -115,16 +115,12 @@ abstract public class Scene {
         visualList.add(visual);
     }
 
-    public void addVisual(SceneVisualSpawnInfo spawnInfo){
-        SceneVisual newVisual = editorDataManager.buildCustomVisual(this, spawnInfo.id());
-        addVisual(newVisual);
-        Vec2D position = spawnInfo.position();
-        newVisual.setPosition(position.x, position.y);
-    }
-
     public void deleteVisual(SceneVisual visual){
         visualList.remove(visual);
-        visual.delete();
+        var graphics = visual.getGraphics();
+        for(var graphic: graphics){
+            graphic.delete();
+        }
     }
 
     public float getSceneTime() {

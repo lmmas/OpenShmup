@@ -3,18 +3,17 @@ package engine.scene;
 import engine.Game;
 import engine.InputHandler;
 import engine.EditorDataManager;
-import engine.Vec2D;
 import engine.entity.EntityType;
 import engine.entity.Ship;
-import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
 import engine.entity.Entity;
 import engine.entity.PlayerShip;
 import engine.scene.spawnable.EntitySpawnInfo;
+import engine.scene.spawnable.SceneVisualSpawnInfo;
+import engine.scene.visual.SceneVisual;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
@@ -22,6 +21,8 @@ public class LevelScene extends Scene{
     protected PlayerShip playerShip;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
+    protected HashSet<EntitySpawnInfo> entitiesToSpawn;
+    protected HashSet<SceneVisualSpawnInfo> visualsToSpawn;
     protected boolean[] controlStates;
     protected boolean[] lastControlStates;
     protected LevelTimeline timeline;
@@ -32,6 +33,8 @@ public class LevelScene extends Scene{
         this.editorDataManager = game.getEditorDataManager();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
+        this.entitiesToSpawn = new HashSet<>();
+        this.visualsToSpawn = new HashSet<>();
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
         this.timeline = timeline;
@@ -57,45 +60,31 @@ public class LevelScene extends Scene{
         System.arraycopy(controlStates, 0, lastControlStates, 0, controlStates.length);
     }
 
-    public void addEntity(Entity entity){
-        Graphic<?,?> entityGraphic = entity.getSprite().getGraphic();
-        addGraphic(entityGraphic);
-        if(entity.isEvil()){
-            evilEntities.add(entity);
-        }
-        else{
-            goodEntities.add(entity);
-        }
-    }
-
-    public void addEntity(EntitySpawnInfo spawnInfo){
-        Entity newEntity = editorDataManager.buildCustomEntity(this, spawnInfo.id());
-        addEntity(newEntity);
-        Vec2D startingPosition = spawnInfo.startingPosition();
-        newEntity.setStartingPosition(startingPosition.x, startingPosition.y);
-        int trajectoryId = spawnInfo.trajectoryId();
-        if(trajectoryId != -1){
-            newEntity.setTrajectory(editorDataManager.getTrajectory(trajectoryId));
-        }
-    }
-
-    public void deleteEntity(Entity entity){
-        if(entity.isEvil()){
-            evilEntities.remove(entity);
-        }
-        else{
-            goodEntities.remove(entity);
-        }
-        entity.getSprite().getGraphic().delete();
-    }
-
     @Override
     public void update() {
-        super.update();
         if(timer.isPaused()){
             return;
         }
+
         timeline.updateSpawning(this);
+        for(var entitySpawn: entitiesToSpawn){
+            Entity newEntity = editorDataManager.buildCustomEntity(this, entitySpawn.id());
+            if(entitySpawn.trajectoryId() != -1){
+                newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
+            }
+            newEntity.setStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            addEntity(newEntity);
+        }
+        entitiesToSpawn.clear();
+
+        for(var visualSpawn: visualsToSpawn){
+            SceneVisual newVisual = editorDataManager.buildCustomVisual(this, visualSpawn.id());
+            newVisual.setPosition(visualSpawn.position().x, visualSpawn.position().y);
+            addVisual(newVisual);
+        }
+        visualsToSpawn.clear();
+
         for(Entity entity: goodEntities){
             entity.update();
         }
@@ -111,9 +100,36 @@ public class LevelScene extends Scene{
         for(Entity entity: goodEntities){
             handleCollisions(entity, evilEntities);
         }
-        if(playerShip!=null){
-            playerShip.handleCollisions();
+        super.update();
+    }
+
+    public void addEntitySpawn(EntitySpawnInfo entitySpawnInfo){
+        entitiesToSpawn.add(entitySpawnInfo);
+    }
+
+    public void addVisualSpawn(SceneVisualSpawnInfo visualSpawnInfo){
+        visualsToSpawn.add(visualSpawnInfo);
+    }
+
+    public void addEntity(Entity entity){
+        Graphic<?,?> entityGraphic = entity.getSprite().getGraphic();
+        addGraphic(entityGraphic);
+        if(entity.isEvil()){
+            evilEntities.add(entity);
         }
+        else{
+            goodEntities.add(entity);
+        }
+    }
+
+    public void deleteEntity(Entity entity){
+        if(entity.isEvil()){
+            evilEntities.remove(entity);
+        }
+        else{
+            goodEntities.remove(entity);
+        }
+        entity.getSprite().getGraphic().delete();
     }
 
     public boolean getControlState(GameControl control){

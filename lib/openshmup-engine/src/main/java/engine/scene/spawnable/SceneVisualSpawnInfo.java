@@ -14,6 +14,13 @@ public record SceneVisualSpawnInfo(
 
     @Override
     public void spawn(LevelScene scene) {
-        scene.addVisual(this);
+        scene.addVisualSpawn(this);
     }
+
+    @Override
+    public Spawnable copyWithOffset(float offsetX, float offsetY) {
+        return new SceneVisualSpawnInfo(id, position.x + offsetX, position.y + offsetY);
+    }
+
+
 }

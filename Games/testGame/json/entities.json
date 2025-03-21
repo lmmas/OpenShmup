@@ -16,21 +16,31 @@
             },
             "framePeriodSeconds": 0.25,
             "looping": true
+        },
+        "shot":{
+            "shotPeriod": 1.0,
+            "firstShotTime": 0.5,
+            "spawn": {
+                "type": "entity",
+                "id": 3,
+                "trajectory": 1,
+                "startingPosition": [0, -0.1]
+            }
         }
     },
     {
         "id": 3,
         "type": "projectile",
-        "size": [0.1, 0.1],
+        "size": [0.02, 0.02],
         "sprite": {
             "layer": 3,
             "orientable": false,
             "animationInfo": {
-                "fileName": "enemy-medium.png",
+                "fileName": "laser-bolts.png",
                 "frameCount": 2,
-                "frameSize": [32, 16],
-                "startingPosition": [0,0],
-                "stride": [32, 0]
+                "frameSize": [5, 5],
+                "startingPosition": [6,20],
+                "stride": [14, 0]
             },
             "framePeriodSeconds": 0.25,
             "looping": true

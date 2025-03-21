@@ -9,6 +9,7 @@ import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
 import engine.graphics.MovingImage;
 import engine.scene.LevelScene;
+import engine.scene.spawnable.Spawnable;
 
 import java.util.function.Function;
 
@@ -26,7 +27,7 @@ abstract public class Entity {
     protected EntitySprite sprite;
     protected SimpleHitBox hitbox;
     protected Trajectory trajectory;
-    private float startingTimeSeconds;
+    protected float startingTimeSeconds;
 
     public Entity(LevelScene scene, EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
         this.scene = scene;
@@ -133,6 +134,9 @@ abstract public class Entity {
         private EntitySprite sprite = null;
         private SimpleHitBox hitbox = null;
         private int hitPoints = 1;
+        private Spawnable shot = null;
+        private float shotPeriodSeconds = 0.0f;
+        private float timeBeforeFirstShotSeconds = 0.0f;
         private Trajectory trajectory = Trajectory.DEFAULT();
         public Builder setScene(LevelScene scene){
             this.scene = scene;
@@ -215,6 +219,13 @@ abstract public class Entity {
             return this;
         }
 
+        public Builder setShot(Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds){
+            this.shot = shot;
+            this.shotPeriodSeconds = shotPeriodSeconds;
+            this.timeBeforeFirstShotSeconds = timeBeforeFirstShotSeconds;
+            return this;
+        }
+
         public Entity build(){
             if(hitbox == null){
                 hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
@@ -224,6 +235,9 @@ abstract public class Entity {
                 return new Projectile(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox);
             }
             else{
+                if(shot != null){
+                    return new ShootingShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+                }
                 return new Ship(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, hitPoints);
             }
         }

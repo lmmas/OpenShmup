@@ -73,9 +73,4 @@ public class Animation implements EntitySprite, SceneVisual {
             timeOfLastFrame += framePeriodSeconds;
         }
     }
-
-    @Override
-    public void delete() {
-        image.delete();
-    }
 }
