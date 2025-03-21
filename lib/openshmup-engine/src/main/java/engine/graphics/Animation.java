@@ -22,7 +22,7 @@ public class Animation implements EntitySprite, SceneVisual {
         this.image = new MovingImage(info.filepath(), scene, layer);
         image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
-        this.timeOfLastFrame = scene.getSceneTime();
+        this.timeOfLastFrame = scene.getSceneTimeSeconds();
     }
 
     private void updateTexturePosition(){
@@ -58,7 +58,7 @@ public class Animation implements EntitySprite, SceneVisual {
 
     @Override
     public void update() {
-        float currentTime = scene.getSceneTime();
+        float currentTime = scene.getSceneTimeSeconds();
         if(currentTime >= timeOfLastFrame + framePeriodSeconds){
             frameIndex++;
             if(frameIndex >= info.frameCount()){

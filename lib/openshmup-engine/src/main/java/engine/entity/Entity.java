@@ -1,9 +1,11 @@
 package engine.entity;
 
+import engine.GlobalVars;
 import engine.Vec2D;
 import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.FixedTrajectory;
+import engine.entity.trajectory.PlayerControlledTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
@@ -44,7 +46,7 @@ abstract public class Entity {
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
         this.invincible = false;
-        this.startingTimeSeconds = scene.getSceneTime();
+        this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
     public EntityType getType(){
@@ -114,12 +116,12 @@ abstract public class Entity {
     }
 
     public void update(){
-        float currentTimeSeconds = scene.getSceneTime();
+        float currentTimeSeconds = scene.getSceneTimeSeconds();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
         sprite.update();
     }
-    public void deathEvent(LevelScene scene){
+    public void deathEvent(){
 
     }
 
@@ -172,6 +174,9 @@ abstract public class Entity {
 
         public Builder setId(int id){
             this.id = id;
+            if(id == 0){
+                return this.setEvil(false).setTrajectory(new PlayerControlledTrajectory(scene, GlobalVars.playerSpeed));
+            }
             return this;
         }
 

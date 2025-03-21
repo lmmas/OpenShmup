@@ -29,7 +29,7 @@ final public class PlayerShip {
     }
 
     public void actionsAndMoves(long window){
-        float currentTime = scene.getSceneTime();
+        float currentTime = scene.getSceneTimeSeconds();
         float deltaTime = currentTime - lastUpdateTime;
         if (scene.getControlState(GameControl.MOVE_LEFT)) {
             positionX-=speed * deltaTime;

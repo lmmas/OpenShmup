@@ -3,12 +3,9 @@ package engine.scene;
 import engine.Game;
 import engine.InputHandler;
 import engine.EditorDataManager;
-import engine.entity.EntityType;
-import engine.entity.Ship;
+import engine.entity.*;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
-import engine.entity.Entity;
-import engine.entity.PlayerShip;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneVisualSpawnInfo;
 import engine.scene.visual.SceneVisual;
@@ -18,10 +15,11 @@ import java.util.HashSet;
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
     final protected EditorDataManager editorDataManager;
-    protected PlayerShip playerShip;
+    protected ShootingShip playerShip;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
+    protected HashSet<Entity> entitiesToRemove;
     protected HashSet<SceneVisualSpawnInfo> visualsToSpawn;
     protected boolean[] controlStates;
     protected boolean[] lastControlStates;
@@ -34,6 +32,7 @@ public class LevelScene extends Scene{
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
+        this.entitiesToRemove = new HashSet<>();
         this.visualsToSpawn = new HashSet<>();
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
@@ -91,15 +90,16 @@ public class LevelScene extends Scene{
         for(Entity entity: evilEntities){
             entity.update();
         }
-        if(playerShip != null){
-            playerShip.actionsAndMoves(window);
-        }
         for(Entity entity: evilEntities){
             handleCollisions(entity, goodEntities);
         }
         for(Entity entity: goodEntities){
             handleCollisions(entity, evilEntities);
         }
+        for(Entity entity: entitiesToRemove){
+            deleteEntity(entity);
+        }
+        entitiesToRemove.clear();
         super.update();
     }
 
@@ -157,8 +157,8 @@ public class LevelScene extends Scene{
                 Ship ennemyShip = (Ship) ennemy;
                 SimpleHitBox ennemyHitbox = ennemyShip.getHitbox();
                 if (entityHitbox.intersects(ennemyHitbox)) {
-                    entity.deathEvent(this);
-                    deleteEntity(entity);
+                    entity.deathEvent();
+                    entitiesToRemove.add(entity);
                 }
             }
         } else if (entity.getType() == EntityType.SHIP) {
@@ -169,7 +169,7 @@ public class LevelScene extends Scene{
                     shipEntity.takeDamage(1);
                     if(shipEntity.isDead()){
                         shipEntity.deathEvent();
-                        deleteEntity(shipEntity);
+                        entitiesToRemove.add(entity);
                     }
                 }
             }

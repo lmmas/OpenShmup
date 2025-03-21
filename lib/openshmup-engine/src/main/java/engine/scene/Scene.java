@@ -2,14 +2,12 @@ package engine.scene;
 
 import engine.EditorDataManager;
 import engine.Game;
-import engine.Vec2D;
 import engine.graphics.Graphic;
 import engine.graphics.MovingImage;
 import engine.graphics.StaticImage;
 import engine.render.MovingImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
-import engine.scene.spawnable.SceneVisualSpawnInfo;
 import engine.scene.visual.SceneVisual;
 
 import java.util.ArrayList;
@@ -123,7 +121,7 @@ abstract public class Scene {
         }
     }
 
-    public float getSceneTime() {
+    public float getSceneTimeSeconds() {
         return sceneTime;
     }
 

@@ -20,7 +20,6 @@ public class TestScene extends LevelScene {
                 .createSprite(3,"Games/game1/textures/troll-face-poster.png", false)
                 .createFixedTrajectory(t-> 0.2f * (float) cos(2 * t) + 0.5f, t-> 0.2f * (float) sin(2 * t) + 0.5f, false)
                 .build();
-        this.playerShip = new PlayerShip(this);
 
         ScrollingBackGround background = new ScrollingBackGround("Games/game1/textures/background.png", this, 0, 1.0f, 1.0f, -0.1f, false);
         addVisual(background);
