@@ -38,7 +38,7 @@
         },
         "shot":{
             "shotPeriod": 1.0,
-            "firstShotTime": 0.5,
+            "firstShotTime": 5,
             "spawn": {
                 "type": "entity",
                 "id": 3,

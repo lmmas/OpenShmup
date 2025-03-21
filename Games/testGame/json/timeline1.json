@@ -28,7 +28,7 @@
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 12,
+                    "trajectory": -1,
                     "startingPosition": [0.65, 0.8]
                 }
             ]

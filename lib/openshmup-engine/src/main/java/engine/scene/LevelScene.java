@@ -3,6 +3,7 @@ package engine.scene;
 import engine.Game;
 import engine.InputHandler;
 import engine.EditorDataManager;
+import engine.Vec2D;
 import engine.entity.*;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
@@ -90,6 +91,8 @@ public class LevelScene extends Scene{
         for(Entity entity: evilEntities){
             entity.update();
         }
+        removeFarAwayEntities(goodEntities);
+        removeFarAwayEntities(evilEntities);
         for(Entity entity: evilEntities){
             handleCollisions(entity, goodEntities);
         }
@@ -142,6 +145,15 @@ public class LevelScene extends Scene{
 
     public boolean getControlDeactivation(GameControl control){
         return (!controlStates[control.ordinal()]) && lastControlStates[control.ordinal()];
+    }
+
+    public void removeFarAwayEntities(HashSet<Entity> entityList){
+        for(Entity entity: entityList){
+            Vec2D position = entity.getPosition();
+            if(position.x < -0.5f || position.x > 1.5f || position.y < -0.5f || position.y > 2.0f){
+                entitiesToRemove.add(entity);
+            }
+        }
     }
 
     public void handleCollisions(Entity entity, HashSet<Entity> ennemyList) {
