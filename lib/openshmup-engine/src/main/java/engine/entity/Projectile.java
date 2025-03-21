@@ -1,10 +1,8 @@
 package engine.entity;
 
-import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelScene;
-import engine.scene.SceneTimer;
 import engine.scene.spawnable.Spawnable;
 
 public class Projectile extends Entity {

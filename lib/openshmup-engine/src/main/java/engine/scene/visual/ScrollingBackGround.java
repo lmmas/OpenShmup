@@ -5,7 +5,6 @@ import engine.graphics.MovingImage;
 import engine.scene.Scene;
 
 public class ScrollingBackGround implements SceneVisual {
-    private Scene scene;
     private MovingImage image1;
     private float positionX1;
     private float positionY1;
@@ -17,11 +16,9 @@ public class ScrollingBackGround implements SceneVisual {
     boolean horizontalScrolling;
     private float speed;
     private float lastUpdateTimeSeconds;
-
-    public ScrollingBackGround(String imagePath, Scene scene, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
-        this.scene = scene;
-        this.image1 = new MovingImage(imagePath, scene, layer);
-        this.image2 = new MovingImage(imagePath, scene, layer);
+    public ScrollingBackGround(String imagePath, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+        this.image1 = new MovingImage(imagePath, layer);
+        this.image2 = new MovingImage(imagePath, layer);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.positionX1 = 0.5f;
@@ -31,12 +28,36 @@ public class ScrollingBackGround implements SceneVisual {
         image1.setSize(sizeX, sizeY);
         image2.setSize(sizeX, sizeY);
         setPosition(0.5f, 0.5f);
-        this.lastUpdateTimeSeconds = scene.getSceneTimeSeconds();
+        lastUpdateTimeSeconds = 0.0f;
+    }
+
+    public ScrollingBackGround(MovingImage image1, float positionX1, float positionY1, MovingImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
+        this.image1 = image1;
+        this.positionX1 = positionX1;
+        this.positionY1 = positionY1;
+        this.image2 = image2;
+        this.positionX2 = positionX2;
+        this.positionY2 = positionY2;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.horizontalScrolling = horizontalScrolling;
+        this.speed = speed;
+        this.lastUpdateTimeSeconds = 0.0f;
+    }
+
+    @Override
+    public SceneVisual copy() {
+        return new ScrollingBackGround(image1.copy(), positionX1, positionY1, image2.copy(), positionX2, positionY2, sizeX, sizeY, horizontalScrolling, speed);
     }
 
     @Override
     public Graphic<?,?>[] getGraphics() {
         return new MovingImage[]{image1,image2};
+    }
+
+    @Override
+    public void setScene(Scene scene) {
+        this.lastUpdateTimeSeconds = scene.getSceneTimeSeconds();
     }
 
     @Override
@@ -56,9 +77,8 @@ public class ScrollingBackGround implements SceneVisual {
     }
 
     @Override
-    public void update(){
-        float currentime = scene.getSceneTimeSeconds();
-        float deltaTime = currentime - lastUpdateTimeSeconds;
+    public void update(float currentTimeSeconds){
+        float deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
         if(horizontalScrolling){
             positionX1+= speed * deltaTime;
             positionX2+= speed * deltaTime;
@@ -93,6 +113,6 @@ public class ScrollingBackGround implements SceneVisual {
         }
         image1.setPosition(positionX1, positionY1);
         image2.setPosition(positionX2, positionY2);
-        lastUpdateTimeSeconds = currentime;
+        lastUpdateTimeSeconds = currentTimeSeconds;
     }
 }

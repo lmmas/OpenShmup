@@ -6,17 +6,17 @@ import engine.scene.Scene;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
-    final protected Scene scene;
     final protected Shader shader;
     final protected RenderType type;
     protected int layer;
     VAO<G,P> vao;
-    public Graphic(Scene scene, int layer, RenderType type, Shader shader){
-        this.scene = scene;
+    public Graphic(int layer, RenderType type, Shader shader){
         this.layer = layer;
         this.type = type;
         this.shader = shader;
     }
+
+    abstract public G copy();
 
     public Shader getShader() {
         return shader;
@@ -41,6 +41,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public class Primitive{
         VAO<G,P>.VBO currentVbo;
+        abstract public P copy();
         public void setVbo(VAO<G,P>.VBO newVbo){
             this.currentVbo = newVbo;
             tellVboDataChanged();
@@ -50,6 +51,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
                 currentVbo.dataHasChanged();
             }
         }
+        @SuppressWarnings("unchecked")
         public void delete(){
             currentVbo.removePrimitive((P) this);
         }

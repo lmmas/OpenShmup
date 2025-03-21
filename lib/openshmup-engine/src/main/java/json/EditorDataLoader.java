@@ -8,6 +8,7 @@ import engine.GlobalVars;
 import engine.Vec2D;
 import engine.entity.Entity;
 import engine.entity.EntityType;
+import engine.graphics.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
@@ -102,7 +103,35 @@ public class EditorDataLoader {
 
                 float speed = checkAndGetFloat(filepath, visualNode, "speed");
                 boolean horizontalScrolling = checkAndGetBoolean(filepath, visualNode, "horizontalScrolling");
-                editorDataManager.addCustomVisual(id, scene -> new ScrollingBackGround(imagePath, scene, layer, sizeX, sizeY, speed, horizontalScrolling));
+                editorDataManager.addCustomVisual(id, scene -> new ScrollingBackGround(imagePath, layer, sizeX, sizeY, speed, horizontalScrolling));
+            }
+            else if(type.equals("animation")) {
+                JsonNode animationInfoNode = checkAndGetObject(filepath, visualNode, "animationInfo");
+                String animationFilepath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, animationInfoNode, "fileName");
+                int frameCount = checkAndGetInt(filepath, animationInfoNode, "frameCount");
+                JsonNode frameSize = checkAndGetArray(filepath, animationInfoNode, "frameSize");
+                checkSize(filepath, frameSize, 2);
+                checkIfInt(filepath, frameSize.get(0));
+                int frameSizeX = frameSize.get(0).intValue();
+                int frameSizeY = frameSize.get(1).intValue();
+
+                JsonNode startingPosition = checkAndGetArray(filepath, animationInfoNode, "startingPosition");
+                checkSize(filepath, startingPosition, 2);
+                checkIfInt(filepath, startingPosition.get(0));
+                int startPosX = startingPosition.get(0).intValue();
+                int startPosY = startingPosition.get(1).intValue();
+
+                JsonNode stride = checkAndGetArray(filepath, animationInfoNode, "stride");
+                checkSize(filepath, stride, 2);
+                checkIfInt(filepath, stride.get(0));
+                int strideX = stride.get(0).intValue();
+                int strideY = stride.get(1).intValue();
+
+                float framePeriodSeconds = checkAndGetFloat(filepath, visualNode, "framePeriodSeconds");
+                boolean looping = checkAndGetBoolean(filepath, visualNode, "looping");
+
+                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSizeX, frameSizeY, startPosX, startPosY, strideX, strideY);
+                editorDataManager.addCustomVisual(id, scene -> new Animation(layer, animationInfo, framePeriodSeconds, looping));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");

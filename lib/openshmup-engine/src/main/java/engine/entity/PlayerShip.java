@@ -1,16 +1,11 @@
 package engine.entity;
 
 import engine.GlobalVars;
-import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.PlayerControlledTrajectory;
-import engine.entity.trajectory.Trajectory;
-import engine.graphics.MovingImage;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 final public class PlayerShip extends ShootingShip{
 

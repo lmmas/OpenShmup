@@ -40,7 +40,7 @@ abstract public class Scene {
         if(!timer.isPaused()){
             sceneTime = timer.getTimeSeconds();
             for(SceneVisual visual: visualList){
-                visual.update();
+                visual.update(sceneTime);
             }
         }
     }
@@ -115,6 +115,7 @@ abstract public class Scene {
             addGraphic(graphic);
         }
         visualList.add(visual);
+        visual.setScene(this);
     }
 
     public void deleteVisual(SceneVisual visual){

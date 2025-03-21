@@ -4,19 +4,20 @@ import engine.Vec2D;
 import engine.render.RenderType;
 import engine.render.Shader;
 import engine.render.Texture;
-import engine.scene.Scene;
-import engine.scene.visual.SceneVisual;
 
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     Texture texture;
     ImagePrimitive primitive;
-    public Image2D(String textureFilepath, Scene scene, int layer, RenderType type, Shader shader){
-        super(scene, layer, type, shader);
-        this.texture = Texture.getTexture(textureFilepath);
+    public Image2D(Texture texture, int layer, RenderType type, Shader shader){
+        super(layer, type, shader);
+        this.texture = texture;
         this.primitive = new ImagePrimitive();
     }
-    public Image2D(String textureFilepath, Scene scene, int layer, RenderType type){
-        this(textureFilepath, scene, layer, type, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
+    public Image2D(String textureFilepath, int layer, RenderType type, Shader shader){
+        this(Texture.getTexture(textureFilepath), layer, type, shader);
+    }
+    public Image2D(String textureFilepath, int layer, RenderType type){
+        this(textureFilepath, layer, type, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
     }
 
     public void setPosition(float imagePositionX, float imagePositionY){
@@ -79,8 +80,13 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         private Vec2D texturePosition;
 
         private Vec2D textureSize;
+        public ImagePrimitive(float imagePositionX, float imagePositionY, float imageSizeX, float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY){
+            this.imagePosition = new Vec2D(imagePositionX, imagePositionY);
+            this.imageSize = new Vec2D(imageSizeX, imagePositionY);
+            this.texturePosition = new Vec2D(texturePositionX, texturePositionY);
+            this.textureSize = new Vec2D(textureSizeX, textureSizeY);
+        }
         public ImagePrimitive(){
-            super();
             this.imagePosition = new Vec2D(0.0f, 0.0f);
             this.imageSize = new Vec2D(0.0f, 0.0f);
             this.texturePosition = new Vec2D(0.0f, 0.0f);
@@ -105,6 +111,11 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
 
         public Texture getTexture(){
             return Image2D.this.texture;
+        }
+
+        @Override
+        public ImagePrimitive copy() {
+            return new ImagePrimitive(imagePosition.x, imagePosition.y, imageSize.x, imageSize.y, texturePosition.x, texturePosition.y, textureSize.x, textureSize.y);
         }
     }
 }

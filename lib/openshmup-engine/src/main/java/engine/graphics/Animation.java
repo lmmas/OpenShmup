@@ -1,11 +1,10 @@
 package engine.graphics;
 
-import engine.entity.hitbox.EntitySprite;
+import engine.entity.EntitySprite;
 import engine.scene.Scene;
 import engine.scene.visual.SceneVisual;
 
 public class Animation implements EntitySprite, SceneVisual {
-    private Scene scene;
     final private MovingImage image;
     final private AnimationInfo info;
     final private boolean looping;
@@ -13,16 +12,24 @@ public class Animation implements EntitySprite, SceneVisual {
     private int frameIndex;
     private float timeOfLastFrame;
 
-    public Animation(Scene scene, int layer, AnimationInfo info, float framePeriodSeconds, boolean looping) {
-        this.scene = scene;
+    public Animation(MovingImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
+        this.image = image;
+        this.info = info;
+        this.looping = looping;
+        this.framePeriodSeconds = framePeriodSeconds;
+        this.frameIndex = 0;
+        this.timeOfLastFrame = 0.0f;
+    }
+
+    public Animation(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping) {
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new MovingImage(info.filepath(), scene, layer);
+        this.image = new MovingImage(info.filepath(), layer);
         image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
-        this.timeOfLastFrame = scene.getSceneTimeSeconds();
+        this.timeOfLastFrame = 0.0f;
     }
 
     private void updateTexturePosition(){
@@ -52,14 +59,23 @@ public class Animation implements EntitySprite, SceneVisual {
     }
 
     @Override
+    public SceneVisual copy() {
+        return new Animation(image.copy(), info, looping, framePeriodSeconds);
+    }
+
+    @Override
     public Graphic<?, ?>[] getGraphics() {
         return new Graphic[]{image};
     }
 
     @Override
-    public void update() {
-        float currentTime = scene.getSceneTimeSeconds();
-        if(currentTime >= timeOfLastFrame + framePeriodSeconds){
+    public void setScene(Scene scene) {
+        this.timeOfLastFrame = scene.getSceneTimeSeconds();
+    }
+
+    @Override
+    public void update(float currentTimeSeconds) {
+        if(currentTimeSeconds >= timeOfLastFrame + framePeriodSeconds){
             frameIndex++;
             if(frameIndex >= info.frameCount()){
                 if(looping){

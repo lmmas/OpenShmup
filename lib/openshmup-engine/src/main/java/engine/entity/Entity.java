@@ -1,11 +1,8 @@
 package engine.entity;
 
-import engine.GlobalVars;
 import engine.Vec2D;
-import engine.entity.hitbox.EntitySprite;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.FixedTrajectory;
-import engine.entity.trajectory.PlayerControlledTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
@@ -121,7 +118,7 @@ abstract public class Entity {
         float currentTimeSeconds = scene.getSceneTimeSeconds();
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
-        sprite.update();
+        sprite.update(currentTimeSeconds);
     }
     public void deathEvent(){
         if(deathSpawn != null){
@@ -192,7 +189,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new MovingImage(filepath, scene, layer);
+                    this.sprite = new MovingImage(filepath, layer);
                 }
             }
             return this;
@@ -203,7 +200,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new Animation(scene, layer, info, framePeriodSeconds, looping);
+                    this.sprite = new Animation(layer, info, framePeriodSeconds, looping);
                 }
             }
             return this;
