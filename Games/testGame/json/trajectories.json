@@ -6,6 +6,24 @@
         "functionY": "-0.4f * t"
     },
     {
+        "id": 2,
+        "type": "fixed",
+        "functionX": "0.0f",
+        "functionY": "1.5f * t"
+    },
+    {
+        "id": 3,
+        "type": "fixed",
+        "functionX": "0.0f",
+        "functionY": "0.8f * t"
+    },
+    {
+        "id": 4,
+        "type": "fixed",
+        "functionX": "0.0f",
+        "functionY": "0.8f * t"
+    },
+    {
         "id": 10,
         "type": "fixed",
         "functionX": "0.3f * cos(t)",

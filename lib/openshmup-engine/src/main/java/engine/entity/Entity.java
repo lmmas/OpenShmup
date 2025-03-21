@@ -26,12 +26,13 @@ abstract public class Entity {
     protected boolean invincible;
     protected int entityId;
     protected float lifetimeSeconds;
+    protected float startingTimeSeconds;
     protected EntitySprite sprite;
     protected SimpleHitBox hitbox;
     protected Trajectory trajectory;
-    protected float startingTimeSeconds;
+    protected Spawnable deathSpawn;
 
-    public Entity(LevelScene scene, EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox) {
+    public Entity(LevelScene scene, EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn) {
         this.scene = scene;
         this.type = type;
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
@@ -47,6 +48,7 @@ abstract public class Entity {
         this.evil = evil;
         this.invincible = false;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
+        this.deathSpawn = deathSpawn;
     }
 
     public EntityType getType(){
@@ -122,7 +124,9 @@ abstract public class Entity {
         sprite.update();
     }
     public void deathEvent(){
-
+        if(deathSpawn != null){
+            deathSpawn.copyWithOffset(position.x, position.y).spawn(scene);
+        }
     }
 
     public static class Builder{
@@ -135,6 +139,7 @@ abstract public class Entity {
         private EntityType type = null;
         private EntitySprite sprite = null;
         private SimpleHitBox hitbox = null;
+        private Spawnable deathSpawn = null;
         private int hitPoints = 1;
         private Spawnable shot = null;
         private float shotPeriodSeconds = 0.0f;
@@ -174,9 +179,6 @@ abstract public class Entity {
 
         public Builder setId(int id){
             this.id = id;
-            if(id == 0){
-                return this.setEvil(false).setTrajectory(new PlayerControlledTrajectory(scene, GlobalVars.playerSpeed));
-            }
             return this;
         }
 
@@ -223,6 +225,10 @@ abstract public class Entity {
             this.trajectory = trajectory;
             return this;
         }
+        public Builder setDeathSpawn(Spawnable deathSpawn){
+            this.deathSpawn = deathSpawn;
+            return this;
+        }
 
         public Builder setShot(Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds){
             this.shot = shot;
@@ -236,14 +242,17 @@ abstract public class Entity {
                 hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
             }
             assert (scene != null && type != null && sprite != null && trajectory !=null): "Entity construction error: null fields";
+            if(id == 0){
+                return new PlayerShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, sprite, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+            }
             if(type == EntityType.PROJECTILE){
-                return new Projectile(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox);
+                return new Projectile(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
             }
             else{
                 if(shot != null){
-                    return new ShootingShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+                    return new ShootingShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
                 }
-                return new Ship(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, hitPoints);
+                return new Ship(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn,hitPoints);
             }
         }
     }

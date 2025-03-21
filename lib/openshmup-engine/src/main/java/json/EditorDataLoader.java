@@ -91,7 +91,7 @@ public class EditorDataLoader {
             int layer = checkAndGetInt(filepath, visualNode, "layer");
 
             String type = checkAndGetString(filepath, visualNode, "type");
-            if(type.equals("scrollingBackground")){
+            if(type.equals("scrollingImage")){
                 String fileName = checkAndGetString(filepath, visualNode, "fileName");
                 String imagePath = GlobalVars.Paths.editorTextureFolder + fileName;
                 JsonNode sizeNode = checkAndGetArray(filepath, visualNode, "size");
@@ -132,15 +132,32 @@ public class EditorDataLoader {
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
             }
 
-            JsonNode sizeNode = checkAndGetArray(filepath, entityNode, "size");
-            checkSize(filepath, sizeNode, 2);
-            checkIfFloat(filepath, sizeNode.get(0));
-            float sizeX = sizeNode.get(0).floatValue();
-            float sizeY = sizeNode.get(1).floatValue();
+            Vec2D sizeVec = checkAndGetVec2D(filepath, entityNode, "size");
 
             AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
                     new Entity.Builder()
-                    .setScene(levelScene).setId(id).setType(entityType).setSize(sizeX, sizeY));
+                    .setScene(levelScene).setId(id).setType(entityType).setSize(sizeVec.x, sizeVec.y));
+
+            if (entityNode.has("evil")){
+                boolean evil= checkAndGetBoolean(filepath, entityNode, "evil");
+                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setEvil(evil)));
+            }
+
+            if(entityNode.has("deathSpawn")){
+                JsonNode deathSpawnNode = entityNode.get("deathSpawn");
+                Spawnable deathSpawn;
+                if(deathSpawnNode.isArray()){
+                    Spawnable[] spawnables = new Spawnable[deathSpawnNode.size()];
+                    for(int i = 0; i < deathSpawnNode.size(); i++){
+                        spawnables[i] = getSingleSpawnable(filepath, deathSpawnNode.get(i));
+                    }
+                    deathSpawn = new MultiSpawnable(spawnables);
+                }
+                else{
+                    deathSpawn = getSingleSpawnable(filepath, deathSpawnNode);
+                }
+                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setDeathSpawn(deathSpawn)));
+            }
 
             if(entityType == EntityType.SHIP && entityNode.has("hp")){
                 checkIfInt(filepath, entityNode.get("hp"));
@@ -207,7 +224,7 @@ public class EditorDataLoader {
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable)));
             }
             else{
-                String texturePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, sizeNode, "fileName");
+                String texturePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, spriteNode, "fileName");
 
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, texturePath, orientable)));
             }
@@ -318,30 +335,21 @@ public class EditorDataLoader {
         if(type.equals("entity")){
             int id = checkAndGetInt(filepath, spawnableNode, "id");
 
-            JsonNode positionNode = checkAndGetArray(filepath, spawnableNode, "startingPosition");
-            checkSize(filepath, positionNode, 2);
-            checkIfFloat(filepath, positionNode.get(0));
-            float startingPositionX = positionNode.get(0).floatValue();
-            float startingPositionY = positionNode.get(1).floatValue();
+            Vec2D startingPositionVec = checkAndGetVec2D(filepath, spawnableNode, "startingPosition");
 
             EntitySpawnInfo spawnInfo;
             if(spawnableNode.has("trajectory")){
                 int trajectoryId = checkAndGetInt(filepath, spawnableNode, "trajectory");
-                spawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, trajectoryId);
+                spawnInfo = new EntitySpawnInfo(id, startingPositionVec.x, startingPositionVec.y, trajectoryId);
             }else{
-                spawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
+                spawnInfo = new EntitySpawnInfo(id, startingPositionVec.x, startingPositionVec.y, -1);
             }
             return spawnInfo;
+
         }else if(type.equals("visual")) {
             int id = checkAndGetInt(filepath, spawnableNode, "id");
-
-            JsonNode positionNode = checkAndGetArray(filepath, spawnableNode, "position");
-            checkSize(filepath, positionNode, 2);
-            checkIfFloat(filepath, positionNode.get(0));
-            float positionX = positionNode.get(0).floatValue();
-            float positionY = positionNode.get(1).floatValue();
-            SceneVisualSpawnInfo spawnInfo = new SceneVisualSpawnInfo(id, positionX, positionY);
-            return spawnInfo;
+            Vec2D positionVec = checkAndGetVec2D(filepath, spawnableNode, "position");
+            return new SceneVisualSpawnInfo(id, positionVec.x, positionVec.y);
         }
         else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
@@ -437,5 +445,15 @@ public class EditorDataLoader {
         checkForField(filepath, parentNode, fieldName);
         checkIfArray(filepath, parentNode.get(fieldName));
         return parentNode.get(fieldName);
+    }
+
+    private Vec2D checkAndGetVec2D(String filepath, JsonNode parentNode, String fieldName){
+        JsonNode arrayNode = checkAndGetArray(filepath, parentNode, fieldName);
+        checkSize(filepath, arrayNode, 2);
+        checkIfFloat(filepath, arrayNode.get(0));
+        checkIfFloat(filepath, arrayNode.get(1));
+        float vecX = arrayNode.get(0).floatValue();
+        float vecY = arrayNode.get(1).floatValue();
+        return new Vec2D(vecX, vecY);
     }
 }

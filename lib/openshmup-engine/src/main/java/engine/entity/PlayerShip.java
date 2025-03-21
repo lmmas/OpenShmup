@@ -1,64 +1,30 @@
 package engine.entity;
 
+import engine.GlobalVars;
 import engine.entity.hitbox.EntitySprite;
+import engine.entity.hitbox.SimpleHitBox;
+import engine.entity.trajectory.PlayerControlledTrajectory;
+import engine.entity.trajectory.Trajectory;
 import engine.graphics.MovingImage;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
+import engine.scene.spawnable.Spawnable;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-final public class PlayerShip {
-    private LevelScene scene;
-    private EntitySprite sprite;
-    private float positionX = 0.5f;
-    private float positionY = 0.05f;
-    private float sizeX = 0.05f;
-    private float sizeY = 0.1f;
-    private float speed = 0.6f;
-    private float lastUpdateTime;
+final public class PlayerShip extends ShootingShip{
 
-    public PlayerShip(LevelScene scene){
-        this.scene = scene;
-        this.sprite = new MovingImage("Games/game1/textures/Spaceship Pack/ship_5.png", scene, 4);
-        sprite.setPosition(positionX, positionY);
-        sprite.setSize(sizeX, sizeY);
+    public PlayerShip(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, EntitySprite sprite, SimpleHitBox hitBox, Spawnable deathSpawn, int hitPoints, Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds) {
+        super(scene, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, false, sprite, new PlayerControlledTrajectory(scene, GlobalVars.playerSpeed), hitBox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
     }
 
-    public EntitySprite getSprite() {
-        return sprite;
-    }
-
-    public void actionsAndMoves(long window){
-        float currentTime = scene.getSceneTimeSeconds();
-        float deltaTime = currentTime - lastUpdateTime;
-        if (scene.getControlState(GameControl.MOVE_LEFT)) {
-            positionX-=speed * deltaTime;
+    @Override
+    public void updateShot() {
+        if(scene.getControlState(GameControl.FIRE)){
+            if(lifetimeSeconds >= nextShotTimeSeconds) {
+                shot.copyWithOffset(position.x, position.y).spawn(scene);
+                nextShotTimeSeconds = lifetimeSeconds + shotPeriodSeconds;
+            }
         }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            positionX+=speed * deltaTime;
-        }
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            positionY+=speed * deltaTime;
-        }
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            positionY-=speed * deltaTime;
-        }
-        if(positionX < 0.0f){
-            positionX = 0.0f;
-        }
-        if(positionX > 1.0f){
-            positionX = 1.0f;
-        }
-        if(positionY < 0.0f){
-            positionY = 0.0f;
-        }
-        if(positionY > 1.0f){
-            positionY = 1.0f;
-        }
-        sprite.setPosition(positionX, positionY);
-        lastUpdateTime = currentTime;
-    }
-    public void handleCollisions(){
-
     }
 }

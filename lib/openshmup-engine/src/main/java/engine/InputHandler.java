@@ -16,7 +16,7 @@ public class InputHandler {
         inputList.put(GLFW_KEY_RIGHT, GameControl.MOVE_RIGHT);
         inputList.put(GLFW_KEY_UP, GameControl.MOVE_UP);
         inputList.put(GLFW_KEY_DOWN, GameControl.MOVE_DOWN);
-        inputList.put(GLFW_KEY_W, GameControl.FIRE);
+        inputList.put(GLFW_KEY_Z, GameControl.FIRE);
         inputList.put(GLFW_KEY_X, GameControl.BOMB);
         inputList.put(GLFW_KEY_P, GameControl.PAUSE);
         inputList.put(GLFW_KEY_S, GameControl.SLOWDOWN);

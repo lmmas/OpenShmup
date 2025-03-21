@@ -15,7 +15,7 @@ import java.util.HashSet;
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
     final protected EditorDataManager editorDataManager;
-    protected Ship playerShip;
+    protected PlayerShip playerShip;
     protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
@@ -77,7 +77,7 @@ public class LevelScene extends Scene{
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
             if(entitySpawn.id() == 0){
-                playerShip = (Ship) newEntity;
+                playerShip = (PlayerShip) newEntity;
             }
         }
         entitiesToSpawn.clear();

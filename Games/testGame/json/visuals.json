@@ -2,7 +2,16 @@
     {
         "id": 1,
         "layer": 0,
-        "type": "scrollingBackground",
+        "type": "scrollingImage",
+        "fileName": "background.png",
+        "size": [1,1],
+        "speed": -0.2,
+        "horizontalScrolling": false
+    },
+    {
+        "id": 2,
+        "layer": 0,
+        "type": "scrollingImage",
         "fileName": "background.png",
         "size": [1,1],
         "speed": -0.2,
