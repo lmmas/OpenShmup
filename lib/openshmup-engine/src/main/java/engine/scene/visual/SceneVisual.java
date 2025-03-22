@@ -9,4 +9,5 @@ public interface SceneVisual{
     void setScene(Scene scene);
     void setPosition(float positionX, float positionY);
     void update(float currentTimeSeconds);
+    boolean shouldBeRemoved();
 }

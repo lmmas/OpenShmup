@@ -6,8 +6,8 @@ import engine.render.Texture;
 import engine.scene.Scene;
 
 public class StaticImage extends Image2D {
-    public StaticImage(Texture texture, int layer, Shader shader){
-        super(texture, layer, RenderType.STATIC_IMAGE, shader);
+    public StaticImage(Texture texture, int layer, Shader shader, ImagePrimitive primitive){
+        super(texture, layer, RenderType.STATIC_IMAGE, shader, primitive);
     }
     public StaticImage(String textureFilepath, int layer){
         super(textureFilepath, layer, RenderType.STATIC_IMAGE);
@@ -18,6 +18,6 @@ public class StaticImage extends Image2D {
 
     @Override
     public StaticImage copy() {
-        return new StaticImage(texture, layer, shader);
+        return new StaticImage(texture, layer, shader, primitive.copy());
     }
 }

@@ -89,4 +89,9 @@ public class Animation implements EntitySprite, SceneVisual {
             timeOfLastFrame += framePeriodSeconds;
         }
     }
+
+    @Override
+    public boolean shouldBeRemoved() {
+        return !looping && frameIndex == info.frameCount() -1;
+    }
 }

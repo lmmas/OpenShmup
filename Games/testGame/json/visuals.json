@@ -20,6 +20,6 @@
             "stride": [16, 0]
         },
         "framePeriodSeconds": 0.25,
-        "looping": true
+        "looping": false
     }
 ]

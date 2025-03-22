@@ -8,13 +8,15 @@ import engine.render.Texture;
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     Texture texture;
     ImagePrimitive primitive;
-    public Image2D(Texture texture, int layer, RenderType type, Shader shader){
+    public Image2D(Texture texture, int layer, RenderType type, Shader shader, ImagePrimitive imagePrimitive){
         super(layer, type, shader);
         this.texture = texture;
-        this.primitive = new ImagePrimitive();
+        this.primitive = imagePrimitive;
     }
     public Image2D(String textureFilepath, int layer, RenderType type, Shader shader){
-        this(Texture.getTexture(textureFilepath), layer, type, shader);
+        super(layer, type, shader);
+        this.texture = Texture.getTexture(textureFilepath);
+        this.primitive = new ImagePrimitive();
     }
     public Image2D(String textureFilepath, int layer, RenderType type){
         this(textureFilepath, layer, type, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));

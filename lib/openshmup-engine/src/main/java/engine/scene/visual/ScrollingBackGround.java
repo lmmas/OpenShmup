@@ -115,4 +115,9 @@ public class ScrollingBackGround implements SceneVisual {
         image2.setPosition(positionX2, positionY2);
         lastUpdateTimeSeconds = currentTimeSeconds;
     }
+
+    @Override
+    public boolean shouldBeRemoved() {
+        return false;
+    }
 }

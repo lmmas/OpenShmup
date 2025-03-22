@@ -19,7 +19,7 @@ import java.util.TreeMap;
 abstract public class Scene {
     protected long window;
     final private EditorDataManager editorDataManager;
-    protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;//TODO: remplacer par un ArrayList trié 1 fois au démarrage de la scène
+    protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
@@ -41,6 +41,9 @@ abstract public class Scene {
             sceneTime = timer.getTimeSeconds();
             for(SceneVisual visual: visualList){
                 visual.update(sceneTime);
+                if(visual.shouldBeRemoved()){
+                    deleteVisual(visual);
+                }
             }
         }
     }
