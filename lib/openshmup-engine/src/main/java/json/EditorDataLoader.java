@@ -317,8 +317,8 @@ public class EditorDataLoader {
                 Function<Float, Float> trajectoryFunctionX;
                 Function<Float, Float> trajectoryFunctionY;
                 try {
-                    trajectoryFunctionX = convertToFunction("t -> (float)(" + functionXString + ")");
-                    trajectoryFunctionY = convertToFunction("t -> (float)(" + functionYString + ")");
+                    trajectoryFunctionX = convertToFunction(functionXString);
+                    trajectoryFunctionY = convertToFunction(functionYString);
                 } catch (LambdaCreationException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -388,11 +388,14 @@ public class EditorDataLoader {
         }
     }
     private Function<Float, Float> convertToFunction(String expr) throws LambdaCreationException {
+        if(expr.contains("{") || expr.contains("Systems") || expr.contains("Threads")){
+            throw new IllegalArgumentException("Illegal character in trajectory function");
+        }
         LambdaFactory lambdaFactory = LambdaFactory.get(
-                LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.MathFloatOverloads.*")
+                LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.TrajectoryFunctionUtils.MathFloatOverloads.*; import static engine.entity.trajectory.TrajectoryFunctionUtils.*")
         );
         return lambdaFactory.createLambda(
-                expr, new TypeReference<Function<Float, Float>>(){});
+                "t -> (float)(" + expr + ")", new TypeReference<Function<Float, Float>>(){});
     }
 
     private void checkForField(String filepath, JsonNode node, String field) throws IllegalArgumentException{

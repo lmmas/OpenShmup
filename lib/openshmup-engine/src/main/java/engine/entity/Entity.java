@@ -120,8 +120,7 @@ abstract public class Entity {
         this.trajectory = trajectory;
     }
 
-    public void update(){
-        float currentTimeSeconds = scene.getSceneTimeSeconds();
+    public void update(float currentTimeSeconds){
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
         sprite.update(currentTimeSeconds);

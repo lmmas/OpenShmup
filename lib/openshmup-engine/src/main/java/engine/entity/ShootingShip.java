@@ -19,8 +19,8 @@ public class ShootingShip extends Ship{
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(float currentTimeSeconds) {
+        super.update(currentTimeSeconds);
         updateShot();
     }
 

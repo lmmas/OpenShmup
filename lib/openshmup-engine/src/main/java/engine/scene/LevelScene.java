@@ -90,10 +90,10 @@ public class LevelScene extends Scene{
         visualsToSpawn.clear();
 
         for(Entity entity: goodEntities){
-            entity.update();
+            entity.update(sceneTime);
         }
         for(Entity entity: evilEntities){
-            entity.update();
+            entity.update(sceneTime);
         }
         removeFarAwayEntities(goodEntities);
         removeFarAwayEntities(evilEntities);
