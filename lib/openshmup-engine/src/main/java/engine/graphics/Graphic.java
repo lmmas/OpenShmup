@@ -9,7 +9,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     final protected Shader shader;
     final protected RenderType type;
     protected int layer;
-    VAO<G,P> vao;
+
     public Graphic(int layer, RenderType type, Shader shader){
         this.layer = layer;
         this.type = type;
@@ -44,7 +44,6 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         abstract public P copy();
         public void setVbo(VAO<G,P>.VBO newVbo){
             this.currentVbo = newVbo;
-            tellVboDataChanged();
         }
         public void tellVboDataChanged(){
             if(currentVbo!=null){

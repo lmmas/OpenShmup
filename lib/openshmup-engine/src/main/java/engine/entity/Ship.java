@@ -22,9 +22,6 @@ public class Ship extends Entity{
         return hitPoints <= 0;
     }
 
-    public void deathEvent(){
-    }
-
     public int getHP() {
         return hitPoints;
     }

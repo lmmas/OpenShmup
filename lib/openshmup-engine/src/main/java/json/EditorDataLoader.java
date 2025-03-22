@@ -103,7 +103,7 @@ public class EditorDataLoader {
 
                 float speed = checkAndGetFloat(filepath, visualNode, "speed");
                 boolean horizontalScrolling = checkAndGetBoolean(filepath, visualNode, "horizontalScrolling");
-                editorDataManager.addCustomVisual(id, scene -> new ScrollingBackGround(imagePath, layer, sizeX, sizeY, speed, horizontalScrolling));
+                editorDataManager.addCustomVisual(id, new ScrollingBackGround(imagePath, layer, sizeX, sizeY, speed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
                 JsonNode animationInfoNode = checkAndGetObject(filepath, visualNode, "animationInfo");
@@ -130,8 +130,10 @@ public class EditorDataLoader {
                 float framePeriodSeconds = checkAndGetFloat(filepath, visualNode, "framePeriodSeconds");
                 boolean looping = checkAndGetBoolean(filepath, visualNode, "looping");
 
+                Vec2D sizeVec = checkAndGetVec2D(filepath, visualNode, "size");
+
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSizeX, frameSizeY, startPosX, startPosY, strideX, strideY);
-                editorDataManager.addCustomVisual(id, scene -> new Animation(layer, animationInfo, framePeriodSeconds, looping));
+                editorDataManager.addCustomVisual(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, sizeVec.x, sizeVec.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");

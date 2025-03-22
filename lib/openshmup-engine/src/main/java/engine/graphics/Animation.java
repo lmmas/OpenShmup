@@ -12,6 +12,17 @@ public class Animation implements EntitySprite, SceneVisual {
     private int frameIndex;
     private float timeOfLastFrame;
 
+    public Animation(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
+        this.info = info;
+        this.framePeriodSeconds = framePeriodSeconds;
+        this.looping = looping;
+        this.frameIndex = 0;
+        this.image = new MovingImage(info.filepath(), layer, sizeX, sizeY);
+        this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
+        updateTexturePosition();
+        this.timeOfLastFrame = 0.0f;
+    }
+
     public Animation(MovingImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
         this.image = image;
         this.info = info;
@@ -21,15 +32,9 @@ public class Animation implements EntitySprite, SceneVisual {
         this.timeOfLastFrame = 0.0f;
     }
 
-    public Animation(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping) {
-        this.info = info;
-        this.framePeriodSeconds = framePeriodSeconds;
-        this.looping = looping;
-        this.frameIndex = 0;
-        this.image = new MovingImage(info.filepath(), layer);
-        image.setTextureSize(info.frameSizeX(), info.frameSizeY());
-        updateTexturePosition();
-        this.timeOfLastFrame = 0.0f;
+    @Override
+    public SceneVisual copy() {
+        return new Animation(image.copy(), info, looping, framePeriodSeconds);
     }
 
     private void updateTexturePosition(){
@@ -56,11 +61,6 @@ public class Animation implements EntitySprite, SceneVisual {
     @Override
     public Graphic<?, ?> getGraphic() {
         return image;
-    }
-
-    @Override
-    public SceneVisual copy() {
-        return new Animation(image.copy(), info, looping, framePeriodSeconds);
     }
 
     @Override

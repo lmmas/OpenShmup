@@ -6,14 +6,14 @@ import engine.render.Shader;
 import engine.render.Texture;
 
 public final class MovingImage extends Image2D implements EntitySprite {
+    public MovingImage(String textureFilepath, int layer, float sizeX, float sizeY){
+        super(textureFilepath, layer, RenderType.MOVING_IMAGE, sizeX, sizeY);
+    }
+    public MovingImage(String textureFilepath, int layer, Shader shader, float sizeX, float sizeY){
+        super(textureFilepath, layer, RenderType.MOVING_IMAGE, sizeX, sizeY, shader);
+    }
     public MovingImage(Texture texture, int layer, Shader shader, ImagePrimitive primitive){
         super(texture, layer, RenderType.MOVING_IMAGE, shader, primitive);
-    }
-    public MovingImage(String textureFilepath, int layer){
-        super(textureFilepath, layer, RenderType.MOVING_IMAGE);
-    }
-    public MovingImage(String textureFilepath, int layer, Shader shader){
-        super(textureFilepath, layer, RenderType.MOVING_IMAGE, shader);
     }
 
     @Override

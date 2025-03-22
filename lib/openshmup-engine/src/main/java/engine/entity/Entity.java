@@ -129,7 +129,7 @@ abstract public class Entity {
     public static class Builder{
         private LevelScene scene;
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
-        private final Vec2D size = new Vec2D(0.0f, 0.0f);
+        private Vec2D size;
         private float orientationRadians = 0.0f;
         private int id = 0;
         private boolean evil = true;
@@ -164,8 +164,7 @@ abstract public class Entity {
         }
 
         public Builder setSize(float sizeX, float sizeY) {
-            this.size.x = sizeX;
-            this.size.y = sizeY;
+            this.size = new Vec2D(sizeX, sizeY);
             return this;
         }
 
@@ -185,22 +184,22 @@ abstract public class Entity {
         }
 
         public Builder createSprite(int layer, String filepath, boolean orientable){
-            if(scene != null){
+            if(size != null){
                 if(orientable){
 
                 }else{
-                    this.sprite = new MovingImage(filepath, layer);
+                    this.sprite = new MovingImage(filepath, layer, size.x, size.y);
                 }
             }
             return this;
         }
 
         public Builder createSprite(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable){
-            if(scene != null){
+            if(size != null){
                 if(orientable){
 
                 }else{
-                    this.sprite = new Animation(layer, info, framePeriodSeconds, looping);
+                    this.sprite = new Animation(layer, info, framePeriodSeconds, looping, size.x, size.y);
                 }
             }
             return this;

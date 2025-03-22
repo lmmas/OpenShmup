@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class EditorDataManager {
-    private HashMap<Integer, Function<Scene, SceneVisual>> customVisuals;
+    private HashMap<Integer, SceneVisual> customVisuals;
     private HashMap<Integer, Trajectory> customTrajectories;
     private HashMap<Integer, Function<LevelScene, Entity>> customEntities;
     private ArrayList<LevelTimeline> customTimelines;
@@ -47,12 +47,12 @@ public class EditorDataManager {
         }
     }
 
-    public void addCustomVisual(int id, Function<Scene, SceneVisual> constructor){
-        customVisuals.put(id, constructor);
+    public void addCustomVisual(int id, SceneVisual visual){
+        customVisuals.put(id, visual);
     }
 
     public SceneVisual buildCustomVisual(Scene scene, int id){
-        return customVisuals.get(id).apply(scene);
+        return customVisuals.get(id).copy();
     }
 
     public void addCustomEntity(int id, Function<LevelScene, Entity> constructor){

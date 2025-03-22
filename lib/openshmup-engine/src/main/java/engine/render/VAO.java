@@ -21,7 +21,6 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
         this.type = type;
         this.drawingType = drawingType;
         this.vboStrideBytes = vboStrideBytes;
-        this.batchSize = 100;
         this.vbos = new ArrayList<>();
     }
     public int getID(){
@@ -91,6 +90,7 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
             assert primitives.size() < batchSize: "Can't add primitive data to VBO";
             primitives.add(newPrimitive);
             newPrimitive.setVbo(this);
+            dataHasChanged = true;
         }
         abstract boolean canReceivePrimitiveFrom(G graphic);
         abstract protected void setupVertexAttributes();

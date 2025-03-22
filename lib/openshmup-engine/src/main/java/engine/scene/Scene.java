@@ -24,6 +24,7 @@ abstract public class Scene {
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
     HashSet<SceneVisual> visualList;
+    HashSet<SceneVisual> visualsToRemove;
     public Scene(Game game) {
         this.window = game.getWindow();
         this.editorDataManager = game.getEditorDataManager();
@@ -31,6 +32,7 @@ abstract public class Scene {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.visualList = new HashSet<>();
+        this.visualsToRemove = new HashSet<>();
         timer.start();
     }
 
@@ -42,9 +44,13 @@ abstract public class Scene {
             for(SceneVisual visual: visualList){
                 visual.update(sceneTime);
                 if(visual.shouldBeRemoved()){
-                    deleteVisual(visual);
+                    visualsToRemove.add(visual);
                 }
             }
+            for(var visual: visualsToRemove){
+                deleteVisual(visual);
+            }
+            visualsToRemove.clear();
         }
     }
 

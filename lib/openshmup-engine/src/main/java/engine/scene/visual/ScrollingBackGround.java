@@ -17,18 +17,18 @@ public class ScrollingBackGround implements SceneVisual {
     private float speed;
     private float lastUpdateTimeSeconds;
     public ScrollingBackGround(String imagePath, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
-        this.image1 = new MovingImage(imagePath, layer);
-        this.image2 = new MovingImage(imagePath, layer);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        this.image1 = new MovingImage(imagePath, layer, sizeX, sizeY);
+        this.image2 = new MovingImage(imagePath, layer, sizeX, sizeY);
         this.positionX1 = 0.5f;
         this.positionY1 = 0.5f;
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
         image1.setSize(sizeX, sizeY);
         image2.setSize(sizeX, sizeY);
-        setPosition(0.5f, 0.5f);
         lastUpdateTimeSeconds = 0.0f;
+        setPosition(0.5f, 0.5f);
     }
 
     public ScrollingBackGround(MovingImage image1, float positionX1, float positionY1, MovingImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
@@ -43,6 +43,7 @@ public class ScrollingBackGround implements SceneVisual {
         this.horizontalScrolling = horizontalScrolling;
         this.speed = speed;
         this.lastUpdateTimeSeconds = 0.0f;
+        setPosition(0.5f, 0.5f);
     }
 
     @Override

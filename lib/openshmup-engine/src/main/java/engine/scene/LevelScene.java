@@ -198,14 +198,13 @@ public class LevelScene extends Scene{
             int playerHP = playerShip.getHP();
             if(playerLives.size() != playerHP){
                 while(playerLives.size() < playerHP){
-                    StaticImage hpPoint = new StaticImage(GameConfig.LevelUI.Lives.textureFilepath, GameConfig.LevelUI.upperLayer);
+                    Vec2D size = GameConfig.LevelUI.Lives.size;
+                    StaticImage hpPoint = new StaticImage(GameConfig.LevelUI.Lives.textureFilepath, GameConfig.LevelUI.upperLayer, size.x, size.y);
                     Vec2D position = GameConfig.LevelUI.Lives.position;
                     Vec2D stride = GameConfig.LevelUI.Lives.stride;
                     float pointPositionX = position.x + stride.x * playerLives.size();
                     float pointPositionY = position.y + stride.y * playerLives.size();
                     hpPoint.setPosition(pointPositionX, pointPositionY);
-                    Vec2D size = GameConfig.LevelUI.Lives.size;
-                    hpPoint.setSize(size.x, size.y);
                     addGraphic(hpPoint);
                     playerLives.add(hpPoint);
                 }

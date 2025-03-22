@@ -74,6 +74,11 @@
                 "trajectory": 1,
                 "startingPosition": [0, -0.03]
             }
+        },
+        "deathSpawn": {
+            "type": "visual",
+            "id": 2,
+            "position": [0.0,0.0]
         }
     },
     {
