@@ -12,11 +12,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class EditorDataManager {
     private HashMap<Integer, SceneVisual> customVisuals;
     private HashMap<Integer, Trajectory> customTrajectories;
-    private HashMap<Integer, Function<LevelScene, Entity>> customEntities;
+    private HashMap<Integer, Supplier<Entity>> customEntities;
     private ArrayList<LevelTimeline> customTimelines;
 
     public EditorDataManager(){
@@ -51,16 +52,16 @@ public class EditorDataManager {
         customVisuals.put(id, visual);
     }
 
-    public SceneVisual buildCustomVisual(Scene scene, int id){
+    public SceneVisual buildCustomVisual(int id){
         return customVisuals.get(id).copy();
     }
 
-    public void addCustomEntity(int id, Function<LevelScene, Entity> constructor){
+    public void addCustomEntity(int id, Supplier<Entity> constructor){
         customEntities.put(id, constructor);
     }
 
-    public Entity buildCustomEntity(LevelScene scene, int id){
-        return customEntities.get(id).apply(scene);
+    public Entity buildCustomEntity(int id){
+        return customEntities.get(id).get();
     }
 
     public void addTrajectory(int id, Trajectory trajectory){
@@ -69,7 +70,7 @@ public class EditorDataManager {
 
     public Trajectory getTrajectory(int id){
         Trajectory trajectory = customTrajectories.get(id);
-        return customTrajectories.get(id).copyIfNotReusable();
+        return trajectory.copyIfNotReusable();
     }
 
     public void addTimeline(LevelTimeline timeline){

@@ -4,13 +4,12 @@ import engine.GlobalVars;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.trajectory.PlayerControlledTrajectory;
 import engine.scene.GameControl;
-import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
 final public class PlayerShip extends ShootingShip{
 
-    public PlayerShip(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, EntitySprite sprite, SimpleHitBox hitBox, Spawnable deathSpawn, int hitPoints, Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds) {
-        super(scene, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, false, sprite, new PlayerControlledTrajectory(scene, GlobalVars.playerSpeed), hitBox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+    public PlayerShip(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, EntitySprite sprite, SimpleHitBox hitBox, Spawnable deathSpawn, int hitPoints, Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds) {
+        super(startingPosX, startingPosY, sizeX, sizeY, orientationRadians, false, sprite, new PlayerControlledTrajectory(GlobalVars.playerSpeed), hitBox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
     }
 
     @Override

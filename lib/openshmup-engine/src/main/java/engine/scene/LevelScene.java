@@ -69,7 +69,7 @@ public class LevelScene extends Scene{
 
         timeline.updateSpawning(this);
         for(var entitySpawn: entitiesToSpawn){
-            Entity newEntity = editorDataManager.buildCustomEntity(this, entitySpawn.id());
+            Entity newEntity = editorDataManager.buildCustomEntity(entitySpawn.id());
             if(entitySpawn.trajectoryId() != -1){
                 newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
             }
@@ -83,7 +83,7 @@ public class LevelScene extends Scene{
         entitiesToSpawn.clear();
 
         for(var visualSpawn: visualsToSpawn){
-            SceneVisual newVisual = editorDataManager.buildCustomVisual(this, visualSpawn.id());
+            SceneVisual newVisual = editorDataManager.buildCustomVisual(visualSpawn.id());
             newVisual.setPosition(visualSpawn.position().x, visualSpawn.position().y);
             addVisual(newVisual);
         }
@@ -128,6 +128,7 @@ public class LevelScene extends Scene{
         else{
             goodEntities.add(entity);
         }
+        entity.setScene(this);
     }
 
     public void deleteEntity(Entity entity){

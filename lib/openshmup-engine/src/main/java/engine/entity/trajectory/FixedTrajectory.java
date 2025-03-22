@@ -2,6 +2,7 @@ package engine.entity.trajectory;
 
 import engine.Vec2D;
 import engine.entity.Entity;
+import engine.scene.LevelScene;
 
 import java.util.function.Function;
 
@@ -29,6 +30,11 @@ public class FixedTrajectory implements Trajectory {
             newPosY += startingPosition.y;
         }
         entity.setPosition(newPosX, newPosY);
+    }
+
+    @Override
+    public void setScene(LevelScene scene) {
+
     }
 
     @Override

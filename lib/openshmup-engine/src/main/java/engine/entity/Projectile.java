@@ -8,6 +8,6 @@ import engine.scene.spawnable.Spawnable;
 public class Projectile extends Entity {
 
     public Projectile(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn) {
-        super(scene, EntityType.PROJECTILE, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
+        super(EntityType.PROJECTILE, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
     }
 }

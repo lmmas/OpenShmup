@@ -9,10 +9,10 @@ public class ShootingShip extends Ship{
     protected Spawnable shot;
     protected float shotPeriodSeconds;
     protected float nextShotTimeSeconds;
-    public ShootingShip(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitBox, Spawnable deathSpawn,
+    public ShootingShip(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitBox, Spawnable deathSpawn,
                         int hitPoints,
                         Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShotSeconds) {
-        super(scene, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitBox, deathSpawn, hitPoints);
+        super(startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitBox, deathSpawn, hitPoints);
         this.shot = shot;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = startingTimeSeconds + timeBeforeFirstShotSeconds;

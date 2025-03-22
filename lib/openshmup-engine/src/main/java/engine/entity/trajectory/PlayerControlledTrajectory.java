@@ -11,10 +11,10 @@ public class PlayerControlledTrajectory implements Trajectory{
     private float speed;
     private float lastUpdateTimeSeconds;
 
-    public PlayerControlledTrajectory(LevelScene scene, float speed) {
-        this.scene = scene;
+    public PlayerControlledTrajectory(float speed) {
+        this.scene = null;
         this.speed = speed;
-        this.lastUpdateTimeSeconds = scene.getSceneTimeSeconds();
+        this.lastUpdateTimeSeconds = 0.0f;
     }
 
     @Override
@@ -49,6 +49,11 @@ public class PlayerControlledTrajectory implements Trajectory{
         }
         entity.setPosition(positionX, positionY);
         lastUpdateTimeSeconds = currentTime;
+    }
+
+    @Override
+    public void setScene(LevelScene scene) {
+        this.scene = scene;
     }
 
     @Override

@@ -8,8 +8,8 @@ import engine.scene.spawnable.Spawnable;
 public class Ship extends Entity{
     private int hitPoints;
 
-    public Ship(LevelScene scene, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn, int hitPoints) {
-        super(scene, EntityType.SHIP, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
+    public Ship(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn, int hitPoints) {
+        super(EntityType.SHIP, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
         this.hitPoints = hitPoints;
     }
 

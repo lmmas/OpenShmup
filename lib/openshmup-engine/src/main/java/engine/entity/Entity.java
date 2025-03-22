@@ -13,7 +13,7 @@ import engine.scene.spawnable.Spawnable;
 import java.util.function.Function;
 
 abstract public class Entity {
-    final protected LevelScene scene;
+    protected LevelScene scene;
     final protected EntityType type;
     final protected Vec2D startingPosition;
     final protected Vec2D position;
@@ -29,8 +29,8 @@ abstract public class Entity {
     protected Trajectory trajectory;
     protected Spawnable deathSpawn;
 
-    public Entity(LevelScene scene, EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn) {
-        this.scene = scene;
+    public Entity(EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn) {
+        this.scene = null;
         this.type = type;
         this.startingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
@@ -44,8 +44,14 @@ abstract public class Entity {
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
         this.invincible = false;
-        this.startingTimeSeconds = scene.getSceneTimeSeconds();
         this.deathSpawn = deathSpawn;
+        this.startingTimeSeconds = 0.0f;
+    }
+
+    public void setScene(LevelScene scene) {
+        this.scene = scene;
+        trajectory.setScene(scene);
+        this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
     public EntityType getType(){
@@ -142,10 +148,6 @@ abstract public class Entity {
         private float shotPeriodSeconds = 0.0f;
         private float timeBeforeFirstShotSeconds = 0.0f;
         private Trajectory trajectory = Trajectory.DEFAULT();
-        public Builder setScene(LevelScene scene){
-            this.scene = scene;
-            return this;
-        }
 
         public Builder setType(EntityType type) {
             this.type = type;
@@ -237,18 +239,18 @@ abstract public class Entity {
             if(hitbox == null){
                 hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
             }
-            assert (scene != null && type != null && sprite != null && trajectory !=null): "Entity construction error: null fields";
+            assert (type != null && sprite != null && trajectory !=null): "Entity construction error: null fields";
             if(id == 0){
-                return new PlayerShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, sprite, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+                return new PlayerShip(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, sprite, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
             }
             if(type == EntityType.PROJECTILE){
                 return new Projectile(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn);
             }
             else{
                 if(shot != null){
-                    return new ShootingShip(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
+                    return new ShootingShip(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn, hitPoints, shot, shotPeriodSeconds, timeBeforeFirstShotSeconds);
                 }
-                return new Ship(scene, startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn,hitPoints);
+                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, deathSpawn,hitPoints);
             }
         }
     }

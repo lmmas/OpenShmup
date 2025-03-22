@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class EditorDataLoader {
     final private ObjectMapper objectMapper;
@@ -167,7 +168,7 @@ public class EditorDataLoader {
 
             AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
                     new Entity.Builder()
-                    .setScene(levelScene).setId(id).setType(entityType).setSize(sizeVec.x, sizeVec.y));
+                    .setId(id).setType(entityType).setSize(sizeVec.x, sizeVec.y));
 
             if (entityNode.has("evil")){
                 boolean evil= checkAndGetBoolean(filepath, entityNode, "evil");
@@ -293,7 +294,7 @@ public class EditorDataLoader {
                 }
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder ->builder.setTrajectory(trajectory)));
             }
-            Function<LevelScene, Entity> customEntityConstructor = customEntityBuilder.get().andThen(Entity.Builder::build);
+            Supplier<Entity> customEntityConstructor = () -> customEntityBuilder.get().andThen(Entity.Builder::build).apply(null);
             editorDataManager.addCustomEntity(id, customEntityConstructor);
         }
     }
