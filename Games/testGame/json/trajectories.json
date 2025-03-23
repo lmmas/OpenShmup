@@ -26,8 +26,8 @@
     {
         "id": 10,
         "type": "fixed",
-        "functionX": "0.3f * cos(t)",
-        "functionY": "0.3f * sin(t)"
+        "functionX": "0.15f * cos(t)",
+        "functionY": "0.15f * sin(t)"
     },
     {
         "id": 11,
@@ -39,12 +39,12 @@
         "id": 12,
         "type": "fixed",
         "functionX": "0.1f * cos(2 * t)",
-        "functionY": "0.1f * -sin(2 * t)"
+        "functionY": "-0.2f * t"
     },
     {
         "id": 13,
         "type": "fixed",
         "functionX": "0.0f",
-        "functionY": "0.3f * sin(t)"
+        "functionY": "0.0f"
     }
 ]

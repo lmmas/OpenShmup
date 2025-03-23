@@ -2,6 +2,7 @@
     "duration": 3000.0,
     "spawns": [
         {
+            "type": "single",
             "time": 0.0,
             "spawn":[
                 {
@@ -17,55 +18,46 @@
             ]
         },
         {
-            "time": 0,
+            "type": "interval",
+            "startTime": 1.0,
+            "endTime": 5.0,
+            "interval": 0.8,
             "spawn": [
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 13,
-                    "startingPosition": [0.15, 0.8]
+                    "startingPosition": [0.15, 1.2]
                 },
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.25, 0.8]
+                    "trajectory": 12,
+                    "startingPosition": [0.3, 1.2]
                 },
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.35, 0.8]
+                    "trajectory": 12,
+                    "startingPosition": [0.45, 1.2]
                 },
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.45, 0.8]
+                    "trajectory": 12,
+                    "startingPosition": [0.6, 1.2]
                 },
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.55, 0.8]
+                    "trajectory": 12,
+                    "startingPosition": [0.75, 1.2]
                 },
                 {
                     "type": "entity",
                     "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.65, 0.8]
-                },
-                {
-                    "type": "entity",
-                    "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.75, 0.8]
-                },
-                {
-                    "type": "entity",
-                    "id": 2,
-                    "trajectory": 10,
-                    "startingPosition": [0.85, 0.8]
+                    "trajectory": 12,
+                    "startingPosition": [0.90, 1.2]
                 }
             ]
         }

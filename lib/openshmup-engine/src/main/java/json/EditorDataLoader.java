@@ -343,22 +343,37 @@ public class EditorDataLoader {
         LevelTimeline newTimeline = new LevelTimeline(editorDataManager, duration);
         for(JsonNode childNode: spawnsNode){
             checkIfObject(filepath, childNode);
-            float time = checkAndGetFloat(filepath, childNode, "time");
 
             checkForField(filepath, childNode, "spawn");
             JsonNode spawnableNode = childNode.get("spawn");
+            Spawnable newSpawnable;
             if(spawnableNode.isArray()){
-                for (JsonNode elementNode: spawnableNode){
-                    checkIfObject(filepath, elementNode);
-                    Spawnable newSpawnable = getSingleSpawnable(filepath, elementNode);
-                    newTimeline.addSpawnable(time, newSpawnable);
+                Spawnable[] spawnables = new Spawnable[spawnableNode.size()];
+                for (int i = 0; i < spawnableNode.size(); i++){
+                    checkIfObject(filepath, spawnableNode.get(i));
+                    spawnables[i] = getSingleSpawnable(filepath, spawnableNode.get(i));
                 }
+                newSpawnable = new MultiSpawnable(spawnables);
             }
             else{
                 checkIfObject(filepath, spawnableNode);
-                Spawnable newSpawnable = getSingleSpawnable(filepath, spawnableNode);
-                newTimeline.addSpawnable(time, newSpawnable);
+                newSpawnable = getSingleSpawnable(filepath, spawnableNode);
             }
+            String type = checkAndGetString(filepath, childNode, "type");
+            if(type.equals("single")){
+                float time = checkAndGetFloat(filepath, childNode, "time");
+                newTimeline.addSpawnable(time, newSpawnable);
+            } else if (type.equals("interval")) {
+                float startTime = checkAndGetFloat(filepath, childNode, "startTime");
+                float endTime = checkAndGetFloat(filepath, childNode, "endTime");
+                float interval = checkAndGetFloat(filepath, childNode, "interval");
+                for(float i = startTime; i <= endTime; i+=interval){
+                    newTimeline.addSpawnable(i, newSpawnable);
+                }
+            }else{
+                throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
+            }
+
         }
         editorDataManager.addTimeline(newTimeline);
     }
