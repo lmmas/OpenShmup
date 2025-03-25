@@ -1,4 +1,4 @@
-package engine.entity;
+package engine.entity.sprite;
 
 import engine.graphics.Graphic;
 
@@ -8,4 +8,7 @@ public interface EntitySprite{
     void setOrientation(float orientation);
     Graphic<?,?> getGraphic();
     void update(float currentTimeSeconds);
+    static EntitySprite DEFAULT(){
+        return EmptySprite.getInstance();
+    }
 }

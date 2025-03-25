@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.*;
 import engine.entity.Entity;
-import engine.entity.EntityType;
 import engine.graphics.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
@@ -120,21 +119,13 @@ public class EditorDataLoader {
             checkIfObject(filepath, entityNode);
 
             int id = checkAndGetInt(filepath, entityNode, "id");
-            String entityTypeString = checkAndGetString(filepath, entityNode, "type");
-            EntityType entityType;
-            if(entityTypeString.equals("projectile")){
-                entityType = EntityType.PROJECTILE;
-            }else if(entityTypeString.equals("ship")){
-                entityType = EntityType.SHIP;
-            }else{
-                throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
-            }
+            boolean isShip = checkAndGetBoolean(filepath, entityNode, "hasHP");
 
             Vec2D size = checkAndConvertIntArrayToVec2D(filepath, entityNode, "size");
 
             AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
                     new Entity.Builder()
-                    .setId(id).setType(entityType).setSize(size.x, size.y));
+                    .setId(id).setSize(size.x, size.y));
 
             if (entityNode.has("evil")){
                 boolean evil= checkAndGetBoolean(filepath, entityNode, "evil");
@@ -157,13 +148,13 @@ public class EditorDataLoader {
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setDeathSpawn(deathSpawn)));
             }
 
-            if(entityType == EntityType.SHIP && entityNode.has("hp")){
+            if(isShip && entityNode.has("hp")){
                 checkIfInt(filepath, entityNode.get("hp"));
                 int hp = entityNode.get("hp").intValue();
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setHitPoints(hp)));
             }
 
-            if (entityType == EntityType.SHIP && entityNode.has("shot")){
+            if (entityNode.has("shot")){
                 JsonNode shotNode = checkAndGetObject(filepath, entityNode, "shot");
 
                 float shotPeriod = checkAndGetFloat(filepath, shotNode, "shotPeriod");

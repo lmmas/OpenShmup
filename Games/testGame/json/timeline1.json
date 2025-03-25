@@ -11,7 +11,7 @@
                     "startingPosition": [500, 200]
                 },
                 {
-                    "type": "visual",
+                    "type": "display",
                     "id": 1,
                     "position": [500,600]
                 }
@@ -45,7 +45,7 @@
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [450, 1500]
+                    "startingPosition": [600, 1500]
                 },
                 {
                     "type": "entity",

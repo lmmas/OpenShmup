@@ -2,6 +2,8 @@ package engine.scene;
 
 import engine.*;
 import engine.entity.*;
+import engine.entity.hitbox.EmptyHitbox;
+import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
 import engine.scene.display.StaticImage;
@@ -15,7 +17,7 @@ import java.util.HashSet;
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
     final protected EditorDataManager editorDataManager;
-    protected PlayerShip playerShip;
+    protected Ship playerShip;
     protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
@@ -77,7 +79,7 @@ public class LevelScene extends Scene{
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
             if(entitySpawn.id() == 0){
-                playerShip = (PlayerShip) newEntity;
+                playerShip = (Ship) newEntity;
             }
         }
         entitiesToSpawn.clear();
@@ -166,23 +168,26 @@ public class LevelScene extends Scene{
         if (entity.isInvincible()) {
             return;
         }
-        SimpleHitBox entityHitbox = entity.getHitbox();
-        if (entity.getType() == EntityType.PROJECTILE) {
+        Hitbox entityHitbox = entity.getHitbox();
+        if(entityHitbox == EmptyHitbox.getInstance()){
+            return;
+        }
+        if (!entity.isShip()) {
             for (Entity ennemy : ennemyList) {
-                if(ennemy.getType() == EntityType.PROJECTILE){
+                if(!ennemy.isShip()){
                     continue;
                 }
                 Ship ennemyShip = (Ship) ennemy;
-                SimpleHitBox ennemyHitbox = ennemyShip.getHitbox();
+                Hitbox ennemyHitbox = ennemyShip.getHitbox();
                 if (entityHitbox.intersects(ennemyHitbox)) {
                     entity.deathEvent();
                     entitiesToRemove.add(entity);
                 }
             }
-        } else if (entity.getType() == EntityType.SHIP) {
+        } else{
             Ship shipEntity = (Ship) entity;
             for (Entity ennemy : ennemyList) {
-                SimpleHitBox ennemyHitbox = ennemy.getHitbox();
+                Hitbox ennemyHitbox = ennemy.getHitbox();
                 if (entityHitbox.intersects(ennemyHitbox)) {
                     shipEntity.takeDamage(1);
                     if(shipEntity.isDead()){

@@ -1,6 +1,6 @@
 package engine.graphics;
 
-import engine.entity.EntitySprite;
+import engine.entity.sprite.EntitySprite;
 import engine.scene.Scene;
 import engine.scene.display.DynamicImage;
 import engine.scene.display.SceneDisplay;
