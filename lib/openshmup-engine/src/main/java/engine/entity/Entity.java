@@ -6,7 +6,7 @@ import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Animation;
 import engine.graphics.AnimationInfo;
-import engine.graphics.MovingImage;
+import engine.scene.display.DynamicImage;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
@@ -189,7 +189,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new MovingImage(filepath, layer, size.x, size.y);
+                    this.sprite = new DynamicImage(filepath, layer, size.x, size.y);
                 }
             }
             return this;

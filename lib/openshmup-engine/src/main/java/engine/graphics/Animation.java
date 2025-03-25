@@ -2,10 +2,11 @@ package engine.graphics;
 
 import engine.entity.EntitySprite;
 import engine.scene.Scene;
-import engine.scene.visual.SceneVisual;
+import engine.scene.display.DynamicImage;
+import engine.scene.display.SceneDisplay;
 
-public class Animation implements EntitySprite, SceneVisual {
-    final private MovingImage image;
+public class Animation implements EntitySprite, SceneDisplay {
+    final private DynamicImage image;
     final private AnimationInfo info;
     final private boolean looping;
     private float framePeriodSeconds;
@@ -17,13 +18,14 @@ public class Animation implements EntitySprite, SceneVisual {
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new MovingImage(info.filepath(), layer, sizeX, sizeY);
+        this.image = new DynamicImage(info.filepath(), layer, sizeX, sizeY);
         this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;
     }
 
-    public Animation(MovingImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
+    public Animation(DynamicImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
+        //this constructore is only used for deep copying
         this.image = image;
         this.info = info;
         this.looping = looping;
@@ -31,9 +33,8 @@ public class Animation implements EntitySprite, SceneVisual {
         this.frameIndex = 0;
         this.timeOfLastFrame = 0.0f;
     }
-
     @Override
-    public SceneVisual copy() {
+    public SceneDisplay copy() {
         return new Animation(image.copy(), info, looping, framePeriodSeconds);
     }
 

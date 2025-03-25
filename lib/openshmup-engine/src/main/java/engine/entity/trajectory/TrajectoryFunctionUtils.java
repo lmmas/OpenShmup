@@ -1,21 +1,8 @@
 package engine.entity.trajectory;
 //DO NOT OPTIMIZE IMPORTS
-import java.util.function.Function;
-
 import static java.lang.Math.*;
 
 public class TrajectoryFunctionUtils {
-    public static float compositeIntervalFunction(float t, float[] bounds, Function<Float, Float>[] functions){
-        if(bounds.length + 1 != functions.length){
-            throw new IllegalArgumentException("function count different from interval count");
-        }
-        for(int i = 0; i < functions.length - 1; i++){
-            if(t < bounds[i]){
-                return functions[i].apply(t);
-            }
-        }
-        return functions[functions.length - 1].apply(t);
-    }
 
     public static class MathFloatOverloads {
     //WARNING: DO NOT DELETE

@@ -4,10 +4,10 @@ import engine.*;
 import engine.entity.*;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
-import engine.graphics.StaticImage;
+import engine.scene.display.StaticImage;
 import engine.scene.spawnable.EntitySpawnInfo;
-import engine.scene.spawnable.SceneVisualSpawnInfo;
-import engine.scene.visual.SceneVisual;
+import engine.scene.spawnable.SceneDisplaySpawnInfo;
+import engine.scene.display.SceneDisplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +21,7 @@ public class LevelScene extends Scene{
     protected HashSet<Entity> evilEntities;
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
     protected HashSet<Entity> entitiesToRemove;
-    protected HashSet<SceneVisualSpawnInfo> visualsToSpawn;
+    protected HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
     protected boolean[] controlStates;
     protected boolean[] lastControlStates;
     protected LevelTimeline timeline;
@@ -35,7 +35,7 @@ public class LevelScene extends Scene{
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
         this.entitiesToRemove = new HashSet<>();
-        this.visualsToSpawn = new HashSet<>();
+        this.displaysToSpawn = new HashSet<>();
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
         this.timeline = timeline;
@@ -82,12 +82,12 @@ public class LevelScene extends Scene{
         }
         entitiesToSpawn.clear();
 
-        for(var visualSpawn: visualsToSpawn){
-            SceneVisual newVisual = editorDataManager.buildCustomVisual(visualSpawn.id());
-            newVisual.setPosition(visualSpawn.position().x, visualSpawn.position().y);
-            addVisual(newVisual);
+        for(var displaySpawn: displaysToSpawn){
+            SceneDisplay newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
+            newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
+            addDisplay(newDisplay);
         }
-        visualsToSpawn.clear();
+        displaysToSpawn.clear();
 
         for(Entity entity: goodEntities){
             entity.update(sceneTime);
@@ -115,8 +115,8 @@ public class LevelScene extends Scene{
         entitiesToSpawn.add(entitySpawnInfo);
     }
 
-    public void addVisualSpawn(SceneVisualSpawnInfo visualSpawnInfo){
-        visualsToSpawn.add(visualSpawnInfo);
+    public void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo){
+        displaysToSpawn.add(displaySpawnInfo);
     }
 
     public void addEntity(Entity entity){

@@ -13,9 +13,9 @@ import engine.graphics.AnimationInfo;
 import engine.scene.LevelScene;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
-import engine.scene.spawnable.SceneVisualSpawnInfo;
+import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.spawnable.Spawnable;
-import engine.scene.visual.ScrollingImage;
+import engine.scene.display.ScrollingImage;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
 import pl.joegreen.lambdaFromString.LambdaFactoryConfiguration;
@@ -56,28 +56,28 @@ public class EditorDataLoader {
         GameConfig.LevelUI.Lives.position = checkAndConvertIntArrayToVec2D(filepath, livesNode, "position");
         GameConfig.LevelUI.Lives.stride = checkAndConvertIntArrayToVec2D(filepath, livesNode, "stride");
     }
-    public void loadCustomVisuals(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException{
+    public void loadCustomDisplays(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException{
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));
         } catch (IOException e) {
-            throw new FileNotFoundException("custom visuals file not found: filepath '" + filepath + "'");
+            throw new FileNotFoundException("custom displays file not found: filepath '" + filepath + "'");
         }
         checkIfArray(filepath, rootNode);
-        for(JsonNode visualNode: rootNode){
-            checkIfObject(filepath, visualNode);
+        for(JsonNode displayNode: rootNode){
+            checkIfObject(filepath, displayNode);
 
-            int id = checkAndGetInt(filepath, visualNode, "id");
-            int layer = checkAndGetInt(filepath, visualNode, "layer");
-            String type = checkAndGetString(filepath, visualNode, "type");
-            Vec2D size = checkAndConvertIntArrayToVec2D(filepath, visualNode, "size");
+            int id = checkAndGetInt(filepath, displayNode, "id");
+            int layer = checkAndGetInt(filepath, displayNode, "layer");
+            String type = checkAndGetString(filepath, displayNode, "type");
+            Vec2D size = checkAndConvertIntArrayToVec2D(filepath, displayNode, "size");
 
             if(type.equals("scrollingImage")){
 
-                String imagePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, visualNode, "fileName");
-                boolean horizontalScrolling = checkAndGetBoolean(filepath, visualNode, "horizontalScrolling");
+                String imagePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, displayNode, "fileName");
+                boolean horizontalScrolling = checkAndGetBoolean(filepath, displayNode, "horizontalScrolling");
 
-                int speed = checkAndGetInt(filepath, visualNode, "speed");
+                int speed = checkAndGetInt(filepath, displayNode, "speed");
                 float normalizedSpeed;
                 if(horizontalScrolling){
                     normalizedSpeed = (float) speed / GameConfig.getEditionWidth();
@@ -85,10 +85,10 @@ public class EditorDataLoader {
                     normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
                 }
 
-                editorDataManager.addCustomVisual(id, new ScrollingImage(imagePath, layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                editorDataManager.addCustomDisplays(id, new ScrollingImage(imagePath, layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
-                JsonNode animationInfoNode = checkAndGetObject(filepath, visualNode, "animationInfo");
+                JsonNode animationInfoNode = checkAndGetObject(filepath, displayNode, "animationInfo");
 
                 String animationFilepath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, animationInfoNode, "fileName");
                 int frameCount = checkAndGetInt(filepath, animationInfoNode, "frameCount");
@@ -96,11 +96,11 @@ public class EditorDataLoader {
                 IVec2D startingPosition = checkAndGetIVec2D(filepath, animationInfoNode, "startingPosition");
                 IVec2D stride = checkAndGetIVec2D(filepath, animationInfoNode, "stride");
 
-                float framePeriodSeconds = checkAndGetFloat(filepath, visualNode, "framePeriodSeconds");
-                boolean looping = checkAndGetBoolean(filepath, visualNode, "looping");
+                float framePeriodSeconds = checkAndGetFloat(filepath, displayNode, "framePeriodSeconds");
+                boolean looping = checkAndGetBoolean(filepath, displayNode, "looping");
 
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
-                editorDataManager.addCustomVisual(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, size.x, size.y));
+                editorDataManager.addCustomDisplays(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
@@ -346,10 +346,10 @@ public class EditorDataLoader {
             }
             return spawnInfo;
 
-        }else if(type.equals("visual")) {
+        }else if(type.equals("display")) {
             int id = checkAndGetInt(filepath, spawnableNode, "id");
             Vec2D positionVec = checkAndConvertIntArrayToVec2D(filepath, spawnableNode, "position");
-            return new SceneVisualSpawnInfo(id, positionVec.x, positionVec.y);
+            return new SceneDisplaySpawnInfo(id, positionVec.x, positionVec.y);
         }
         else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");

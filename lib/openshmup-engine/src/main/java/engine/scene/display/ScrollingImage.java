@@ -1,14 +1,13 @@
-package engine.scene.visual;
+package engine.scene.display;
 
 import engine.graphics.Graphic;
-import engine.graphics.MovingImage;
 import engine.scene.Scene;
 
-public class ScrollingImage implements SceneVisual {
-    private MovingImage image1;
+public class ScrollingImage implements SceneDisplay {
+    private DynamicImage image1;
     private float positionX1;
     private float positionY1;
-    private MovingImage image2;
+    private DynamicImage image2;
     private float positionX2;
     private float positionY2;
     private float sizeX;
@@ -19,8 +18,8 @@ public class ScrollingImage implements SceneVisual {
     public ScrollingImage(String imagePath, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        this.image1 = new MovingImage(imagePath, layer, sizeX, sizeY);
-        this.image2 = new MovingImage(imagePath, layer, sizeX, sizeY);
+        this.image1 = new DynamicImage(imagePath, layer, sizeX, sizeY);
+        this.image2 = new DynamicImage(imagePath, layer, sizeX, sizeY);
         this.positionX1 = 0.5f;
         this.positionY1 = 0.5f;
         this.speed = speed;
@@ -31,7 +30,8 @@ public class ScrollingImage implements SceneVisual {
         setPosition(0.5f, 0.5f);
     }
 
-    public ScrollingImage(MovingImage image1, float positionX1, float positionY1, MovingImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
+    public ScrollingImage(DynamicImage image1, float positionX1, float positionY1, DynamicImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
+        //this constructore is only used for deep copying
         this.image1 = image1;
         this.positionX1 = positionX1;
         this.positionY1 = positionY1;
@@ -45,15 +45,14 @@ public class ScrollingImage implements SceneVisual {
         this.lastUpdateTimeSeconds = 0.0f;
         setPosition(0.5f, 0.5f);
     }
-
     @Override
-    public SceneVisual copy() {
+    public SceneDisplay copy() {
         return new ScrollingImage(image1.copy(), positionX1, positionY1, image2.copy(), positionX2, positionY2, sizeX, sizeY, horizontalScrolling, speed);
     }
 
     @Override
     public Graphic<?,?>[] getGraphics() {
-        return new MovingImage[]{image1,image2};
+        return new DynamicImage[]{image1,image2};
     }
 
     @Override

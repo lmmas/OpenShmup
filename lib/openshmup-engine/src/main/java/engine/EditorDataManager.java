@@ -2,26 +2,23 @@ package engine;
 
 import engine.entity.Entity;
 import engine.entity.trajectory.Trajectory;
-import engine.scene.LevelScene;
 import engine.scene.LevelTimeline;
-import engine.scene.Scene;
-import engine.scene.visual.SceneVisual;
+import engine.scene.display.SceneDisplay;
 import json.EditorDataLoader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class EditorDataManager {
-    private HashMap<Integer, SceneVisual> customVisuals;
+    private HashMap<Integer, SceneDisplay> customDisplays;
     private HashMap<Integer, Trajectory> customTrajectories;
     private HashMap<Integer, Supplier<Entity>> customEntities;
     private ArrayList<LevelTimeline> customTimelines;
 
     public EditorDataManager(){
-        this.customVisuals = new HashMap<>();
+        this.customDisplays = new HashMap<>();
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();
         this.customTimelines = new ArrayList<>();
@@ -39,7 +36,7 @@ public class EditorDataManager {
     void loadGameContents(){
         EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
-            editorDataLoader.loadCustomVisuals(GlobalVars.Paths.editorCustomVisualsFile, this);
+            editorDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile, this);
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
             editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
             editorDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
@@ -48,12 +45,12 @@ public class EditorDataManager {
         }
     }
 
-    public void addCustomVisual(int id, SceneVisual visual){
-        customVisuals.put(id, visual);
+    public void addCustomDisplays(int id, SceneDisplay display){
+        customDisplays.put(id, display);
     }
 
-    public SceneVisual buildCustomVisual(int id){
-        return customVisuals.get(id).copy();
+    public SceneDisplay buildCustomDisplay(int id){
+        return customDisplays.get(id).copy();
     }
 
     public void addCustomEntity(int id, Supplier<Entity> constructor){

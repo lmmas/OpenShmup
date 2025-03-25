@@ -3,12 +3,12 @@ package engine.scene;
 import engine.EditorDataManager;
 import engine.Game;
 import engine.graphics.Graphic;
-import engine.graphics.MovingImage;
-import engine.graphics.StaticImage;
+import engine.scene.display.DynamicImage;
+import engine.scene.display.StaticImage;
 import engine.render.MovingImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
-import engine.scene.visual.SceneVisual;
+import engine.scene.display.SceneDisplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,16 +23,16 @@ abstract public class Scene {
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
-    HashSet<SceneVisual> visualList;
-    HashSet<SceneVisual> visualsToRemove;
+    HashSet<SceneDisplay> displayList;
+    HashSet<SceneDisplay> displaysToRemove;
     public Scene(Game game) {
         this.window = game.getWindow();
         this.editorDataManager = game.getEditorDataManager();
         this.layers = new TreeMap<>();
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
-        this.visualList = new HashSet<>();
-        this.visualsToRemove = new HashSet<>();
+        this.displayList = new HashSet<>();
+        this.displaysToRemove = new HashSet<>();
         timer.start();
     }
 
@@ -41,16 +41,16 @@ abstract public class Scene {
     public void update(){
         if(!timer.isPaused()){
             sceneTime = timer.getTimeSeconds();
-            for(SceneVisual visual: visualList){
-                visual.update(sceneTime);
-                if(visual.shouldBeRemoved()){
-                    visualsToRemove.add(visual);
+            for(SceneDisplay display: displayList){
+                display.update(sceneTime);
+                if(display.shouldBeRemoved()){
+                    displaysToRemove.add(display);
                 }
             }
-            for(var visual: visualsToRemove){
-                deleteVisual(visual);
+            for(var display: displaysToRemove){
+                deleteDisplay(display);
             }
-            visualsToRemove.clear();
+            displaysToRemove.clear();
         }
     }
 
@@ -60,8 +60,8 @@ abstract public class Scene {
                 vao.draw();
             }
         }
-        float currentTime = timer.getTimeSeconds();
-        /*System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
+        /*float currentTime = timer.getTimeSeconds();
+        System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
         lastDrawTime = currentTime;*/
     }
 
@@ -81,7 +81,7 @@ abstract public class Scene {
                             staticImageVAO.addGraphic(newImage);
                         }
                         case MOVING_IMAGE -> {
-                            MovingImage newImage = (MovingImage) newGraphic;
+                            DynamicImage newImage = (DynamicImage) newGraphic;
                             MovingImageVAO movingImageVAO = (MovingImageVAO)currentVAO;
                             movingImageVAO.addGraphic(newImage);
                         }
@@ -110,7 +110,7 @@ abstract public class Scene {
                 newVAO.addGraphic(newImage);
             }
             case MOVING_IMAGE -> {
-                MovingImage newImage = (MovingImage) graphic;
+                DynamicImage newImage = (DynamicImage) graphic;
                 MovingImageVAO newVAO = new MovingImageVAO();
                 vaoList.add(newVAO);
                 newVAO.addGraphic(newImage);
@@ -118,18 +118,18 @@ abstract public class Scene {
         }
     }
 
-    public void addVisual(SceneVisual visual){
-        Graphic<?,?>[] newGraphics = visual.getGraphics();
+    public void addDisplay(SceneDisplay display){
+        Graphic<?,?>[] newGraphics = display.getGraphics();
         for(Graphic<?,?> graphic: newGraphics){
             addGraphic(graphic);
         }
-        visualList.add(visual);
-        visual.setScene(this);
+        displayList.add(display);
+        display.setScene(this);
     }
 
-    public void deleteVisual(SceneVisual visual){
-        visualList.remove(visual);
-        var graphics = visual.getGraphics();
+    public void deleteDisplay(SceneDisplay display){
+        displayList.remove(display);
+        var graphics = display.getGraphics();
         for(var graphic: graphics){
             graphic.delete();
         }

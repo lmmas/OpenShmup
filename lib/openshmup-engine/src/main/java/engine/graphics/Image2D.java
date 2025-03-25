@@ -6,8 +6,8 @@ import engine.render.Shader;
 import engine.render.Texture;
 
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
-    Texture texture;
-    ImagePrimitive primitive;
+    protected Texture texture;
+    protected ImagePrimitive primitive;
     public Image2D(String textureFilepath, int layer, RenderType type, float sizeX, float sizeY, Shader shader){
         super(layer, type, shader);
         this.texture = Texture.getTexture(textureFilepath);
