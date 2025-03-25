@@ -15,7 +15,7 @@ import java.util.function.Function;
 abstract public class Entity {
     protected LevelScene scene;
     final protected EntityType type;
-    final protected Vec2D startingPosition;
+    final protected Vec2D trajectoryStartingPosition;
     final protected Vec2D position;
     final protected Vec2D size;
     protected float orientationRadians;
@@ -32,7 +32,7 @@ abstract public class Entity {
     public Entity(EntityType type, float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, Spawnable deathSpawn) {
         this.scene = null;
         this.type = type;
-        this.startingPosition = new Vec2D(startingPosX, startingPosY);
+        this.trajectoryStartingPosition = new Vec2D(startingPosX, startingPosY);
         this.position = new Vec2D(startingPosX, startingPosY);
         sprite.setPosition(startingPosX, startingPosY);
         this.size = new Vec2D(sizeX, sizeY);
@@ -62,8 +62,8 @@ abstract public class Entity {
         return sprite;
     }
 
-    public Vec2D getStartingPosition() {
-        return new Vec2D(startingPosition);
+    public Vec2D getTrajectoryStartingPosition() {
+        return new Vec2D(trajectoryStartingPosition);
     }
 
     public Vec2D getPosition(){
@@ -101,9 +101,9 @@ abstract public class Entity {
         hitbox.setPosition(positionX, positionY);
     }
 
-    public void setStartingPosition(float startingPositionX, float startingPositionY){
-        startingPosition.x = startingPositionX;
-        startingPosition.y = startingPositionY;
+    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY){
+        trajectoryStartingPosition.x = startingPositionX;
+        trajectoryStartingPosition.y = startingPositionY;
     }
     public void setSize(float sizeX, float sizeY){
         this.size.x = sizeX;

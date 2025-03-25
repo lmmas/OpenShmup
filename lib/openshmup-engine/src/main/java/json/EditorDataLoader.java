@@ -2,10 +2,7 @@ package json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.GameConfig;
-import engine.EditorDataManager;
-import engine.GlobalVars;
-import engine.Vec2D;
+import engine.*;
 import engine.entity.Entity;
 import engine.entity.EntityType;
 import engine.graphics.Animation;
@@ -18,7 +15,7 @@ import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneVisualSpawnInfo;
 import engine.scene.spawnable.Spawnable;
-import engine.scene.visual.ScrollingBackGround;
+import engine.scene.visual.ScrollingImage;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
 import pl.joegreen.lambdaFromString.LambdaFactoryConfiguration;
@@ -47,37 +44,17 @@ public class EditorDataLoader {
         }
         checkIfObject(filepath, rootNode);
 
-        JsonNode resolutionNode = checkAndGetArray(filepath, rootNode, "resolution");
-        checkSize(filepath, resolutionNode, 2);
-        checkIfInt(filepath, resolutionNode.get(0));
-        int editionWitdth = resolutionNode.get(0).intValue();
-        int editionHeight = resolutionNode.get(1).intValue();
-        GameConfig.setEditionResolution(editionWitdth, editionHeight);
+        IVec2D resolution = checkAndGetIVec2D(filepath, rootNode, "resolution");
+        GameConfig.setEditionResolution(resolution.x, resolution.y);
+
         JsonNode levelUINode = checkAndGetObject(filepath, rootNode, "levelUI");
+
         JsonNode livesNode = checkAndGetObject(filepath, levelUINode, "lives");
-        String livesTextureName = checkAndGetString(filepath, livesNode, "fileName");
-        GameConfig.LevelUI.Lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + livesTextureName;
 
-        JsonNode livesSizeNode = checkAndGetArray(filepath, livesNode, "size");
-        checkSize(filepath, livesSizeNode, 2);
-        checkIfFloat(filepath, livesSizeNode.get(0));
-        float livesSizeX = livesSizeNode.get(0).floatValue();
-        float livesSizeY = livesSizeNode.get(1).floatValue();
-        GameConfig.LevelUI.Lives.size = new Vec2D(livesSizeX, livesSizeY);
-
-        JsonNode livesPositionNode = checkAndGetArray(filepath, livesNode, "position");
-        checkSize(filepath, livesPositionNode, 2);
-        checkIfFloat(filepath, livesPositionNode.get(0));
-        float livesPositionX = livesPositionNode.get(0).floatValue();
-        float livesPositionY = livesPositionNode.get(1).floatValue();
-        GameConfig.LevelUI.Lives.position = new Vec2D(livesPositionX, livesPositionY);
-
-        JsonNode livesStrideNode = checkAndGetArray(filepath, livesNode, "stride");
-        checkSize(filepath, livesStrideNode, 2);
-        checkIfFloat(filepath, livesStrideNode.get(0));
-        float livesStrideX = livesStrideNode.get(0).floatValue();
-        float livesStrideY = livesStrideNode.get(1).floatValue();
-        GameConfig.LevelUI.Lives.stride = new Vec2D(livesStrideX, livesStrideY);
+        GameConfig.LevelUI.Lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, livesNode, "fileName");
+        GameConfig.LevelUI.Lives.size = checkAndConvertIntArrayToVec2D(filepath, livesNode, "size");
+        GameConfig.LevelUI.Lives.position = checkAndConvertIntArrayToVec2D(filepath, livesNode, "position");
+        GameConfig.LevelUI.Lives.stride = checkAndConvertIntArrayToVec2D(filepath, livesNode, "stride");
     }
     public void loadCustomVisuals(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException{
         JsonNode rootNode;
@@ -89,52 +66,41 @@ public class EditorDataLoader {
         checkIfArray(filepath, rootNode);
         for(JsonNode visualNode: rootNode){
             checkIfObject(filepath, visualNode);
+
             int id = checkAndGetInt(filepath, visualNode, "id");
             int layer = checkAndGetInt(filepath, visualNode, "layer");
-
             String type = checkAndGetString(filepath, visualNode, "type");
-            if(type.equals("scrollingImage")){
-                String fileName = checkAndGetString(filepath, visualNode, "fileName");
-                String imagePath = GlobalVars.Paths.editorTextureFolder + fileName;
-                JsonNode sizeNode = checkAndGetArray(filepath, visualNode, "size");
-                checkSize(filepath, sizeNode, 2);
-                checkIfFloat(filepath, sizeNode.get(0));
-                float sizeX = sizeNode.get(0).floatValue();
-                float sizeY = sizeNode.get(1).floatValue();
+            Vec2D size = checkAndConvertIntArrayToVec2D(filepath, visualNode, "size");
 
-                float speed = checkAndGetFloat(filepath, visualNode, "speed");
+            if(type.equals("scrollingImage")){
+
+                String imagePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, visualNode, "fileName");
                 boolean horizontalScrolling = checkAndGetBoolean(filepath, visualNode, "horizontalScrolling");
-                editorDataManager.addCustomVisual(id, new ScrollingBackGround(imagePath, layer, sizeX, sizeY, speed, horizontalScrolling));
+
+                int speed = checkAndGetInt(filepath, visualNode, "speed");
+                float normalizedSpeed;
+                if(horizontalScrolling){
+                    normalizedSpeed = (float) speed / GameConfig.getEditionWidth();
+                }else{
+                    normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
+                }
+
+                editorDataManager.addCustomVisual(id, new ScrollingImage(imagePath, layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
                 JsonNode animationInfoNode = checkAndGetObject(filepath, visualNode, "animationInfo");
+
                 String animationFilepath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, animationInfoNode, "fileName");
                 int frameCount = checkAndGetInt(filepath, animationInfoNode, "frameCount");
-                JsonNode frameSize = checkAndGetArray(filepath, animationInfoNode, "frameSize");
-                checkSize(filepath, frameSize, 2);
-                checkIfInt(filepath, frameSize.get(0));
-                int frameSizeX = frameSize.get(0).intValue();
-                int frameSizeY = frameSize.get(1).intValue();
-
-                JsonNode startingPosition = checkAndGetArray(filepath, animationInfoNode, "startingPosition");
-                checkSize(filepath, startingPosition, 2);
-                checkIfInt(filepath, startingPosition.get(0));
-                int startPosX = startingPosition.get(0).intValue();
-                int startPosY = startingPosition.get(1).intValue();
-
-                JsonNode stride = checkAndGetArray(filepath, animationInfoNode, "stride");
-                checkSize(filepath, stride, 2);
-                checkIfInt(filepath, stride.get(0));
-                int strideX = stride.get(0).intValue();
-                int strideY = stride.get(1).intValue();
+                IVec2D frameSize = checkAndGetIVec2D(filepath, animationInfoNode, "frameSize");
+                IVec2D startingPosition = checkAndGetIVec2D(filepath, animationInfoNode, "startingPosition");
+                IVec2D stride = checkAndGetIVec2D(filepath, animationInfoNode, "stride");
 
                 float framePeriodSeconds = checkAndGetFloat(filepath, visualNode, "framePeriodSeconds");
                 boolean looping = checkAndGetBoolean(filepath, visualNode, "looping");
 
-                Vec2D sizeVec = checkAndGetVec2D(filepath, visualNode, "size");
-
-                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSizeX, frameSizeY, startPosX, startPosY, strideX, strideY);
-                editorDataManager.addCustomVisual(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, sizeVec.x, sizeVec.y));
+                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
+                editorDataManager.addCustomVisual(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
@@ -164,11 +130,11 @@ public class EditorDataLoader {
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
             }
 
-            Vec2D sizeVec = checkAndGetVec2D(filepath, entityNode, "size");
+            Vec2D size = checkAndConvertIntArrayToVec2D(filepath, entityNode, "size");
 
             AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
                     new Entity.Builder()
-                    .setId(id).setType(entityType).setSize(sizeVec.x, sizeVec.y));
+                    .setId(id).setType(entityType).setSize(size.x, size.y));
 
             if (entityNode.has("evil")){
                 boolean evil= checkAndGetBoolean(filepath, entityNode, "evil");
@@ -199,8 +165,8 @@ public class EditorDataLoader {
 
             if (entityType == EntityType.SHIP && entityNode.has("shot")){
                 JsonNode shotNode = checkAndGetObject(filepath, entityNode, "shot");
-                float shotPeriod = checkAndGetFloat(filepath, shotNode, "shotPeriod");
 
+                float shotPeriod = checkAndGetFloat(filepath, shotNode, "shotPeriod");
                 float firstShotTime = checkAndGetFloat(filepath, shotNode, "firstShotTime");
 
                 checkForField(filepath, shotNode, "spawn");
@@ -228,30 +194,17 @@ public class EditorDataLoader {
 
             if(spriteNode.has("animationInfo")){
                 JsonNode animationInfoNode = checkAndGetObject(filepath, spriteNode, "animationInfo");
+
                 String animationFilepath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, animationInfoNode, "fileName");
                 int frameCount = checkAndGetInt(filepath, animationInfoNode, "frameCount");
-                JsonNode frameSize = checkAndGetArray(filepath, animationInfoNode, "frameSize");
-                checkSize(filepath, frameSize, 2);
-                checkIfInt(filepath, frameSize.get(0));
-                int frameSizeX = frameSize.get(0).intValue();
-                int frameSizeY = frameSize.get(1).intValue();
-
-                JsonNode startingPosition = checkAndGetArray(filepath, animationInfoNode, "startingPosition");
-                checkSize(filepath, startingPosition, 2);
-                checkIfInt(filepath, startingPosition.get(0));
-                int startPosX = startingPosition.get(0).intValue();
-                int startPosY = startingPosition.get(1).intValue();
-
-                JsonNode stride = checkAndGetArray(filepath, animationInfoNode, "stride");
-                checkSize(filepath, stride, 2);
-                checkIfInt(filepath, stride.get(0));
-                int strideX = stride.get(0).intValue();
-                int strideY = stride.get(1).intValue();
+                IVec2D frameSize = checkAndGetIVec2D(filepath, animationInfoNode, "frameSize");
+                IVec2D startingPosition = checkAndGetIVec2D(filepath, animationInfoNode, "startingPosition");
+                IVec2D stride = checkAndGetIVec2D(filepath, animationInfoNode, "stride");
 
                 float framePeriodSeconds = checkAndGetFloat(filepath, spriteNode, "framePeriodSeconds");
                 boolean looping = checkAndGetBoolean(filepath, spriteNode, "looping");
 
-                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSizeX, frameSizeY, startPosX, startPosY, strideX, strideY);
+                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
 
                 customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable)));
             }
@@ -382,7 +335,7 @@ public class EditorDataLoader {
         if(type.equals("entity")){
             int id = checkAndGetInt(filepath, spawnableNode, "id");
 
-            Vec2D startingPositionVec = checkAndGetVec2D(filepath, spawnableNode, "startingPosition");
+            Vec2D startingPositionVec = checkAndConvertIntArrayToVec2D(filepath, spawnableNode, "startingPosition");
 
             EntitySpawnInfo spawnInfo;
             if(spawnableNode.has("trajectory")){
@@ -395,7 +348,7 @@ public class EditorDataLoader {
 
         }else if(type.equals("visual")) {
             int id = checkAndGetInt(filepath, spawnableNode, "id");
-            Vec2D positionVec = checkAndGetVec2D(filepath, spawnableNode, "position");
+            Vec2D positionVec = checkAndConvertIntArrayToVec2D(filepath, spawnableNode, "position");
             return new SceneVisualSpawnInfo(id, positionVec.x, positionVec.y);
         }
         else{
@@ -505,5 +458,25 @@ public class EditorDataLoader {
         float vecX = arrayNode.get(0).floatValue();
         float vecY = arrayNode.get(1).floatValue();
         return new Vec2D(vecX, vecY);
+    }
+
+    private IVec2D checkAndGetIVec2D(String filepath, JsonNode parentNode, String fieldName){
+        JsonNode arrayNode = checkAndGetArray(filepath, parentNode, fieldName);
+        checkSize(filepath, arrayNode, 2);
+        checkIfInt(filepath, arrayNode.get(0));
+        checkIfInt(filepath, arrayNode.get(1));
+        int vecX = arrayNode.get(0).intValue();
+        int vecY = arrayNode.get(1).intValue();
+        return new IVec2D(vecX, vecY);
+    }
+
+    private Vec2D checkAndConvertIntArrayToVec2D(String filepath, JsonNode parentNode, String fieldName){
+        JsonNode arrayNode = checkAndGetArray(filepath, parentNode, fieldName);
+        checkSize(filepath, arrayNode, 2);
+        checkIfInt(filepath, arrayNode.get(0));
+        checkIfInt(filepath, arrayNode.get(1));
+        int vecX = arrayNode.get(0).intValue();
+        int vecY = arrayNode.get(1).intValue();
+        return new Vec2D((float) vecX / GameConfig.getEditionWidth(), (float) vecY / GameConfig.getEditionHeight());
     }
 }

@@ -3,7 +3,7 @@
         "id": 0,
         "type": "ship",
         "hp": 5,
-        "size": [0.05, 0.08],
+        "size": [50, 80],
         "sprite": {
             "layer": 2,
             "orientable": false,
@@ -24,14 +24,14 @@
                 "type": "entity",
                 "id": 1,
                 "trajectory": 2,
-                "startingPosition": [0, 0.03]
+                "startingPosition": [0, 30]
             }
         }
     },
     {
         "id": 1,
         "type": "projectile",
-        "size": [0.01, 0.01],
+        "size": [10, 10],
         "evil": false,
         "sprite": {
             "layer": 2,
@@ -51,7 +51,7 @@
         "id": 2,
         "type": "ship",
         "hp": 3,
-        "size": [0.05, 0.05],
+        "size": [50, 50],
         "sprite": {
             "layer": 4,
             "orientable": false,
@@ -72,19 +72,19 @@
                 "type": "entity",
                 "id": 3,
                 "trajectory": 1,
-                "startingPosition": [0, -0.03]
+                "startingPosition": [0, -30]
             }
         },
         "deathSpawn": {
             "type": "visual",
             "id": 2,
-            "position": [0.0,0.0]
+            "position": [0,0]
         }
     },
     {
         "id": 3,
         "type": "projectile",
-        "size": [0.01, 0.01],
+        "size": [10, 10],
         "sprite": {
             "layer": 3,
             "orientable": false,

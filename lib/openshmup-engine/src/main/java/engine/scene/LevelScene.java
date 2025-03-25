@@ -73,7 +73,7 @@ public class LevelScene extends Scene{
             if(entitySpawn.trajectoryId() != -1){
                 newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
             }
-            newEntity.setStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
             if(entitySpawn.id() == 0){

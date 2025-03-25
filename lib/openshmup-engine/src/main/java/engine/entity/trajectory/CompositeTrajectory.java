@@ -1,16 +1,19 @@
 package engine.entity.trajectory;
 
+import engine.Vec2D;
 import engine.entity.Entity;
 import engine.scene.LevelScene;
 
 public class CompositeTrajectory implements Trajectory{
     final private float[] bounds;
     final private Trajectory[] trajectories;
+    private int trajectoryIndex;
 
     public CompositeTrajectory(float[] bounds, Trajectory[] trajectories) {
         assert bounds.length == trajectories.length - 1: "Mismatching trajectories and bounds counts";
         this.bounds = bounds;
         this.trajectories = trajectories;
+        this.trajectoryIndex = 0;
     }
 
     @Override
@@ -24,14 +27,15 @@ public class CompositeTrajectory implements Trajectory{
 
     @Override
     public void update(Entity entity) {
-        float currentTime = entity.getLifetimeSeconds();
-        for(int i = 0; i < bounds.length; i++){
-            if(currentTime < bounds[i]){
-                trajectories[i].update(entity);
-                return;
+        if(trajectoryIndex < bounds.length){
+            float currentTime = entity.getLifetimeSeconds();
+            if(currentTime >= bounds[trajectoryIndex]){
+                trajectoryIndex++;
+                Vec2D currentPosition = entity.getPosition();
+                entity.setTrajectoryStartingPosition(currentPosition.x, currentPosition.y);
             }
         }
-        trajectories[bounds.length].update(entity);
+        trajectories[trajectoryIndex].update(entity);
     }
 
     @Override

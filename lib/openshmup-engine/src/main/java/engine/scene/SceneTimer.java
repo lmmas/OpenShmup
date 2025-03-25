@@ -19,7 +19,7 @@ public class SceneTimer {
     }
     public void start(){
         if(!alreadyStarted){
-            referenceTimeMillis = System.currentTimeMillis();
+            referenceTimeMillis = System.nanoTime();
             lastReadTimeMillis = referenceTimeMillis;
             alreadyStarted = true;
         }
@@ -27,7 +27,7 @@ public class SceneTimer {
 
     public void pause(){
         if(alreadyStarted){
-            pausedTime = System.currentTimeMillis();
+            pausedTime = System.nanoTime();
             isPaused = true;
         }
     }
@@ -38,7 +38,7 @@ public class SceneTimer {
 
     public void resume(){
         if(alreadyStarted && isPaused){
-            long pauseIntervalMillis = System.currentTimeMillis() - pausedTime;
+            long pauseIntervalMillis = System.nanoTime() - pausedTime;
             referenceTimeMillis += pauseIntervalMillis;
             lastReadTimeMillis += pauseIntervalMillis;
             isPaused = false;
@@ -56,8 +56,8 @@ public class SceneTimer {
     public float getTimeSeconds(){
         if(alreadyStarted){
             if(!isPaused){
-                long currentTimeMillis = System.currentTimeMillis();
-                float sceneTime = lastSceneTime + (float)(currentTimeMillis - lastReadTimeMillis) * speed / 1000.0f;
+                long currentTimeMillis = System.nanoTime();
+                float sceneTime = lastSceneTime + (float)(currentTimeMillis - lastReadTimeMillis) * speed / 1000000000.0f;
                 lastReadTimeMillis = currentTimeMillis;
                 lastSceneTime = sceneTime;
                 return sceneTime;
