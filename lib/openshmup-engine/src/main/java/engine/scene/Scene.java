@@ -5,7 +5,7 @@ import engine.Game;
 import engine.graphics.Graphic;
 import engine.scene.display.DynamicImage;
 import engine.scene.display.StaticImage;
-import engine.render.MovingImageVAO;
+import engine.render.DynamicImageVAO;
 import engine.render.StaticImageVAO;
 import engine.render.VAO;
 import engine.scene.display.SceneDisplay;
@@ -80,10 +80,10 @@ abstract public class Scene {
                             StaticImageVAO staticImageVAO = (StaticImageVAO)currentVAO;
                             staticImageVAO.addGraphic(newImage);
                         }
-                        case MOVING_IMAGE -> {
+                        case DYNAMIC_IMAGE -> {
                             DynamicImage newImage = (DynamicImage) newGraphic;
-                            MovingImageVAO movingImageVAO = (MovingImageVAO)currentVAO;
-                            movingImageVAO.addGraphic(newImage);
+                            DynamicImageVAO dynamicImageVAO = (DynamicImageVAO)currentVAO;
+                            dynamicImageVAO.addGraphic(newImage);
                         }
                     }
                     newGraphicAllocated = true;
@@ -109,9 +109,9 @@ abstract public class Scene {
                 vaoList.add(newVAO);
                 newVAO.addGraphic(newImage);
             }
-            case MOVING_IMAGE -> {
+            case DYNAMIC_IMAGE -> {
                 DynamicImage newImage = (DynamicImage) graphic;
-                MovingImageVAO newVAO = new MovingImageVAO();
+                DynamicImageVAO newVAO = new DynamicImageVAO();
                 vaoList.add(newVAO);
                 newVAO.addGraphic(newImage);
             }

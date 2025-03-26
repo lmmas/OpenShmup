@@ -3,7 +3,7 @@
         "id": 0,
         "hasHP": true,
         "hp": 5,
-        "size": [50, 80],
+        "size": [50, 75],
         "sprite": {
             "layer": 2,
             "orientable": false,
@@ -20,18 +20,37 @@
         "shot":{
             "shotPeriod": 0.1,
             "firstShotTime": 0.5,
-            "spawn": {
-                "type": "entity",
-                "id": 1,
-                "trajectory": 2,
-                "startingPosition": [0, 30]
-            }
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 2,
+                    "startingPosition": [0, 30]
+                },
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 3,
+                    "startingPosition": [0, 30]
+                },
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 4,
+                    "startingPosition": [0, 30]
+                }
+            ]
+        },
+        "deathSpawn": {
+            "type": "display",
+            "id": 2,
+            "position": [0,0]
         }
     },
     {
         "id": 1,
         "hasHP": false,
-        "size": [10, 10],
+        "size": [10, 26],
         "evil": false,
         "sprite": {
             "layer": 2,
@@ -39,8 +58,8 @@
             "animationInfo": {
                 "fileName": "laser-bolts.png",
                 "frameCount": 2,
-                "frameSize": [5, 8],
-                "startingPosition": [6,4],
+                "frameSize": [5, 13],
+                "startingPosition": [6,1],
                 "stride": [14, 0]
             },
             "framePeriodSeconds": 0.25,
@@ -50,7 +69,7 @@
     {
         "id": 2,
         "hasHP": true,
-        "hp": 3,
+        "hp": 5,
         "size": [50, 50],
         "sprite": {
             "layer": 4,

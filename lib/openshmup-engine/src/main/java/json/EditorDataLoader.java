@@ -161,12 +161,10 @@ public class EditorDataLoader {
                 JsonNode spawnableNode = shotNode.get("spawn");
                 Spawnable shot;
                 if(spawnableNode.isArray()){
-                    ArrayList<Spawnable> spawnableList = new ArrayList<>(spawnableNode.size());
-                    for(JsonNode elementNode: spawnableNode){
-                        Spawnable spawnable = getSingleSpawnable(filepath, elementNode);
-                        spawnableList.add(spawnable);
+                    Spawnable[] spawnables = new Spawnable[spawnableNode.size()];
+                    for(int i = 0; i < spawnableNode.size(); i++){
+                        spawnables[i] = getSingleSpawnable(filepath, spawnableNode.get(i));
                     }
-                    Spawnable[] spawnables = spawnableList.toArray(Spawnable[]::new);
                     shot = new MultiSpawnable(spawnables);
                 }
                 else {

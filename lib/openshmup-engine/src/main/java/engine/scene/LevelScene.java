@@ -13,6 +13,7 @@ import engine.scene.display.SceneDisplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
@@ -122,15 +123,18 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
-        Graphic<?,?> entityGraphic = entity.getSprite().getGraphic();
-        addGraphic(entityGraphic);
-        if(entity.isEvil()){
-            evilEntities.add(entity);
+        Optional<Graphic<?, ?>> entityGraphic = entity.getSprite().getGraphic();
+        if(entityGraphic.isPresent()){
+            Graphic<?, ?> newGraphic = entityGraphic.orElseThrow();
+            addGraphic(newGraphic);
+            if(entity.isEvil()){
+                evilEntities.add(entity);
+            }
+            else{
+                goodEntities.add(entity);
+            }
+            entity.setScene(this);
         }
-        else{
-            goodEntities.add(entity);
-        }
-        entity.setScene(this);
     }
 
     public void deleteEntity(Entity entity){
@@ -140,7 +144,7 @@ public class LevelScene extends Scene{
         else{
             goodEntities.remove(entity);
         }
-        entity.getSprite().getGraphic().delete();
+        entity.getSprite().getGraphic().ifPresent(Graphic::delete);
     }
 
     public boolean getControlState(GameControl control){

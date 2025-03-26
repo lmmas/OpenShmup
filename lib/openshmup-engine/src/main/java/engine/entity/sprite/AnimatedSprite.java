@@ -1,31 +1,26 @@
 package engine.entity.sprite;
 
+import engine.graphics.Animation;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 
 import java.util.Optional;
 
-public class EmptySprite implements EntitySprite{
-    private static EmptySprite instance = null;
-    private EmptySprite(){
+public class AnimatedSprite implements EntitySprite{
+    final private Animation animation;
 
-    }
-
-    public static EmptySprite getInstance() {
-        if(instance == null){
-            instance = new EmptySprite();
-        }
-        return instance;
+    public AnimatedSprite(Animation animation) {
+        this.animation = animation;
     }
 
     @Override
     public void setPosition(float positionX, float positionY) {
-
+        animation.setPosition(positionX, positionY);
     }
 
     @Override
     public void setSize(float sizeX, float sizeY) {
-
+        animation.setSize(sizeX, sizeY);
     }
 
     @Override
@@ -35,21 +30,22 @@ public class EmptySprite implements EntitySprite{
 
     @Override
     public Optional<Graphic<?, ?>> getGraphic() {
-        return Optional.empty();
+        return Optional.ofNullable(animation.getImage());
     }
 
     @Override
     public Optional<RenderInfo> getRenderInfo() {
-        return Optional.empty();
+        return Optional.ofNullable(animation.getImage().getRenderInfo());
     }
 
     @Override
     public void update(float currentTimeSeconds) {
-
+        animation.update(currentTimeSeconds);
     }
 
     @Override
     public EntitySprite copy() {
-        return this;
+        return new AnimatedSprite(animation.copy());
     }
+
 }

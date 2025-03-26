@@ -2,54 +2,45 @@ package engine.entity.sprite;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
+import engine.scene.display.DynamicImage;
 
 import java.util.Optional;
 
-public class EmptySprite implements EntitySprite{
-    private static EmptySprite instance = null;
-    private EmptySprite(){
-
+public class SimpleSprite implements EntitySprite{
+    final private DynamicImage image;
+    public SimpleSprite(DynamicImage image){
+        this.image = image;
     }
-
-    public static EmptySprite getInstance() {
-        if(instance == null){
-            instance = new EmptySprite();
-        }
-        return instance;
-    }
-
     @Override
     public void setPosition(float positionX, float positionY) {
-
+        image.setPosition(positionX, positionY);
     }
 
     @Override
     public void setSize(float sizeX, float sizeY) {
-
+        image.setSize(sizeX, sizeY);
     }
 
     @Override
     public void setOrientation(float orientation) {
-
     }
 
     @Override
     public Optional<Graphic<?, ?>> getGraphic() {
-        return Optional.empty();
+        return Optional.ofNullable(image);
     }
 
     @Override
     public Optional<RenderInfo> getRenderInfo() {
-        return Optional.empty();
+        return Optional.ofNullable(image.getRenderInfo());
     }
 
     @Override
     public void update(float currentTimeSeconds) {
-
     }
 
     @Override
     public EntitySprite copy() {
-        return this;
+        return new SimpleSprite(image.copy());
     }
 }

@@ -1,4 +1,5 @@
 package engine.graphics;
+import engine.render.RenderInfo;
 import engine.render.Shader;
 import engine.render.VAO;
 import engine.render.RenderType;
@@ -9,10 +10,12 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     final protected Shader shader;
     final protected RenderType type;
     protected int layer;
+    final private RenderInfo renderInfo;
 
     public Graphic(int layer, RenderType type, Shader shader){
         this.layer = layer;
         this.type = type;
+        this.renderInfo = new RenderInfo(layer, type);
         this.shader = shader;
     }
 
@@ -26,12 +29,12 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         return layer;
     }
 
-    public void setLayer(int layer) {
-        this.layer = layer;
-    }
-
     public RenderType getType() {
         return type;
+    }
+
+    public RenderInfo getRenderInfo(){
+        return renderInfo;
     }
 
     abstract public int getPrimitiveCount();

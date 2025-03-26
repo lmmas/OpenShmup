@@ -1,11 +1,14 @@
 package engine.graphics;
 
 import engine.entity.sprite.EntitySprite;
+import engine.render.RenderInfo;
 import engine.scene.Scene;
 import engine.scene.display.DynamicImage;
 import engine.scene.display.SceneDisplay;
 
-public class Animation implements EntitySprite, SceneDisplay {
+import java.util.Optional;
+
+public class Animation implements SceneDisplay {
     final private DynamicImage image;
     final private AnimationInfo info;
     final private boolean looping;
@@ -33,11 +36,6 @@ public class Animation implements EntitySprite, SceneDisplay {
         this.frameIndex = 0;
         this.timeOfLastFrame = 0.0f;
     }
-    @Override
-    public Animation copy() {
-        return new Animation(image.copy(), info, looping, framePeriodSeconds);
-    }
-
     private void updateTexturePosition(){
         float texturePositionX = frameIndex * info.strideX() + info.startPosX();
         float texturePositionY = frameIndex * info.strideY() + info.startPosY();
@@ -45,22 +43,21 @@ public class Animation implements EntitySprite, SceneDisplay {
     }
 
     @Override
+    public Animation copy() {
+        return new Animation(image.copy(), info, looping, framePeriodSeconds);
+    }
+
+    @Override
     public void setPosition(float positionX, float positionY) {
         image.setPosition(positionX, positionY);
     }
 
-    @Override
     public void setSize(float sizeX, float sizeY) {
         image.setSize(sizeX, sizeY);
     }
 
-    @Override
-    public void setOrientation(float orientation) {
-        image.setOrientation(orientation);
-    }
 
-    @Override
-    public Graphic<?, ?> getGraphic() {
+    public DynamicImage getImage() {
         return image;
     }
 

@@ -27,37 +27,37 @@
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [150, 1500]
+                    "startingPosition": [150, 1300]
                 },
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [300, 1500]
+                    "startingPosition": [300, 1300]
                 },
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [450, 1500]
+                    "startingPosition": [450, 1300]
                 },
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [600, 1500]
+                    "startingPosition": [600, 1300]
                 },
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [750, 1500]
+                    "startingPosition": [750, 1300]
                 },
                 {
                     "type": "entity",
                     "id": 2,
                     "trajectory": 12,
-                    "startingPosition": [900, 1500]
+                    "startingPosition": [900, 1300]
                 }
             ]
         }

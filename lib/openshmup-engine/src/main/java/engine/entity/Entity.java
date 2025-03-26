@@ -6,7 +6,9 @@ import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.shot.EntityShot;
 import engine.entity.shot.NonPlayerShot;
 import engine.entity.shot.PlayerShot;
+import engine.entity.sprite.AnimatedSprite;
 import engine.entity.sprite.EntitySprite;
+import engine.entity.sprite.SimpleSprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Animation;
@@ -143,13 +145,13 @@ abstract public class Entity {
 
     public static class Builder{
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
-        private Vec2D size;
+        private Vec2D size = new Vec2D(0.0f, 0.0f);
         private float orientationRadians = 0.0f;
         private int id = -1;
         private boolean evil = true;
         private boolean isShip = false;
         private EntitySprite sprite = EntitySprite.DEFAULT();
-        private Hitbox hitbox = Hitbox.DEFAULT();
+        private Hitbox hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
         private Spawnable deathSpawn = Spawnable.DEFAULT();
         private int hitPoints = 1;
         private EntityShot shot = EntityShot.DEFAULT();
@@ -157,6 +159,7 @@ abstract public class Entity {
 
         public Builder setHitPoints(int hp){
             this.hitPoints = hp;
+            this.isShip = true;
             return this;
         }
 
@@ -167,7 +170,8 @@ abstract public class Entity {
         }
 
         public Builder setSize(float sizeX, float sizeY) {
-            this.size = new Vec2D(sizeX, sizeY);
+            this.size.x = sizeX;
+            this.size.y = sizeY;
             return this;
         }
 
@@ -194,7 +198,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new DynamicImage(filepath, layer, size.x, size.y);
+                    this.sprite = new SimpleSprite(new DynamicImage(filepath, layer, size.x, size.y));
                 }
             }
             return this;
@@ -205,7 +209,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new Animation(layer, info, framePeriodSeconds, looping, size.x, size.y);
+                    this.sprite = new AnimatedSprite(new Animation(layer, info, framePeriodSeconds, looping, size.x, size.y));
                 }
             }
             return this;
@@ -243,7 +247,7 @@ abstract public class Entity {
                 hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
             }
             assert (sprite != null): "Entity construction error: null fields";
-            if(isShip){
+            if(!isShip){
                 return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn);
             }
             else{
