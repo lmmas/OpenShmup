@@ -12,10 +12,10 @@ public class PlayerShot implements EntityShot{
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
 
-    public PlayerShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot) {
+    public PlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
         this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
-        this.nextShotTimeSeconds = timeBeforeFirstShot;
+        this.nextShotTimeSeconds = firstShotTimeSeconds;
     }
 
     @Override

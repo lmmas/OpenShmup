@@ -172,9 +172,9 @@ public class LevelScene extends Scene{
         if(entityHitbox == EmptyHitbox.getInstance()){
             return;
         }
-        if (!entity.isShip()) {
+        if (entity.getType() == EntityType.PROJECTILE) {
             for (Entity ennemy : ennemyList) {
-                if(!ennemy.isShip()){
+                if(ennemy.getType() == EntityType.PROJECTILE){
                     continue;
                 }
                 Ship ennemyShip = (Ship) ennemy;
@@ -184,7 +184,7 @@ public class LevelScene extends Scene{
                     entitiesToRemove.add(entity);
                 }
             }
-        } else{
+        } else if(entity.getType() == EntityType.SHIP){
             Ship shipEntity = (Ship) entity;
             for (Entity ennemy : ennemyList) {
                 Hitbox ennemyHitbox = ennemy.getHitbox();

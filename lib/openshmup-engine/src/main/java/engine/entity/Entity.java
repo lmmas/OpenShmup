@@ -62,7 +62,8 @@ abstract public class Entity {
         shot.setScene(scene);
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
-    abstract public boolean isShip();
+
+    abstract public EntityType getType();
 
     public EntitySprite getSprite() {
         return sprite;
@@ -226,13 +227,13 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot){
+        public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds){
             assert this.id != -1: "incorrect building steps order: must define the id first";
             if(this.id == 0){
-                this.shot = new PlayerShot(spawnable, shotPeriodSeconds, timeBeforeFirstShot);
+                this.shot = new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds);
             }
             else{
-                this.shot = new NonPlayerShot(spawnable, shotPeriodSeconds, timeBeforeFirstShot);
+                this.shot = new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds);
             }
             return this;
         }

@@ -1,7 +1,6 @@
 package engine.entity;
 
 import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.shot.EntityShot;
 import engine.entity.sprite.EntitySprite;
 import engine.entity.trajectory.Trajectory;
@@ -19,7 +18,7 @@ public class NonShipEntity extends Entity {
     }
 
     @Override
-    public boolean isShip() {
-        return false;
+    public EntityType getType() {
+        return EntityType.PROJECTILE;
     }
 }

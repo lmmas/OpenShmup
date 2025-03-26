@@ -11,11 +11,11 @@ public class NonPlayerShot implements EntityShot{
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
 
-    public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot) {
+    public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
         this.scene = null;
         this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
-        this.nextShotTimeSeconds = timeBeforeFirstShot;
+        this.nextShotTimeSeconds = firstShotTimeSeconds;
     }
 
     @Override
