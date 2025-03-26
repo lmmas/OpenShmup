@@ -34,4 +34,9 @@ public class EmptyHitbox implements Hitbox{
     public boolean intersects(Hitbox otherHitbox) {
         return false;
     }
+
+    @Override
+    public Hitbox copy() {
+        return this;
+    }
 }

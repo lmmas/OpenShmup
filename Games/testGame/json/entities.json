@@ -1,7 +1,7 @@
 [
     {
         "id": 0,
-        "type": "ship",
+        "hasHP": true,
         "hp": 5,
         "size": [50, 80],
         "sprite": {
@@ -30,7 +30,7 @@
     },
     {
         "id": 1,
-        "type": "projectile",
+        "hasHP": false,
         "size": [10, 10],
         "evil": false,
         "sprite": {
@@ -49,7 +49,7 @@
     },
     {
         "id": 2,
-        "type": "ship",
+        "hasHP": true,
         "hp": 3,
         "size": [50, 50],
         "sprite": {
@@ -83,7 +83,7 @@
     },
     {
         "id": 3,
-        "type": "projectile",
+        "hasHP": false,
         "size": [10, 10],
         "sprite": {
             "layer": 3,

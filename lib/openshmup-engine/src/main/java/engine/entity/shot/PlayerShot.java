@@ -1,31 +1,36 @@
 package engine.entity.shot;
 
+import engine.Vec2D;
 import engine.entity.Entity;
+import engine.scene.GameControl;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
 public class PlayerShot implements EntityShot{
     private LevelScene scene;
-    private final Entity entity;
-    private final Spawnable shot;
+    private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
 
-    public PlayerShot(Entity entity, Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShot) {
-        this.entity = entity;
-        this.shot = shot;
+    public PlayerShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot) {
+        this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = timeBeforeFirstShot;
     }
 
     @Override
     public void setScene(LevelScene scene) {
-
+        this.scene = scene;
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
-
+    public void update(Entity entity) {
+        float currentTime = entity.getLifetimeSeconds();
+        if(scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds){
+            Vec2D position = entity.getPosition();
+            spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+            nextShotTimeSeconds = currentTime + shotPeriodSeconds;
+        }
     }
 
     @Override

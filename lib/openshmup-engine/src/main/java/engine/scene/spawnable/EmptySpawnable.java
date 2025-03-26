@@ -19,6 +19,11 @@ public class EmptySpawnable implements Spawnable{
     }
 
     @Override
+    public Spawnable copy() {
+        return this;
+    }
+
+    @Override
     public Spawnable copyWithOffset(float offsetX, float offsetY) {
         return this;
     }

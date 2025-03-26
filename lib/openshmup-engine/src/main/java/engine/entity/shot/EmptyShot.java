@@ -1,5 +1,6 @@
 package engine.entity.shot;
 
+import engine.entity.Entity;
 import engine.scene.LevelScene;
 
 public class EmptyShot implements EntityShot{
@@ -20,7 +21,7 @@ public class EmptyShot implements EntityShot{
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
+    public void update(Entity entity) {
 
     }
 

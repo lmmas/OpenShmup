@@ -20,8 +20,8 @@
         {
             "type": "interval",
             "startTime": 1.0,
-            "endTime": 5.0,
-            "interval": 0.8,
+            "endTime": 6.0,
+            "interval": 1.0,
             "spawn": [
                 {
                     "type": "entity",

@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.*;
 import engine.entity.Entity;
+import engine.entity.shot.NonPlayerShot;
+import engine.entity.trajectory.PlayerControlledTrajectory;
 import engine.graphics.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.graphics.AnimationInfo;
-import engine.scene.LevelScene;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -24,9 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class EditorDataLoader {
     final private ObjectMapper objectMapper;
@@ -123,13 +122,11 @@ public class EditorDataLoader {
 
             Vec2D size = checkAndConvertIntArrayToVec2D(filepath, entityNode, "size");
 
-            AtomicReference<Function<LevelScene, Entity.Builder>> customEntityBuilder = new AtomicReference<>(levelScene ->
-                    new Entity.Builder()
-                    .setId(id).setSize(size.x, size.y));
+            Entity.Builder customEntitybuilder = new Entity.Builder().setId(id).setSize(size.x, size.y);
 
             if (entityNode.has("evil")){
                 boolean evil= checkAndGetBoolean(filepath, entityNode, "evil");
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setEvil(evil)));
+                customEntitybuilder = customEntitybuilder.setEvil(evil);
             }
 
             if(entityNode.has("deathSpawn")){
@@ -145,13 +142,13 @@ public class EditorDataLoader {
                 else{
                     deathSpawn = getSingleSpawnable(filepath, deathSpawnNode);
                 }
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setDeathSpawn(deathSpawn)));
+                customEntitybuilder = customEntitybuilder.setDeathSpawn(deathSpawn);
             }
 
             if(isShip && entityNode.has("hp")){
                 checkIfInt(filepath, entityNode.get("hp"));
                 int hp = entityNode.get("hp").intValue();
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setHitPoints(hp)));
+                customEntitybuilder = customEntitybuilder.setHitPoints(hp);
             }
 
             if (entityNode.has("shot")){
@@ -176,7 +173,7 @@ public class EditorDataLoader {
                     checkIfObject(filepath, spawnableNode);
                     shot = getSingleSpawnable(filepath, spawnableNode);
                 }
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.setShot(shot, shotPeriod, firstShotTime)));
+                customEntitybuilder = customEntitybuilder.createShot(shot, shotPeriod, firstShotTime);
             }
 
             JsonNode spriteNode = checkAndGetObject(filepath, entityNode, "sprite");
@@ -197,12 +194,16 @@ public class EditorDataLoader {
 
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
 
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable)));
+                customEntitybuilder = customEntitybuilder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable);
             }
             else{
                 String texturePath = GlobalVars.Paths.editorTextureFolder + checkAndGetString(filepath, spriteNode, "fileName");
 
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder -> builder.createSprite(layer, texturePath, orientable)));
+
+                customEntitybuilder = customEntitybuilder.createSprite(layer, texturePath, orientable);
+            }
+            if(id == 0){
+                customEntitybuilder = customEntitybuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
             }
             if(entityNode.has("defaultTrajectory")){
                 JsonNode trajectoryNode = checkAndGetObject(filepath, entityNode, "defaultTrajectory");
@@ -236,10 +237,9 @@ public class EditorDataLoader {
                         throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
                     }
                 }
-                customEntityBuilder.set(customEntityBuilder.get().andThen(builder ->builder.setTrajectory(trajectory)));
+                customEntitybuilder = customEntitybuilder.setTrajectory(trajectory);
             }
-            Supplier<Entity> customEntityConstructor = () -> customEntityBuilder.get().andThen(Entity.Builder::build).apply(null);
-            editorDataManager.addCustomEntity(id, customEntityConstructor);
+            editorDataManager.addCustomEntity(id, customEntitybuilder.build());
         }
     }
     public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {

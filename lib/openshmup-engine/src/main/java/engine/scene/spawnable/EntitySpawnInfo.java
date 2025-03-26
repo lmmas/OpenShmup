@@ -14,6 +14,11 @@ public record EntitySpawnInfo(int id, Vec2D startingPosition, int trajectoryId) 
     }
 
     @Override
+    public Spawnable copy() {
+        return new EntitySpawnInfo(id, startingPosition.x, startingPosition.y, trajectoryId);
+    }
+
+    @Override
     public Spawnable copyWithOffset(float offsetX, float offsetY) {
         return new EntitySpawnInfo(id, startingPosition.x + offsetX, startingPosition.y + offsetY, trajectoryId);
     }

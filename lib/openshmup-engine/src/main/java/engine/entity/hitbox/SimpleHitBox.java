@@ -50,6 +50,11 @@ public class SimpleHitBox implements Hitbox{
         return rectangle.intersects(otherSimpleHitbox.getRectangle());
     }
 
+    @Override
+    public Hitbox copy() {
+        return new SimpleHitBox(position.x, position.y, size.x, size.y);
+    }
+
     protected class HitboxRectangle{
         protected float leftBound;
         protected float rightBound;

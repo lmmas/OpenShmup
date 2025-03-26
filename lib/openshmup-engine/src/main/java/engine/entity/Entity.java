@@ -4,6 +4,8 @@ import engine.Vec2D;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.shot.EntityShot;
+import engine.entity.shot.NonPlayerShot;
+import engine.entity.shot.PlayerShot;
 import engine.entity.sprite.EntitySprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
@@ -32,28 +34,32 @@ abstract public class Entity {
     protected EntityShot shot;
     protected Spawnable deathSpawn;
 
-    public Entity(float trajectoryStartingPosX, float trajectoryStartingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, EntitySprite sprite, Trajectory trajectory, SimpleHitBox hitbox, EntityShot shot, Spawnable deathSpawn) {
+    public Entity(float trajectoryStartingPosX, float trajectoryStartingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn) {
         this.scene = null;
         this.trajectoryStartingPosition = new Vec2D(trajectoryStartingPosX, trajectoryStartingPosY);
         this.position = new Vec2D(trajectoryStartingPosX, trajectoryStartingPosY);
-        setPosition(trajectoryStartingPosX, trajectoryStartingPosY);
         this.size = new Vec2D(sizeX, sizeY);
-        setSize(sizeX, sizeY);
         this.hitbox = hitbox;
         this.orientationRadians = orientationRadians;
-        setOrientation(orientationRadians);
         this.sprite = sprite;
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
+        this.entityId = entityId;
         this.invincible = false;
         this.deathSpawn = deathSpawn;
         this.shot = shot;
         this.startingTimeSeconds = 0.0f;
+        setOrientation(orientationRadians);
+        setSize(sizeX, sizeY);
+        setPosition(trajectoryStartingPosX, trajectoryStartingPosY);
     }
+
+    abstract public Entity copy();
 
     public void setScene(LevelScene scene) {
         this.scene = scene;
         trajectory.setScene(scene);
+        shot.setScene(scene);
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
     abstract public boolean isShip();
@@ -125,6 +131,7 @@ abstract public class Entity {
     public void update(float currentTimeSeconds){
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
+        shot.update(this);
         sprite.update(currentTimeSeconds);
     }
     public void deathEvent(){
@@ -137,7 +144,7 @@ abstract public class Entity {
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
         private Vec2D size;
         private float orientationRadians = 0.0f;
-        private int id = 0;
+        private int id = -1;
         private boolean evil = true;
         private boolean isShip = false;
         private EntitySprite sprite = EntitySprite.DEFAULT();
@@ -170,6 +177,9 @@ abstract public class Entity {
 
         public Builder setId(int id){
             this.id = id;
+            if(this.id == 0){
+                this.evil = false;
+            }
             return this;
         }
 
@@ -216,8 +226,14 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder setShot(EntityShot shot){
-            this.shot = shot;
+        public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot){
+            assert this.id != -1: "incorrect building steps order: must define the id first";
+            if(this.id == 0){
+                this.shot = new PlayerShot(spawnable, shotPeriodSeconds, timeBeforeFirstShot);
+            }
+            else{
+                this.shot = new NonPlayerShot(spawnable, shotPeriodSeconds, timeBeforeFirstShot);
+            }
             return this;
         }
 
@@ -227,10 +243,10 @@ abstract public class Entity {
             }
             assert (sprite != null): "Entity construction error: null fields";
             if(isShip){
-                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, shot, deathSpawn);
+                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn);
             }
             else{
-                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, sprite, trajectory, hitbox, shot, deathSpawn,hitPoints);
+                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn,hitPoints);
             }
         }
     }

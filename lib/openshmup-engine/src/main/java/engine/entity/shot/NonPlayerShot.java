@@ -7,34 +7,34 @@ import engine.scene.spawnable.Spawnable;
 
 public class NonPlayerShot implements EntityShot{
     private LevelScene scene;
-    private final Entity entity;
-    private final Spawnable shot;
+    private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
 
-    public NonPlayerShot(Entity entity, Spawnable shot, float shotPeriodSeconds, float timeBeforeFirstShot) {
-        this.entity = entity;
-        this.shot = shot;
+    public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float timeBeforeFirstShot) {
+        this.scene = null;
+        this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = timeBeforeFirstShot;
     }
 
     @Override
     public void setScene(LevelScene scene) {
-
+        this.scene = scene;
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
+    public void update(Entity entity) {
+        float currentTimeSeconds = entity.getLifetimeSeconds();
         if(currentTimeSeconds >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
-            shot.copyWithOffset(position.x, position.y).spawn(scene);
+            spawnable.copyWithOffset(position.x, position.y).spawn(scene);
             nextShotTimeSeconds = nextShotTimeSeconds + shotPeriodSeconds;
         }
     }
 
     @Override
     public EntityShot copyIfNotReusable() {
-        return null;
+        return new NonPlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);
     }
 }

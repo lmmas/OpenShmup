@@ -34,7 +34,7 @@ public class Animation implements EntitySprite, SceneDisplay {
         this.timeOfLastFrame = 0.0f;
     }
     @Override
-    public SceneDisplay copy() {
+    public Animation copy() {
         return new Animation(image.copy(), info, looping, framePeriodSeconds);
     }
 

@@ -18,6 +18,11 @@ public record SceneDisplaySpawnInfo(
     }
 
     @Override
+    public Spawnable copy() {
+        return new SceneDisplaySpawnInfo(id, position.x, position.y);
+    }
+
+    @Override
     public Spawnable copyWithOffset(float offsetX, float offsetY) {
         return new SceneDisplaySpawnInfo(id, position.x + offsetX, position.y + offsetY);
     }

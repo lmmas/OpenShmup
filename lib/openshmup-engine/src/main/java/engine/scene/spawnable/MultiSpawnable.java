@@ -13,6 +13,15 @@ public record MultiSpawnable(
     }
 
     @Override
+    public Spawnable copy() {
+        Spawnable[] newSpawnables = new Spawnable[spawnables().length];
+        for(int i = 0; i < newSpawnables.length; i++){
+            newSpawnables[i] = spawnables[i].copy();
+        }
+        return new MultiSpawnable(newSpawnables);
+    }
+
+    @Override
     public Spawnable copyWithOffset(float offsetX, float offsetY) {
         Spawnable[] newSpawnables = new Spawnable[spawnables().length];
         for(int i = 0; i < newSpawnables.length; i++){

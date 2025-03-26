@@ -39,4 +39,9 @@ public class EmptySprite implements EntitySprite{
     public void update(float currentTimeSeconds) {
 
     }
+
+    @Override
+    public EntitySprite copy() {
+        return this;
+    }
 }

@@ -9,13 +9,12 @@ import json.EditorDataLoader;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 public class EditorDataManager {
-    private HashMap<Integer, SceneDisplay> customDisplays;
-    private HashMap<Integer, Trajectory> customTrajectories;
-    private HashMap<Integer, Supplier<Entity>> customEntities;
-    private ArrayList<LevelTimeline> customTimelines;
+    private final HashMap<Integer, SceneDisplay> customDisplays;
+    private final HashMap<Integer, Trajectory> customTrajectories;
+    private final HashMap<Integer, Entity> customEntities;
+    private final ArrayList<LevelTimeline> customTimelines;
 
     public EditorDataManager(){
         this.customDisplays = new HashMap<>();
@@ -53,12 +52,12 @@ public class EditorDataManager {
         return customDisplays.get(id).copy();
     }
 
-    public void addCustomEntity(int id, Supplier<Entity> constructor){
+    public void addCustomEntity(int id, Entity constructor){
         customEntities.put(id, constructor);
     }
 
     public Entity buildCustomEntity(int id){
-        return customEntities.get(id).get();
+        return customEntities.get(id).copy();
     }
 
     public void addTrajectory(int id, Trajectory trajectory){
