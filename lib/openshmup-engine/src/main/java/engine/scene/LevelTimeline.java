@@ -48,17 +48,19 @@ public class LevelTimeline {
                     while(!spawnablesToCheck.isEmpty()){
                         Spawnable currentSpawnable = spawnablesToCheck.iterator().next();
                         spawnablesToCheck.remove(currentSpawnable);
-                        if(!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)){
-                            allSpawnablesSet.add(currentSpawnable);
+                        if(!allSpawnablesSet.contains(currentSpawnable)){
+                            if(!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)){
+                                allSpawnablesSet.add(currentSpawnable);
+                            }
+                            if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
+                                ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
+                                spawnablesToCheck.addAll(entitySpawnables);
+                            }
+                            if(currentSpawnable instanceof MultiSpawnable multiSpawnable){
+                                ArrayList<Spawnable> entitySpawnables = multiSpawnable.spawnables();
+                                spawnablesToCheck.addAll(entitySpawnables);
+                            }
                         }
-                        if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                            ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
-                            spawnablesToCheck.addAll(entitySpawnables);
-                        }
-                        if(currentSpawnable instanceof MultiSpawnable multiSpawnable){
-                            ArrayList<Spawnable> entitySpawnables = multiSpawnable.spawnables();
-                            spawnablesToCheck.addAll(entitySpawnables);
-                        }//fixme still vulnerable to circular references in shots and deathSpawns
                     }
                 }
             }
