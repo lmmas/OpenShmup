@@ -1,10 +1,10 @@
-package engine.graphics;
+package engine.scene.display;
 
-import engine.entity.sprite.EntitySprite;
+import engine.graphics.DynamicImage;
+import engine.graphics.Graphic;
 import engine.render.RenderInfo;
+import engine.render.Texture;
 import engine.scene.Scene;
-import engine.scene.display.DynamicImage;
-import engine.scene.display.SceneDisplay;
 
 import java.util.Optional;
 
@@ -48,6 +48,11 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
+    public Optional<RenderInfo> getRenderInfo() {
+        return Optional.of(image.getRenderInfo());
+    }
+
+    @Override
     public void setPosition(float positionX, float positionY) {
         image.setPosition(positionX, positionY);
     }
@@ -64,6 +69,11 @@ public class Animation implements SceneDisplay {
     @Override
     public Graphic<?, ?>[] getGraphics() {
         return new Graphic[]{image};
+    }
+
+    @Override
+    public Optional<Texture> getTexture() {
+        return Optional.of(image.getTexture());
     }
 
     @Override

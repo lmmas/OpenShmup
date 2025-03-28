@@ -5,6 +5,8 @@ import engine.entity.Entity;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
+import java.util.Optional;
+
 public class NonPlayerShot implements EntityShot{
     private LevelScene scene;
     private final Spawnable spawnable;
@@ -36,5 +38,10 @@ public class NonPlayerShot implements EntityShot{
     @Override
     public EntityShot copyIfNotReusable() {
         return new NonPlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);
+    }
+
+    @Override
+    public Spawnable getSpawnable() {
+        return spawnable;
     }
 }

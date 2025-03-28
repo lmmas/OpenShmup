@@ -1,4 +1,4 @@
-package engine.graphics;
+package engine.scene.display;
 
 import engine.render.Texture;
 

@@ -11,9 +11,9 @@ import engine.entity.sprite.EntitySprite;
 import engine.entity.sprite.SimpleSprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
-import engine.graphics.Animation;
-import engine.graphics.AnimationInfo;
-import engine.scene.display.DynamicImage;
+import engine.scene.display.Animation;
+import engine.scene.display.AnimationInfo;
+import engine.graphics.DynamicImage;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
@@ -46,11 +46,12 @@ abstract public class Entity {
         this.sprite = sprite;
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
-        this.entityId = entityId;
         this.invincible = false;
-        this.deathSpawn = deathSpawn;
-        this.shot = shot;
+        this.entityId = entityId;
         this.startingTimeSeconds = 0.0f;
+        this.lifetimeSeconds = 0.0f;
+        this.shot = shot;
+        this.deathSpawn = deathSpawn;
         setOrientation(orientationRadians);
         setSize(sizeX, sizeY);
         setPosition(trajectoryStartingPosX, trajectoryStartingPosY);
@@ -62,6 +63,7 @@ abstract public class Entity {
         this.scene = scene;
         trajectory.setScene(scene);
         shot.setScene(scene);
+        this.lifetimeSeconds = 0.0f;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
@@ -137,6 +139,15 @@ abstract public class Entity {
         shot.update(this);
         sprite.update(currentTimeSeconds);
     }
+
+    public Spawnable getDeathSpawn() {
+        return deathSpawn;
+    }
+
+    public EntityShot getShot() {
+        return shot;
+    }
+
     public void deathEvent(){
         if(deathSpawn != null){
             deathSpawn.copyWithOffset(position.x, position.y).spawn(scene);

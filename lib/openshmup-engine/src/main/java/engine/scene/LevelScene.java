@@ -4,9 +4,11 @@ import engine.*;
 import engine.entity.*;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.SimpleHitBox;
 import engine.graphics.Graphic;
-import engine.scene.display.StaticImage;
+import engine.graphics.StaticImage;
+import engine.render.RenderInfo;
+import engine.render.RenderType;
+import engine.render.VAO;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneDisplay;
@@ -17,7 +19,6 @@ import java.util.Optional;
 
 public class LevelScene extends Scene{
     final protected InputHandler inputHandler;
-    final protected EditorDataManager editorDataManager;
     protected Ship playerShip;
     protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
@@ -32,7 +33,6 @@ public class LevelScene extends Scene{
     public LevelScene(Game game, LevelTimeline timeline) {
         super(game);
         this.inputHandler = game.getInputHandler();
-        this.editorDataManager = game.getEditorDataManager();
         this.playerLives = new ArrayList<>();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
@@ -42,6 +42,10 @@ public class LevelScene extends Scene{
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
         this.timeline = timeline;
+        ArrayList<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
+        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, RenderType.STATIC_IMAGE));
+        constructVAOs(allRenderInfos);
+        this.timer.start();
     }
 
     @Override

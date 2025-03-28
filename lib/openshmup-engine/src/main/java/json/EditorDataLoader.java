@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.*;
 import engine.entity.Entity;
-import engine.entity.shot.NonPlayerShot;
 import engine.entity.trajectory.PlayerControlledTrajectory;
-import engine.graphics.Animation;
+import engine.scene.display.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
-import engine.graphics.AnimationInfo;
+import engine.scene.display.AnimationInfo;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -24,7 +23,6 @@ import pl.joegreen.lambdaFromString.TypeReference;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.function.Function;
 
 public class EditorDataLoader {

@@ -1,6 +1,7 @@
 package engine.entity.sprite;
 
-import engine.graphics.Animation;
+import engine.render.Texture;
+import engine.scene.display.Animation;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 
@@ -29,13 +30,18 @@ public class AnimatedSprite implements EntitySprite{
     }
 
     @Override
-    public Optional<Graphic<?, ?>> getGraphic() {
-        return Optional.ofNullable(animation.getImage());
+    public Optional<RenderInfo> getRenderInfo() {
+        return Optional.of(animation.getImage().getRenderInfo());
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
-        return Optional.ofNullable(animation.getImage().getRenderInfo());
+    public Optional<Graphic<?, ?>> getGraphic() {
+        return Optional.of(animation.getImage());
+    }
+
+    @Override
+    public Optional<Texture> getTexture() {
+        return Optional.of(animation.getTexture().orElseThrow());
     }
 
     @Override

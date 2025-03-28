@@ -3,18 +3,13 @@ import engine.render.RenderInfo;
 import engine.render.Shader;
 import engine.render.VAO;
 import engine.render.RenderType;
-import engine.scene.Scene;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
     final protected Shader shader;
-    final protected RenderType type;
-    protected int layer;
-    final private RenderInfo renderInfo;
+    final protected RenderInfo renderInfo;
 
     public Graphic(int layer, RenderType type, Shader shader){
-        this.layer = layer;
-        this.type = type;
         this.renderInfo = new RenderInfo(layer, type);
         this.shader = shader;
     }
@@ -23,14 +18,6 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     public Shader getShader() {
         return shader;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public RenderType getType() {
-        return type;
     }
 
     public RenderInfo getRenderInfo(){

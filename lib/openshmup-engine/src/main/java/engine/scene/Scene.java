@@ -3,12 +3,11 @@ package engine.scene;
 import engine.EditorDataManager;
 import engine.Game;
 import engine.graphics.Graphic;
-import engine.scene.display.DynamicImage;
-import engine.scene.display.StaticImage;
-import engine.render.DynamicImageVAO;
-import engine.render.StaticImageVAO;
-import engine.render.VAO;
+import engine.render.*;
+import engine.graphics.DynamicImage;
+import engine.graphics.StaticImage;
 import engine.scene.display.SceneDisplay;
+import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,23 +16,20 @@ import java.util.TreeMap;
 
 
 abstract public class Scene {
-    protected long window;
-    final private EditorDataManager editorDataManager;
     protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;
+    final protected EditorDataManager editorDataManager;
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
     HashSet<SceneDisplay> displayList;
     HashSet<SceneDisplay> displaysToRemove;
     public Scene(Game game) {
-        this.window = game.getWindow();
         this.editorDataManager = game.getEditorDataManager();
         this.layers = new TreeMap<>();
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.displayList = new HashSet<>();
         this.displaysToRemove = new HashSet<>();
-        timer.start();
     }
 
     abstract public void handleInputs();
@@ -66,57 +62,46 @@ abstract public class Scene {
     }
 
     public void addGraphic(Graphic<?,?> newGraphic){
-        int graphicLayer = newGraphic.getLayer();
-        ArrayList<VAO<?,?>> vaos = layers.get(graphicLayer);
-        if(vaos!=null) {
-            boolean newGraphicAllocated = false;
-            int i = 0;
-            while (!newGraphicAllocated && i < vaos.size()) {
-                VAO<?,?> currentVAO = vaos.get(i);
-                if (currentVAO.getType() == newGraphic.getType()) {
-                    switch(newGraphic.getType()){
-                        case STATIC_IMAGE -> {
-                            StaticImage newImage = (StaticImage) newGraphic;
-                            StaticImageVAO staticImageVAO = (StaticImageVAO)currentVAO;
-                            staticImageVAO.addGraphic(newImage);
-                        }
-                        case DYNAMIC_IMAGE -> {
-                            DynamicImage newImage = (DynamicImage) newGraphic;
-                            DynamicImageVAO dynamicImageVAO = (DynamicImageVAO)currentVAO;
-                            dynamicImageVAO.addGraphic(newImage);
-                        }
+        RenderInfo renderInfo = newGraphic.getRenderInfo();
+        ArrayList<VAO<?,?>> vaos = layers.get(renderInfo.layer());
+        assert vaos!= null: "bad VAO generation";
+        for(VAO<?,?> vao: vaos){
+            if(vao.getType() == renderInfo.renderType()){
+                switch (renderInfo.renderType()){
+                    case STATIC_IMAGE -> {
+                        StaticImageVAO staticImageVAO = (StaticImageVAO) vao;
+                        StaticImage staticImage = (StaticImage) newGraphic;
+                        staticImageVAO.addGraphic(staticImage);
                     }
-                    newGraphicAllocated = true;
+                    case DYNAMIC_IMAGE -> {
+                        DynamicImageVAO dynamicImageVAO = (DynamicImageVAO) vao;
+                        DynamicImage dynamicImage = (DynamicImage) newGraphic;
+                        dynamicImageVAO.addGraphic(dynamicImage);
+                    }
                 }
-                i++;
+                return;
             }
-            if (!newGraphicAllocated) {
-                createNewVAOFromGraphic(newGraphic, vaos);
-            }
-        }
-        else{
-            vaos = new ArrayList<>();
-            layers.put(graphicLayer, vaos);
-            createNewVAOFromGraphic(newGraphic, vaos);
         }
     }
 
-    private void createNewVAOFromGraphic(Graphic<?,?> graphic, ArrayList<VAO<?,?>> vaoList){
-        switch (graphic.getType()) {
+    public void createNewVAO(int layer, RenderType renderType){
+        if(!layers.containsKey(layer)){
+            layers.put(layer, new ArrayList<>());
+        }
+        ArrayList<VAO<?,?>> vaoList = layers.get(layer);
+        switch (renderType) {
             case STATIC_IMAGE-> {
-                StaticImage newImage = (StaticImage) graphic;
                 StaticImageVAO newVAO = new StaticImageVAO();
                 vaoList.add(newVAO);
-                newVAO.addGraphic(newImage);
             }
             case DYNAMIC_IMAGE -> {
-                DynamicImage newImage = (DynamicImage) graphic;
                 DynamicImageVAO newVAO = new DynamicImageVAO();
                 vaoList.add(newVAO);
-                newVAO.addGraphic(newImage);
             }
         }
     }
+
+
 
     public void addDisplay(SceneDisplay display){
         Graphic<?,?>[] newGraphics = display.getGraphics();
@@ -141,5 +126,26 @@ abstract public class Scene {
 
     final public void setSpeed(float speed){
         timer.setSpeed(speed);
+    }
+
+    protected void constructVAOs(ArrayList<RenderInfo> allRenderInfos) {
+        for(var renderInfo: allRenderInfos){
+            if(!layers.containsKey(renderInfo.layer())){
+                createNewVAO(renderInfo.layer(), renderInfo.renderType());
+            }
+            else{
+                ArrayList<VAO<?,?>> vaoList = layers.get(renderInfo.layer());
+                boolean vaoFound = false;
+                for(var vao: vaoList){
+                    if (vao.getType() == renderInfo.renderType()) {
+                        vaoFound = true;
+                        break;
+                    }
+                }
+                if(!vaoFound){
+                    createNewVAO(renderInfo.layer(), renderInfo.renderType());
+                }
+            }
+        }
     }
 }

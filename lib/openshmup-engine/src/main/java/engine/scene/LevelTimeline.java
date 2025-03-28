@@ -1,17 +1,19 @@
 package engine.scene;
 
 import engine.EditorDataManager;
-import engine.scene.spawnable.EntitySpawnInfo;
-import engine.scene.spawnable.Spawnable;
+import engine.entity.Entity;
+import engine.render.RenderInfo;
+import engine.scene.spawnable.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
 public class LevelTimeline {
     final private EditorDataManager editorDataManager;
     private final float levelDuration;
-    private TreeMap<Float, ArrayList<Spawnable>> spawnList;
+    private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
     private Float nextSpawnTime;
     public LevelTimeline(EditorDataManager editorDataManager, float levelDuration){
         this.editorDataManager = editorDataManager;
@@ -37,6 +39,56 @@ public class LevelTimeline {
                 }
             }
         }
+    }
+
+    private ArrayList<Spawnable> getAllSpawnables(){
+        ArrayList<Spawnable> allSpawnablesList = new ArrayList<>(spawnList.size());
+        for(ArrayList<Spawnable> spawnEntry: spawnList.values()){
+            for(Spawnable spawnable: spawnEntry){
+                if(!(spawnable instanceof EmptySpawnable) && !(spawnable instanceof MultiSpawnable)){
+                    allSpawnablesList.add(spawnable);
+                }
+                if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
+                    ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
+                    for (var spawnableOfEntity : entitySpawnables){
+                        if(!(spawnableOfEntity instanceof EmptySpawnable)){
+                            allSpawnablesList.add(spawnableOfEntity);
+                        }
+                    }
+                }
+                if(spawnable instanceof MultiSpawnable multiSpawnable){
+                    for(Spawnable element: multiSpawnable.spawnables()){
+                        if(!(element instanceof EmptySpawnable)){
+                            allSpawnablesList.add(element);
+                        }
+                        if(element instanceof EntitySpawnInfo entitySpawnInfo){
+                            ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
+                            for (var spawnableOfEntity : entitySpawnables){
+                                if(!(spawnableOfEntity instanceof EmptySpawnable)){
+                                    allSpawnablesList.add(spawnableOfEntity);//TODO there are edge cases that are not handled correctly
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return allSpawnablesList;
+    }
+
+    public ArrayList<RenderInfo> getAllRenderInfos(){
+        ArrayList<RenderInfo> allRenderInfos = new ArrayList<>();
+        ArrayList<Spawnable> allSpawnablesList = getAllSpawnables();
+        for(var spawnable: allSpawnablesList){
+            if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
+                allRenderInfos.addAll(editorDataManager.getRenderInfoOfEntity(entitySpawnInfo.id()));
+            }
+            if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
+                Optional<RenderInfo> renderInfoOptional = editorDataManager.getRenderInfoOfDisplay(sceneDisplaySpawnInfo.id());
+                renderInfoOptional.ifPresent(allRenderInfos::add);
+            }
+        }
+        return allRenderInfos;
     }
 
     public Optional<Float> getNextSpawnTime(float currentTime){

@@ -1,13 +1,18 @@
 package engine.scene.display;
 
+import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
+import engine.render.RenderInfo;
+import engine.render.Texture;
 import engine.scene.Scene;
 
+import java.util.Optional;
+
 public class ScrollingImage implements SceneDisplay {
-    private DynamicImage image1;
+    private final DynamicImage image1;
     private float positionX1;
     private float positionY1;
-    private DynamicImage image2;
+    private final DynamicImage image2;
     private float positionX2;
     private float positionY2;
     private float sizeX;
@@ -51,8 +56,18 @@ public class ScrollingImage implements SceneDisplay {
     }
 
     @Override
+    public Optional<RenderInfo> getRenderInfo() {
+        return Optional.of(image1.getRenderInfo());
+    }
+
+    @Override
     public Graphic<?,?>[] getGraphics() {
         return new DynamicImage[]{image1,image2};
+    }
+
+    @Override
+    public Optional<Texture> getTexture() {
+        return Optional.of(image1.getTexture());
     }
 
     @Override

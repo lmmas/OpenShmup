@@ -2,6 +2,10 @@ package engine.entity.shot;
 
 import engine.entity.Entity;
 import engine.scene.LevelScene;
+import engine.scene.spawnable.EmptySpawnable;
+import engine.scene.spawnable.Spawnable;
+
+import java.util.Optional;
 
 public class EmptyShot implements EntityShot{
     private static EmptyShot instance = null;
@@ -28,5 +32,10 @@ public class EmptyShot implements EntityShot{
     @Override
     public EntityShot copyIfNotReusable() {
         return this;
+    }
+
+    @Override
+    public Spawnable getSpawnable() {
+        return EmptySpawnable.getInstance();
     }
 }

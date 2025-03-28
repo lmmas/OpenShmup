@@ -1,8 +1,5 @@
-package engine.scene.display;
+package engine.graphics;
 
-import engine.entity.sprite.EntitySprite;
-import engine.graphics.Graphic;
-import engine.graphics.Image2D;
 import engine.render.RenderType;
 import engine.render.Shader;
 import engine.render.Texture;
@@ -21,6 +18,6 @@ public final class DynamicImage extends Image2D{
 
     @Override
     public DynamicImage copy() {
-        return new DynamicImage(texture, layer, shader, primitive.copy());
+        return new DynamicImage(texture, renderInfo.layer(), shader, primitive.copy());
     }
 }

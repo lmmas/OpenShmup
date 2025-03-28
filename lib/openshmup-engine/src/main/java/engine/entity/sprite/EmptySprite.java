@@ -2,6 +2,7 @@ package engine.entity.sprite;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
+import engine.render.Texture;
 
 import java.util.Optional;
 
@@ -34,12 +35,17 @@ public class EmptySprite implements EntitySprite{
     }
 
     @Override
+    public Optional<RenderInfo> getRenderInfo() {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Graphic<?, ?>> getGraphic() {
         return Optional.empty();
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
+    public Optional<Texture> getTexture() {
         return Optional.empty();
     }
 

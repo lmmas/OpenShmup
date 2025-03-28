@@ -1,14 +1,18 @@
 package engine;
 
 import engine.entity.Entity;
+import engine.entity.sprite.EmptySprite;
 import engine.entity.trajectory.Trajectory;
+import engine.render.RenderInfo;
 import engine.scene.LevelTimeline;
 import engine.scene.display.SceneDisplay;
+import engine.scene.spawnable.Spawnable;
 import json.EditorDataLoader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class EditorDataManager {
     private final HashMap<Integer, SceneDisplay> customDisplays;
@@ -48,6 +52,10 @@ public class EditorDataManager {
         customDisplays.put(id, display);
     }
 
+    public Optional<RenderInfo> getRenderInfoOfDisplay(int id){
+        return customDisplays.get(id).getRenderInfo();
+    }
+
     public SceneDisplay buildCustomDisplay(int id){
         return customDisplays.get(id).copy();
     }
@@ -58,6 +66,24 @@ public class EditorDataManager {
 
     public Entity buildCustomEntity(int id){
         return customEntities.get(id).copy();
+    }
+
+    public ArrayList<Spawnable> getSpawnablesOfEntity(int id){
+        Entity entity = customEntities.get(id);
+        ArrayList<Spawnable> spawnablesList = new ArrayList<>();
+        spawnablesList.add(entity.getShot().getSpawnable());
+        spawnablesList.add(entity.getDeathSpawn());
+        return spawnablesList;
+    }
+
+    public ArrayList<RenderInfo> getRenderInfoOfEntity(int id){
+        ArrayList<RenderInfo> renderInfoList = new ArrayList<>();
+        Entity entity = customEntities.get(id);
+        Optional<RenderInfo> renderInfoOptional = entity.getSprite().getRenderInfo();
+        if(renderInfoOptional.isPresent()){
+            renderInfoList.add(renderInfoOptional.orElseThrow());
+        }
+        return renderInfoList;
     }
 
     public void addTrajectory(int id, Trajectory trajectory){

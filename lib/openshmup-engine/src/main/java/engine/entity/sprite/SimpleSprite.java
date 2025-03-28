@@ -2,7 +2,8 @@ package engine.entity.sprite;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.scene.display.DynamicImage;
+import engine.graphics.DynamicImage;
+import engine.render.Texture;
 
 import java.util.Optional;
 
@@ -26,13 +27,18 @@ public class SimpleSprite implements EntitySprite{
     }
 
     @Override
-    public Optional<Graphic<?, ?>> getGraphic() {
-        return Optional.ofNullable(image);
+    public Optional<RenderInfo> getRenderInfo() {
+        return Optional.of(image.getRenderInfo());
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
-        return Optional.ofNullable(image.getRenderInfo());
+    public Optional<Graphic<?, ?>> getGraphic() {
+        return Optional.of(image);
+    }
+
+    @Override
+    public Optional<Texture> getTexture() {
+        return Optional.of(image.getTexture());
     }
 
     @Override
