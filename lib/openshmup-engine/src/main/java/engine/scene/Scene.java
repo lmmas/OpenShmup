@@ -104,7 +104,7 @@ abstract public class Scene {
 
 
     public void addDisplay(SceneDisplay display){
-        Graphic<?,?>[] newGraphics = display.getGraphics();
+        ArrayList<Graphic<?,?>> newGraphics = display.getGraphics();
         for(Graphic<?,?> graphic: newGraphics){
             addGraphic(graphic);
         }

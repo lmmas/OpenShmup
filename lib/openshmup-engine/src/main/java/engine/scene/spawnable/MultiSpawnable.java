@@ -2,8 +2,10 @@ package engine.scene.spawnable;
 
 import engine.scene.LevelScene;
 
+import java.util.ArrayList;
+
 public record MultiSpawnable(
-        Spawnable[] spawnables
+        ArrayList<Spawnable> spawnables
 ) implements Spawnable{
     @Override
     public void spawn(LevelScene scene) {
@@ -14,18 +16,18 @@ public record MultiSpawnable(
 
     @Override
     public Spawnable copy() {
-        Spawnable[] newSpawnables = new Spawnable[spawnables().length];
-        for(int i = 0; i < newSpawnables.length; i++){
-            newSpawnables[i] = spawnables[i].copy();
+        ArrayList<Spawnable> newSpawnables = new ArrayList<>(spawnables.size());
+        for (Spawnable spawnable : spawnables) {
+            newSpawnables.add(spawnable.copy());
         }
         return new MultiSpawnable(newSpawnables);
     }
 
     @Override
     public Spawnable copyWithOffset(float offsetX, float offsetY) {
-        Spawnable[] newSpawnables = new Spawnable[spawnables().length];
-        for(int i = 0; i < newSpawnables.length; i++){
-            newSpawnables[i] = spawnables[i].copyWithOffset(offsetX, offsetY);
+        ArrayList<Spawnable> newSpawnables = new ArrayList<>(spawnables.size());
+        for (Spawnable spawnable : spawnables) {
+            newSpawnables.add(spawnable.copyWithOffset(offsetX, offsetY));
         }
         return new MultiSpawnable(newSpawnables);
     }

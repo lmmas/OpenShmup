@@ -6,6 +6,9 @@ import engine.render.RenderInfo;
 import engine.render.Texture;
 import engine.scene.Scene;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 public class Animation implements SceneDisplay {
@@ -67,8 +70,8 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public Graphic<?, ?>[] getGraphics() {
-        return new Graphic[]{image};
+    public ArrayList<Graphic<?, ?>> getGraphics() {
+        return new ArrayList<>(Collections.singletonList(image));
     }
 
     @Override

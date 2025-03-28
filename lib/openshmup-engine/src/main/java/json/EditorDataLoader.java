@@ -23,6 +23,7 @@ import pl.joegreen.lambdaFromString.TypeReference;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 public class EditorDataLoader {
@@ -131,9 +132,10 @@ public class EditorDataLoader {
                 JsonNode deathSpawnNode = entityNode.get("deathSpawn");
                 Spawnable deathSpawn;
                 if(deathSpawnNode.isArray()){
-                    Spawnable[] spawnables = new Spawnable[deathSpawnNode.size()];
-                    for(int i = 0; i < deathSpawnNode.size(); i++){
-                        spawnables[i] = getSingleSpawnable(filepath, deathSpawnNode.get(i));
+                    ArrayList<Spawnable> spawnables = new ArrayList<>();
+                    for(var deathSpawnElement: deathSpawnNode){
+                        checkIfObject(filepath, deathSpawnElement);
+                        spawnables.add(getSingleSpawnable(filepath, deathSpawnElement));
                     }
                     deathSpawn = new MultiSpawnable(spawnables);
                 }
@@ -159,9 +161,10 @@ public class EditorDataLoader {
                 JsonNode spawnableNode = shotNode.get("spawn");
                 Spawnable shot;
                 if(spawnableNode.isArray()){
-                    Spawnable[] spawnables = new Spawnable[spawnableNode.size()];
-                    for(int i = 0; i < spawnableNode.size(); i++){
-                        spawnables[i] = getSingleSpawnable(filepath, spawnableNode.get(i));
+                    ArrayList<Spawnable> spawnables = new ArrayList<>();
+                    for(var spawnElement: spawnableNode){
+                        checkIfObject(filepath, spawnElement);
+                        spawnables.add(getSingleSpawnable(filepath, spawnElement));
                     }
                     shot = new MultiSpawnable(spawnables);
                 }
@@ -288,10 +291,10 @@ public class EditorDataLoader {
             JsonNode spawnableNode = childNode.get("spawn");
             Spawnable newSpawnable;
             if(spawnableNode.isArray()){
-                Spawnable[] spawnables = new Spawnable[spawnableNode.size()];
-                for (int i = 0; i < spawnableNode.size(); i++){
-                    checkIfObject(filepath, spawnableNode.get(i));
-                    spawnables[i] = getSingleSpawnable(filepath, spawnableNode.get(i));
+                ArrayList<Spawnable> spawnables = new ArrayList<>();
+                for(var spawnElement: spawnableNode){
+                    checkIfObject(filepath, spawnElement);
+                    spawnables.add(getSingleSpawnable(filepath, spawnElement));
                 }
                 newSpawnable = new MultiSpawnable(spawnables);
             }

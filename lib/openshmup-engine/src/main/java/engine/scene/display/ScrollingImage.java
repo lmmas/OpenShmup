@@ -6,6 +6,8 @@ import engine.render.RenderInfo;
 import engine.render.Texture;
 import engine.scene.Scene;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ScrollingImage implements SceneDisplay {
@@ -61,8 +63,8 @@ public class ScrollingImage implements SceneDisplay {
     }
 
     @Override
-    public Graphic<?,?>[] getGraphics() {
-        return new DynamicImage[]{image1,image2};
+    public ArrayList<Graphic<?, ?>> getGraphics() {
+        return new ArrayList<>(Arrays.asList(image1, image2));
     }
 
     @Override

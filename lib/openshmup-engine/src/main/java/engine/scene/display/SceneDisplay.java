@@ -5,12 +5,13 @@ import engine.render.RenderInfo;
 import engine.render.Texture;
 import engine.scene.Scene;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface SceneDisplay {
     SceneDisplay copy();
     Optional<RenderInfo> getRenderInfo();
-    Graphic<?,?>[] getGraphics();
+    ArrayList<Graphic<?, ?>> getGraphics();
     Optional<Texture> getTexture();
     void setScene(Scene scene);
     void setPosition(float positionX, float positionY);
