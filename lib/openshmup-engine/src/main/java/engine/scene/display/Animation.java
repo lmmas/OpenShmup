@@ -31,7 +31,7 @@ public class Animation implements SceneDisplay {
     }
 
     public Animation(DynamicImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
-        //this constructore is only used for deep copying
+        //this constructor is only used for deep copying
         this.image = image;
         this.info = info;
         this.looping = looping;

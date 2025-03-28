@@ -38,7 +38,7 @@ public class ScrollingImage implements SceneDisplay {
     }
 
     public ScrollingImage(DynamicImage image1, float positionX1, float positionY1, DynamicImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
-        //this constructore is only used for deep copying
+        //this constructor is only used for deep copying
         this.image1 = image1;
         this.positionX1 = positionX1;
         this.positionY1 = positionY1;

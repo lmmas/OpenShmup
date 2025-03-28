@@ -42,7 +42,7 @@ public class LevelScene extends Scene{
         this.controlStates = new boolean[GameControl.values().length];
         this.lastControlStates = new boolean[GameControl.values().length];
         this.timeline = timeline;
-        ArrayList<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
+        HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
         allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, RenderType.STATIC_IMAGE));
         constructVAOs(allRenderInfos);
         this.timer.start();

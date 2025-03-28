@@ -1,14 +1,10 @@
 package engine.scene;
 
 import engine.EditorDataManager;
-import engine.entity.Entity;
 import engine.render.RenderInfo;
 import engine.scene.spawnable.*;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 
 public class LevelTimeline {
     final private EditorDataManager editorDataManager;
@@ -41,34 +37,27 @@ public class LevelTimeline {
         }
     }
 
-    private ArrayList<Spawnable> getAllSpawnables(){
-        ArrayList<Spawnable> allSpawnablesList = new ArrayList<>(spawnList.size());
+    private HashSet<Spawnable> getAllSpawnables(){
+        HashSet<Spawnable> allSpawnablesList = new HashSet<>(spawnList.size());
         for(ArrayList<Spawnable> spawnEntry: spawnList.values()){
             for(Spawnable spawnable: spawnEntry){
-                if(!(spawnable instanceof EmptySpawnable) && !(spawnable instanceof MultiSpawnable)){
-                    allSpawnablesList.add(spawnable);
-                }
-                if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                    ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
-                    for (var spawnableOfEntity : entitySpawnables){
-                        if(!(spawnableOfEntity instanceof EmptySpawnable)){
-                            allSpawnablesList.add(spawnableOfEntity);
+                if(!(spawnable instanceof EmptySpawnable)){
+                    HashSet<Spawnable> spawnablesToCheck = new HashSet<>();
+                    spawnablesToCheck.add(spawnable);
+                    while(!spawnablesToCheck.isEmpty()){
+                        Spawnable currentSpawnable = spawnablesToCheck.iterator().next();
+                        spawnablesToCheck.remove(currentSpawnable);
+                        if(!(currentSpawnable instanceof EmptySpawnable)){
+                            allSpawnablesList.add(currentSpawnable);
                         }
-                    }
-                }
-                if(spawnable instanceof MultiSpawnable multiSpawnable){
-                    for(Spawnable element: multiSpawnable.spawnables()){
-                        if(!(element instanceof EmptySpawnable)){
-                            allSpawnablesList.add(element);
-                        }
-                        if(element instanceof EntitySpawnInfo entitySpawnInfo){
+                        if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
                             ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
-                            for (var spawnableOfEntity : entitySpawnables){
-                                if(!(spawnableOfEntity instanceof EmptySpawnable)){
-                                    allSpawnablesList.add(spawnableOfEntity);//TODO there are edge cases that are not handled correctly
-                                }
-                            }
+                            spawnablesToCheck.addAll(entitySpawnables);
                         }
+                        if(currentSpawnable instanceof MultiSpawnable multiSpawnable){
+                            ArrayList<Spawnable> entitySpawnables = multiSpawnable.spawnables();
+                            spawnablesToCheck.addAll(entitySpawnables);
+                        }//fixme still vulnerable to circular references in shots and deathSpawns
                     }
                 }
             }
@@ -76,9 +65,9 @@ public class LevelTimeline {
         return allSpawnablesList;
     }
 
-    public ArrayList<RenderInfo> getAllRenderInfos(){
-        ArrayList<RenderInfo> allRenderInfos = new ArrayList<>();
-        ArrayList<Spawnable> allSpawnablesList = getAllSpawnables();
+    public HashSet<RenderInfo> getAllRenderInfos(){
+        HashSet<RenderInfo> allRenderInfos = new HashSet<>();
+        HashSet<Spawnable> allSpawnablesList = getAllSpawnables();
         for(var spawnable: allSpawnablesList){
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
                 allRenderInfos.addAll(editorDataManager.getRenderInfoOfEntity(entitySpawnInfo.id()));

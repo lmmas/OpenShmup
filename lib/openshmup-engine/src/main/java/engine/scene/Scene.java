@@ -128,7 +128,7 @@ abstract public class Scene {
         timer.setSpeed(speed);
     }
 
-    protected void constructVAOs(ArrayList<RenderInfo> allRenderInfos) {
+    protected void constructVAOs(HashSet<RenderInfo> allRenderInfos) {
         for(var renderInfo: allRenderInfos){
             if(!layers.containsKey(renderInfo.layer())){
                 createNewVAO(renderInfo.layer(), renderInfo.renderType());
