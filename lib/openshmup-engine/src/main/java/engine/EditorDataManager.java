@@ -4,6 +4,7 @@ import engine.entity.Entity;
 import engine.entity.sprite.EmptySprite;
 import engine.entity.trajectory.Trajectory;
 import engine.render.RenderInfo;
+import engine.render.Texture;
 import engine.scene.LevelTimeline;
 import engine.scene.display.SceneDisplay;
 import engine.scene.spawnable.Spawnable;
@@ -60,6 +61,10 @@ public class EditorDataManager {
         return customDisplays.get(id).copy();
     }
 
+    public Optional<Texture> getTextureOfDisplay(int id){
+        return customDisplays.get(id).getTexture();
+    }
+
     public void addCustomEntity(int id, Entity constructor){
         customEntities.put(id, constructor);
     }
@@ -84,6 +89,10 @@ public class EditorDataManager {
             renderInfoList.add(renderInfoOptional.orElseThrow());
         }
         return renderInfoList;
+    }
+
+    public Optional<Texture> getTextureOfEntity(int id){
+        return customEntities.get(id).getSprite().getTexture();
     }
 
     public void addTrajectory(int id, Trajectory trajectory){

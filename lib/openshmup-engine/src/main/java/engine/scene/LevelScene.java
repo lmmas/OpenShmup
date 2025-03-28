@@ -8,7 +8,7 @@ import engine.graphics.Graphic;
 import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
 import engine.render.RenderType;
-import engine.render.VAO;
+import engine.render.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneDisplay;
@@ -45,6 +45,11 @@ public class LevelScene extends Scene{
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
         allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, RenderType.STATIC_IMAGE));
         constructVAOs(allRenderInfos);
+        HashSet<Texture> allTextures = timeline.getAllTextures();
+        allTextures.add(Texture.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
+        for(var texture: allTextures){
+            texture.loadInGPU();
+        }
         this.timer.start();
     }
 

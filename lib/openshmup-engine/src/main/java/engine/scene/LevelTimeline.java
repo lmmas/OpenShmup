@@ -2,6 +2,7 @@ package engine.scene;
 
 import engine.EditorDataManager;
 import engine.render.RenderInfo;
+import engine.render.Texture;
 import engine.scene.spawnable.*;
 
 import java.util.*;
@@ -38,7 +39,7 @@ public class LevelTimeline {
     }
 
     private HashSet<Spawnable> getAllSpawnables(){
-        HashSet<Spawnable> allSpawnablesList = new HashSet<>(spawnList.size());
+        HashSet<Spawnable> allSpawnablesSet = new HashSet<>(spawnList.size());
         for(ArrayList<Spawnable> spawnEntry: spawnList.values()){
             for(Spawnable spawnable: spawnEntry){
                 if(!(spawnable instanceof EmptySpawnable)){
@@ -47,8 +48,8 @@ public class LevelTimeline {
                     while(!spawnablesToCheck.isEmpty()){
                         Spawnable currentSpawnable = spawnablesToCheck.iterator().next();
                         spawnablesToCheck.remove(currentSpawnable);
-                        if(!(currentSpawnable instanceof EmptySpawnable)){
-                            allSpawnablesList.add(currentSpawnable);
+                        if(!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)){
+                            allSpawnablesSet.add(currentSpawnable);
                         }
                         if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
                             ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
@@ -62,13 +63,13 @@ public class LevelTimeline {
                 }
             }
         }
-        return allSpawnablesList;
+        return allSpawnablesSet;
     }
 
     public HashSet<RenderInfo> getAllRenderInfos(){
         HashSet<RenderInfo> allRenderInfos = new HashSet<>();
-        HashSet<Spawnable> allSpawnablesList = getAllSpawnables();
-        for(var spawnable: allSpawnablesList){
+        HashSet<Spawnable> allSpawnablesSet = getAllSpawnables();
+        for(var spawnable: allSpawnablesSet){
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
                 allRenderInfos.addAll(editorDataManager.getRenderInfoOfEntity(entitySpawnInfo.id()));
             }
@@ -80,8 +81,20 @@ public class LevelTimeline {
         return allRenderInfos;
     }
 
-    public Optional<Float> getNextSpawnTime(float currentTime){
-        return spawnList.higherKey(currentTime).describeConstable();
+    public HashSet<Texture> getAllTextures(){
+        HashSet<Texture> allTextures = new HashSet<>();
+        HashSet<Spawnable> allSpawnables = getAllSpawnables();
+        for(var spawnable: allSpawnables){
+            if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
+                Optional<Texture> textureOptional = editorDataManager.getTextureOfDisplay(sceneDisplaySpawnInfo.id());
+                textureOptional.ifPresent(allTextures::add);
+            }
+            if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
+                Optional<Texture> textureOptional = editorDataManager.getTextureOfEntity(entitySpawnInfo.id());
+                textureOptional.ifPresent(allTextures::add);
+            }
+        }
+        return allTextures;
     }
 
     public void addSpawnable(float time, Spawnable spawnable){

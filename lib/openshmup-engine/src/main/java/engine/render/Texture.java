@@ -34,7 +34,7 @@ public class Texture {
             throw new FileNotFoundException(filepath);
         }
     }
-    public void upload(){
+    public void loadInGPU(){
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -75,7 +75,6 @@ public class Texture {
                 }
             }
             textureMap.put(filepath, newTexture);
-            newTexture.upload();
             return newTexture;
         }
     }
