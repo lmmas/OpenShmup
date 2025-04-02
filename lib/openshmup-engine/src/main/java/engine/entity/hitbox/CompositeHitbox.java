@@ -36,9 +36,10 @@ public class CompositeHitbox implements Hitbox{
             colorValues[i] = bytes[i] & 0xFF;
         }
         boolean[][] rectanglePositions = new boolean[imageHeight][imageWidth];
+        int detectionMargin = 3;
         for(int i = 0; i < imageHeight; i++){
             for(int j = 0; j < imageWidth; j++){
-                if((bytes[i * imageWidth + j] & 0xFF) + 3 >= 255){
+                if((bytes[i * imageWidth + j] & 0xFF) + detectionMargin >= 255){
                     rectanglePositions[i][j] = true;
                 }
             }
@@ -98,6 +99,7 @@ public class CompositeHitbox implements Hitbox{
         for(var sizeRow: tempSizesList){
             this.rectangleRelativeSizes.addAll(sizeRow);
         }
+        this.rectangleList = new ArrayList<>(rectangleRelativePositions.size());
         for(int i = 0; i < rectangleRelativePositions.size(); i++){
             rectangleList.add(new HitboxRectangle(0.0f,0.0f,0.0f,0.0f));
         }
