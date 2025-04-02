@@ -7,6 +7,7 @@ import org.lwjgl.BufferUtils;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.stb.STBImage.*;
 
@@ -133,6 +134,11 @@ public class CompositeHitbox implements Hitbox{
     @Override
     public boolean intersects(Hitbox otherHitbox) {
         return false;
+    }
+
+    @Override
+    public List<HitboxRectangle> getRectangles() {
+        return rectangleList;
     }
 
     @Override

@@ -14,7 +14,7 @@ public class NonShipEntity extends Entity {
 
     @Override
     public Entity copy() {
-        return new NonShipEntity(trajectoryStartingPosition.x, trajectoryStartingPosition.y, size.x , size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy());
+        return new NonShipEntity(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x , size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy());
     }
 
     @Override

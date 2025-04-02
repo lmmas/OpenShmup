@@ -10,7 +10,6 @@ out VS_OUT{
     vec2 gQuadSize;
     vec2 gTexturePosition;
     vec2 gTextureSize;
-    int gTextureSlot;
 } vs_out;
 
 
@@ -22,7 +21,6 @@ void main(){
     vs_out.gQuadSize = aQuadSize * 2.0f;
     vs_out.gTexturePosition = aTexturePosition;
     vs_out.gTextureSize = aTextureSize;
-    vs_out.gTextureSlot = aTextureSlot;
 }
 
 #type geometry
@@ -34,51 +32,43 @@ in VS_OUT{
     vec2 gQuadSize;
     vec2 gTexturePosition;
     vec2 gTextureSize;
-    int gTextureSlot;
 }data_in[];
 
 out vec2 fTextureCoords;
-flat out int fTextureSlot;
 
-void build_quad(vec4 position, vec2 quadSize, vec2 texturePosition, vec2 textureSize, int textureSlot){
+void build_quad(vec4 position, vec2 quadSize, vec2 texturePosition, vec2 textureSize){
     vec2 tempCoords = quadSize / 2.0f;
     gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0); //top-left
     fTextureCoords = texturePosition + vec2(0.0, textureSize[1]);
-    fTextureSlot = textureSlot;
     EmitVertex();
     gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0); //top-right
     fTextureCoords = texturePosition + textureSize;
-    fTextureSlot = textureSlot;
     EmitVertex();
     gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
     fTextureCoords = texturePosition;
-    fTextureSlot = textureSlot;
     EmitVertex();
     gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0); //bottom-right
     fTextureCoords = texturePosition + vec2(textureSize[0], 0.0);
-    fTextureSlot = textureSlot;
     EmitVertex();
     EndPrimitive();
 }
 
 void main(){
-    build_quad(gl_in[0].gl_Position, data_in[0].gQuadSize, data_in[0].gTexturePosition, data_in[0].gTextureSize, data_in[0].gTextureSlot);
+    build_quad(gl_in[0].gl_Position, data_in[0].gQuadSize, data_in[0].gTexturePosition, data_in[0].gTextureSize);
 }
 
 #type fragment
 #version 330 core
 
-uniform sampler2D TEX_SAMPLER[32];
 in vec2 fTextureCoords;
-flat in int fTextureSlot;
 
 out vec4 fragColor;
 
 void main(){
-
-    fragColor = texture(TEX_SAMPLER[fTextureSlot], fTextureCoords);
-    if(fTextureCoords[0] < 0.01 || fTextureCoords[0] > 0.99 || fTextureCoords[1] < 0.01 || fTextureCoords[1] > 0.99){
-        fragColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    if(fTextureCoords[0] < 0.1f || fTextureCoords[0] > 0.9f || fTextureCoords[1] < 0.1f || fTextureCoords[1] > 0.9f){
+        fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
     }
-    //fragColor = vec4(fTextureCoords, 1.0f, 0.0f);
+    else{
+        fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    }
 }

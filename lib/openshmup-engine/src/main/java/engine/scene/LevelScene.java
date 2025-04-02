@@ -2,8 +2,11 @@ package engine.scene;
 
 import engine.*;
 import engine.entity.*;
+import engine.entity.extraComponent.ExtraComponent;
+import engine.entity.extraComponent.HitboxDebugDisplay;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
+import engine.entity.hitbox.HitboxRectangle;
 import engine.graphics.Graphic;
 import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
@@ -15,6 +18,7 @@ import engine.scene.display.SceneDisplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 public class LevelScene extends Scene{
@@ -30,8 +34,8 @@ public class LevelScene extends Scene{
     protected boolean[] lastControlStates;
     protected LevelTimeline timeline;
 
-    public LevelScene(Game game, LevelTimeline timeline) {
-        super(game);
+    public LevelScene(Game game, LevelTimeline timeline, boolean debugMode) {
+        super(game, debugMode);
         this.inputHandler = game.getInputHandler();
         this.playerLives = new ArrayList<>();
         this.goodEntities = new HashSet<>();
@@ -44,6 +48,9 @@ public class LevelScene extends Scene{
         this.timeline = timeline;
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
         allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, RenderType.STATIC_IMAGE));
+        if(debugMode){
+            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, RenderType.DYNAMIC_IMAGE));
+        }
         constructVAOs(allRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(Texture.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
@@ -107,8 +114,8 @@ public class LevelScene extends Scene{
         for(Entity entity: evilEntities){
             entity.update(sceneTime);
         }
-        removeFarAwayEntities(goodEntities);
-        removeFarAwayEntities(evilEntities);
+        //removeFarAwayEntities(goodEntities);
+        //removeFarAwayEntities(evilEntities);
         for(Entity entity: evilEntities){
             handleCollisions(entity, goodEntities);
         }
@@ -132,18 +139,32 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
+        if(debugMode){
+            Hitbox entityHitbox = entity.getHitbox();
+            List<HitboxRectangle> rectangleList = entityHitbox.getRectangles();
+            for(var rectangle: rectangleList){
+                entity.addExtraComponent(new HitboxDebugDisplay(rectangle));
+            }
+        }
         Optional<Graphic<?, ?>> entityGraphic = entity.getSprite().getGraphic();
         if(entityGraphic.isPresent()){
             Graphic<?, ?> newGraphic = entityGraphic.orElseThrow();
             addGraphic(newGraphic);
-            if(entity.isEvil()){
-                evilEntities.add(entity);
-            }
-            else{
-                goodEntities.add(entity);
-            }
-            entity.setScene(this);
         }
+        List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
+        for(var component: extraComponentsList){
+            List<Graphic<?,?>> graphicsList = component.getGraphics();
+            for(var graphic: graphicsList){
+                addGraphic(graphic);
+            }
+        }
+        if(entity.isEvil()){
+            evilEntities.add(entity);
+        }
+        else{
+            goodEntities.add(entity);
+        }
+        entity.setScene(this);
     }
 
     public void deleteEntity(Entity entity){
@@ -154,6 +175,13 @@ public class LevelScene extends Scene{
             goodEntities.remove(entity);
         }
         entity.getSprite().getGraphic().ifPresent(Graphic::delete);
+        List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
+        for(var component: extraComponentsList){
+            List<Graphic<?,?>> graphicsList = component.getGraphics();
+            for(var graphic: graphicsList){
+                graphic.delete();
+            }
+        }
     }
 
     public boolean getControlState(GameControl control){

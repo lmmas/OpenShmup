@@ -3,12 +3,12 @@ package engine.entity.hitbox;
 import engine.Vec2D;
 
 public class HitboxRectangle {
-    final protected Vec2D position;
-    final protected Vec2D size;
-    protected float leftBound;
-    protected float rightBound;
-    protected float upBound;
-    protected float downBound;
+    final public Vec2D position;
+    final public Vec2D size;
+    public float leftBound;
+    public float rightBound;
+    public float upBound;
+    public float downBound;
 
     public HitboxRectangle(float positionX, float positionY, float sizeX, float sizeY) {
         this.position = new Vec2D(positionX, positionY);

@@ -40,7 +40,6 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
         glBindVertexArray(this.ID);
         for(VBO vbo: vbos) {
             Shader vboShader = vbo.getShader();
-            vboShader.uploadTexture("TEX_SAMPLER", 0);
             vboShader.use();
             if(vbo.dataHasChanged){
                 vbo.uploadData();
@@ -53,14 +52,15 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
 
     public void addGraphic(G newGraphic){
         int primitiveCount = newGraphic.getPrimitiveCount();
-        for(int i = 0; i < primitiveCount; i++){
-            P newPrimitive = newGraphic.getPrimitive(i);
+        for(int primitiveIndex = 0; primitiveIndex < primitiveCount; primitiveIndex++){
+            P newPrimitive = newGraphic.getPrimitive(primitiveIndex);
             boolean newPrimitiveAllocated = false;
             int vboIndex = 0;
-            while(!newPrimitiveAllocated && vboIndex < vbos.size()){
-                if (vbos.get(i).canReceivePrimitiveFrom(newGraphic)){
-                    vbos.get(i).addPrimitive(newPrimitive);
+            while(vboIndex < vbos.size()){
+                if (vbos.get(vboIndex).canReceivePrimitiveFrom(newGraphic)){
+                    vbos.get(vboIndex).addPrimitive(newPrimitive);
                     newPrimitiveAllocated = true;
+                    break;
                 }
                 vboIndex++;
             }

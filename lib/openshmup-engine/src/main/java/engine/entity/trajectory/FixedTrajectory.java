@@ -25,7 +25,7 @@ public class FixedTrajectory implements Trajectory {
         float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
         float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
         if(relativeTrajectory){
-            Vec2D startingPosition = entity.getTrajectoryStartingPosition();
+            Vec2D startingPosition = entity.getTrajectoryReferencePosition();
             newPosX += startingPosition.x;
             newPosY += startingPosition.y;
         }

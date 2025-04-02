@@ -61,7 +61,7 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
 
         @Override
         boolean canReceivePrimitiveFrom(Image2D graphic) {
-            if(primitives.size() >= batchSize * graphic.getPrimitiveCount() - 1)
+            if(primitives.size() + 1 > batchSize)
                 return false;
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
         }
@@ -119,6 +119,13 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
                 textures.add(newPrimitive.getTexture());
                 textureIndexes.add(textures.size() - 1);
             }
+        }
+
+        @Override
+        public void removePrimitive(Image2D.ImagePrimitive primitive) {
+            int primitiveIndex = primitives.indexOf(primitive);
+            textureIndexes.remove(primitiveIndex);
+            primitives.remove(primitive);
         }
     }
 }

@@ -4,7 +4,7 @@ import engine.Game;
 
 public class TestScene extends LevelScene {
     public TestScene(Game game){
-        super(game, new LevelTimeline(game.getEditorDataManager(), 30.0f));
+        super(game, new LevelTimeline(game.getEditorDataManager(), 30.0f), false);
     }
 
     @Override

@@ -23,13 +23,15 @@ abstract public class Scene {
     protected float lastDrawTime = 0.0f;
     HashSet<SceneDisplay> displayList;
     HashSet<SceneDisplay> displaysToRemove;
-    public Scene(Game game) {
+    protected boolean debugMode;
+    public Scene(Game game, boolean debugMode) {
         this.editorDataManager = game.getEditorDataManager();
         this.layers = new TreeMap<>();
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.displayList = new HashSet<>();
         this.displaysToRemove = new HashSet<>();
+        this.debugMode = debugMode;
     }
 
     abstract public void handleInputs();

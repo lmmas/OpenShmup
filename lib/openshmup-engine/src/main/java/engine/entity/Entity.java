@@ -1,6 +1,7 @@
 package engine.entity;
 
 import engine.Vec2D;
+import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.shot.EntityShot;
@@ -17,11 +18,12 @@ import engine.graphics.DynamicImage;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 
 abstract public class Entity {
     protected LevelScene scene;
-    final protected Vec2D trajectoryStartingPosition;
+    final protected Vec2D trajectoryReferencePosition;
     final protected Vec2D position;
     final protected Vec2D size;
     protected float orientationRadians;
@@ -35,11 +37,12 @@ abstract public class Entity {
     protected Trajectory trajectory;
     protected EntityShot shot;
     protected Spawnable deathSpawn;
+    protected ArrayList<ExtraComponent> extraComponents;
 
-    public Entity(float trajectoryStartingPosX, float trajectoryStartingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn) {
+    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn) {
         this.scene = null;
-        this.trajectoryStartingPosition = new Vec2D(trajectoryStartingPosX, trajectoryStartingPosY);
-        this.position = new Vec2D(trajectoryStartingPosX, trajectoryStartingPosY);
+        this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
+        this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.size = new Vec2D(sizeX, sizeY);
         this.hitbox = hitbox;
         this.orientationRadians = orientationRadians;
@@ -52,9 +55,10 @@ abstract public class Entity {
         this.lifetimeSeconds = 0.0f;
         this.shot = shot;
         this.deathSpawn = deathSpawn;
+        this.extraComponents = new ArrayList<>();
         setOrientation(orientationRadians);
         setSize(sizeX, sizeY);
-        setPosition(trajectoryStartingPosX, trajectoryStartingPosY);
+        setPosition(trajectoryReferencePosX, trajectoryReferencePosY);
     }
 
     abstract public Entity copy();
@@ -63,6 +67,9 @@ abstract public class Entity {
         this.scene = scene;
         trajectory.setScene(scene);
         shot.setScene(scene);
+        for(var component: extraComponents){
+            component.setScene(scene);
+        }
         this.lifetimeSeconds = 0.0f;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
@@ -73,8 +80,8 @@ abstract public class Entity {
         return sprite;
     }
 
-    public Vec2D getTrajectoryStartingPosition() {
-        return new Vec2D(trajectoryStartingPosition);
+    public Vec2D getTrajectoryReferencePosition() {
+        return new Vec2D(trajectoryReferencePosition);
     }
 
     public Vec2D getPosition(){
@@ -113,8 +120,8 @@ abstract public class Entity {
     }
 
     public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY){
-        trajectoryStartingPosition.x = startingPositionX;
-        trajectoryStartingPosition.y = startingPositionY;
+        trajectoryReferencePosition.x = startingPositionX;
+        trajectoryReferencePosition.y = startingPositionY;
     }
     public void setSize(float sizeX, float sizeY){
         this.size.x = sizeX;
@@ -137,6 +144,9 @@ abstract public class Entity {
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
         shot.update(this);
+        for(ExtraComponent extraComponent: extraComponents){
+            extraComponent.update();
+        }
         sprite.update(currentTimeSeconds);
     }
 
@@ -146,6 +156,14 @@ abstract public class Entity {
 
     public EntityShot getShot() {
         return shot;
+    }
+
+    public ArrayList<ExtraComponent> getExtraComponents() {
+        return extraComponents;
+    }
+
+    public void addExtraComponent(ExtraComponent extraComponent){
+        extraComponents.add(extraComponent);
     }
 
     public void deathEvent(){

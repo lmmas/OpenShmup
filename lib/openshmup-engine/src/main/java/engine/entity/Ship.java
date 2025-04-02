@@ -29,7 +29,7 @@ public class Ship extends Entity{
 
     @Override
     public Entity copy() {
-        return new Ship(trajectoryStartingPosition.x, trajectoryStartingPosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy(), hitPoints);
+        return new Ship(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy(), hitPoints);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package engine.entity.hitbox;
 
+import java.util.List;
+
 public class SimpleHitBox implements Hitbox{
     HitboxRectangle rectangle;
 
@@ -37,6 +39,11 @@ public class SimpleHitBox implements Hitbox{
         }
         SimpleHitBox otherSimpleHitbox = (SimpleHitBox) otherHitbox;
         return rectangle.intersects(otherSimpleHitbox.getRectangle());
+    }
+
+    @Override
+    public List<HitboxRectangle> getRectangles() {
+        return List.of(rectangle);
     }
 
     protected HitboxRectangle getRectangle(){
