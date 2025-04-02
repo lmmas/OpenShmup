@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Texture {
     private final static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
     private final String filepath;
-    private final int textureID;
+    private int textureID;
     private final int width;
     private final int height;
 
@@ -28,13 +28,13 @@ public class Texture {
             this.width = widthArray[0];
             this.height = heightArray[0];
             this.filepath = filepath;
-            this.textureID = glGenTextures();
         } else {
             System.out.println(stbi_failure_reason());
             throw new FileNotFoundException(filepath);
         }
     }
     public void loadInGPU(){
+        this.textureID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

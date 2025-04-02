@@ -1,44 +1,33 @@
 package engine.entity.hitbox;
 
-import engine.Vec2D;
-
 public class SimpleHitBox implements Hitbox{
-    final protected Vec2D position;
-    final protected Vec2D size;
-    SimpleHitboxRectangle rectangle;
+    HitboxRectangle rectangle;
 
     public SimpleHitBox(float positionX, float positionY, float sizeX, float sizeY) {
-        this.position = new Vec2D(positionX, positionY);
-        this.size = new Vec2D(sizeX, sizeY);
-        this.rectangle = new SimpleHitboxRectangle(new Vec2D(positionX, positionY), new Vec2D(sizeX, sizeY));
+        this.rectangle = new HitboxRectangle(positionX, positionY, sizeX, sizeY);
+    }
+    public SimpleHitBox(HitboxRectangle rectangle){
+        //this constructor should only be used to copy objects
+        this.rectangle = rectangle;
     }
 
-    protected void updateBounds(){
-        this.rectangle.leftBound = this.position.x - (this.size.x / 2);
-        this.rectangle.rightBound = this.position.x + (this.size.x / 2);
-        this.rectangle.upBound = this.position.y + (this.size.y / 2);
-        this.rectangle.downBound = this.position.y - (this.size.y / 2);
-    }
-    protected SimpleHitboxRectangle getRectangle(){
-        return rectangle;
+    @Override
+    public Hitbox copy() {
+        return new SimpleHitBox(rectangle.copy());
     }
 
     @Override
     public void setPosition(float positionX, float positionY){
-        this.position.x = positionX;
-        this.position.y = positionY;
-        updateBounds();
+        rectangle.setPosition(positionX, positionY);
     }
-
     @Override
     public void setOrientation(float orientationRadians) {
 
     }
+
     @Override
     public void setSize(float sizeX, float sizeY){
-        this.size.x = sizeX;
-        this.size.y = sizeY;
-        updateBounds();
+        rectangle.setSize(sizeX, sizeY);
     }
 
     @Override
@@ -50,9 +39,8 @@ public class SimpleHitBox implements Hitbox{
         return rectangle.intersects(otherSimpleHitbox.getRectangle());
     }
 
-    @Override
-    public Hitbox copy() {
-        return new SimpleHitBox(position.x, position.y, size.x, size.y);
+    protected HitboxRectangle getRectangle(){
+        return rectangle;
     }
 
 }
