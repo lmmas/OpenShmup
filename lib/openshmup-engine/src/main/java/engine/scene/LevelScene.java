@@ -10,7 +10,7 @@ import engine.entity.hitbox.HitboxRectangle;
 import engine.graphics.Graphic;
 import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
-import engine.render.RenderType;
+import engine.render.GraphicType;
 import engine.render.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -47,11 +47,11 @@ public class LevelScene extends Scene{
         this.lastControlStates = new boolean[GameControl.values().length];
         this.timeline = timeline;
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
-        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, RenderType.STATIC_IMAGE));
+        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, GraphicType.STATIC_IMAGE));
         if(debugMode){
-            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, RenderType.DYNAMIC_IMAGE));
+            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.DYNAMIC_IMAGE));
         }
-        constructVAOs(allRenderInfos);
+        constructRenderers(allRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(Texture.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
         for(var texture: allTextures){

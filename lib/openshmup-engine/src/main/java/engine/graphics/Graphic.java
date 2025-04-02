@@ -1,15 +1,15 @@
 package engine.graphics;
 import engine.render.RenderInfo;
 import engine.render.Shader;
-import engine.render.VAO;
-import engine.render.RenderType;
+import engine.render.Renderer;
+import engine.render.GraphicType;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
     final protected Shader shader;
     final protected RenderInfo renderInfo;
 
-    public Graphic(int layer, RenderType type, Shader shader){
+    public Graphic(int layer, GraphicType type, Shader shader){
         this.renderInfo = new RenderInfo(layer, type);
         this.shader = shader;
     }
@@ -30,19 +30,19 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     abstract public void delete();
 
     abstract public class Primitive{
-        VAO<G,P>.VBO currentVbo;
+        Renderer<G,P>.Batch currentBatch;
         abstract public P copy();
-        public void setVbo(VAO<G,P>.VBO newVbo){
-            this.currentVbo = newVbo;
+        public void setBatch(Renderer<G,P>.Batch newBatch){
+            this.currentBatch = newBatch;
         }
-        public void tellVboDataChanged(){
-            if(currentVbo!=null){
-                currentVbo.dataHasChanged();
+        public void tellBatchDataChanged(){
+            if(currentBatch !=null){
+                currentBatch.dataHasChanged();
             }
         }
         @SuppressWarnings("unchecked")
         public void delete(){
-            currentVbo.removePrimitive((P) this);
+            currentBatch.removePrimitive((P) this);
         }
     }
 }

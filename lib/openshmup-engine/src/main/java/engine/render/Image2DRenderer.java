@@ -11,23 +11,23 @@ import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
-abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
+abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
 
-    protected VBO createVboFromGraphic(Image2D graphic){
-        return new ImageVBO(graphic.getShader(), graphic.getTexture());
+    protected Batch createBatchFromGraphic(Image2D graphic){
+        return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
-    public Image2DVAO(RenderType type, int drawingType){
+    public Image2DRenderer(GraphicType type, int drawingType){
         super(type, drawingType, 36);
         this.batchSize = 100;
     }
 
-    protected class ImageVBO extends VAO<Image2D, Image2D.ImagePrimitive>.VBO {
+    protected class ImageBatch extends Renderer<Image2D, Image2D.ImagePrimitive>.Batch {
         protected ArrayList<Texture> textures;
         protected ArrayList<Integer> textureIndexes;
         protected ByteBuffer dataBuffer;
         protected static final int vertexAttributeCount = 9;
 
-        public ImageVBO(Shader shader, Texture texture){
+        public ImageBatch(Shader shader, Texture texture){
             super(shader);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
             this.textureIndexes = new ArrayList<>();
@@ -71,7 +71,7 @@ abstract public class Image2DVAO extends VAO<Image2D, Image2D.ImagePrimitive>{
             int quadSizeLength = 2;
             int texturePositionLength = 2;
             int textureSizeLength = 2;
-            glBindVertexArray(Image2DVAO.this.ID);
+            glBindVertexArray(Image2DRenderer.this.ID);
             glBindBuffer(GL_ARRAY_BUFFER, this.ID);
             glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);

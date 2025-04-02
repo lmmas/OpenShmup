@@ -7,7 +7,6 @@ import engine.render.*;
 import engine.graphics.DynamicImage;
 import engine.graphics.StaticImage;
 import engine.scene.display.SceneDisplay;
-import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ import java.util.TreeMap;
 
 
 abstract public class Scene {
-    protected TreeMap<Integer,ArrayList<VAO<?,?>>> layers;
+    protected TreeMap<Integer,ArrayList<Renderer<?,?>>> layers;
     final protected EditorDataManager editorDataManager;
     protected float sceneTime;
     protected SceneTimer timer;
@@ -53,9 +52,9 @@ abstract public class Scene {
     }
 
     public void draw(){
-        for(Map.Entry<Integer,ArrayList<VAO<?,?>>> vaos: layers.entrySet()){
-            for(VAO<?,?> vao: vaos.getValue()){
-                vao.draw();
+        for(Map.Entry<Integer,ArrayList<Renderer<?,?>>> renderers: layers.entrySet()){
+            for(Renderer<?,?> renderer : renderers.getValue()){
+                renderer.draw();
             }
         }
         /*float currentTime = timer.getTimeSeconds();
@@ -65,20 +64,20 @@ abstract public class Scene {
 
     public void addGraphic(Graphic<?,?> newGraphic){
         RenderInfo renderInfo = newGraphic.getRenderInfo();
-        ArrayList<VAO<?,?>> vaos = layers.get(renderInfo.layer());
-        assert vaos!= null: "bad VAO generation";
-        for(VAO<?,?> vao: vaos){
-            if(vao.getType() == renderInfo.renderType()){
-                switch (renderInfo.renderType()){
+        ArrayList<Renderer<?,?>> renderers = layers.get(renderInfo.layer());
+        assert renderers != null: "bad Renderer generation";
+        for(Renderer<?,?> renderer : renderers){
+            if(renderer.getType() == renderInfo.graphicType()){
+                switch (renderInfo.graphicType()){
                     case STATIC_IMAGE -> {
-                        StaticImageVAO staticImageVAO = (StaticImageVAO) vao;
+                        StaticImageRenderer staticImageRenderer = (StaticImageRenderer) renderer;
                         StaticImage staticImage = (StaticImage) newGraphic;
-                        staticImageVAO.addGraphic(staticImage);
+                        staticImageRenderer.addGraphic(staticImage);
                     }
                     case DYNAMIC_IMAGE -> {
-                        DynamicImageVAO dynamicImageVAO = (DynamicImageVAO) vao;
+                        DynamicImageRenderer dynamicImageRenderer = (DynamicImageRenderer) renderer;
                         DynamicImage dynamicImage = (DynamicImage) newGraphic;
-                        dynamicImageVAO.addGraphic(dynamicImage);
+                        dynamicImageRenderer.addGraphic(dynamicImage);
                     }
                 }
                 return;
@@ -86,19 +85,19 @@ abstract public class Scene {
         }
     }
 
-    public void createNewVAO(int layer, RenderType renderType){
+    public void createNewRenderer(int layer, GraphicType graphicType){
         if(!layers.containsKey(layer)){
             layers.put(layer, new ArrayList<>());
         }
-        ArrayList<VAO<?,?>> vaoList = layers.get(layer);
-        switch (renderType) {
+        ArrayList<Renderer<?,?>> rendererList = layers.get(layer);
+        switch (graphicType) {
             case STATIC_IMAGE-> {
-                StaticImageVAO newVAO = new StaticImageVAO();
-                vaoList.add(newVAO);
+                StaticImageRenderer newRenderer = new StaticImageRenderer();
+                rendererList.add(newRenderer);
             }
             case DYNAMIC_IMAGE -> {
-                DynamicImageVAO newVAO = new DynamicImageVAO();
-                vaoList.add(newVAO);
+                DynamicImageRenderer newRenderer = new DynamicImageRenderer();
+                rendererList.add(newRenderer);
             }
         }
     }
@@ -130,22 +129,22 @@ abstract public class Scene {
         timer.setSpeed(speed);
     }
 
-    protected void constructVAOs(HashSet<RenderInfo> allRenderInfos) {
+    protected void constructRenderers(HashSet<RenderInfo> allRenderInfos) {
         for(var renderInfo: allRenderInfos){
             if(!layers.containsKey(renderInfo.layer())){
-                createNewVAO(renderInfo.layer(), renderInfo.renderType());
+                createNewRenderer(renderInfo.layer(), renderInfo.graphicType());
             }
             else{
-                ArrayList<VAO<?,?>> vaoList = layers.get(renderInfo.layer());
-                boolean vaoFound = false;
-                for(var vao: vaoList){
-                    if (vao.getType() == renderInfo.renderType()) {
-                        vaoFound = true;
+                ArrayList<Renderer<?,?>> rendererList = layers.get(renderInfo.layer());
+                boolean rendererFound = false;
+                for(var renderer: rendererList){
+                    if (renderer.getType() == renderInfo.graphicType()) {
+                        rendererFound = true;
                         break;
                     }
                 }
-                if(!vaoFound){
-                    createNewVAO(renderInfo.layer(), renderInfo.renderType());
+                if(!rendererFound){
+                    createNewRenderer(renderInfo.layer(), renderInfo.graphicType());
                 }
             }
         }

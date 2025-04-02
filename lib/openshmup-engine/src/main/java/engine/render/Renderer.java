@@ -7,45 +7,45 @@ import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
+public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
     protected Scene scene;
     protected int ID;
-    protected RenderType type;
+    protected GraphicType type;
     final protected int drawingType;
     protected int layer;
     final protected int vboStrideBytes;
     protected int batchSize;
-    protected ArrayList<VBO> vbos;
-    public VAO(RenderType type, int drawingType, int vboStrideBytes){
+    protected ArrayList<Batch> batches;
+    public Renderer(GraphicType type, int drawingType, int vboStrideBytes){
         this.ID = glGenVertexArrays();
         this.type = type;
         this.drawingType = drawingType;
         this.vboStrideBytes = vboStrideBytes;
-        this.vbos = new ArrayList<>();
+        this.batches = new ArrayList<>();
     }
     public int getID(){
         return ID;
     }
-    abstract protected VBO createVboFromGraphic(G graphic);
-    protected void addNewVboFromGraphic(G graphic){
-        VBO newVbo = createVboFromGraphic(graphic);
-        vbos.add(newVbo);
+    abstract protected Batch createBatchFromGraphic(G graphic);
+    protected void addNewBatchFromGraphic(G graphic){
+        Batch newBatch = createBatchFromGraphic(graphic);
+        batches.add(newBatch);
     }
 
-    public RenderType getType() {
+    public GraphicType getType() {
         return type;
     }
 
     public void draw(){
         glBindVertexArray(this.ID);
-        for(VBO vbo: vbos) {
-            Shader vboShader = vbo.getShader();
-            vboShader.use();
-            if(vbo.dataHasChanged){
-                vbo.uploadData();
-                vbo.dataHasChanged = false;
+        for(Batch batch : batches) {
+            Shader batchShader = batch.getShader();
+            batchShader.use();
+            if(batch.dataHasChanged){
+                batch.uploadData();
+                batch.dataHasChanged = false;
             }
-            vbo.draw();
+            batch.draw();
         }
         glBindVertexArray(0);
     }
@@ -55,28 +55,28 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
         for(int primitiveIndex = 0; primitiveIndex < primitiveCount; primitiveIndex++){
             P newPrimitive = newGraphic.getPrimitive(primitiveIndex);
             boolean newPrimitiveAllocated = false;
-            int vboIndex = 0;
-            while(vboIndex < vbos.size()){
-                if (vbos.get(vboIndex).canReceivePrimitiveFrom(newGraphic)){
-                    vbos.get(vboIndex).addPrimitive(newPrimitive);
+            int batchIndex = 0;
+            while(batchIndex < batches.size()){
+                if (batches.get(batchIndex).canReceivePrimitiveFrom(newGraphic)){
+                    batches.get(batchIndex).addPrimitive(newPrimitive);
                     newPrimitiveAllocated = true;
                     break;
                 }
-                vboIndex++;
+                batchIndex++;
             }
             if(!newPrimitiveAllocated){
-                addNewVboFromGraphic(newGraphic);
-                vbos.getLast().addPrimitive(newPrimitive);
+                addNewBatchFromGraphic(newGraphic);
+                batches.getLast().addPrimitive(newPrimitive);
             }
         }
     }
 
-    public abstract class VBO{
+    public abstract class Batch {
         protected int ID;
         protected ArrayList<P> primitives = new ArrayList<>(batchSize);
         protected boolean dataHasChanged = true;
         protected Shader shader;
-        protected VBO(Shader shader){
+        protected Batch(Shader shader){
             ID = glGenBuffers();
             this.shader = shader;
             setupVertexAttributes();
@@ -87,9 +87,9 @@ public abstract class VAO<G extends Graphic<G,P>, P extends Graphic<G,P>.Primiti
         }
 
         public void addPrimitive(P newPrimitive){
-            assert primitives.size() < batchSize: "Can't add primitive data to VBO";
+            assert primitives.size() < batchSize: "Can't add primitive data to the batch";
             primitives.add(newPrimitive);
-            newPrimitive.setVbo(this);
+            newPrimitive.setBatch(this);
             dataHasChanged = true;
         }
         abstract boolean canReceivePrimitiveFrom(G graphic);

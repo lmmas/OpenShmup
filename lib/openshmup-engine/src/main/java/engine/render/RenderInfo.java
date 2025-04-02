@@ -1,4 +1,4 @@
 package engine.render;
 
-public record RenderInfo(int layer, RenderType renderType) {
+public record RenderInfo(int layer, GraphicType graphicType) {
 }

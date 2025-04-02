@@ -1,6 +1,6 @@
 package engine.render;
 
-public enum RenderType {
+public enum GraphicType {
     STATIC_IMAGE,
     DYNAMIC_IMAGE,
 }

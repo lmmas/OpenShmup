@@ -1,22 +1,22 @@
 package engine.graphics;
 
 import engine.Vec2D;
-import engine.render.RenderType;
+import engine.render.GraphicType;
 import engine.render.Shader;
 import engine.render.Texture;
 
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     protected Texture texture;
     protected ImagePrimitive primitive;
-    public Image2D(String textureFilepath, int layer, RenderType type, float sizeX, float sizeY, Shader shader){
+    public Image2D(String textureFilepath, int layer, GraphicType type, float sizeX, float sizeY, Shader shader){
         super(layer, type, shader);
         this.texture = Texture.getTexture(textureFilepath);
         this.primitive = new ImagePrimitive(sizeX, sizeY);
     }
-    public Image2D(String textureFilepath, int layer, RenderType type, float sizeX, float sizeY){
+    public Image2D(String textureFilepath, int layer, GraphicType type, float sizeX, float sizeY){
         this(textureFilepath, layer, type, sizeX, sizeY, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
     }
-    public Image2D(Texture texture, int layer, RenderType type, Shader shader, ImagePrimitive imagePrimitive){
+    public Image2D(Texture texture, int layer, GraphicType type, Shader shader, ImagePrimitive imagePrimitive){
         super(layer, type, shader);
         this.texture = texture;
         this.primitive = imagePrimitive;
@@ -25,23 +25,23 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public void setPosition(float imagePositionX, float imagePositionY){
         primitive.imagePosition.x = imagePositionX;
         primitive.imagePosition.y = imagePositionY;
-        primitive.tellVboDataChanged();
+        primitive.tellBatchDataChanged();
     }
     public void setSize(float imageSizeX, float imageSizeY){
         primitive.imageSize.x = imageSizeX;
         primitive.imageSize.y = imageSizeY;
-        primitive.tellVboDataChanged();
+        primitive.tellBatchDataChanged();
     }
 
     public void setTexturePosition(float texturePositionX, float texturePositionY){
         primitive.texturePosition.x = texturePositionX;
         primitive.texturePosition.y = texturePositionY;
-        primitive.tellVboDataChanged();
+        primitive.tellBatchDataChanged();
     }
     public void setTextureSize(float textureSizeX, float textureSizeY){
         primitive.textureSize.x = textureSizeX;
         primitive.textureSize.y = textureSizeY;
-        primitive.tellVboDataChanged();
+        primitive.tellBatchDataChanged();
     }
 
     public void setOrientation(float orientation){
@@ -56,7 +56,7 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         primitive.texturePosition.y = texturePositionY;
         primitive.textureSize.x = textureSizeX;
         primitive.textureSize.y = textureSizeY;
-        primitive.tellVboDataChanged();
+        primitive.tellBatchDataChanged();
     }
 
     public Texture getTexture() {
