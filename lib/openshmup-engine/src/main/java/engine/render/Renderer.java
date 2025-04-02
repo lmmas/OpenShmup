@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL33.*;
 
 public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
     protected Scene scene;
-    protected int ID;
+    protected int vaoID;
     protected GraphicType type;
     final protected int drawingType;
     protected int layer;
@@ -17,14 +17,14 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
     protected int batchSize;
     protected ArrayList<Batch> batches;
     public Renderer(GraphicType type, int drawingType, int vboStrideBytes){
-        this.ID = glGenVertexArrays();
+        this.vaoID = glGenVertexArrays();
         this.type = type;
         this.drawingType = drawingType;
         this.vboStrideBytes = vboStrideBytes;
         this.batches = new ArrayList<>();
     }
-    public int getID(){
-        return ID;
+    public int getVaoID(){
+        return vaoID;
     }
     abstract protected Batch createBatchFromGraphic(G graphic);
     protected void addNewBatchFromGraphic(G graphic){
@@ -37,8 +37,10 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
     }
 
     public void draw(){
-        glBindVertexArray(this.ID);
+        glBindVertexArray(this.vaoID);
         for(Batch batch : batches) {
+            batch.setupVertexAttributes();
+            glBindVertexArray(this.vaoID);
             Shader batchShader = batch.getShader();
             batchShader.use();
             if(batch.dataHasChanged){
@@ -72,14 +74,13 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
     }
 
     public abstract class Batch {
-        protected int ID;
+        protected int vboID;
         protected ArrayList<P> primitives = new ArrayList<>(batchSize);
         protected boolean dataHasChanged = true;
         protected Shader shader;
         protected Batch(Shader shader){
-            ID = glGenBuffers();
+            vboID = glGenBuffers();
             this.shader = shader;
-            setupVertexAttributes();
         }
 
         public Shader getShader() {

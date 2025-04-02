@@ -18,7 +18,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
     }
     public Image2DRenderer(GraphicType type, int drawingType){
         super(type, drawingType, 36);
-        this.batchSize = 100;
+        this.batchSize = 2;
     }
 
     protected class ImageBatch extends Renderer<Image2D, Image2D.ImagePrimitive>.Batch {
@@ -33,6 +33,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             this.textureIndexes = new ArrayList<>();
             this.dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
             this.textures.add(texture);
+            glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
         }
 
         public void draw(){
@@ -44,7 +45,6 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             Arrays.setAll(array, i->i);
             shader.uploadUniformIntArray("TEX_SAMPLER" , array);
             shader.validate();
-            glBindBuffer(GL_ARRAY_BUFFER, this.ID);
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
@@ -56,7 +56,6 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             glDisableVertexAttribArray(2);
             glDisableVertexAttribArray(3);
             glDisableVertexAttribArray(4);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         @Override
@@ -71,8 +70,8 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             int quadSizeLength = 2;
             int texturePositionLength = 2;
             int textureSizeLength = 2;
-            glBindVertexArray(Image2DRenderer.this.ID);
-            glBindBuffer(GL_ARRAY_BUFFER, this.ID);
+            glBindVertexArray(Image2DRenderer.this.vaoID);
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
             glVertexAttribPointer(2, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
@@ -101,7 +100,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
                 dataBuffer.putInt(textureIndexes.get(i));
             }
             dataBuffer.flip();
-            glBindBuffer(GL_ARRAY_BUFFER, this.ID);
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             dataBuffer.flip();
