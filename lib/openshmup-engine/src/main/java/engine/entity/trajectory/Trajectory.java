@@ -4,8 +4,7 @@ import engine.entity.Entity;
 import engine.scene.LevelScene;
 
 public interface Trajectory {
-    void update(Entity entity);
-    void setScene(LevelScene scene);
+    void update(Entity entity, LevelScene scene);
     Trajectory copyIfNotReusable();
     static Trajectory DEFAULT(){
         return EmptyTrajectory.getInstance();

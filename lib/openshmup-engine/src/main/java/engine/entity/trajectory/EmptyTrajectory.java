@@ -20,12 +20,8 @@ public class EmptyTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, LevelScene scene) {
 
     }
 
-    @Override
-    public void setScene(LevelScene scene) {
-
-    }
 }

@@ -15,6 +15,5 @@ public interface ExtraComponent {
     List<RenderInfo> getRenderInfos();
     List<Graphic<?,?>> getGraphics();
     List<Texture> getTextures();
-    void setScene(LevelScene scene);
-    void update(Entity entity);
+    void update(Entity entity, LevelScene scene);
 }

@@ -62,10 +62,6 @@ abstract public class Entity {
 
     public void setScene(LevelScene scene) {
         this.scene = scene;
-        trajectory.setScene(scene);
-        for(var component: extraComponents){
-            component.setScene(scene);
-        }
         this.lifetimeSeconds = 0.0f;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
@@ -138,9 +134,9 @@ abstract public class Entity {
 
     public void update(float currentTimeSeconds){
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
-        trajectory.update(this);
+        trajectory.update(this, scene);
         for(ExtraComponent extraComponent: extraComponents){
-            extraComponent.update(this);
+            extraComponent.update(this, scene);
         }
         sprite.update(currentTimeSeconds);
     }

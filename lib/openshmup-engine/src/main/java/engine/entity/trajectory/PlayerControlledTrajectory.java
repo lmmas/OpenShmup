@@ -4,8 +4,6 @@ import engine.entity.Entity;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 public class PlayerControlledTrajectory implements Trajectory{
     private LevelScene scene;
     private float speed;
@@ -18,7 +16,7 @@ public class PlayerControlledTrajectory implements Trajectory{
     }
 
     @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, LevelScene scene) {
         float currentTime = scene.getSceneTimeSeconds();
         float positionX = entity.getPosition().x;
         float positionY = entity.getPosition().y;
@@ -49,11 +47,6 @@ public class PlayerControlledTrajectory implements Trajectory{
         }
         entity.setPosition(positionX, positionY);
         lastUpdateTimeSeconds = currentTime;
-    }
-
-    @Override
-    public void setScene(LevelScene scene) {
-        this.scene = scene;
     }
 
     @Override

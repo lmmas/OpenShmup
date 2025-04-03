@@ -49,12 +49,7 @@ public class HitboxDebugDisplay implements ExtraComponent{
     }
 
     @Override
-    public void setScene(LevelScene scene) {
-
-    }
-
-    @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, LevelScene scene) {
         debugDisplay.setPosition(hitboxRectangle.position.x, hitboxRectangle.position.y);
         debugDisplay.setSize(hitboxRectangle.size.x, hitboxRectangle.size.y);
     }

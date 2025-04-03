@@ -12,12 +12,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class NonPlayerShot implements ExtraComponent{
-    private LevelScene scene;
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
     public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
-        this.scene = null;
         this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = firstShotTimeSeconds;
@@ -48,12 +46,7 @@ public class NonPlayerShot implements ExtraComponent{
     }
 
     @Override
-    public void setScene(LevelScene scene) {
-        this.scene = scene;
-    }
-
-    @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, LevelScene scene) {
         float currentTimeSeconds = entity.getLifetimeSeconds();
         if(currentTimeSeconds >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();

@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlayerShot implements ExtraComponent{
-    private LevelScene scene;
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
@@ -48,12 +47,7 @@ public class PlayerShot implements ExtraComponent{
     }
 
     @Override
-    public void setScene(LevelScene scene) {
-        this.scene = scene;
-    }
-
-    @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, LevelScene scene) {
         float currentTime = entity.getLifetimeSeconds();
         if(scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds){
             Vec2D position = entity.getPosition();
