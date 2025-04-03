@@ -1,16 +1,19 @@
 package engine.entity;
 
+import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.shot.EntityShot;
 import engine.entity.sprite.EntitySprite;
 import engine.entity.trajectory.Trajectory;
 import engine.scene.spawnable.Spawnable;
 
+import java.util.ArrayList;
+
 public class Ship extends Entity{
     private int hitPoints;
 
-    public Ship(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn, int hitPoints) {
-        super(startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, entityId, sprite, trajectory, hitbox, shot, deathSpawn);
+    public Ship(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents, int hitPoints) {
+        super(startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, entityId, sprite, trajectory, hitbox, shot, deathSpawn, extraComponents);
         this.hitPoints = hitPoints;
     }
 
@@ -29,7 +32,11 @@ public class Ship extends Entity{
 
     @Override
     public Entity copy() {
-        return new Ship(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy(), hitPoints);
+        ArrayList<ExtraComponent> newExtracomponents = new ArrayList<>(extraComponents.size());
+        for(ExtraComponent component: extraComponents){
+            newExtracomponents.add(component.copyIfNotReusable());
+        }
+        return new Ship(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), shot.copyIfNotReusable(), deathSpawn.copy(), newExtracomponents, hitPoints);
     }
 
     @Override

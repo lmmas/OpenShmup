@@ -111,6 +111,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
 
         @Override
         public void addPrimitive(Image2D.ImagePrimitive newPrimitive) {
+            assert primitives.size() == textureIndexes.size(): "mismatching list sizes between primitives and texture indexes";
             super.addPrimitive(newPrimitive);
             int textureIndex = textures.indexOf(newPrimitive.getTexture());
             assert textures.size() < GlobalVars.MAX_TEXTURE_SLOTS || textureIndex != -1: "invalid primitive texture";
@@ -125,7 +126,9 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
 
         @Override
         public void removePrimitive(Image2D.ImagePrimitive primitive) {
+            assert primitives.size() == textureIndexes.size(): "mismatching list sizes between primitives and texture indexes";
             int primitiveIndex = primitives.indexOf(primitive);
+            assert primitiveIndex != -1: "primitive to remove not found";
             textureIndexes.remove(primitiveIndex);
             primitives.remove(primitive);
         }

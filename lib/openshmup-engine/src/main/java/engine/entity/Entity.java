@@ -39,7 +39,7 @@ abstract public class Entity {
     protected Spawnable deathSpawn;
     protected ArrayList<ExtraComponent> extraComponents;
 
-    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn) {
+    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.scene = null;
         this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
@@ -55,7 +55,7 @@ abstract public class Entity {
         this.lifetimeSeconds = 0.0f;
         this.shot = shot;
         this.deathSpawn = deathSpawn;
-        this.extraComponents = new ArrayList<>();
+        this.extraComponents = extraComponents;
         setOrientation(orientationRadians);
         setSize(sizeX, sizeY);
         setPosition(trajectoryReferencePosX, trajectoryReferencePosY);
@@ -185,6 +185,7 @@ abstract public class Entity {
         private int hitPoints = 1;
         private EntityShot shot = EntityShot.DEFAULT();
         private Trajectory trajectory = Trajectory.DEFAULT();
+        private ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
 
         public Builder setHitPoints(int hp){
             this.hitPoints = hp;
@@ -272,15 +273,12 @@ abstract public class Entity {
         }
 
         public Entity build(){
-            if(hitbox == null){
-                hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
-            }
             assert (sprite != null): "Entity construction error: null fields";
             if(!isShip){
-                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn);
+                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn, extraComponents);
             }
             else{
-                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn,hitPoints);
+                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn, extraComponents, hitPoints);
             }
         }
     }
