@@ -1,23 +1,50 @@
-package engine.entity.shot;
+package engine.entity.extraComponent;
 
 import engine.Vec2D;
 import engine.entity.Entity;
+import engine.graphics.Graphic;
+import engine.render.RenderInfo;
+import engine.render.Texture;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
 
-public class NonPlayerShot implements EntityShot{
+public class NonPlayerShot implements ExtraComponent{
     private LevelScene scene;
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
-
     public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
         this.scene = null;
         this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = firstShotTimeSeconds;
+    }
+    @Override
+    public ExtraComponent copyIfNotReusable() {
+        return this;
+    }
+
+    @Override
+    public Spawnable getSpawnable() {
+        return spawnable;
+    }
+
+    @Override
+    public List<RenderInfo> getRenderInfos() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Graphic<?, ?>> getGraphics() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Texture> getTextures() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -33,15 +60,5 @@ public class NonPlayerShot implements EntityShot{
             spawnable.copyWithOffset(position.x, position.y).spawn(scene);
             nextShotTimeSeconds = nextShotTimeSeconds + shotPeriodSeconds;
         }
-    }
-
-    @Override
-    public EntityShot copyIfNotReusable() {
-        return new NonPlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);
-    }
-
-    @Override
-    public Spawnable getSpawnable() {
-        return spawnable;
     }
 }

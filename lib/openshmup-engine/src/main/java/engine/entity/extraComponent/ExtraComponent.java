@@ -1,5 +1,6 @@
 package engine.entity.extraComponent;
 
+import engine.entity.Entity;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.render.Texture;
@@ -15,5 +16,5 @@ public interface ExtraComponent {
     List<Graphic<?,?>> getGraphics();
     List<Texture> getTextures();
     void setScene(LevelScene scene);
-    void update();
+    void update(Entity entity);
 }

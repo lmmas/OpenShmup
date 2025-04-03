@@ -20,6 +20,7 @@ public class InputHandler {
         inputList.put(GLFW_KEY_X, GameControl.BOMB);
         inputList.put(GLFW_KEY_P, GameControl.PAUSE);
         inputList.put(GLFW_KEY_S, GameControl.SLOWDOWN);
+        inputList.put(GLFW_KEY_T, GameControl.SLOWDOWN);
     }
 
     public void updateControls(boolean[] controlStates){

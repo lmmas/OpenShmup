@@ -4,9 +4,8 @@ import engine.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
-import engine.entity.shot.EntityShot;
-import engine.entity.shot.NonPlayerShot;
-import engine.entity.shot.PlayerShot;
+import engine.entity.extraComponent.NonPlayerShot;
+import engine.entity.extraComponent.PlayerShot;
 import engine.entity.sprite.AnimatedSprite;
 import engine.entity.sprite.EntitySprite;
 import engine.entity.sprite.SimpleSprite;
@@ -35,11 +34,10 @@ abstract public class Entity {
     protected EntitySprite sprite;
     protected Hitbox hitbox;
     protected Trajectory trajectory;
-    protected EntityShot shot;
     protected Spawnable deathSpawn;
     protected ArrayList<ExtraComponent> extraComponents;
 
-    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, EntityShot shot, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.scene = null;
         this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
@@ -53,7 +51,6 @@ abstract public class Entity {
         this.entityId = entityId;
         this.startingTimeSeconds = 0.0f;
         this.lifetimeSeconds = 0.0f;
-        this.shot = shot;
         this.deathSpawn = deathSpawn;
         this.extraComponents = extraComponents;
         setOrientation(orientationRadians);
@@ -66,7 +63,6 @@ abstract public class Entity {
     public void setScene(LevelScene scene) {
         this.scene = scene;
         trajectory.setScene(scene);
-        shot.setScene(scene);
         for(var component: extraComponents){
             component.setScene(scene);
         }
@@ -143,19 +139,14 @@ abstract public class Entity {
     public void update(float currentTimeSeconds){
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this);
-        shot.update(this);
         for(ExtraComponent extraComponent: extraComponents){
-            extraComponent.update();
+            extraComponent.update(this);
         }
         sprite.update(currentTimeSeconds);
     }
 
     public Spawnable getDeathSpawn() {
         return deathSpawn;
-    }
-
-    public EntityShot getShot() {
-        return shot;
     }
 
     public ArrayList<ExtraComponent> getExtraComponents() {
@@ -174,7 +165,7 @@ abstract public class Entity {
 
     public static class Builder{
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
-        private Vec2D size = new Vec2D(0.0f, 0.0f);
+        private final Vec2D size = new Vec2D(0.0f, 0.0f);
         private float orientationRadians = 0.0f;
         private int id = -1;
         private boolean evil = true;
@@ -183,9 +174,8 @@ abstract public class Entity {
         private Hitbox hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
         private Spawnable deathSpawn = Spawnable.DEFAULT();
         private int hitPoints = 1;
-        private EntityShot shot = EntityShot.DEFAULT();
         private Trajectory trajectory = Trajectory.DEFAULT();
-        private ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
+        private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
 
         public Builder setHitPoints(int hp){
             this.hitPoints = hp;
@@ -264,21 +254,26 @@ abstract public class Entity {
         public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds){
             assert this.id != -1: "incorrect building steps order: must define the id first";
             if(this.id == 0){
-                this.shot = new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds);
+                extraComponents.add( new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
             }
             else{
-                this.shot = new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds);
+                extraComponents.add( new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
             }
+            return this;
+        }
+
+        public Builder addExtraComponent(ExtraComponent extraComponent){
+            extraComponents.add(extraComponent);
             return this;
         }
 
         public Entity build(){
             assert (sprite != null): "Entity construction error: null fields";
             if(!isShip){
-                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn, extraComponents);
+                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
             }
             else{
-                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, shot, deathSpawn, extraComponents, hitPoints);
+                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hitPoints);
             }
         }
     }

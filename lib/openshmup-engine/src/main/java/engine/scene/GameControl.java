@@ -8,5 +8,6 @@ public enum GameControl {
     PAUSE,
     FIRE,
     BOMB,
-    SLOWDOWN
+    SLOWDOWN,
+    TOGGLE_DEBUG_MODE
 }

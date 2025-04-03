@@ -1,6 +1,7 @@
 package engine.entity.extraComponent;
 
 import engine.GlobalVars;
+import engine.entity.Entity;
 import engine.entity.hitbox.HitboxRectangle;
 import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
@@ -53,7 +54,7 @@ public class HitboxDebugDisplay implements ExtraComponent{
     }
 
     @Override
-    public void update() {
+    public void update(Entity entity) {
         debugDisplay.setPosition(hitboxRectangle.position.x, hitboxRectangle.position.y);
         debugDisplay.setSize(hitboxRectangle.size.x, hitboxRectangle.size.y);
     }

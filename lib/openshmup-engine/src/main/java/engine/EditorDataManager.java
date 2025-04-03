@@ -1,7 +1,7 @@
 package engine;
 
 import engine.entity.Entity;
-import engine.entity.sprite.EmptySprite;
+import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
 import engine.render.RenderInfo;
 import engine.render.Texture;
@@ -76,7 +76,9 @@ public class EditorDataManager {
     public ArrayList<Spawnable> getSpawnablesOfEntity(int id){
         Entity entity = customEntities.get(id);
         ArrayList<Spawnable> spawnablesList = new ArrayList<>();
-        spawnablesList.add(entity.getShot().getSpawnable());
+        for (ExtraComponent component: entity.getExtraComponents()){
+            spawnablesList.add(component.getSpawnable());
+        }
         spawnablesList.add(entity.getDeathSpawn());
         return spawnablesList;
     }

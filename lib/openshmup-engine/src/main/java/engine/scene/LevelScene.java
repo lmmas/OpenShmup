@@ -114,8 +114,8 @@ public class LevelScene extends Scene{
         for(Entity entity: evilEntities){
             entity.update(sceneTime);
         }
-        //removeFarAwayEntities(goodEntities);
-        //removeFarAwayEntities(evilEntities);
+        removeFarAwayEntities(goodEntities);
+        removeFarAwayEntities(evilEntities);
         for(Entity entity: evilEntities){
             handleCollisions(entity, goodEntities);
         }
