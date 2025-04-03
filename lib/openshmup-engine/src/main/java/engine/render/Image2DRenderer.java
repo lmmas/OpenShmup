@@ -33,7 +33,9 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             this.textureIndexes = new ArrayList<>();
             this.dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
             this.textures.add(texture);
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         public void draw(){
@@ -101,7 +103,8 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             }
             dataBuffer.flip();
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
+            //glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, dataBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             dataBuffer.flip();
         }

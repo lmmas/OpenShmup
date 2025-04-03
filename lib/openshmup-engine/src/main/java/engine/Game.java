@@ -64,7 +64,7 @@ public class Game {
             glfwSetWindowPos(glfwWindow,(vidmode.width() - pWidth.get(0)) / 2,(vidmode.height() - pHeight.get(0)) / 2);
 
             glfwMakeContextCurrent(glfwWindow);
-            glfwSwapInterval(1);
+            glfwSwapInterval(0);
             GL.createCapabilities();
             glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
             org.lwjgl.system.Callback debugProc = GLUtil.setupDebugMessageCallback();

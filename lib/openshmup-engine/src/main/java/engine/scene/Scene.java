@@ -57,9 +57,11 @@ abstract public class Scene {
                 renderer.draw();
             }
         }
-        /*float currentTime = timer.getTimeSeconds();
-        System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
-        lastDrawTime = currentTime;*/
+        if(debugMode){
+            float currentTime = timer.getTimeSeconds();
+            System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
+            lastDrawTime = currentTime;
+        }
     }
 
     public void addGraphic(Graphic<?,?> newGraphic){
