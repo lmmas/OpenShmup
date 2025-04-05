@@ -2,6 +2,7 @@ package engine.render;
 
 import engine.GlobalVars;
 import engine.Vec2D;
+import engine.graphics.GraphicType;
 import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;
 
@@ -18,13 +19,13 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
     }
     public Image2DRenderer(GraphicType type, int drawingType){
         super(type, drawingType, 36);
-        this.batchSize = 2;
+        this.batchSize = 100;
     }
 
     protected class ImageBatch extends Renderer<Image2D, Image2D.ImagePrimitive>.Batch {
         protected ArrayList<Texture> textures;
         protected ArrayList<Integer> textureIndexes;
-        protected ByteBuffer dataBuffer;
+        final protected ByteBuffer dataBuffer;
         protected static final int vertexAttributeCount = 9;
 
         public ImageBatch(Shader shader, Texture texture){
@@ -103,7 +104,6 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             }
             dataBuffer.flip();
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            //glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBufferSubData(GL_ARRAY_BUFFER, 0, dataBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             dataBuffer.flip();

@@ -1,6 +1,5 @@
 package engine.graphics;
 
-import engine.render.GraphicType;
 import engine.render.Shader;
 import engine.render.Texture;
 

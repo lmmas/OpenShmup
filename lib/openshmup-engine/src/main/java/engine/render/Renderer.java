@@ -1,5 +1,6 @@
 package engine.render;
 
+import engine.graphics.GraphicType;
 import engine.scene.Scene;
 import engine.graphics.Graphic;
 

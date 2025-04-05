@@ -8,8 +8,7 @@ final public class Vec2D {
         this.y = y;
     }
 
-    public Vec2D(Vec2D vec) {
-        this.x = vec.x;
-        this.y = vec.y;
+    public Vec2D copy(){
+        return new Vec2D(x,y);
     }
 }

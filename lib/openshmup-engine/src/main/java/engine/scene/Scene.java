@@ -3,6 +3,7 @@ package engine.scene;
 import engine.EditorDataManager;
 import engine.Game;
 import engine.graphics.Graphic;
+import engine.graphics.GraphicType;
 import engine.render.*;
 import engine.graphics.DynamicImage;
 import engine.graphics.StaticImage;

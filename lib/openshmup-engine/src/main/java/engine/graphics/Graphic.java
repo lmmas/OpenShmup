@@ -2,7 +2,6 @@ package engine.graphics;
 import engine.render.RenderInfo;
 import engine.render.Shader;
 import engine.render.Renderer;
-import engine.render.GraphicType;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{

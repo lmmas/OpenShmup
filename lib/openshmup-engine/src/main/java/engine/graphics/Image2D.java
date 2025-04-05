@@ -1,7 +1,6 @@
 package engine.graphics;
 
 import engine.Vec2D;
-import engine.render.GraphicType;
 import engine.render.Shader;
 import engine.render.Texture;
 
@@ -101,19 +100,19 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         }
 
         public Vec2D getImagePosition() {
-            return imagePosition;
+            return imagePosition.copy();
         }
 
         public Vec2D getImageSize() {
-            return imageSize;
+            return imageSize.copy();
         }
 
         public Vec2D getTexturePosition() {
-            return texturePosition;
+            return texturePosition.copy();
         }
 
         public Vec2D getTextureSize() {
-            return textureSize;
+            return textureSize.copy();
         }
 
         public Texture getTexture(){

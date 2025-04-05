@@ -10,7 +10,7 @@ import engine.entity.hitbox.HitboxRectangle;
 import engine.graphics.Graphic;
 import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
-import engine.render.GraphicType;
+import engine.graphics.GraphicType;
 import engine.render.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
