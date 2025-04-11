@@ -49,7 +49,7 @@ public class LevelScene extends Scene{
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
         allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, GraphicType.STATIC_IMAGE));
         if(debugMode){
-            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.DYNAMIC_IMAGE));
+            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
         }
         constructRenderers(allRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();

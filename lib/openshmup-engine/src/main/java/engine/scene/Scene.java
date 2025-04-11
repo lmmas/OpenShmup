@@ -2,11 +2,8 @@ package engine.scene;
 
 import engine.EditorDataManager;
 import engine.Game;
-import engine.graphics.Graphic;
-import engine.graphics.GraphicType;
+import engine.graphics.*;
 import engine.render.*;
-import engine.graphics.DynamicImage;
-import engine.graphics.StaticImage;
 import engine.scene.display.SceneDisplay;
 
 import java.util.ArrayList;
@@ -82,6 +79,11 @@ abstract public class Scene {
                         DynamicImage dynamicImage = (DynamicImage) newGraphic;
                         dynamicImageRenderer.addGraphic(dynamicImage);
                     }
+                    case COLOR_RECTANGLE -> {
+                        ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
+                        ColorRectangle colorRectangle = (ColorRectangle) newGraphic;
+                        colorRectangleRenderer.addGraphic(colorRectangle);
+                    }
                 }
                 return;
             }
@@ -100,6 +102,10 @@ abstract public class Scene {
             }
             case DYNAMIC_IMAGE -> {
                 DynamicImageRenderer newRenderer = new DynamicImageRenderer();
+                rendererList.add(newRenderer);
+            }
+            case COLOR_RECTANGLE -> {
+                ColorRectangleRenderer newRenderer = new ColorRectangleRenderer();
                 rendererList.add(newRenderer);
             }
         }

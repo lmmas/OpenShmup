@@ -3,6 +3,7 @@ package engine.entity.extraComponent;
 import engine.GlobalVars;
 import engine.entity.Entity;
 import engine.entity.hitbox.HitboxRectangle;
+import engine.graphics.ColorRectangle;
 import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
@@ -15,12 +16,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class HitboxDebugDisplay implements ExtraComponent{
-    private HitboxRectangle hitboxRectangle;
-    private DynamicImage debugDisplay;
+    private final HitboxRectangle hitboxRectangle;
+    private final ColorRectangle debugDisplay;
 
     public HitboxDebugDisplay(HitboxRectangle hitboxRectangle){
         this.hitboxRectangle = hitboxRectangle;
-        this.debugDisplay = new DynamicImage(GlobalVars.Paths.MissingTextureFile, GlobalVars.debugDisplayLayer, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"), hitboxRectangle.size.x, hitboxRectangle.size.y);
+        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, hitboxRectangle.size.x, hitboxRectangle.size.y, 1.0f, 1.0f, 1.0f, 1.0f, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
     }
 
     @Override

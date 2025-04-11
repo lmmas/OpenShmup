@@ -12,9 +12,9 @@ import static org.lwjgl.opengl.GL33.*;
 
 public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
     final static private int vertexFloatCount = 8;
-    final static private int vboStrideBytes = vertexFloatCount * Float.BYTES;//FIXME vboStrideBytes declaré 2 fois
     public ColorRectangleRenderer(){
-        super(GraphicType.COLOR_RECTANGLE, GL_DYNAMIC_DRAW, 8 * Float.BYTES);
+        super(GraphicType.COLOR_RECTANGLE, GL_DYNAMIC_DRAW, vertexFloatCount * Float.BYTES);
+        this.batchSize = 100;
     }
     @Override
     protected Batch createBatchFromGraphic(ColorRectangle graphic) {

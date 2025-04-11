@@ -5,7 +5,7 @@ import engine.Vec2D;
 import engine.render.Shader;
 
 public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
-    private ColorRectanglePrimitive primitive;
+    private final ColorRectanglePrimitive primitive;
     public ColorRectangle(int layer, float sizeX, float sizeY, float r, float g, float b, float a, Shader shader){
         super(layer, GraphicType.COLOR_RECTANGLE, shader);
         this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, r, g, b, a);
@@ -28,6 +28,18 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
     @Override
     public void delete() {
         primitive.delete();
+    }
+
+    public void setPosition(float positionX, float positionY){
+        primitive.position.x = positionX;
+        primitive.position.y = positionY;
+        primitive.tellBatchDataChanged();
+    }
+
+    public void setSize(float sizeX, float sizeY){
+        primitive.size.x = sizeX;
+        primitive.size.y = sizeY;
+        primitive.tellBatchDataChanged();
     }
 
     public class ColorRectanglePrimitive extends Graphic<ColorRectangle, ColorRectanglePrimitive>.Primitive{
