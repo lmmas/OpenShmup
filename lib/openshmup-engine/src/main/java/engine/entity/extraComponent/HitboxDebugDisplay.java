@@ -19,9 +19,9 @@ public class HitboxDebugDisplay implements ExtraComponent{
     private final HitboxRectangle hitboxRectangle;
     private final ColorRectangle debugDisplay;
 
-    public HitboxDebugDisplay(HitboxRectangle hitboxRectangle){
+    public HitboxDebugDisplay(HitboxRectangle hitboxRectangle, float r, float g, float b, float a){
         this.hitboxRectangle = hitboxRectangle;
-        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, hitboxRectangle.size.x, hitboxRectangle.size.y, 1.0f, 1.0f, 1.0f, 1.0f, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
+        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, hitboxRectangle.size.x, hitboxRectangle.size.y, r, g, b, a, Shader.loadShader("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
     }
 
     @Override

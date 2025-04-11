@@ -140,10 +140,28 @@ public class LevelScene extends Scene{
 
     public void addEntity(Entity entity){
         if(debugMode){
+            RGBAValue hitboxColor;
+            if(entity.getType() == EntityType.SHIP){
+                if(entity.isEvil()){
+                    hitboxColor = new RGBAValue(1.0f, 0.0f, 0.0f, 1.0f);
+                }
+                else{
+                    hitboxColor = new RGBAValue(0.0f, 1.0f, 0.0f, 1.0f);
+                }
+            } else if (entity.getType() == EntityType.PROJECTILE) {
+                if(entity.isEvil()){
+                    hitboxColor = new RGBAValue(1.0f, 1.0f, 0.0f, 1.0f);
+                }
+                else{
+                    hitboxColor = new RGBAValue(0.0f, 1.0f, 1.0f, 1.0f);
+                }
+            }else {
+                hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+            }
             Hitbox entityHitbox = entity.getHitbox();
             List<HitboxRectangle> rectangleList = entityHitbox.getRectangles();
             for(var rectangle: rectangleList){
-                entity.addExtraComponent(new HitboxDebugDisplay(rectangle));
+                entity.addExtraComponent(new HitboxDebugDisplay(rectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
             }
         }
         Optional<Graphic<?, ?>> entityGraphic = entity.getSprite().getGraphic();
