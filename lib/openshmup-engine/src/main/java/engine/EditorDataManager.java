@@ -11,6 +11,7 @@ import engine.scene.spawnable.Spawnable;
 import json.EditorDataLoader;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;

@@ -2,6 +2,7 @@ package engine.entity;
 
 import engine.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
+import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.extraComponent.NonPlayerShot;
@@ -22,15 +23,15 @@ import java.util.function.Function;
 
 abstract public class Entity {
     protected LevelScene scene;
-    final protected Vec2D trajectoryReferencePosition;
+    protected int entityId;
+    protected boolean evil;
     final protected Vec2D position;
+    final protected Vec2D trajectoryReferencePosition;
     final protected Vec2D size;
     protected float orientationRadians;
-    protected boolean evil;
     protected boolean invincible;
-    protected int entityId;
-    protected float lifetimeSeconds;
     protected float startingTimeSeconds;
+    protected float lifetimeSeconds;
     protected EntitySprite sprite;
     protected Hitbox hitbox;
     protected Trajectory trajectory;
@@ -160,22 +161,26 @@ abstract public class Entity {
     }
 
     public static class Builder{
-        private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
-        private final Vec2D size = new Vec2D(0.0f, 0.0f);
-        private float orientationRadians = 0.0f;
         private int id = -1;
-        private boolean evil = true;
-        private boolean isShip = false;
-        private EntitySprite sprite = EntitySprite.DEFAULT();
-        private Hitbox hitbox = new SimpleHitBox(startingPosition.x, startingPosition.y, size.x, size.y);
-        private Spawnable deathSpawn = Spawnable.DEFAULT();
+        private EntityType type = EntityType.PROJECTILE;
         private int hitPoints = 1;
+        private boolean evil = true;
+        private final Vec2D size = new Vec2D(0.0f, 0.0f);
+        private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
+        private float orientationRadians = 0.0f;
+        private EntitySprite sprite = EntitySprite.DEFAULT();
+        private Hitbox hitbox = Hitbox.DEFAULT();
         private Trajectory trajectory = Trajectory.DEFAULT();
+        private Spawnable deathSpawn = Spawnable.DEFAULT();
         private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
+
+        public Builder setType(EntityType type){
+            this.type = type;
+            return this;
+        }
 
         public Builder setHitPoints(int hp){
             this.hitPoints = hp;
-            this.isShip = true;
             return this;
         }
 
@@ -247,6 +252,17 @@ abstract public class Entity {
             return this;
         }
 
+        public Builder addCompositeHitbox(String hitboxPath, boolean orientable){
+            assert size.x != 0.0f && size.y != 0.0f:"Invalid hitbox size";
+            if(orientable){
+
+            }
+            else{
+                hitbox = new CompositeHitbox(hitboxPath, size.x, size.y);
+            }
+            return this;
+        }
+
         public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds){
             assert this.id != -1: "incorrect building steps order: must define the id first";
             if(this.id == 0){
@@ -265,7 +281,7 @@ abstract public class Entity {
 
         public Entity build(){
             assert (sprite != null): "Entity construction error: null fields";
-            if(!isShip){
+            if(type != EntityType.SHIP){
                 return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
             }
             else{
