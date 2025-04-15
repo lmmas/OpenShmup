@@ -1,5 +1,6 @@
 package engine.entity.hitbox;
 
+import engine.IVec2D;
 import engine.Vec2D;
 import engine.render.Texture;
 import org.lwjgl.BufferUtils;
@@ -48,11 +49,20 @@ public class CompositeHitbox implements Hitbox{
         generateSimplifiedRectangles(rectanglePositions);
     }
 
+    public CompositeHitbox(Vec2D position, Vec2D size, ArrayList<HitboxRectangle> rectangleList, ArrayList<Vec2D> rectangleRelativePositions, ArrayList<Vec2D> rectangleRelativeSizes) {
+        //this constructor should only be used for copying
+        this.position = position;
+        this.size = size;
+        this.rectangleList = rectangleList;
+        this.rectangleRelativePositions = rectangleRelativePositions;
+        this.rectangleRelativeSizes = rectangleRelativeSizes;
+    }
+
     private void generateSimplifiedRectangles(boolean[][] rectanglePositions){
         int pixelWidth = rectanglePositions[0].length;
         int pixelHeight = rectanglePositions.length;
-        ArrayList<ArrayList<Vec2D>> tempPositionsList = new ArrayList<>(pixelHeight);
-        ArrayList<ArrayList<Vec2D>> tempSizesList = new ArrayList<>(pixelHeight);
+        ArrayList<ArrayList<Vec2D>> tempPositionsList1 = new ArrayList<>(pixelHeight);
+        ArrayList<ArrayList<Vec2D>> tempSizesList1 = new ArrayList<>(pixelHeight);
         for(int i = 0; i < pixelHeight; i++){
             ArrayList<Vec2D> positionRowList = new ArrayList<>(pixelWidth);
             ArrayList<Vec2D> sizeRowList = new ArrayList<>(pixelWidth);
@@ -89,17 +99,57 @@ public class CompositeHitbox implements Hitbox{
                         (float) 1 / pixelHeight
                 ));
             }
-            tempPositionsList.add(positionRowList);
-            tempSizesList.add(sizeRowList);
+            tempPositionsList1.add(positionRowList);
+            tempSizesList1.add(sizeRowList);
         }
         this.rectangleRelativePositions = new ArrayList<>(pixelHeight);
-        for(var positionRow: tempPositionsList){
+        this.rectangleRelativeSizes = new ArrayList<>(pixelHeight);
+        ArrayList<IVec2D> rectanglesToMerge = new ArrayList<>();
+        while(!tempPositionsList1.stream().allMatch(ArrayList::isEmpty)){
+            Vec2D referencePosition = null;
+            Vec2D referenceSize = null;
+            for(int i = 0; i < tempPositionsList1.size(); i++){
+                if(!tempPositionsList1.get(i).isEmpty()){
+                    referencePosition = tempPositionsList1.get(i).get(0);
+                    referenceSize = tempSizesList1.get(i).get(0);
+                    rectanglesToMerge.add(new IVec2D(0, i));
+                    break;
+                }
+            }
+            for(int i = rectanglesToMerge.getFirst().y + 1; i < tempPositionsList1.size(); i++){
+                boolean rectangleFound = false;
+                int j = 0;
+                while(j < tempPositionsList1.get(i).size() && !rectangleFound){
+                    if(tempSizesList1.get(i).get(j).x == referenceSize.x && tempPositionsList1.get(i).get(j).x == referencePosition.x){
+                        rectanglesToMerge.add(new IVec2D(j, i));
+                        rectangleFound = true;
+                    }
+                    j++;
+                }
+                if(!rectangleFound){
+                    break;
+                }
+            }
+            IVec2D lastMergedRectangleIndexes = rectanglesToMerge.getLast();
+            Vec2D mergedRectanglePosition = new Vec2D(referencePosition.x, (referencePosition.y + tempPositionsList1.get(lastMergedRectangleIndexes.y).get(lastMergedRectangleIndexes.x).y) / 2);
+            Vec2D mergedRectangleSize = new Vec2D(referenceSize.x, 1.0f/ pixelHeight * rectanglesToMerge.size());
+            this.rectangleRelativePositions.add(mergedRectanglePosition);
+            this.rectangleRelativeSizes.add(mergedRectangleSize);
+            for(IVec2D index: rectanglesToMerge){
+                ArrayList<Vec2D> rowList = tempPositionsList1.get(index.y);
+                rowList.remove(index.x);
+            }
+            rectanglesToMerge.clear();
+        }
+        /*
+        for(var positionRow: tempPositionsList1){
             this.rectangleRelativePositions.addAll(positionRow);
         }
-        this.rectangleRelativeSizes = new ArrayList<>(pixelHeight);
-        for(var sizeRow: tempSizesList){
+        for(var sizeRow: tempSizesList1){
             this.rectangleRelativeSizes.addAll(sizeRow);
         }
+
+         */
         this.rectangleList = new ArrayList<>(rectangleRelativePositions.size());
         for(int i = 0; i < rectangleRelativePositions.size(); i++){
             rectangleList.add(new HitboxRectangle(0.0f,0.0f,0.0f,0.0f));
@@ -143,6 +193,10 @@ public class CompositeHitbox implements Hitbox{
 
     @Override
     public Hitbox copy() {
-        return null;
+        ArrayList<HitboxRectangle> RectanglesCopy = new ArrayList<>(rectangleList.size());
+        for(var rectangle: rectangleList){
+            RectanglesCopy.add(rectangle.copy());
+        }
+        return new CompositeHitbox(position, size, RectanglesCopy, rectangleRelativePositions, rectangleRelativeSizes);
     }
 }

@@ -104,8 +104,15 @@ public class EditorDataLoader {
 
             Vec2D size = convertToFloatVec(entityNode.checkAndGetIVec2D("size"));
 
-            Entity.Builder customEntitybuilder = new Entity.Builder().setId(id).setType(type).setSize(size.x, size.y).setEvil(evil);
-
+            Entity.Builder customEntityBuilder = new Entity.Builder().setId(id).setType(type).setSize(size.x, size.y).setEvil(evil);
+            if(entityNode.hasField("hitbox")){
+                SafeJsonNode hitboxNode = entityNode.checkAndGetObject("hitbox");
+                String hitboxType = hitboxNode.checkAndGetString("type");
+                if(hitboxType.equals("composite")){
+                    String hitboxFileName = hitboxNode.checkAndGetString("fileName");
+                    customEntityBuilder = customEntityBuilder.addCompositeHitbox(GlobalVars.Paths.editorTextureFolder+ hitboxFileName, false);
+                }
+            }
             if(entityNode.hasField("deathSpawn")){
                 SafeJsonNode deathSpawnNode = entityNode.checkAndGetObjectOrArray("deathSpawn");
                 Spawnable deathSpawn;
@@ -120,12 +127,12 @@ public class EditorDataLoader {
                 else{
                     deathSpawn = getSingleSpawnable(deathSpawnNode);
                 }
-                customEntitybuilder = customEntitybuilder.setDeathSpawn(deathSpawn);
+                customEntityBuilder = customEntityBuilder.setDeathSpawn(deathSpawn);
             }
 
             if(type == EntityType.SHIP && entityNode.hasField("hp")){
                 int hp = entityNode.checkAndGetInt("hp");
-                customEntitybuilder = customEntitybuilder.setHitPoints(hp);
+                customEntityBuilder = customEntityBuilder.setHitPoints(hp);
             }
 
             if (entityNode.hasField("shot")){
@@ -147,7 +154,7 @@ public class EditorDataLoader {
                 else {
                     shot = getSingleSpawnable(spawnableNode);
                 }
-                customEntitybuilder = customEntitybuilder.createShot(shot, shotPeriod, firstShotTime);
+                customEntityBuilder = customEntityBuilder.createShot(shot, shotPeriod, firstShotTime);
             }
 
             SafeJsonNode spriteNode = entityNode.checkAndGetObject("sprite");
@@ -168,16 +175,16 @@ public class EditorDataLoader {
 
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
 
-                customEntitybuilder = customEntitybuilder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable);
+                customEntityBuilder = customEntityBuilder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable);
             }
             else{
                 String texturePath = GlobalVars.Paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
 
 
-                customEntitybuilder = customEntitybuilder.createSprite(layer, texturePath, orientable);
+                customEntityBuilder = customEntityBuilder.createSprite(layer, texturePath, orientable);
             }
             if(id == 0){
-                customEntitybuilder = customEntitybuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
+                customEntityBuilder = customEntityBuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
             }
             if(entityNode.hasField("defaultTrajectory")){
                 SafeJsonNode trajectoryNode = entityNode.checkAndGetObject("defaultTrajectory");
@@ -210,9 +217,9 @@ public class EditorDataLoader {
                         throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
                     }
                 }
-                customEntitybuilder = customEntitybuilder.setTrajectory(trajectory);
+                customEntityBuilder = customEntityBuilder.setTrajectory(trajectory);
             }
-            editorDataManager.addCustomEntity(id, customEntitybuilder.build());
+            editorDataManager.addCustomEntity(id, customEntityBuilder.build());
         }
     }
     public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {

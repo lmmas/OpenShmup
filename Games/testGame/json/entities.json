@@ -4,7 +4,11 @@
         "evil": false,
         "type": "ship",
         "hp": 5,
-        "size": [50, 75],
+        "size": [100, 150],
+        "hitbox": {
+            "type": "composite",
+            "fileName": "shipHitbox.png"
+        },
         "sprite": {
             "layer": 2,
             "orientable": false,

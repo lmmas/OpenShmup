@@ -74,7 +74,7 @@ uniform ivec2 u_SceneResolution;
 out vec4 fragColor;
 
 void main(){
-    ivec2 internalPositionPixels = ivec2((v_InternalPosition * v_QuadSize * u_SceneResolution) + vec2(0.f,0.5f));
+    ivec2 internalPositionPixels = ivec2((v_InternalPosition * v_QuadSize * u_SceneResolution) + vec2(0.5f,0.5f));
     int borderWidth = 4;
     int rightBound = int(v_QuadSize[0] * u_SceneResolution[0]);
     int upperBound = int(v_QuadSize[1] * u_SceneResolution[1]);

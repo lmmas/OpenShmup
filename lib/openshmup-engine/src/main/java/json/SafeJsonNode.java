@@ -121,7 +121,7 @@ public class SafeJsonNode {
         return new SafeJsonNode(arrayNode, path + "." + fieldName);
     }
 
-    private void checkArraySize(int size) throws IllegalArgumentException{
+    public void checkArraySize(int size) throws IllegalArgumentException{
         if(node.size() != size){
             throw new IllegalArgumentException("Invalid JSON format: " + path + " should be of size " + size);
         }
