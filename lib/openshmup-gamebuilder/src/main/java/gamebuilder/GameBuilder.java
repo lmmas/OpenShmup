@@ -7,7 +7,7 @@ import java.util.stream.*;
 
 public class GameBuilder {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Path rootFolderPath = java.nio.file.Paths.get(GameBuilder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
+        Path rootFolderPath = java.nio.file.Paths.get(GameBuilder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent();
         Path gamesDir = rootFolderPath.resolve("Games");
         // Path to the engine executable (shaded JAR)
         Path gameJAR = rootFolderPath.resolve ("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
@@ -20,7 +20,7 @@ public class GameBuilder {
         // Iterate through all subdirectories of Games
         try (Stream<Path> paths = Files.list(gamesDir)) {
             paths.filter(Files::isDirectory).forEach(gameFolder -> {
-                Path targetPath = gameFolder.resolve("GameExecutable.jar");
+                Path targetPath = gameFolder.resolve(gameFolder.getFileName() + ".jar");
                 try {
                     Files.copy(gameJAR, targetPath, StandardCopyOption.REPLACE_EXISTING);
                     System.out.println("Copied game to " + targetPath);

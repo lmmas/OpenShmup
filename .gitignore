@@ -40,3 +40,9 @@ bin/
 /lib/openshmup-engine/dependency-reduced-pom.xml
 /lib/openshmup-engine/classdiagram1.puml
 /Games/testGame/GameExecutable.jar
+/lib/openshmup-gameExecutable/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/lib/openshmup-gameExecutable/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+/lib/openshmup-gameExecutable/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/lib/openshmup-gameExecutable/target/classes/io/github/lmmas/GameLauncher.class
+/lib/openshmup-gameExecutable/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+/lib/openshmup-gameExecutable/target/maven-archiver/pom.properties
