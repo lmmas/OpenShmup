@@ -112,6 +112,9 @@ public class EditorDataLoader {
                     String hitboxFileName = hitboxNode.checkAndGetString("fileName");
                     customEntityBuilder = customEntityBuilder.addCompositeHitbox(GlobalVars.Paths.editorTextureFolder+ hitboxFileName, false);
                 }
+                if(hitboxType.equals("simpleRectangle")){
+                    customEntityBuilder = customEntityBuilder.addRectangleHitbox(false);
+                }
             }
             if(entityNode.hasField("deathSpawn")){
                 SafeJsonNode deathSpawnNode = entityNode.checkAndGetObjectOrArray("deathSpawn");

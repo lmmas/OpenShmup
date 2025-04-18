@@ -1,11 +1,6 @@
 package engine.entity.hitbox;
 
-import engine.Vec2D;
-
-import java.util.Collections;
-import java.util.List;
-
-public class EmptyHitbox implements Hitbox{
+public final class EmptyHitbox implements Hitbox{
     private static EmptyHitbox instance = null;
     private EmptyHitbox(){
 
@@ -31,16 +26,6 @@ public class EmptyHitbox implements Hitbox{
     @Override
     public void setOrientation(float orientationRadians) {
 
-    }
-
-    @Override
-    public boolean intersects(Hitbox otherHitbox) {
-        return false;
-    }
-
-    @Override
-    public List<HitboxRectangle> getRectangles() {
-        return Collections.emptyList();
     }
 
     @Override

@@ -8,14 +8,13 @@ import org.lwjgl.BufferUtils;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.stb.STBImage.*;
 
-public class CompositeHitbox implements Hitbox{
+public final class CompositeHitbox implements Hitbox{
     private Vec2D position;
     private Vec2D size;
-    private ArrayList<HitboxRectangle> rectangleList;
+    private ArrayList<Hitbox> rectangleList;
     private ArrayList<Vec2D> rectangleRelativePositions;
     private ArrayList<Vec2D> rectangleRelativeSizes;
     public CompositeHitbox(String textureFilepath, float sizeX, float sizeY){
@@ -49,7 +48,7 @@ public class CompositeHitbox implements Hitbox{
         generateSimplifiedRectangles(rectanglePositions);
     }
 
-    public CompositeHitbox(Vec2D position, Vec2D size, ArrayList<HitboxRectangle> rectangleList, ArrayList<Vec2D> rectangleRelativePositions, ArrayList<Vec2D> rectangleRelativeSizes) {
+    public CompositeHitbox(Vec2D position, Vec2D size, ArrayList<Hitbox> rectangleList, ArrayList<Vec2D> rectangleRelativePositions, ArrayList<Vec2D> rectangleRelativeSizes) {
         //this constructor should only be used for copying
         this.position = position;
         this.size = size;
@@ -141,18 +140,9 @@ public class CompositeHitbox implements Hitbox{
             }
             rectanglesToMerge.clear();
         }
-        /*
-        for(var positionRow: tempPositionsList1){
-            this.rectangleRelativePositions.addAll(positionRow);
-        }
-        for(var sizeRow: tempSizesList1){
-            this.rectangleRelativeSizes.addAll(sizeRow);
-        }
-
-         */
         this.rectangleList = new ArrayList<>(rectangleRelativePositions.size());
         for(int i = 0; i < rectangleRelativePositions.size(); i++){
-            rectangleList.add(new HitboxRectangle(0.0f,0.0f,0.0f,0.0f));
+            rectangleList.add(new SimpleRectangleHitbox(0.0f,0.0f,0.0f,0.0f));
         }
         setSize(size.x, size.y);
     }
@@ -182,24 +172,15 @@ public class CompositeHitbox implements Hitbox{
     }
 
     @Override
-    public boolean intersects(Hitbox otherHitbox) {
-        for(var rectangle: rectangleList){
-
-        }
-        return false;
-    }
-
-    @Override
-    public List<HitboxRectangle> getRectangles() {
-        return rectangleList;
-    }
-
-    @Override
     public Hitbox copy() {
-        ArrayList<HitboxRectangle> RectanglesCopy = new ArrayList<>(rectangleList.size());
+        ArrayList<Hitbox> rectanglesCopy = new ArrayList<>(rectangleList.size());
         for(var rectangle: rectangleList){
-            RectanglesCopy.add(rectangle.copy());
+            rectanglesCopy.add(rectangle.copy());
         }
-        return new CompositeHitbox(position, size, RectanglesCopy, rectangleRelativePositions, rectangleRelativeSizes);
+        return new CompositeHitbox(position, size, rectanglesCopy, rectangleRelativePositions, rectangleRelativeSizes);
+    }
+
+    public ArrayList<Hitbox> getRectangleList() {
+        return rectangleList;
     }
 }

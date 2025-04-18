@@ -2,20 +2,20 @@ package engine.entity;
 
 import engine.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.hitbox.CompositeHitbox;
-import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.SimpleHitBox;
 import engine.entity.extraComponent.NonPlayerShot;
 import engine.entity.extraComponent.PlayerShot;
+import engine.entity.hitbox.CompositeHitbox;
+import engine.entity.hitbox.Hitbox;
+import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.entity.sprite.AnimatedSprite;
 import engine.entity.sprite.EntitySprite;
 import engine.entity.sprite.SimpleSprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
-import engine.scene.display.Animation;
-import engine.scene.display.AnimationInfo;
 import engine.graphics.DynamicImage;
 import engine.scene.LevelScene;
+import engine.scene.display.Animation;
+import engine.scene.display.AnimationInfo;
 import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
@@ -259,6 +259,16 @@ abstract public class Entity {
             }
             else{
                 hitbox = new CompositeHitbox(hitboxPath, size.x, size.y);
+            }
+            return this;
+        }
+
+        public Builder addRectangleHitbox(boolean orientable){
+            if(orientable){
+
+            }
+            else {
+                hitbox = new SimpleRectangleHitbox(0.0f, 0.0f, size.x, size.y);
             }
             return this;
         }

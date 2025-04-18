@@ -9,15 +9,12 @@ public class GameBuilder {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Path rootFolderPath = java.nio.file.Paths.get(GameBuilder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent();
         Path gamesDir = rootFolderPath.resolve("Games");
-        // Path to the engine executable (shaded JAR)
         Path gameJAR = rootFolderPath.resolve ("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
 
         if (!Files.exists(gameJAR)) {
             System.err.println("Engine JAR not found: " + gameJAR);
             return;
         }
-
-        // Iterate through all subdirectories of Games
         try (Stream<Path> paths = Files.list(gamesDir)) {
             paths.filter(Files::isDirectory).forEach(gameFolder -> {
                 Path targetPath = gameFolder.resolve(gameFolder.getFileName() + ".jar");

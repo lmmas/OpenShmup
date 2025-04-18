@@ -2,9 +2,8 @@ package engine.entity.extraComponent;
 
 import engine.GlobalVars;
 import engine.entity.Entity;
-import engine.entity.hitbox.HitboxRectangle;
+import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.ColorRectangle;
-import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.render.Shader;
@@ -16,12 +15,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class HitboxDebugDisplay implements ExtraComponent{
-    private final HitboxRectangle hitboxRectangle;
+    private final SimpleRectangleHitbox simpleRectangleHitbox;
     private final ColorRectangle debugDisplay;
 
-    public HitboxDebugDisplay(HitboxRectangle hitboxRectangle, float r, float g, float b, float a){
-        this.hitboxRectangle = hitboxRectangle;
-        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, hitboxRectangle.size.x, hitboxRectangle.size.y, r, g, b, a, Shader.loadShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
+    public HitboxDebugDisplay(SimpleRectangleHitbox simpleRectangleHitbox, float r, float g, float b, float a){
+        this.simpleRectangleHitbox = simpleRectangleHitbox;
+        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, r, g, b, a, Shader.loadShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
     }
 
     @Override
@@ -51,7 +50,7 @@ public class HitboxDebugDisplay implements ExtraComponent{
 
     @Override
     public void update(Entity entity, LevelScene scene) {
-        debugDisplay.setPosition(hitboxRectangle.position.x, hitboxRectangle.position.y);
-        debugDisplay.setSize(hitboxRectangle.size.x, hitboxRectangle.size.y);
+        debugDisplay.setPosition(simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y);
+        debugDisplay.setSize(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y);
     }
 }

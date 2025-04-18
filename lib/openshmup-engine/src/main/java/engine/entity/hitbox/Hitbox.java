@@ -1,15 +1,57 @@
 package engine.entity.hitbox;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public interface Hitbox {
+public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRectangleHitbox {
     void setPosition(float positionX, float positionY);
     void setSize(float sizeX, float sizeY);
     void setOrientation(float orientationRadians);
-    boolean intersects(Hitbox otherHitbox);
-    List<HitboxRectangle> getRectangles();
     Hitbox copy();
     static Hitbox DEFAULT(){
         return EmptyHitbox.getInstance();
+    }
+
+    static boolean intersection(Hitbox hitbox, Hitbox otherHitbox){
+        if(hitbox instanceof EmptyHitbox){
+            return false;
+        }
+        if(otherHitbox instanceof EmptyHitbox){
+            return false;
+        }
+        if(hitbox instanceof SimpleRectangleHitbox simpleRectangleHitbox){
+            if(otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox){
+                return !(simpleRectangleHitbox.downBound > otherSimpleHitbox.upBound) && !(simpleRectangleHitbox.upBound < otherSimpleHitbox.downBound) && !(simpleRectangleHitbox.rightBound < otherSimpleHitbox.leftBound) && !(simpleRectangleHitbox.leftBound > otherSimpleHitbox.rightBound);
+            } else {
+                CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
+                ArrayList<Hitbox> rectangleList = otherCompositeHitbox.getRectangleList();
+                for(Hitbox rectangle: rectangleList){
+                    if(intersection(hitbox, rectangle)){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        else{
+            CompositeHitbox compositeHitbox = (CompositeHitbox) hitbox;
+            if(otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox){
+                for(Hitbox rectangle: compositeHitbox.getRectangleList()){
+                    if(intersection(rectangle, otherSimpleHitbox)){
+                        return true;
+                    }
+                }
+            }
+            else{
+                CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
+                for( Hitbox rectangle: compositeHitbox.getRectangleList()){
+                    for(Hitbox otherRectangle: otherCompositeHitbox.getRectangleList()){
+                        if(intersection(rectangle, otherRectangle)){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

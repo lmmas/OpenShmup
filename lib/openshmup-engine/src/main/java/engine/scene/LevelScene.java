@@ -4,9 +4,10 @@ import engine.*;
 import engine.entity.*;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.HitboxDebugDisplay;
+import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.HitboxRectangle;
+import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.Graphic;
 import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
@@ -159,9 +160,17 @@ public class LevelScene extends Scene{
                 hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
             }
             Hitbox entityHitbox = entity.getHitbox();
-            List<HitboxRectangle> rectangleList = entityHitbox.getRectangles();
-            for(var rectangle: rectangleList){
-                entity.addExtraComponent(new HitboxDebugDisplay(rectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
+            switch (entityHitbox){
+                case EmptyHitbox ignored -> {
+                }
+                case SimpleRectangleHitbox simpleRectangleHitbox -> entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
+                case CompositeHitbox compositeHitbox -> {
+                    for(Hitbox rectangle: compositeHitbox.getRectangleList()){
+                        if(rectangle instanceof SimpleRectangleHitbox simpleRectangle){
+                            entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
+                        }
+                    }
+                }
             }
         }
         Optional<Graphic<?, ?>> entityGraphic = entity.getSprite().getGraphic();
@@ -238,7 +247,7 @@ public class LevelScene extends Scene{
                 }
                 Ship ennemyShip = (Ship) ennemy;
                 Hitbox ennemyHitbox = ennemyShip.getHitbox();
-                if (entityHitbox.intersects(ennemyHitbox)) {
+                if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
                     entity.deathEvent();
                     entitiesToRemove.add(entity);
                 }
@@ -247,7 +256,7 @@ public class LevelScene extends Scene{
             Ship shipEntity = (Ship) entity;
             for (Entity ennemy : ennemyList) {
                 Hitbox ennemyHitbox = ennemy.getHitbox();
-                if (entityHitbox.intersects(ennemyHitbox)) {
+                if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
                     shipEntity.takeDamage(1);
                     if(shipEntity.isDead()){
                         shipEntity.deathEvent();
