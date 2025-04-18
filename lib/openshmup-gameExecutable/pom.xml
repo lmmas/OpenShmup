@@ -11,8 +11,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>openshmup-gamebuilder</artifactId>
-    <name>openshmup-gamebuilder</name>
+    <artifactId>openshmup-gameExecutable</artifactId>
+    <name>openshmup-gameExecutable</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -26,14 +26,14 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-                    <outputDirectory>../../Games</outputDirectory>
                     <archive>
                         <manifest>
-                            <mainClass>gamebuilder.GameBuilder</mainClass>
+                            <mainClass>io.github.lmmas.GameLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

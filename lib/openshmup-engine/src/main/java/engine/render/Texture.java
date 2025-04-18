@@ -69,7 +69,7 @@ public class Texture {
                 newTexture = new Texture(filepath);
             } catch (FileNotFoundException e) {
                 try {
-                    newTexture = new Texture(GlobalVars.Paths.MissingTextureFile);
+                    newTexture = new Texture(GlobalVars.Paths.missingTextureFile);
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }

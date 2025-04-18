@@ -57,6 +57,7 @@ abstract public class Scene {
         }
         if(debugMode){
             float currentTime = timer.getTimeSeconds();
+            System.out.println("current time: " + currentTime);
             System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
             lastDrawTime = currentTime;
         }

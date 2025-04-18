@@ -28,13 +28,16 @@ public class Game {
         new Game(args[0]).run();
     }
     public Game(String gameFolder){
+        GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
         this.editorDataManager = new EditorDataManager();
         editorDataManager.loadGameParameters();
         PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
 
         GLFWErrorCallback.createPrint(System.err).set();
-        assert glfwInit(): "Unable to initialize GLFW";
+        if (!GLFW.glfwInit()) {
+            throw new IllegalStateException("Unable to initialize GLFW");
+        }
 
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -95,15 +98,20 @@ public class Game {
     }
 
     public void loop(){
-        while(!glfwWindowShouldClose(glfwWindow)) {
-            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-            DebugMethods.checkForOpenGLErrors();
-            //testInLoop();
-            currentScene.handleInputs();
-            currentScene.update();
-            currentScene.draw();
-            glfwSwapBuffers(glfwWindow);
-            glfwPollEvents();
+        try {
+            while (!glfwWindowShouldClose(glfwWindow)) {
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                DebugMethods.checkForOpenGLErrors();
+                //testInLoop();
+                currentScene.handleInputs();
+                currentScene.update();
+                currentScene.draw();
+                glfwSwapBuffers(glfwWindow);
+                glfwPollEvents();
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
         }
     }
 

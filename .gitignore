@@ -39,3 +39,4 @@ bin/
 */dependency-reduced-pom.xml
 /lib/openshmup-engine/dependency-reduced-pom.xml
 /lib/openshmup-engine/classdiagram1.puml
+/Games/testGame/GameExecutable.jar

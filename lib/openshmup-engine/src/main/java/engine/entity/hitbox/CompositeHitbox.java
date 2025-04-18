@@ -183,6 +183,9 @@ public class CompositeHitbox implements Hitbox{
 
     @Override
     public boolean intersects(Hitbox otherHitbox) {
+        for(var rectangle: rectangleList){
+
+        }
         return false;
     }
 

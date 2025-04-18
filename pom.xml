@@ -14,6 +14,7 @@
         <module>lib/openshmup-editor</module>
         <module>lib/openshmup-engine</module>
         <module>lib/openshmup-gamebuilder</module>
+        <module>lib/openshmup-gameExecutable</module>
     </modules>
 
     <properties>
