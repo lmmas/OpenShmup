@@ -87,26 +87,8 @@ public class LevelScene extends Scene{
             return;
         }
         timeline.updateSpawning(this);
-        for(var entitySpawn: entitiesToSpawn){
-            Entity newEntity = editorDataManager.buildCustomEntity(entitySpawn.id());
-            if(entitySpawn.trajectoryId() != -1){
-                newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
-            }
-            newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
-            newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
-            addEntity(newEntity);
-            if(entitySpawn.id() == 0){
-                playerShip = (Ship) newEntity;
-            }
-        }
-        entitiesToSpawn.clear();
-
-        for(var displaySpawn: displaysToSpawn){
-            SceneDisplay newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
-            newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
-            addDisplay(newDisplay);
-        }
-        displaysToSpawn.clear();
+        spawnEntities();
+        spawnDisplays();
 
         for(Entity entity: goodEntities){
             entity.update(sceneTime);
@@ -130,12 +112,21 @@ public class LevelScene extends Scene{
         super.update();
     }
 
-    public void addEntitySpawn(EntitySpawnInfo entitySpawnInfo){
-        entitiesToSpawn.add(entitySpawnInfo);
-    }
-
     public void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo){
         displaysToSpawn.add(displaySpawnInfo);
+    }
+
+    private void spawnDisplays(){
+        for(var displaySpawn: displaysToSpawn){
+            SceneDisplay newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
+            newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
+            addDisplay(newDisplay);
+        }
+        displaysToSpawn.clear();
+    }
+
+    public void addEntitySpawn(EntitySpawnInfo entitySpawnInfo){
+        entitiesToSpawn.add(entitySpawnInfo);
     }
 
     public void addEntity(Entity entity){
@@ -177,8 +168,8 @@ public class LevelScene extends Scene{
             Graphic<?, ?> newGraphic = spriteGraphic.orElseThrow();
             graphicsManager.addGraphic(newGraphic);
         }
-        List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
-        for(var component: extraComponentsList){
+
+        for(ExtraComponent component: entity.getExtraComponents()){
             List<Graphic<?,?>> graphicsList = component.getGraphics();
             for(var graphic: graphicsList){
                 graphicsManager.addGraphic(graphic);
@@ -208,6 +199,22 @@ public class LevelScene extends Scene{
                 graphic.delete();
             }
         }
+    }
+
+    private void spawnEntities(){
+        for(var entitySpawn: entitiesToSpawn){
+            Entity newEntity = editorDataManager.buildCustomEntity(entitySpawn.id());
+            if(entitySpawn.trajectoryId() != -1){
+                newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
+            }
+            newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            addEntity(newEntity);
+            if(entitySpawn.id() == 0){
+                playerShip = (Ship) newEntity;
+            }
+        }
+        entitiesToSpawn.clear();
     }
 
     public boolean getControlState(GameControl control){
