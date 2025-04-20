@@ -1,4 +1,4 @@
-package engine;
+package engine.types;
 
 final public class Vec2D {
     public float x;

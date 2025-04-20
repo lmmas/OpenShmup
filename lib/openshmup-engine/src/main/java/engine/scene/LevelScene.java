@@ -16,14 +16,13 @@ import engine.render.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneDisplay;
+import engine.types.RGBAValue;
+import engine.types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class LevelScene extends Scene{
-    final protected InputHandler inputHandler;
+    final protected InputStatesManager inputStatesManager;
     protected Ship playerShip;
     protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
@@ -31,28 +30,28 @@ public class LevelScene extends Scene{
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
     protected HashSet<Entity> entitiesToRemove;
     protected HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
-    protected boolean[] controlStates;
-    protected boolean[] lastControlStates;
+    protected List<Boolean> controlStates;
+    protected List<Boolean> lastControlStates;
     protected LevelTimeline timeline;
 
-    public LevelScene(Game game, LevelTimeline timeline, boolean debugMode) {
-        super(game, debugMode);
-        this.inputHandler = game.getInputHandler();
+    public LevelScene(Engine engine, LevelTimeline timeline, boolean debugMode) {
+        super(engine, debugMode);
+        this.inputStatesManager = engine.getInputStatesManager();
         this.playerLives = new ArrayList<>();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
         this.entitiesToRemove = new HashSet<>();
         this.displaysToSpawn = new HashSet<>();
-        this.controlStates = new boolean[GameControl.values().length];
-        this.lastControlStates = new boolean[GameControl.values().length];
+        this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
+        this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.timeline = timeline;
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
         allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, GraphicType.STATIC_IMAGE));
         if(debugMode){
             allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
         }
-        constructRenderers(allRenderInfos);
+        graphicsManager.constructRenderers(allRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(Texture.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
         for(var texture: allTextures){
@@ -63,7 +62,7 @@ public class LevelScene extends Scene{
 
     @Override
     public void handleInputs() {
-        inputHandler.updateControls(controlStates);
+        controlStates = inputStatesManager.getControlStates();
         if(getControlActivation(GameControl.PAUSE)){
             if(timer.isPaused()){
                 timer.resume();
@@ -78,15 +77,15 @@ public class LevelScene extends Scene{
         if(getControlDeactivation(GameControl.SLOWDOWN)){
             setSpeed(1.0f);
         }
-        System.arraycopy(controlStates, 0, lastControlStates, 0, controlStates.length);
+        this.lastControlStates = controlStates;
     }
 
     @Override
     public void update() {
+        handleInputs();
         if(timer.isPaused()){
             return;
         }
-
         timeline.updateSpawning(this);
         for(var entitySpawn: entitiesToSpawn){
             Entity newEntity = editorDataManager.buildCustomEntity(entitySpawn.id());
@@ -173,16 +172,16 @@ public class LevelScene extends Scene{
                 }
             }
         }
-        Optional<Graphic<?, ?>> entityGraphic = entity.getSprite().getGraphic();
-        if(entityGraphic.isPresent()){
-            Graphic<?, ?> newGraphic = entityGraphic.orElseThrow();
-            addGraphic(newGraphic);
+        Optional<Graphic<?, ?>> spriteGraphic = entity.getSprite().getGraphic();
+        if(spriteGraphic.isPresent()){
+            Graphic<?, ?> newGraphic = spriteGraphic.orElseThrow();
+            graphicsManager.addGraphic(newGraphic);
         }
         List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
         for(var component: extraComponentsList){
             List<Graphic<?,?>> graphicsList = component.getGraphics();
             for(var graphic: graphicsList){
-                addGraphic(graphic);
+                graphicsManager.addGraphic(graphic);
             }
         }
         if(entity.isEvil()){
@@ -212,15 +211,15 @@ public class LevelScene extends Scene{
     }
 
     public boolean getControlState(GameControl control){
-        return controlStates[control.ordinal()];
+        return controlStates.get(control.ordinal());
     }
 
     public boolean getControlActivation(GameControl control){
-        return controlStates[control.ordinal()] && !lastControlStates[control.ordinal()];
+        return controlStates.get(control.ordinal()) && !lastControlStates.get(control.ordinal());
     }
 
     public boolean getControlDeactivation(GameControl control){
-        return (!controlStates[control.ordinal()]) && lastControlStates[control.ordinal()];
+        return (!controlStates.get(control.ordinal())) && lastControlStates.get(control.ordinal());
     }
 
     public void removeFarAwayEntities(HashSet<Entity> entityList){
@@ -279,7 +278,7 @@ public class LevelScene extends Scene{
                     float pointPositionX = position.x + stride.x * playerLives.size();
                     float pointPositionY = position.y + stride.y * playerLives.size();
                     hpPoint.setPosition(pointPositionX, pointPositionY);
-                    addGraphic(hpPoint);
+                    graphicsManager.addGraphic(hpPoint);
                     playerLives.add(hpPoint);
                 }
                 while(playerLives.size() > playerHP){

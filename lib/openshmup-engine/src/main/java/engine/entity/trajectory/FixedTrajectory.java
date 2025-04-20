@@ -1,6 +1,6 @@
 package engine.entity.trajectory;
 
-import engine.Vec2D;
+import engine.types.Vec2D;
 import engine.entity.Entity;
 import engine.scene.LevelScene;
 

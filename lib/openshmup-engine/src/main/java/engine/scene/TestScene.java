@@ -1,10 +1,10 @@
 package engine.scene;
 
-import engine.Game;
+import engine.Engine;
 
 public class TestScene extends LevelScene {
-    public TestScene(Game game){
-        super(game, new LevelTimeline(game.getEditorDataManager(), 30.0f), false);
+    public TestScene(Engine engine){
+        super(engine, new LevelTimeline(engine.getEditorDataManager(), 30.0f), false);
     }
 
     @Override

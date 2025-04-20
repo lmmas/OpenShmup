@@ -1,9 +1,8 @@
 package engine.render;
 
 import engine.GameConfig;
-import engine.GlobalVars;
-import engine.RGBAValue;
-import engine.Vec2D;
+import engine.types.RGBAValue;
+import engine.types.Vec2D;
 import engine.graphics.ColorRectangle;
 import engine.graphics.GraphicType;
 import org.lwjgl.BufferUtils;

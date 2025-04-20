@@ -2,8 +2,8 @@ package json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.IVec2D;
-import engine.Vec2D;
+import engine.types.IVec2D;
+import engine.types.Vec2D;
 
 import java.io.File;
 import java.io.FileNotFoundException;

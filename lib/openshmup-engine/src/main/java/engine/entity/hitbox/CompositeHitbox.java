@@ -1,7 +1,7 @@
 package engine.entity.hitbox;
 
-import engine.IVec2D;
-import engine.Vec2D;
+import engine.types.IVec2D;
+import engine.types.Vec2D;
 import engine.render.Texture;
 import org.lwjgl.BufferUtils;
 

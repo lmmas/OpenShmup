@@ -1,5 +1,5 @@
 # OpenShmup
-Open-source Java game engine for shoot-them-ups
+Open-source Java engine engine for shoot-them-ups
 
 **WIP**
 ## Finished Features:
@@ -14,4 +14,4 @@ Open-source Java game engine for shoot-them-ups
 - level spawning timelines
 - custom level creation from JSON files
 - debug mode that displays hitboxes
-- gameBuilder program that generates custom game JARs
+- gameBuilder program that generates custom engine JARs

@@ -1,6 +1,6 @@
 package engine.entity;
 
-import engine.Vec2D;
+import engine.types.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.NonPlayerShot;
 import engine.entity.extraComponent.PlayerShot;

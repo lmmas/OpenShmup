@@ -19,7 +19,7 @@ public class GlobalVars {
         static public String rootFolderAbsolutePath;
         static public void detectRootFolder(){
             try {
-                rootFolderAbsolutePath = java.nio.file.Paths.get(Game.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
+                rootFolderAbsolutePath = java.nio.file.Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
                 System.out.println(rootFolderAbsolutePath);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);

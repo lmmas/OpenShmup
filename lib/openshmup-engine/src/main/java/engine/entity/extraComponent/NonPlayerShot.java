@@ -1,6 +1,6 @@
 package engine.entity.extraComponent;
 
-import engine.Vec2D;
+import engine.types.Vec2D;
 import engine.entity.Entity;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;

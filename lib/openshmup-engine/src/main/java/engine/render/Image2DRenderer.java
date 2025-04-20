@@ -1,7 +1,7 @@
 package engine.render;
 
 import engine.GlobalVars;
-import engine.Vec2D;
+import engine.types.Vec2D;
 import engine.graphics.GraphicType;
 import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;

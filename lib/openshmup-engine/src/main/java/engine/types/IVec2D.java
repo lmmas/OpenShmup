@@ -1,4 +1,4 @@
-package engine;
+package engine.types;
 
 public class IVec2D {
     public int x;

@@ -1,6 +1,6 @@
 package engine.entity.hitbox;
 
-import engine.Vec2D;
+import engine.types.Vec2D;
 
 public final class SimpleRectangleHitbox implements Hitbox{
     final public Vec2D position;

@@ -1,5 +1,7 @@
 package engine;
 
+import engine.types.Vec2D;
+
 final public class GameConfig {
     private static int editionWidth;
     private static int editionHeight;

@@ -15,23 +15,25 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Game {
+public class Engine {
     private long glfwWindow;
     private final EditorDataManager editorDataManager;
-    private final InputHandler inputHandler;
+    private final GraphicsManager graphicsManager;
+    private final InputStatesManager inputStatesManager;
     private Scene currentScene;
 
     public static void main(String[] args){
         if(args.length != 1){
             throw new IllegalArgumentException("invalid engine arguments");
         }
-        new Game(args[0]).run();
+        new Engine(args[0]).run();
     }
-    public Game(String gameFolder){
+    public Engine(String gameFolder){
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
         this.editorDataManager = new EditorDataManager();
         editorDataManager.loadGameParameters();
+        this.graphicsManager = new GraphicsManager();
         PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
 
         GLFWErrorCallback.createPrint(System.err).set();
@@ -79,7 +81,7 @@ public class Game {
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
         editorDataManager.loadGameContents();
-        this.inputHandler = new InputHandler(glfwWindow);
+        this.inputStatesManager = new InputStatesManager(glfwWindow);
     }
     public void run(){
         init();
@@ -98,20 +100,15 @@ public class Game {
     }
 
     public void loop(){
-        try {
-            while (!glfwWindowShouldClose(glfwWindow)) {
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                DebugMethods.checkForOpenGLErrors();
-                //testInLoop();
-                currentScene.handleInputs();
-                currentScene.update();
-                currentScene.draw();
-                glfwSwapBuffers(glfwWindow);
-                glfwPollEvents();
-            }
-        }
-        catch (Exception e){
-            System.out.println(e);
+        while (!glfwWindowShouldClose(glfwWindow)) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            DebugMethods.checkForOpenGLErrors();
+            //testInLoop();
+            inputStatesManager.updateControlStates();
+            currentScene.update();
+            graphicsManager.drawGraphics();
+            glfwSwapBuffers(glfwWindow);
+            glfwPollEvents();
         }
     }
 
@@ -123,8 +120,12 @@ public class Game {
         return editorDataManager;
     }
 
-    public InputHandler getInputHandler() {
-        return inputHandler;
+    public GraphicsManager getGraphicsManager() {
+        return graphicsManager;
+    }
+
+    public InputStatesManager getInputStatesManager() {
+        return inputStatesManager;
     }
 
     public Scene getCurrentScene() {

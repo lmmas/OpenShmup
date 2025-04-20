@@ -1,4 +1,3 @@
-import engine.Game;
 import engine.entity.hitbox.CompositeHitbox;
 
 public class TextCompositeHitbox {

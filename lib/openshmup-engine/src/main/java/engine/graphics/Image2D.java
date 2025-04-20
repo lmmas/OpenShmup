@@ -1,7 +1,7 @@
 package engine.graphics;
 
 import engine.GlobalVars;
-import engine.Vec2D;
+import engine.types.Vec2D;
 import engine.render.Shader;
 import engine.render.Texture;
 

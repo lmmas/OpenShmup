@@ -1,4 +1,4 @@
-package engine;
+package engine.types;
 
 public class RGBAValue {
     public float r;

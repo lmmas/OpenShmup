@@ -1,7 +1,7 @@
 package engine.graphics;
 
-import engine.RGBAValue;
-import engine.Vec2D;
+import engine.types.RGBAValue;
+import engine.types.Vec2D;
 import engine.render.Shader;
 
 public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
