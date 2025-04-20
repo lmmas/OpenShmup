@@ -6,10 +6,7 @@ import engine.render.RenderInfo;
 import engine.render.Texture;
 import engine.scene.Scene;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 public class Animation implements SceneDisplay {
     final private DynamicImage image;
@@ -70,8 +67,8 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public ArrayList<Graphic<?, ?>> getGraphics() {
-        return new ArrayList<>(Collections.singletonList(image));
+    public List<Graphic<?, ?>> getGraphics() {
+        return List.of(image);
     }
 
     @Override

@@ -20,7 +20,7 @@ final public class GameConfig {
     }
 
     public static class LevelUI {
-        public static int upperLayer = 1024;
+        public static int contentsLayer = 1024;
 
         public static class Lives {
             public static String textureFilepath;

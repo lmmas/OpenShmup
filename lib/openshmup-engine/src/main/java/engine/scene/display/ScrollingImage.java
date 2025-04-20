@@ -8,6 +8,7 @@ import engine.scene.Scene;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class ScrollingImage implements SceneDisplay {
@@ -63,8 +64,8 @@ public class ScrollingImage implements SceneDisplay {
     }
 
     @Override
-    public ArrayList<Graphic<?, ?>> getGraphics() {
-        return new ArrayList<>(Arrays.asList(image1, image2));
+    public List<Graphic<?, ?>> getGraphics() {
+        return List.of(image1, image2);
     }
 
     @Override

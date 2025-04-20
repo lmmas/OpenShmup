@@ -6,8 +6,8 @@ import engine.GraphicsManager;
 import engine.graphics.*;
 import engine.scene.display.SceneDisplay;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 
 abstract public class Scene {
@@ -55,7 +55,7 @@ abstract public class Scene {
 
 
     public void addDisplay(SceneDisplay display){
-        ArrayList<Graphic<?,?>> newGraphics = display.getGraphics();
+        List<Graphic<?, ?>> newGraphics = display.getGraphics();
         for(Graphic<?,?> graphic: newGraphics){
             graphicsManager.addGraphic(graphic);
         }
@@ -65,7 +65,7 @@ abstract public class Scene {
 
     public void deleteDisplay(SceneDisplay display){
         displayList.remove(display);
-        var graphics = display.getGraphics();
+        List<Graphic<?, ?>> graphics = display.getGraphics();
         for(var graphic: graphics){
             graphic.delete();
         }

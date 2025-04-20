@@ -23,8 +23,6 @@ import java.util.*;
 
 public class LevelScene extends Scene{
     final protected InputStatesManager inputStatesManager;
-    protected Ship playerShip;
-    protected ArrayList<StaticImage> playerLives;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
@@ -33,11 +31,11 @@ public class LevelScene extends Scene{
     protected List<Boolean> controlStates;
     protected List<Boolean> lastControlStates;
     protected LevelTimeline timeline;
+    final protected LevelUI levelUI;
 
     public LevelScene(Engine engine, LevelTimeline timeline, boolean debugMode) {
         super(engine, debugMode);
         this.inputStatesManager = engine.getInputStatesManager();
-        this.playerLives = new ArrayList<>();
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
@@ -45,9 +43,10 @@ public class LevelScene extends Scene{
         this.displaysToSpawn = new HashSet<>();
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
+        this.levelUI = new LevelUI(this);
         this.timeline = timeline;
         HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
-        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.upperLayer, GraphicType.STATIC_IMAGE));
+        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, GraphicType.STATIC_IMAGE));
         if(debugMode){
             allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
         }
@@ -108,7 +107,7 @@ public class LevelScene extends Scene{
             deleteEntity(entity);
         }
         entitiesToRemove.clear();
-        updatePlayerLives();
+        levelUI.update();
         super.update();
     }
 
@@ -211,7 +210,7 @@ public class LevelScene extends Scene{
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
             if(entitySpawn.id() == 0){
-                playerShip = (Ship) newEntity;
+                levelUI.setPlayerShip((Ship) newEntity);
             }
         }
         entitiesToSpawn.clear();
@@ -273,26 +272,4 @@ public class LevelScene extends Scene{
         }
     }
 
-    protected void updatePlayerLives(){
-        if(playerShip != null){
-            int playerHP = playerShip.getHP();
-            if(playerLives.size() != playerHP){
-                while(playerLives.size() < playerHP){
-                    Vec2D size = GameConfig.LevelUI.Lives.size;
-                    StaticImage hpPoint = new StaticImage(GameConfig.LevelUI.Lives.textureFilepath, GameConfig.LevelUI.upperLayer, size.x, size.y);
-                    Vec2D position = GameConfig.LevelUI.Lives.position;
-                    Vec2D stride = GameConfig.LevelUI.Lives.stride;
-                    float pointPositionX = position.x + stride.x * playerLives.size();
-                    float pointPositionY = position.y + stride.y * playerLives.size();
-                    hpPoint.setPosition(pointPositionX, pointPositionY);
-                    graphicsManager.addGraphic(hpPoint);
-                    playerLives.add(hpPoint);
-                }
-                while(playerLives.size() > playerHP){
-                    playerLives.getLast().delete();
-                    playerLives.removeLast();
-                }
-            }
-        }
-    }
 }
