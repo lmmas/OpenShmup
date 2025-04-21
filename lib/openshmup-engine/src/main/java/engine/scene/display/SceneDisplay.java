@@ -2,7 +2,7 @@ package engine.scene.display;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.Scene;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import engine.types.Vec2D;
 import engine.entity.Entity;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;

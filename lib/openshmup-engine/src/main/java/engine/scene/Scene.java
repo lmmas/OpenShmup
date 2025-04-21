@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.AssetManager;
 import engine.EditorDataManager;
 import engine.Engine;
 import engine.GraphicsManager;
@@ -13,6 +14,7 @@ import java.util.List;
 abstract public class Scene {
     final protected EditorDataManager editorDataManager;
     final protected GraphicsManager graphicsManager;
+    final protected AssetManager assetManager;
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
@@ -22,6 +24,7 @@ abstract public class Scene {
     public Scene(Engine engine, boolean debugMode) {
         this.editorDataManager = engine.getEditorDataManager();
         this.graphicsManager = engine.getGraphicsManager();
+        this.assetManager = engine.getAssetManager();
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.displayList = new HashSet<>();

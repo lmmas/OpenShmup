@@ -3,7 +3,7 @@ package engine.scene.display;
 import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.Scene;
 
 import java.util.*;
@@ -16,12 +16,12 @@ public class Animation implements SceneDisplay {
     private int frameIndex;
     private float timeOfLastFrame;
 
-    public Animation(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
+    public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new DynamicImage(info.filepath(), layer, sizeX, sizeY);
+        this.image = new DynamicImage(animationTexture, layer, sizeX, sizeY);
         this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;

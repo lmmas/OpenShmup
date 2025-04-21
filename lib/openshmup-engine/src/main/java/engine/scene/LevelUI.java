@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.AssetManager;
 import engine.GameConfig;
 import engine.entity.Ship;
 import engine.graphics.StaticImage;
@@ -9,10 +10,12 @@ import engine.types.Vec2D;
 import java.util.ArrayList;
 
 public class LevelUI {
+    final private AssetManager assetManager;
     final private LevelScene scene;
     final private ArrayList<StaticImageDisplay> playerLives;
     private Ship playerShip;
-    public LevelUI(LevelScene scene){
+    public LevelUI(LevelScene scene, AssetManager assetManager){
+        this.assetManager = assetManager;
         this.scene = scene;
         this.playerLives = new ArrayList<>();
         this.playerShip = null;
@@ -28,7 +31,7 @@ public class LevelUI {
             if(playerLives.size() != playerHP){
                 while(playerLives.size() < playerHP){
                     Vec2D size = GameConfig.LevelUI.Lives.size;
-                    StaticImage hpPointImage = new StaticImage(GameConfig.LevelUI.Lives.textureFilepath, GameConfig.LevelUI.contentsLayer, size.x, size.y);
+                    StaticImage hpPointImage = new StaticImage(assetManager.getTexture(GameConfig.LevelUI.Lives.textureFilepath), GameConfig.LevelUI.contentsLayer, size.x, size.y);
                     Vec2D position = GameConfig.LevelUI.Lives.position;
                     Vec2D stride = GameConfig.LevelUI.Lives.stride;
                     float pointPositionX = position.x + stride.x * playerLives.size();

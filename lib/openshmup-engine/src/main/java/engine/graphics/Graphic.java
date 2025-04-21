@@ -1,6 +1,6 @@
 package engine.graphics;
 import engine.render.RenderInfo;
-import engine.render.Shader;
+import engine.assets.Shader;
 import engine.render.Renderer;
 
 

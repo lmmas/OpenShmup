@@ -2,7 +2,7 @@ package engine.entity.hitbox;
 
 import engine.types.IVec2D;
 import engine.types.Vec2D;
-import engine.render.Texture;
+import engine.assets.Texture;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -17,10 +17,9 @@ public final class CompositeHitbox implements Hitbox{
     private ArrayList<Hitbox> rectangleList;
     private ArrayList<Vec2D> rectangleRelativePositions;
     private ArrayList<Vec2D> rectangleRelativeSizes;
-    public CompositeHitbox(String textureFilepath, float sizeX, float sizeY){
+    public CompositeHitbox(Texture texture, float sizeX, float sizeY){
         this.position = new Vec2D(0.0f, 0.0f);
         this.size = new Vec2D(sizeX, sizeY);
-        Texture texture = Texture.getTexture(textureFilepath);
         int imageWidth = texture.getWidth();
         int imageHeight = texture.getHeight();
 
@@ -29,7 +28,7 @@ public final class CompositeHitbox implements Hitbox{
         IntBuffer channels = BufferUtils.createIntBuffer(1);
         stbi_set_flip_vertically_on_load(true);
 
-        ByteBuffer image = stbi_load(textureFilepath, width, height, channels, 1);
+        ByteBuffer image = stbi_load(texture.getFilepath(), width, height, channels, 1);
         byte[] bytes = new byte[image.capacity()];
         image.get(bytes);
         int[] colorValues = new int[bytes.length];

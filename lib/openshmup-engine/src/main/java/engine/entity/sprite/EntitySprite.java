@@ -2,7 +2,7 @@ package engine.entity.sprite;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 
 import java.util.Optional;
 

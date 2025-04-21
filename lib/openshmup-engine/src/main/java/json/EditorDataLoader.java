@@ -2,6 +2,7 @@ package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.*;
+import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
 import engine.entity.trajectory.PlayerControlledTrajectory;
@@ -29,8 +30,10 @@ import java.util.function.Function;
 
 public class EditorDataLoader {
     final private ObjectMapper objectMapper;
-    public EditorDataLoader(){
+    final private AssetManager assetManager;
+    public EditorDataLoader(Engine engine){
         this.objectMapper = new ObjectMapper();
+        this.assetManager = engine.getAssetManager();
     }
 
     public void loadGameParameters(String filepath) throws FileNotFoundException, IllegalArgumentException {
@@ -70,7 +73,7 @@ public class EditorDataLoader {
                     normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
                 }
 
-                editorDataManager.addCustomDisplays(id, new ScrollingImage(imagePath, layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                editorDataManager.addCustomDisplays(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
                 SafeJsonNode animationInfoNode = displayNode.checkAndGetObject("animationInfo");
@@ -84,8 +87,18 @@ public class EditorDataLoader {
                 float framePeriodSeconds = displayNode.checkAndGetFloat("framePeriodSeconds");
                 boolean looping = displayNode.checkAndGetBoolean("looping");
 
-                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
-                editorDataManager.addCustomDisplays(id, new Animation(layer, animationInfo, framePeriodSeconds, looping, size.x, size.y));
+                Texture animationTexture = assetManager.getTexture(animationFilepath);
+                int animationTextureWidth = animationTexture.getWidth();
+                int animationTextureHeight = animationTexture.getHeight();
+
+                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount,
+                        (float) frameSize.x / animationTextureWidth,
+                        (float) frameSize.y / animationTextureHeight,
+                        (float) startingPosition.x / animationTextureWidth,
+                        (float) startingPosition.y / animationTextureHeight,
+                        (float) stride.x / animationTextureWidth,
+                        (float) stride.y / animationTextureHeight);
+                editorDataManager.addCustomDisplays(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
@@ -109,7 +122,8 @@ public class EditorDataLoader {
                 String hitboxType = hitboxNode.checkAndGetString("type");
                 if(hitboxType.equals("composite")){
                     String hitboxFileName = hitboxNode.checkAndGetString("fileName");
-                    customEntityBuilder = customEntityBuilder.addCompositeHitbox(GlobalVars.Paths.editorTextureFolder+ hitboxFileName, false);
+                    Texture hitboxTexture = assetManager.getTexture(GlobalVars.Paths.editorTextureFolder+ hitboxFileName);
+                    customEntityBuilder = customEntityBuilder.addCompositeHitbox(hitboxTexture, false);
                 }
                 if(hitboxType.equals("simpleRectangle")){
                     customEntityBuilder = customEntityBuilder.addRectangleHitbox(false);
@@ -174,16 +188,24 @@ public class EditorDataLoader {
 
                 float framePeriodSeconds = spriteNode.checkAndGetFloat("framePeriodSeconds");
                 boolean looping = spriteNode.checkAndGetBoolean("looping");
+                Texture animationTexture = assetManager.getTexture(animationFilepath);
+                int animationTextureWidth = animationTexture.getWidth();
+                int animationTextureHeight = animationTexture.getHeight();
+                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount,
+                        (float) frameSize.x / animationTextureWidth,
+                        (float) frameSize.y / animationTextureHeight,
+                        (float) startingPosition.x / animationTextureWidth,
+                        (float) startingPosition.y / animationTextureHeight,
+                        (float) stride.x / animationTextureWidth,
+                        (float) stride.y / animationTextureHeight);
 
-                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount, frameSize.x, frameSize.y, startingPosition.x, startingPosition.y, stride.x, stride.y);
-
-                customEntityBuilder = customEntityBuilder.createSprite(layer, animationInfo, framePeriodSeconds, looping, orientable);
+                customEntityBuilder = customEntityBuilder.createSprite(layer, animationTexture, animationInfo, framePeriodSeconds, looping, orientable);
             }
             else{
                 String texturePath = GlobalVars.Paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
 
 
-                customEntityBuilder = customEntityBuilder.createSprite(layer, texturePath, orientable);
+                customEntityBuilder = customEntityBuilder.createSprite(layer, assetManager.getTexture(texturePath), orientable);
             }
             if(id == 0){
                 customEntityBuilder = customEntityBuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));

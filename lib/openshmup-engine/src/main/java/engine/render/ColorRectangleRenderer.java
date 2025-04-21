@@ -1,6 +1,7 @@
 package engine.render;
 
 import engine.GameConfig;
+import engine.assets.Shader;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.graphics.ColorRectangle;

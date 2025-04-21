@@ -18,6 +18,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Engine {
     private long glfwWindow;
     private final EditorDataManager editorDataManager;
+    private final AssetManager assetManager;
     private final GraphicsManager graphicsManager;
     private final InputStatesManager inputStatesManager;
     private Scene currentScene;
@@ -31,7 +32,7 @@ public class Engine {
     public Engine(String gameFolder){
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
-        this.editorDataManager = new EditorDataManager();
+        this.editorDataManager = new EditorDataManager(this);
         editorDataManager.loadGameParameters();
         this.graphicsManager = new GraphicsManager();
         PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
@@ -80,11 +81,12 @@ public class Engine {
             glfwShowWindow(glfwWindow);
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+        this.assetManager = new AssetManager();
         editorDataManager.loadGameContents();
         this.inputStatesManager = new InputStatesManager(glfwWindow);
     }
     public void run(){
-        init();
+        gameInit();
         //testInit();
         loop();
 
@@ -95,8 +97,8 @@ public class Engine {
         glfwSetErrorCallback(null).free();
     }
 
-    public void init(){
-        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), false);
+    public void gameInit(){
+        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), true);
     }
 
     public void loop(){
@@ -118,6 +120,10 @@ public class Engine {
 
     public EditorDataManager getEditorDataManager() {
         return editorDataManager;
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 
     public GraphicsManager getGraphicsManager() {

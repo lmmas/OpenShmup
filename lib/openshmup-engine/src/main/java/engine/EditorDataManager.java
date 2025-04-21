@@ -4,25 +4,26 @@ import engine.entity.Entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.LevelTimeline;
 import engine.scene.display.SceneDisplay;
 import engine.scene.spawnable.Spawnable;
 import json.EditorDataLoader;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
 public class EditorDataManager {
+    final private Engine engine;
     private final HashMap<Integer, SceneDisplay> customDisplays;
     private final HashMap<Integer, Trajectory> customTrajectories;
     private final HashMap<Integer, Entity> customEntities;
     private final ArrayList<LevelTimeline> customTimelines;
 
-    public EditorDataManager(){
+    public EditorDataManager(Engine engine){
+        this.engine = engine;
         this.customDisplays = new HashMap<>();
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();
@@ -30,7 +31,7 @@ public class EditorDataManager {
     }
 
     void loadGameParameters(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader();
+        EditorDataLoader editorDataLoader = new EditorDataLoader(engine);
         try {
             editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
         } catch (FileNotFoundException | IllegalArgumentException e) {
@@ -39,7 +40,7 @@ public class EditorDataManager {
     }
 
     void loadGameContents(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader();
+        EditorDataLoader editorDataLoader = new EditorDataLoader(engine);
         try {
             editorDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile, this);
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);

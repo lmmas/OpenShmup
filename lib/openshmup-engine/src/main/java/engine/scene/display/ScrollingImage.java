@@ -3,11 +3,9 @@ package engine.scene.display;
 import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.Scene;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +21,11 @@ public class ScrollingImage implements SceneDisplay {
     boolean horizontalScrolling;
     private float speed;
     private float lastUpdateTimeSeconds;
-    public ScrollingImage(String imagePath, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+    public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        this.image1 = new DynamicImage(imagePath, layer, sizeX, sizeY);
-        this.image2 = new DynamicImage(imagePath, layer, sizeX, sizeY);
+        this.image1 = new DynamicImage(texture, layer, sizeX, sizeY);
+        this.image2 = new DynamicImage(texture, layer, sizeX, sizeY);
         this.positionX1 = 0.5f;
         this.positionY1 = 0.5f;
         this.speed = speed;

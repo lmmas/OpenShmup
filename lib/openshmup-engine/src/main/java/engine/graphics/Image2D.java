@@ -2,19 +2,23 @@ package engine.graphics;
 
 import engine.GlobalVars;
 import engine.types.Vec2D;
-import engine.render.Shader;
-import engine.render.Texture;
+import engine.assets.Shader;
+import engine.assets.Texture;
 
 abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
+    static private Shader defaultShader;
+    static public void setDefaultShader(Shader defaultShader){
+        Image2D.defaultShader = defaultShader;
+    }
     protected Texture texture;
     protected ImagePrimitive primitive;
-    public Image2D(String textureFilepath, int layer, GraphicType type, float sizeX, float sizeY, Shader shader){
+    public Image2D(Texture texture, int layer, GraphicType type, float sizeX, float sizeY, Shader shader){
         super(layer, type, shader);
-        this.texture = Texture.getTexture(textureFilepath);
+        this.texture = texture;
         this.primitive = new ImagePrimitive(sizeX, sizeY);
     }
-    public Image2D(String textureFilepath, int layer, GraphicType type, float sizeX, float sizeY){
-        this(textureFilepath, layer, type, sizeX, sizeY, Shader.loadShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
+    public Image2D(Texture texture, int layer, GraphicType type, float sizeX, float sizeY){
+        this(texture, layer, type, sizeX, sizeY, defaultShader);
     }
     public Image2D(Texture texture, int layer, GraphicType type, Shader shader, ImagePrimitive imagePrimitive){
         super(layer, type, shader);

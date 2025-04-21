@@ -1,5 +1,6 @@
 package engine.entity;
 
+import engine.assets.Texture;
 import engine.types.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.NonPlayerShot;
@@ -214,23 +215,23 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder createSprite(int layer, String filepath, boolean orientable){
+        public Builder createSprite(int layer, Texture texture, boolean orientable){
             if(size != null){
                 if(orientable){
 
                 }else{
-                    this.sprite = new SimpleSprite(new DynamicImage(filepath, layer, size.x, size.y));
+                    this.sprite = new SimpleSprite(new DynamicImage(texture, layer, size.x, size.y));
                 }
             }
             return this;
         }
 
-        public Builder createSprite(int layer, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable){
+        public Builder createSprite(int layer, Texture spriteTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable){
             if(size != null){
                 if(orientable){
 
                 }else{
-                    this.sprite = new AnimatedSprite(new Animation(layer, info, framePeriodSeconds, looping, size.x, size.y));
+                    this.sprite = new AnimatedSprite(new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y));
                 }
             }
             return this;
@@ -252,13 +253,13 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder addCompositeHitbox(String hitboxPath, boolean orientable){
+        public Builder addCompositeHitbox(Texture hitboxTexture, boolean orientable){
             assert size.x != 0.0f && size.y != 0.0f:"Invalid hitbox size";
             if(orientable){
 
             }
             else{
-                hitbox = new CompositeHitbox(hitboxPath, size.x, size.y);
+                hitbox = new CompositeHitbox(hitboxTexture, size.x, size.y);
             }
             return this;
         }

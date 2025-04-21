@@ -9,10 +9,9 @@ import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.Graphic;
-import engine.graphics.StaticImage;
 import engine.render.RenderInfo;
 import engine.graphics.GraphicType;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneDisplay;
@@ -43,20 +42,26 @@ public class LevelScene extends Scene{
         this.displaysToSpawn = new HashSet<>();
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
-        this.levelUI = new LevelUI(this);
+        this.levelUI = new LevelUI(this, engine.getAssetManager());
         this.timeline = timeline;
-        HashSet<RenderInfo> allRenderInfos = timeline.getAllRenderInfos();
-        allRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, GraphicType.STATIC_IMAGE));
-        if(debugMode){
-            allRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
-        }
-        graphicsManager.constructRenderers(allRenderInfos);
-        HashSet<Texture> allTextures = timeline.getAllTextures();
-        allTextures.add(Texture.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
-        for(var texture: allTextures){
-            texture.loadInGPU();
-        }
+        loadAssets();
         this.timer.start();
+    }
+
+    void loadAssets(){
+        HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
+        timelineRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, GraphicType.STATIC_IMAGE));
+        if(debugMode){
+            timelineRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
+        }
+        graphicsManager.constructRenderers(timelineRenderInfos);
+        HashSet<Texture> allTextures = timeline.getAllTextures();
+        allTextures.add(assetManager.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
+        for(var texture: allTextures){
+            if(!texture.isLoadedInGPU()){
+                texture.loadInGPU();
+            }
+        }
     }
 
     @Override

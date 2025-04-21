@@ -1,4 +1,4 @@
-package engine.render;
+package engine.assets;
 
 import org.lwjgl.BufferUtils;
 
@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL33.*;
 
@@ -19,9 +18,7 @@ public class Shader {
     private String geometrySource;
     private String fragmentSource;
 
-    private static final HashMap<String, Shader> shaderMap = new HashMap<String, Shader>();
-
-    private Shader(String filepath){
+    public Shader(String filepath){
         this.filepath = filepath;
         try {
             String source = new String(Files.readAllBytes(Paths.get(filepath)));
@@ -40,18 +37,6 @@ public class Shader {
             }
         } catch(IOException e){
             assert false: "Error (Shader): could not open shader file '" + filepath + "'.";
-        }
-    }
-
-    public static Shader loadShader(String filepath){
-        if (shaderMap.containsKey(filepath)){
-            return shaderMap.get(filepath);
-        }
-        else{
-            Shader newShader = new Shader(filepath);
-            shaderMap.put(filepath, newShader);
-            newShader.compile();
-            return newShader;
         }
     }
 

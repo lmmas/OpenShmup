@@ -1,6 +1,6 @@
 package engine.entity.sprite;
 
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.display.Animation;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;

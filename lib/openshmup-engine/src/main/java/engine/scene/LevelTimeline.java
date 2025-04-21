@@ -2,7 +2,7 @@ package engine.scene;
 
 import engine.EditorDataManager;
 import engine.render.RenderInfo;
-import engine.render.Texture;
+import engine.assets.Texture;
 import engine.scene.spawnable.*;
 
 import java.util.*;

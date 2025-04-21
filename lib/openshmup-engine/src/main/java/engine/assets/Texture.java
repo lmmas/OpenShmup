@@ -1,6 +1,5 @@
-package engine.render;
+package engine.assets;
 
-import engine.GlobalVars;
 import org.lwjgl.*;
 
 import java.io.FileNotFoundException;
@@ -9,16 +8,14 @@ import java.nio.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 
-import java.util.HashMap;
-
 public class Texture {
-    private final static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
     private final String filepath;
     private int textureID;
     private final int width;
     private final int height;
+    private boolean loadedInGPU;
 
-    private Texture( String filepath) throws FileNotFoundException {
+    public Texture( String filepath) throws FileNotFoundException {
 
         int[] widthArray = new int[1];
         int[] heightArray = new int[1];
@@ -28,8 +25,9 @@ public class Texture {
             this.width = widthArray[0];
             this.height = heightArray[0];
             this.filepath = filepath;
+            this.loadedInGPU = false;
         } else {
-            System.out.println(stbi_failure_reason());
+            System.err.println(stbi_failure_reason());
             throw new FileNotFoundException(filepath);
         }
     }
@@ -57,27 +55,9 @@ public class Texture {
                     0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         }
         stbi_image_free(image);
+        loadedInGPU = true;
     }
 
-    public static Texture getTexture(String filepath){
-        if(textureMap.containsKey(filepath)){
-            return textureMap.get(filepath);
-        }
-        else{
-            Texture newTexture;
-            try {
-                newTexture = new Texture(filepath);
-            } catch (FileNotFoundException e) {
-                try {
-                    newTexture = new Texture(GlobalVars.Paths.missingTextureFile);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-            textureMap.put(filepath, newTexture);
-            return newTexture;
-        }
-    }
     public String getFilepath() {
         return filepath;
     }
@@ -88,6 +68,10 @@ public class Texture {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isLoadedInGPU() {
+        return loadedInGPU;
     }
 
     public void bind(int slot){
