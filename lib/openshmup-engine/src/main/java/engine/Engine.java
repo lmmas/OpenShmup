@@ -98,7 +98,7 @@ public class Engine {
     }
 
     public void gameInit(){
-        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), true);
+        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), false);
     }
 
     public void loop(){
@@ -142,6 +142,10 @@ public class Engine {
         currentScene = new TestScene(this);
     }
     public void testInLoop(){
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

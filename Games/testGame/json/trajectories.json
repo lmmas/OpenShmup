@@ -46,5 +46,11 @@
         "type": "fixed",
         "functionX": "0.0f",
         "functionY": "0.0f"
+    },
+    {
+        "id": 14,
+        "type": "fixed",
+        "functionX": "0.0015f",
+        "functionY": "0.0f"
     }
 ]

@@ -12,7 +12,7 @@ public class Animation implements SceneDisplay {
     final private DynamicImage image;
     final private AnimationInfo info;
     final private boolean looping;
-    private float framePeriodSeconds;
+    private final float framePeriodSeconds;
     private int frameIndex;
     private float timeOfLastFrame;
 
