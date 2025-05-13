@@ -8,6 +8,7 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import java.io.IOException;
 import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -23,13 +24,13 @@ public class Engine {
     private final InputStatesManager inputStatesManager;
     private Scene currentScene;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         if(args.length != 1){
             throw new IllegalArgumentException("invalid engine arguments");
         }
         new Engine(args[0]).run();
     }
-    public Engine(String gameFolder){
+    public Engine(String gameFolder) throws IOException {
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
         this.editorDataManager = new EditorDataManager(this);
@@ -98,7 +99,7 @@ public class Engine {
     }
 
     public void gameInit(){
-        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), false);
+        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), true);
     }
 
     public void loop(){

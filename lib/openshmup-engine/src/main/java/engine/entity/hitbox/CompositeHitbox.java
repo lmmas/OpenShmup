@@ -22,13 +22,8 @@ public final class CompositeHitbox implements Hitbox{
         this.size = new Vec2D(sizeX, sizeY);
         int imageWidth = texture.getWidth();
         int imageHeight = texture.getHeight();
-
-        IntBuffer width = BufferUtils.createIntBuffer(1);
-        IntBuffer height = BufferUtils.createIntBuffer(1);
-        IntBuffer channels = BufferUtils.createIntBuffer(1);
-        stbi_set_flip_vertically_on_load(true);
-
-        ByteBuffer image = stbi_load(texture.getFilepath(), width, height, channels, 1);
+        int textureChannelCount = texture.getChannelCount();
+        ByteBuffer image = texture.getImageBuffer();
         byte[] bytes = new byte[image.capacity()];
         image.get(bytes);
         int[] colorValues = new int[bytes.length];
@@ -39,7 +34,7 @@ public final class CompositeHitbox implements Hitbox{
         int detectionMargin = 3;
         for(int i = 0; i < imageHeight; i++){
             for(int j = 0; j < imageWidth; j++){
-                if((bytes[i * imageWidth + j] & 0xFF) + detectionMargin >= 255){
+                if((bytes[(i * imageWidth + j) * textureChannelCount] & 0xFF) + detectionMargin >= 255){
                     rectanglePositions[i][j] = true;
                 }
             }

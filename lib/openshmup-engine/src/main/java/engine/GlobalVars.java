@@ -8,7 +8,7 @@ public class GlobalVars {
     final public static int debugDisplayLayer = 2048;
 
     public static class Paths{
-        static public String missingTextureFile;
+        static public String placeholderTextureFile;
         static public String customGameFolder;
         static public String customGameParametersFile;
         static public String editorTextureFolder;
@@ -34,7 +34,7 @@ public class GlobalVars {
             Paths.editorCustomTrajectoriesFile = Paths.customGameFolder + Partial.editorCustomTrajectoriesFile;
             Paths.editorCustomEntitiesFile = Paths.customGameFolder + Partial.editorCustomEntitiesFile;
             Paths.editorCustomTimelineFile = Paths.customGameFolder + Partial.editorCustomTimelineFile;
-            Paths.missingTextureFile = rootFolderAbsolutePath + Partial.missingTextureFile;
+            Paths.placeholderTextureFile = rootFolderAbsolutePath + Partial.missingTextureFile;
         }
         public static class Partial {
 
