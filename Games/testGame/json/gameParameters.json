@@ -1,5 +1,5 @@
 {
-    "resolution": [1100, 1000],
+    "resolution": [1000, 1100],
     "levelUI": {
         "lives": {
             "fileName": "heart.png",
