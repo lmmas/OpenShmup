@@ -11,19 +11,20 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Font {
     private String fontFilepath;
-    private Texture textureBitmap;
+    private Texture bitmap;
     private float ascentPixels;
     private float normalizedDescent;
     private float normalizedLineGap;
     private float normalizedLineHeight;
     private HashMap<Integer , FontCharInfo> charInfoMap;
 
-    private Font(String fontFilepath, Texture textureBitmap, float ascentPixels, float normalizedDescent, float normalizedLineGap, float normalizedLineHeight, HashMap<Integer, FontCharInfo> charInfoMap) {
+    private Font(String fontFilepath, Texture bitmap, float ascentPixels, float normalizedDescent, float normalizedLineGap, float normalizedLineHeight, HashMap<Integer, FontCharInfo> charInfoMap) {
         this.fontFilepath = fontFilepath;
-        this.textureBitmap = textureBitmap;
+        this.bitmap = bitmap;
         this.ascentPixels = ascentPixels;
         this.normalizedDescent = normalizedDescent;
         this.normalizedLineGap = normalizedLineGap;
@@ -83,7 +84,14 @@ public class Font {
         return new Font(filepath, new Texture(bitmapWidth, bitmapHeight, 1, bitmap), ascentPixels, normalizedDescent, normalizedLineGap, normalizedLineHeight, charInfoMap);
     }
 
-    FontCharInfo getCharInfo(int codepoint){
-        return charInfoMap.get(codepoint);
+    public Optional <FontCharInfo> getCharInfo(int codepoint){
+        if(charInfoMap.containsKey(codepoint)) {
+            return Optional.of(charInfoMap.get(codepoint));
+        }
+        return Optional.empty();
+    }
+
+    public Texture getBitmap() {
+        return bitmap;
     }
 }

@@ -10,28 +10,28 @@ import java.util.HashMap;
 
 public class AssetManager {
     final private HashMap<String, Shader> shaderMap;
-    final private HashMap<String, Texture> textureMap;
+    final private HashMap<String, Texture> imageFileMap;
     public AssetManager() throws IOException {
         this.shaderMap = new HashMap<>();
-        this.textureMap = new HashMap<>();
+        this.imageFileMap = new HashMap<>();
         Image2D.setDefaultShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
         HitboxDebugDisplay.setHitboxShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
         Texture placeholderTexture = Texture.createFromImageFile(GlobalVars.Paths.placeholderTextureFile);
-        textureMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
+        imageFileMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
     }
 
     public Texture getTexture(String filepath){
-        if(textureMap.containsKey(filepath)){
-            return textureMap.get(filepath);
+        if(imageFileMap.containsKey(filepath)){
+            return imageFileMap.get(filepath);
         }
         else{
             Texture newTexture;
             try {
                 newTexture = Texture.createFromImageFile(filepath);
             } catch (IOException e) {
-                newTexture = textureMap.get(GlobalVars.Paths.placeholderTextureFile);
+                newTexture = imageFileMap.get(GlobalVars.Paths.placeholderTextureFile);
             }
-            textureMap.put(filepath, newTexture);
+            imageFileMap.put(filepath, newTexture);
             return newTexture;
         }
     }
