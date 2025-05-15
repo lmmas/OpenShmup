@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "fixed",
+        "functionX": "0.0f",
+        "functionY": "-0.4f * t"
+    },
+    {
+        "id": 2,
+        "type": "fixed",
+        "functionX": "0.5f * t",
+        "functionY": "0.0f + 0.03f * sin(20*t)"
+    },
+    {
+        "id": 3,
+        "type": "fixed",
+        "functionX": "0.5f * t",
+        "functionY": "-0.3f * t + 0.03f * sin(20*t)"
+    },
+    {
+        "id": 4,
+        "type": "fixed",
+        "functionX": "0.5f * t",
+        "functionY": "0.3f * t + 0.03f * sin(20*t)"
+    },
+    {
+        "id": 10,
+        "type": "fixed",
+        "functionX": "0.15f * cos(t)",
+        "functionY": "0.15f * sin(t)"
+    },
+    {
+        "id": 11,
+        "type": "fixed",
+        "functionX": "0",
+        "functionY": "0.3f * sin(2*t)"
+    },
+    {
+        "id": 12,
+        "type": "fixed",
+        "functionX": "0.1f * cos(2 * t)",
+        "functionY": "-0.2f * t"
+    },
+    {
+        "id": 13,
+        "type": "fixed",
+        "functionX": "0.0f",
+        "functionY": "0.0f"
+    },
+    {
+        "id": 14,
+        "type": "fixed",
+        "functionX": "0.0015f",
+        "functionY": "0.0f"
+    }
+]

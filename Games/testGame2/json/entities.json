@@ -1,0 +1,136 @@
+[
+    {
+        "id": 0,
+        "evil": false,
+        "type": "ship",
+        "hp": 5,
+        "size": [100, 100],
+        "sprite": {
+            "layer": 2,
+            "orientable": false,
+            "animationInfo": {
+                "fileName": "Spaceships.png",
+                "frameCount": 1,
+                "frameSize": [64, 64],
+                "startingPosition": [128,64],
+                "stride": [0, 0]
+            },
+            "framePeriodSeconds": 0.25,
+            "looping": true
+        },
+        "hitbox": {
+            "type": "simpleRectangle"
+        },
+        "shot":{
+            "shotPeriod": 0.05,
+            "firstShotTime": 0.1,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 2,
+                    "startingPosition": [25, 0]
+                },
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 3,
+                    "startingPosition": [25, 0]
+                },
+                {
+                    "type": "entity",
+                    "id": 1,
+                    "trajectory": 4,
+                    "startingPosition": [25, 0]
+                }
+            ]
+        },
+        "deathSpawn": {
+            "type": "display",
+            "id": 2,
+            "position": [0,0]
+        }
+    },
+    {
+        "id": 1,
+        "type": "projectile",
+        "evil": false,
+        "size": [10, 10],
+        "sprite": {
+            "layer": 2,
+            "orientable": false,
+            "animationInfo": {
+                "fileName": "laser-bolts-blue.png",
+                "frameCount": 1,
+                "frameSize": [5, 5],
+                "startingPosition": [6,20],
+                "stride": [14, 0]
+            },
+            "framePeriodSeconds": 0.25,
+            "looping": true
+        },
+        "hitbox": {
+            "type": "simpleRectangle"
+        }
+    },
+    {
+        "id": 2,
+        "type": "ship",
+        "hp": 5,
+        "evil": true,
+        "size": [50, 50],
+        "sprite": {
+            "layer": 4,
+            "orientable": false,
+            "animationInfo": {
+                "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
+                "frameCount": 6,
+                "frameSize": [16, 16],
+                "startingPosition": [1,451],
+                "stride": [18, 0]
+            },
+            "framePeriodSeconds": 0.2,
+            "looping": true
+        },
+        "hitbox": {
+            "type": "simpleRectangle"
+        },
+        "shot":{
+            "shotPeriod": 1.0,
+            "firstShotTime": 2,
+            "spawn": {
+                "type": "entity",
+                "id": 3,
+                "trajectory": 1,
+                "startingPosition": [0, -30]
+            }
+        },
+        "deathSpawn": {
+            "type": "display",
+            "id": 2,
+            "position": [0,0]
+        }
+    },
+    {
+        "id": 3,
+        "type": "projectile",
+        "evil": true,
+        "size": [10, 10],
+        "sprite": {
+            "layer": 3,
+            "orientable": false,
+            "animationInfo": {
+                "fileName": "laser-bolts.png",
+                "frameCount": 2,
+                "frameSize": [5, 5],
+                "startingPosition": [6,20],
+                "stride": [14, 0]
+            },
+            "framePeriodSeconds": 0.25,
+            "looping": true
+        },
+        "hitbox": {
+            "type": "simpleRectangle"
+        }
+    }
+]

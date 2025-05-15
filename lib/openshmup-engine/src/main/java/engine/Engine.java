@@ -99,7 +99,7 @@ public class Engine {
     }
 
     public void gameInit(){
-        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), true);
+        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), GameConfig.debugMode);
     }
 
     public void loop(){

@@ -19,6 +19,8 @@ final public class GameConfig {
         GameConfig.editionHeight = editionHeight;
     }
 
+    public static boolean debugMode;
+
     public static class LevelUI {
         public static int contentsLayer = 1024;
 

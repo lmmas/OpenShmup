@@ -42,6 +42,8 @@ public class EditorDataLoader {
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
         GameConfig.setEditionResolution(resolution.x, resolution.y);
 
+        GameConfig.debugMode = rootNode.checkAndGetBoolean("debugMode");
+
         SafeJsonNode levelUINode = rootNode.checkAndGetObject("levelUI");
 
         SafeJsonNode livesNode = levelUINode.checkAndGetObject( "lives");
