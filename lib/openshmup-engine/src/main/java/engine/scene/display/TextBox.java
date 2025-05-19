@@ -1,5 +1,6 @@
 package engine.scene.display;
 
+import engine.GameConfig;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.assets.Texture;
@@ -14,31 +15,37 @@ import java.util.List;
 import java.util.Optional;
 
 public class TextBox implements SceneDisplay{
-    int layer;
+    private RenderInfo renderInfo;
     private Vec2D position;
-    private float textSize;
+    private float textHeightPixels;
     private String displayedString;
     private Font font;
     private ArrayList<FontCharInfo> characterInfoList;
     private ArrayList<Image2D> characterImageList;
-    private final boolean staticText;
 
-    public TextBox(float positionX, float positionY, float textSize, String displayedString, Font font, boolean staticText) {
+    public TextBox(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
+        if(dynamicText){
+            this.renderInfo = new RenderInfo(layer, GraphicType.DYNAMIC_IMAGE);
+        }
+        else{
+            this.renderInfo = new RenderInfo(layer, GraphicType.STATIC_IMAGE);
+        }
         this.position = new Vec2D(positionX, positionY);
-        this.textSize = textSize;
+        this.textHeightPixels = textHeightPixels;
         this.displayedString = displayedString;
         this.font = font;
-        this.staticText = staticText;
         this.characterImageList = new ArrayList<>(displayedString.length());
         this.characterInfoList = new ArrayList<>(displayedString.length());
+        updateText();
     }
 
-    private void updateChars(){
+    private void updateText(){
         characterImageList.clear();
         characterInfoList.clear();
         for(int i = 0; i < displayedString.length(); i++){
             addCharacter(displayedString.codePointAt(i));
         }
+        updateTextPosition();
     }
 
     private void addCharacter(int newCodepoint){
@@ -46,12 +53,44 @@ public class TextBox implements SceneDisplay{
         if(fontCharInfoOptional.isPresent()){
             FontCharInfo newCharInfo = fontCharInfoOptional.orElseThrow();
             characterInfoList.add(newCharInfo);
-            if(staticText){
-                characterImageList.add(new StaticImage(font.getBitmap(), layer, newCharInfo.normalizedQuadSize().x * textSize, newCharInfo.normalizedQuadSize().y * textSize));
+            if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ) {
+                if(renderInfo.graphicType() == GraphicType.STATIC_IMAGE){
+                    characterImageList.add(new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeightPixels, newCharInfo.normalizedQuadSize().y * textHeightPixels));
+                }
+                else{
+                    characterImageList.add(new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeightPixels, newCharInfo.normalizedQuadSize().y * textHeightPixels));
+                }
             }
-            else{
-                characterImageList.add(new DynamicImage(font.getBitmap(), layer, newCharInfo.normalizedQuadSize().x * textSize, newCharInfo.normalizedQuadSize().y * textSize));
+        }
+    }
+
+    private void updateTextPosition(){
+        float editionHeight = GameConfig.getEditionHeight();
+        int numberOfLines = getNumberOfLines();
+        float textHeight = textHeightPixels / editionHeight;
+        int currentCharacterIndex = 0;
+        int currentImageIndex = 0;
+        int currentLineStartIndex = 0;
+        int lineBreakCodepoint = "\n".codePointAt(0);
+        int spaceCodepoint = " ".codePointAt(0);
+        for(int lineIndex = 0; lineIndex < numberOfLines; lineIndex++){
+            float currentLineWidth = characterInfoList.get(currentCharacterIndex).normalizedQuadSize().x * textHeight;
+            while(displayedString.codePointAt(currentCharacterIndex + 1) != lineBreakCodepoint){
+                currentLineWidth += characterInfoList.get(currentCharacterIndex).normalizedAdvance() * textHeight;
+                currentCharacterIndex+= Character.charCount(displayedString.codePointAt(currentCharacterIndex));
             }
+            currentCharacterIndex = currentLineStartIndex;
+            float characterBaselineX = position.x - currentLineWidth / 2;
+            float characterBaselineY = position.y + ((float)lineIndex - (float) (numberOfLines - 1) / 2) - textHeight / 2;
+            while(displayedString.codePointAt(currentCharacterIndex) != lineBreakCodepoint){
+                if(displayedString.codePointAt(currentCharacterIndex) != spaceCodepoint){
+                    FontCharInfo currentCharInfo = characterInfoList.get(currentCharacterIndex);
+                    characterImageList.get(currentImageIndex).setPosition(characterBaselineX + currentCharInfo.normalizedQuadPositionOffset().x * textHeight, characterBaselineY + currentCharInfo.normalizedQuadPositionOffset().y * textHeight);
+                    currentImageIndex++;
+                }
+                currentCharacterIndex+= Character.charCount(displayedString.codePointAt(currentCharacterIndex));
+            }
+            currentCharacterIndex++;
         }
     }
 
@@ -62,10 +101,7 @@ public class TextBox implements SceneDisplay{
 
     @Override
     public Optional<RenderInfo> getRenderInfo() {
-        if(staticText) {
-            return Optional.of(new RenderInfo(layer, GraphicType.STATIC_IMAGE));
-        }
-        return Optional.of(new RenderInfo(layer, GraphicType.DYNAMIC_IMAGE));
+        return Optional.of(renderInfo);
     }
 
     @Override
@@ -85,18 +121,33 @@ public class TextBox implements SceneDisplay{
 
     @Override
     public void setPosition(float positionX, float positionY) {
-
+        position.x = positionX;
+        position.y = positionY;
+        updateTextPosition();
     }
 
     @Override
     public void update(float currentTimeSeconds) {
-        if(staticText){
-
+        if(renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE){
+            updateText();
         }
     }
 
     @Override
     public boolean shouldBeRemoved() {
         return false;
+    }
+
+    private int getNumberOfLines(){
+        if(displayedString.isEmpty()){
+            return 0;
+        }
+        int numberOfLines = 1;
+        for (int i = 0; i < displayedString.length(); i++){
+            if(displayedString.charAt(i) == '\n'){
+                numberOfLines++;
+            }
+        }
+        return numberOfLines;
     }
 }
