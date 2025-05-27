@@ -1,5 +1,5 @@
 {
-    "resolution": [1000, 1000],
+    "resolution": [1000, 1100],
     "levelUI": {
         "lives": {
             "fileName": "heart.png",
@@ -8,5 +8,5 @@
             "stride": [40, 0]
         }
     },
-    "debugMode": true
+    "debugMode": false
 }

@@ -16,6 +16,6 @@ public class StaticImage extends Image2D {
     }
     @Override
     public StaticImage copy() {
-        return new StaticImage(texture, renderInfo.layer(), shader, primitive.copy());
+        return new StaticImage(texture, renderInfo.layer(), shader, primitive);
     }
 }

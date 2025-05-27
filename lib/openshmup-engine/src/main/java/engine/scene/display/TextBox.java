@@ -22,6 +22,7 @@ public class TextBox implements SceneDisplay{
     private Font font;
     private ArrayList<FontCharInfo> characterInfoList;
     private ArrayList<Image2D> characterImageList;
+    private ArrayList<Float> normalizedLineWidthsList;
 
     public TextBox(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
         if(dynamicText){
@@ -36,16 +37,33 @@ public class TextBox implements SceneDisplay{
         this.font = font;
         this.characterImageList = new ArrayList<>(displayedString.length());
         this.characterInfoList = new ArrayList<>(displayedString.length());
+        this.normalizedLineWidthsList = new ArrayList<>();
         updateText();
     }
 
     private void updateText(){
         characterImageList.clear();
         characterInfoList.clear();
-        for(int i = 0; i < displayedString.length(); i++){
-            addCharacter(displayedString.codePointAt(i));
-        }
+        displayedString.codePoints().forEach(this::addCharacter);
         updateTextPosition();
+    }
+
+    private void calculateLineWidths(){
+        int charInfoIndex = 0;
+        int lineBreakCodepoint = "\n".codePointAt(0);
+        while(charInfoIndex < characterInfoList.size()){
+            float normalizedLineWidth = 0.0f;
+            if(characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
+                while (charInfoIndex + 1 < characterInfoList.size() && characterInfoList.get(charInfoIndex + 1).codepoint() != lineBreakCodepoint) {
+                    normalizedLineWidth += characterInfoList.get(charInfoIndex).normalizedAdvance();
+                    charInfoIndex++;
+                }
+                normalizedLineWidth += characterInfoList.get(charInfoIndex).normalizedQuadSize().x;
+                charInfoIndex++;
+            }
+            normalizedLineWidthsList.add(normalizedLineWidth);
+            charInfoIndex ++;
+        }
     }
 
     private void addCharacter(int newCodepoint){
@@ -53,7 +71,7 @@ public class TextBox implements SceneDisplay{
         if(fontCharInfoOptional.isPresent()){
             FontCharInfo newCharInfo = fontCharInfoOptional.orElseThrow();
             characterInfoList.add(newCharInfo);
-            if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ) {
+            if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ){
                 if(renderInfo.graphicType() == GraphicType.STATIC_IMAGE){
                     characterImageList.add(new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeightPixels, newCharInfo.normalizedQuadSize().y * textHeightPixels));
                 }
@@ -66,37 +84,32 @@ public class TextBox implements SceneDisplay{
 
     private void updateTextPosition(){
         float editionHeight = GameConfig.getEditionHeight();
-        int numberOfLines = getNumberOfLines();
+        int numberOfLines = normalizedLineWidthsList.size();
         float textHeight = textHeightPixels / editionHeight;
-        int currentCharacterIndex = 0;
-        int currentImageIndex = 0;
-        int currentLineStartIndex = 0;
+        int characterImageIndex = 0;
+        int charInfoIndex = 0;
         int lineBreakCodepoint = "\n".codePointAt(0);
         int spaceCodepoint = " ".codePointAt(0);
         for(int lineIndex = 0; lineIndex < numberOfLines; lineIndex++){
-            float currentLineWidth = characterInfoList.get(currentCharacterIndex).normalizedQuadSize().x * textHeight;
-            while(displayedString.codePointAt(currentCharacterIndex + 1) != lineBreakCodepoint){
-                currentLineWidth += characterInfoList.get(currentCharacterIndex).normalizedAdvance() * textHeight;
-                currentCharacterIndex+= Character.charCount(displayedString.codePointAt(currentCharacterIndex));
-            }
-            currentCharacterIndex = currentLineStartIndex;
+            float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
             float characterBaselineX = position.x - currentLineWidth / 2;
-            float characterBaselineY = position.y + ((float)lineIndex - (float) (numberOfLines - 1) / 2) - textHeight / 2;
-            while(displayedString.codePointAt(currentCharacterIndex) != lineBreakCodepoint){
-                if(displayedString.codePointAt(currentCharacterIndex) != spaceCodepoint){
-                    FontCharInfo currentCharInfo = characterInfoList.get(currentCharacterIndex);
-                    characterImageList.get(currentImageIndex).setPosition(characterBaselineX + currentCharInfo.normalizedQuadPositionOffset().x * textHeight, characterBaselineY + currentCharInfo.normalizedQuadPositionOffset().y * textHeight);
-                    currentImageIndex++;
+            float characterBaselineY = position.y + ((float)lineIndex - ((float) (numberOfLines - 1) / 2)) * font.getNormalizedLineHeight() * textHeight - textHeight / 2;
+            while(charInfoIndex < characterInfoList.size() && characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
+                if(characterInfoList.get(charInfoIndex).codepoint() != spaceCodepoint){
+                    FontCharInfo currentCharInfo = characterInfoList.get(charInfoIndex);
+                    characterImageList.get(characterImageIndex).setPosition(characterBaselineX + currentCharInfo.normalizedQuadPositionOffset().x * textHeight, characterBaselineY + currentCharInfo.normalizedQuadPositionOffset().y * textHeight);
+                    characterImageIndex++;
                 }
-                currentCharacterIndex+= Character.charCount(displayedString.codePointAt(currentCharacterIndex));
+                characterBaselineX+= characterInfoList.get(charInfoIndex).normalizedAdvance() * textHeight;
+                charInfoIndex++;
             }
-            currentCharacterIndex++;
+            charInfoIndex++;
         }
     }
 
     @Override
     public SceneDisplay copy() {
-        return null;
+        return new TextBox(renderInfo.layer(), renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
     }
 
     @Override
@@ -111,7 +124,7 @@ public class TextBox implements SceneDisplay{
 
     @Override
     public Optional<Texture> getTexture() {
-        return Optional.empty();
+        return Optional.of(font.getBitmap());
     }
 
     @Override
@@ -136,18 +149,5 @@ public class TextBox implements SceneDisplay{
     @Override
     public boolean shouldBeRemoved() {
         return false;
-    }
-
-    private int getNumberOfLines(){
-        if(displayedString.isEmpty()){
-            return 0;
-        }
-        int numberOfLines = 1;
-        for (int i = 0; i < displayedString.length(); i++){
-            if(displayedString.charAt(i) == '\n'){
-                numberOfLines++;
-            }
-        }
-        return numberOfLines;
     }
 }

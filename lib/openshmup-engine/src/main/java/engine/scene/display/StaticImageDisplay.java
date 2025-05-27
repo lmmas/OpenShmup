@@ -32,7 +32,7 @@ public class StaticImageDisplay implements SceneDisplay{
 
     @Override
     public Optional<Texture> getTexture() {
-        return Optional.empty();
+        return Optional.of(image.getTexture());
     }
 
     @Override

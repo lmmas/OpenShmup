@@ -100,6 +100,6 @@ public class Animation implements SceneDisplay {
 
     @Override
     public boolean shouldBeRemoved() {
-        return !looping && frameIndex == info.frameCount() -1;
+        return !looping && frameIndex >= info.frameCount();
     }
 }

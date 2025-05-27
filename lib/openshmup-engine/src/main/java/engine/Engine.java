@@ -10,6 +10,7 @@ import org.lwjgl.system.*;
 
 import java.io.IOException;
 import java.nio.*;
+import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -23,6 +24,8 @@ public class Engine {
     private final GraphicsManager graphicsManager;
     private final InputStatesManager inputStatesManager;
     private Scene currentScene;
+    private Consumer<Engine> testInit;
+    private Consumer<Engine> testInLoop;
 
     public static void main(String[] args) throws IOException {
         if(args.length != 1){
@@ -85,10 +88,12 @@ public class Engine {
         this.assetManager = new AssetManager();
         editorDataManager.loadGameContents();
         this.inputStatesManager = new InputStatesManager(glfwWindow);
+        this.testInit = engine -> {};
+        this.testInLoop = engine -> {};
     }
     public void run(){
         gameInit();
-        //testInit();
+        testInit.accept(this);
         loop();
 
         Callbacks.glfwFreeCallbacks(glfwWindow);
@@ -106,7 +111,7 @@ public class Engine {
         while (!glfwWindowShouldClose(glfwWindow)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
-            //testInLoop();
+            testInLoop.accept(this);
             inputStatesManager.updateControlStates();
             currentScene.update();
             graphicsManager.drawGraphics();
@@ -139,14 +144,11 @@ public class Engine {
         return currentScene;
     }
 
-    public void testInit(){
-        currentScene = new TestScene(this);
+    public void setTestInit(Consumer<Engine> testInit) {
+        this.testInit = testInit;
     }
-    public void testInLoop(){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
+    public void setTestInLoop(Consumer<Engine> testInLoop) {
+        this.testInLoop = testInLoop;
     }
 }

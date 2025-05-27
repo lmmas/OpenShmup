@@ -17,6 +17,6 @@ public final class DynamicImage extends Image2D{
 
     @Override
     public DynamicImage copy() {
-        return new DynamicImage(texture, renderInfo.layer(), shader, primitive.copy());
+        return new DynamicImage(texture, renderInfo.layer(), shader, primitive);
     }
 }

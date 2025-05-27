@@ -23,7 +23,7 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public Image2D(Texture texture, int layer, GraphicType type, Shader shader, ImagePrimitive imagePrimitive){
         super(layer, type, shader);
         this.texture = texture;
-        this.primitive = imagePrimitive;
+        this.primitive = imagePrimitive.copy();
     }
 
     public void setPosition(float imagePositionX, float imagePositionY){

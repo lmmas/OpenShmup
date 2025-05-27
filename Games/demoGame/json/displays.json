@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "layer": 0,
+        "type": "scrollingImage",
+        "fileName": "background.png",
+        "size": [1000,1200],
+        "speed": -200,
+        "horizontalScrolling": false
+    },
+    {
+        "id": 2,
+        "layer": 10,
+        "type": "animation",
+        "animationInfo": {
+            "fileName": "explosion.png",
+            "frameCount": 5,
+            "frameSize": [16, 16],
+            "startingPosition": [0,0],
+            "stride": [16, 0]
+        },
+        "framePeriodSeconds": 0.07,
+        "looping": false,
+        "size": [50, 50]
+    }
+]

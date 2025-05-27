@@ -16,25 +16,17 @@ public class LevelTimeline {
         this.editorDataManager = editorDataManager;
         this.levelDuration= levelDuration;
         this.spawnList = new TreeMap<>();
-        this.nextSpawnTime = -1.0f;
+        this.nextSpawnTime = null;
     }
 
     public void updateSpawning(LevelScene scene){
         float currentTime = scene.getSceneTimeSeconds();
-        if(currentTime >= nextSpawnTime && currentTime < levelDuration){
-            while(currentTime >= nextSpawnTime){
-                ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
-                assert spawnables != null :"bad spawnList access";
-                for(Spawnable spawnable: spawnables){
-                    spawnable.spawn(scene);
-                }
-                if(spawnList.higherKey(nextSpawnTime) != null){
-                    nextSpawnTime = spawnList.higherKey(nextSpawnTime);
-                }
-                else{
-                    nextSpawnTime = levelDuration;
-                }
+        while(nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration){
+            ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
+            for (Spawnable spawnable : spawnables) {
+                spawnable.spawn(scene);
             }
+            nextSpawnTime = spawnList.higherKey(nextSpawnTime);
         }
     }
 

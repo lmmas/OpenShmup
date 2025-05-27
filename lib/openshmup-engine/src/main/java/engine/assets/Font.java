@@ -94,4 +94,8 @@ public class Font {
     public Texture getBitmap() {
         return bitmap;
     }
+
+    public float getNormalizedLineHeight() {
+        return normalizedLineHeight;
+    }
 }
