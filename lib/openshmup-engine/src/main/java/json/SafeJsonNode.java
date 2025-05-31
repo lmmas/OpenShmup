@@ -24,7 +24,7 @@ public class SafeJsonNode {
         return path;
     }
 
-    public static SafeJsonNode getObjectRootNode(String filepath, ObjectMapper objectMapper) throws FileNotFoundException, IllegalArgumentException {
+    public static SafeJsonNode getObjectRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));
@@ -38,7 +38,7 @@ public class SafeJsonNode {
         return new SafeJsonNode(rootNode, rootPath);
     }
 
-    public static SafeJsonNode getArrayRootNode(String filepath, ObjectMapper objectMapper) throws FileNotFoundException, IllegalArgumentException {
+    public static SafeJsonNode getArrayRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
         JsonNode rootNode;
         try {
             rootNode = objectMapper.readTree(new File(filepath));

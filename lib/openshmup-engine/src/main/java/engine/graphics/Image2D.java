@@ -23,7 +23,7 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public Image2D(Texture texture, int layer, GraphicType type, Shader shader, ImagePrimitive imagePrimitive){
         super(layer, type, shader);
         this.texture = texture;
-        this.primitive = imagePrimitive.copy();
+        this.primitive = new ImagePrimitive(imagePrimitive);
     }
 
     public void setPosition(float imagePositionX, float imagePositionY){
@@ -99,9 +99,11 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
             this.textureSize = new Vec2D(textureSizeX, textureSizeY);
         }
 
-        @Override
-        public ImagePrimitive copy() {
-            return new ImagePrimitive(imagePosition.x, imagePosition.y, imageSize.x, imageSize.y, texturePosition.x, texturePosition.y, textureSize.x, textureSize.y);
+        public ImagePrimitive(ImagePrimitive imagePrimitive){
+            this.imagePosition = new Vec2D(imagePrimitive.imagePosition.x, imagePrimitive.imagePosition.y);
+            this.imageSize = new Vec2D(imagePrimitive.imageSize.x, imagePrimitive.imageSize.y);
+            this.texturePosition = new Vec2D(imagePrimitive.texturePosition.x, imagePrimitive.texturePosition.y);
+            this.textureSize = new Vec2D(imagePrimitive.textureSize.x, imagePrimitive.textureSize.y);
         }
 
         public Vec2D getImagePosition() {

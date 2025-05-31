@@ -64,9 +64,5 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
             this.size = new Vec2D(sizeX, sizeY);
             this.color = new RGBAValue(r,g,b,a);
         }
-        @Override
-        public ColorRectanglePrimitive copy() {
-            return new ColorRectanglePrimitive(size.x, size.y, color.r, color.g, color.b, color.a);
-        }
     }
 }

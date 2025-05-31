@@ -30,7 +30,6 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public class Primitive{
         Renderer<G,P>.Batch currentBatch;
-        abstract public P copy();
         public void setBatch(Renderer<G,P>.Batch newBatch){
             this.currentBatch = newBatch;
         }
