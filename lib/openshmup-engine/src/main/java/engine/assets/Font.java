@@ -53,17 +53,18 @@ public class Font {
 
         int bitmapWidth = 512;
         int bitmapHeight = 512;
-        float ascentPixels = 24.0f;
+        float ascentPixels = 36.0f;
 
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
         STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(endCodepoint - startCodepoint + 1);
-        stbtt_BakeFontBitmap(
-                dataBuffer, ascentPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, 32, charBuffer);
+        int success = stbtt_BakeFontBitmap(
+                dataBuffer, ascentPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, startCodepoint, charBuffer);
 
         HashMap<Integer, FontCharInfo> charInfoMap = new HashMap<>(endCodepoint - startCodepoint + 1);
         for(int i = 0; i < charBuffer.capacity(); i++){
             STBTTBakedChar charData = charBuffer.get(i);
             int codepoint = startCodepoint + i;
+            System.out.println(Character.toChars(codepoint));
             short x0 = charData.x0();
             short y0 = charData.y0();
             short x1 = charData.x1();

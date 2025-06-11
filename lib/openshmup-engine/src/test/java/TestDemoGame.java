@@ -2,7 +2,7 @@ import engine.Engine;
 
 import java.io.IOException;
 
-public class TestGame {
+public class TestDemoGame {
     public static void main(String[] args) throws IOException {
         String folderName = "demoGame";
         String[] gameArgs = new String[]{folderName};

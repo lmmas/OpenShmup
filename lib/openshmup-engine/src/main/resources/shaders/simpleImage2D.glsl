@@ -82,5 +82,5 @@ void main(){
     float safetyMargin = 0.00001f;
     vec2 safeTextureCoords = clamp(v_TextureCoords, v_TextureCoordsMin + safetyMargin, v_TextureCoordsMax - safetyMargin);
     fragColor = texture(TEX_SAMPLER[v_TextureSlot], safeTextureCoords);
-    //fragColor = vec4(fTextureCoords, 1.0f, 0.0f);
+    //fragColor = vec4(safeTextureCoords, 0.0f, 1.0f);
 }

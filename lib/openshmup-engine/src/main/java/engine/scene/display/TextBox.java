@@ -67,25 +67,25 @@ public class TextBox implements SceneDisplay{
     }
 
     private void addCharacter(int newCodepoint){
+        float textHeight = textHeightPixels / GameConfig.getEditionHeight();
         Optional<FontCharInfo> fontCharInfoOptional = font.getCharInfo(newCodepoint);
         if(fontCharInfoOptional.isPresent()){
             FontCharInfo newCharInfo = fontCharInfoOptional.orElseThrow();
             characterInfoList.add(newCharInfo);
             if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ){
                 if(renderInfo.graphicType() == GraphicType.STATIC_IMAGE){
-                    characterImageList.add(new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeightPixels, newCharInfo.normalizedQuadSize().y * textHeightPixels));
+                    characterImageList.add(new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight));
                 }
                 else{
-                    characterImageList.add(new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeightPixels, newCharInfo.normalizedQuadSize().y * textHeightPixels));
+                    characterImageList.add(new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight));
                 }
             }
         }
     }
 
     private void updateTextPosition(){
-        float editionHeight = GameConfig.getEditionHeight();
         int numberOfLines = normalizedLineWidthsList.size();
-        float textHeight = textHeightPixels / editionHeight;
+        float textHeight = textHeightPixels / GameConfig.getEditionHeight();
         int characterImageIndex = 0;
         int charInfoIndex = 0;
         int lineBreakCodepoint = "\n".codePointAt(0);
