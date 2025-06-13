@@ -74,7 +74,7 @@ public class Font {
             float xadvance = charData.xadvance();
 
             Vec2D normalizedQuadSize = new Vec2D((float)(x1 - x0) / ascentPixels, (float)(y1 - y0) / ascentPixels);
-            Vec2D normalizedQuadPositionOffset = new Vec2D(xoff / ascentPixels + normalizedQuadSize.x / 2, -yoff / ascentPixels + normalizedQuadSize.y / 2);
+            Vec2D normalizedQuadPositionOffset = new Vec2D(xoff / ascentPixels + normalizedQuadSize.x / 2, -yoff / ascentPixels - normalizedQuadSize.y / 2);
             float normalizedAdvance = xadvance / ascentPixels;
 
             Vec2D bitmapTextureSize = new Vec2D( (float)(x1 - x0) / bitmapWidth, (float)(y1 - y0) / bitmapHeight);

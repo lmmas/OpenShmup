@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class TextBox implements SceneDisplay{
-    private RenderInfo renderInfo;
-    private Vec2D position;
+    final private RenderInfo renderInfo;
+    final private Vec2D position;
     private float textHeightPixels;
     private String displayedString;
     private Font font;
-    private ArrayList<FontCharInfo> characterInfoList;
-    private ArrayList<Image2D> characterImageList;
-    private ArrayList<Float> normalizedLineWidthsList;
+    final private ArrayList<FontCharInfo> characterInfoList;
+    final private ArrayList<Image2D> characterImageList;
+    final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextBox(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
         if(dynamicText){
@@ -45,6 +45,7 @@ public class TextBox implements SceneDisplay{
         characterImageList.clear();
         characterInfoList.clear();
         displayedString.codePoints().forEach(this::addCharacter);
+        calculateLineWidths();
         updateTextPosition();
     }
 
