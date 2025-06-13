@@ -1,6 +1,7 @@
 package engine.graphics;
 
 import engine.GlobalVars;
+import engine.render.RenderInfo;
 import engine.types.Vec2D;
 import engine.assets.Shader;
 import engine.assets.Texture;
@@ -20,10 +21,11 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public Image2D(Texture texture, int layer, GraphicType type, float sizeX, float sizeY){
         this(texture, layer, type, sizeX, sizeY, defaultShader);
     }
-    public Image2D(Texture texture, int layer, GraphicType type, Shader shader, ImagePrimitive imagePrimitive){
-        super(layer, type, shader);
-        this.texture = texture;
-        this.primitive = new ImagePrimitive(imagePrimitive);
+
+    public Image2D(Image2D image){
+        super(image);
+        this.texture = image.texture;
+        this.primitive = new ImagePrimitive(image.primitive);
     }
 
     public void setPosition(float imagePositionX, float imagePositionY){

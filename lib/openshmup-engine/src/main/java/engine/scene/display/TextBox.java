@@ -73,12 +73,18 @@ public class TextBox implements SceneDisplay{
             FontCharInfo newCharInfo = fontCharInfoOptional.orElseThrow();
             characterInfoList.add(newCharInfo);
             if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ){
+                Image2D newCharacterImage;
                 if(renderInfo.graphicType() == GraphicType.STATIC_IMAGE){
-                    characterImageList.add(new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight));
+                    newCharacterImage = new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
                 }
                 else{
-                    characterImageList.add(new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight));
+                    newCharacterImage  = new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
                 }
+                Vec2D textureSize = newCharInfo.bitmapTextureSize();
+                newCharacterImage.setTextureSize(textureSize.x, textureSize.y);
+                Vec2D texturePosition = newCharInfo.bitmapTexturePosition();
+                newCharacterImage.setTexturePosition(texturePosition.x, texturePosition.y);
+                characterImageList.add(newCharacterImage);
             }
         }
     }

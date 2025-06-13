@@ -15,7 +15,7 @@ public class Texture {
     private final int width;
     private final int height;
     private final int channelCount;
-    private final ByteBuffer imageBuffer;
+    private ByteBuffer imageBuffer;
     private boolean loadedInGPU;
 
     Texture(int width, int height, int channelCount, ByteBuffer imageBuffer) {
@@ -44,7 +44,7 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         if (channelCount == 1) {
@@ -79,6 +79,17 @@ public class Texture {
 
     public ByteBuffer getImageBuffer() {
         return imageBuffer;
+    }
+
+    public void flipImageBuffer(){
+        ByteBuffer flippedBuffer = BufferUtils.createByteBuffer(imageBuffer.capacity());
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                byte b = imageBuffer.get((height - 1 - y) * width + x);
+                flippedBuffer.put(y * width + x, b);
+            }
+        }
+        this.imageBuffer = flippedBuffer;
     }
 
     public boolean isLoadedInGPU() {

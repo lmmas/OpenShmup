@@ -10,12 +10,11 @@ public class StaticImage extends Image2D {
     public StaticImage(Texture texture, int layer, float sizeX, float sizeY, Shader shader){
         super(texture, layer, GraphicType.STATIC_IMAGE, sizeX, sizeY, shader);
     }
-    public StaticImage(Texture texture, int layer, Shader shader, ImagePrimitive primitive){
-        //this constructor is only used for deep copying
-        super(texture, layer, GraphicType.STATIC_IMAGE, shader, primitive);
+    public StaticImage(StaticImage image){
+        super(image);
     }
     @Override
     public StaticImage copy() {
-        return new StaticImage(texture, renderInfo.layer(), shader, primitive);
+        return new StaticImage(this);
     }
 }

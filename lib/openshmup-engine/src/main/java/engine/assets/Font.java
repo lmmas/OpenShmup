@@ -53,11 +53,11 @@ public class Font {
 
         int bitmapWidth = 512;
         int bitmapHeight = 512;
-        float ascentPixels = 36.0f;
+        float ascentPixels = 125.0f;
 
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
         STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(endCodepoint - startCodepoint + 1);
-        int success = stbtt_BakeFontBitmap(
+        stbtt_BakeFontBitmap(
                 dataBuffer, ascentPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, startCodepoint, charBuffer);
 
         HashMap<Integer, FontCharInfo> charInfoMap = new HashMap<>(endCodepoint - startCodepoint + 1);
@@ -66,9 +66,9 @@ public class Font {
             int codepoint = startCodepoint + i;
             System.out.println(Character.toChars(codepoint));
             short x0 = charData.x0();
-            short y0 = charData.y0();
+            int y0 = bitmapHeight - charData.y1();
             short x1 = charData.x1();
-            short y1 = charData.y1();
+            int y1 = bitmapHeight - charData.y0();
             float xoff = charData.xoff();
             float yoff = charData.yoff();
             float xadvance = charData.xadvance();
@@ -78,11 +78,13 @@ public class Font {
             float normalizedAdvance = xadvance / ascentPixels;
 
             Vec2D bitmapTextureSize = new Vec2D( (float)(x1 - x0) / bitmapWidth, (float)(y1 - y0) / bitmapHeight);
-            Vec2D bitmapTexturePosition = new Vec2D((float)(x0 + x1) / 2 / bitmapWidth, (float)(y0 + y1) / 2 / bitmapHeight);
+            Vec2D bitmapTexturePosition = new Vec2D((float)x0 / bitmapWidth, (float)y0 / bitmapHeight);
             FontCharInfo fontCharInfo = new FontCharInfo(codepoint, normalizedQuadSize, normalizedQuadPositionOffset, normalizedAdvance, bitmapTextureSize, bitmapTexturePosition);
             charInfoMap.put(codepoint, fontCharInfo);
         }
-        return new Font(filepath, new Texture(bitmapWidth, bitmapHeight, 1, bitmap), ascentPixels, normalizedDescent, normalizedLineGap, normalizedLineHeight, charInfoMap);
+        Texture fontTexture = new Texture(bitmapWidth, bitmapHeight, 1, bitmap);
+        fontTexture.flipImageBuffer();
+        return new Font(filepath, fontTexture, ascentPixels, normalizedDescent, normalizedLineGap, normalizedLineHeight, charInfoMap);
     }
 
     public Optional <FontCharInfo> getCharInfo(int codepoint){
