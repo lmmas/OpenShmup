@@ -48,7 +48,7 @@ public class Font {
         float normalizedLineGap = (float) lineGapBuf[0] / ascentNativeValue;
         float normalizedLineHeight = (float) (ascentNativeValue + descentBuf[0] + lineGapBuf[0]) / ascentNativeValue;
 
-        int startCodepoint = 32;
+        int startCodepoint = 10;
         int endCodepoint = 126;
 
         int bitmapWidth = 512;

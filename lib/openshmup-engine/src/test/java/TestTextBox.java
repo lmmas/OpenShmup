@@ -37,7 +37,7 @@ public class TestTextBox {
         myEngine.getEditorDataManager().addCustomDisplays(4, aCharacterDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(4, 0.8f, 0.8f));
 */
-        TextBox myTextBox = new TextBox(2, false, 0.5f, 0.5f, 200.0f, "Hello World!", myFont);
+        TextBox myTextBox = new TextBox(2, false, 0.5f, 0.5f, 200.0f, "Hello World!\nThis is a test", myFont);
         myEngine.getEditorDataManager().addCustomDisplays(2, myTextBox);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(2, 0.5f, 0.5f));
 

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class TextBox implements SceneDisplay{
+    final public int spaceCodepoint = " ".codePointAt(0);
+    final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
     private float textHeightPixels;
@@ -50,8 +52,8 @@ public class TextBox implements SceneDisplay{
     }
 
     private void calculateLineWidths(){
+        normalizedLineWidthsList.clear();
         int charInfoIndex = 0;
-        int lineBreakCodepoint = "\n".codePointAt(0);
         while(charInfoIndex < characterInfoList.size()){
             float normalizedLineWidth = 0.0f;
             if(characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
@@ -91,16 +93,14 @@ public class TextBox implements SceneDisplay{
     }
 
     private void updateTextPosition(){
-        int numberOfLines = normalizedLineWidthsList.size();
+        int lineCount = normalizedLineWidthsList.size();
         float textHeight = textHeightPixels / GameConfig.getEditionHeight();
         int characterImageIndex = 0;
         int charInfoIndex = 0;
-        int lineBreakCodepoint = "\n".codePointAt(0);
-        int spaceCodepoint = " ".codePointAt(0);
-        for(int lineIndex = 0; lineIndex < numberOfLines; lineIndex++){
+        for(int lineIndex = 0; lineIndex < lineCount; lineIndex++){
             float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
             float characterBaselineX = position.x - currentLineWidth / 2;
-            float characterBaselineY = position.y + ((float)lineIndex - ((float) (numberOfLines - 1) / 2)) * font.getNormalizedLineHeight() * textHeight - textHeight / 2;
+            float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float)lineIndex) * font.getNormalizedLineHeight() * textHeight - textHeight / 2;
             while(charInfoIndex < characterInfoList.size() && characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
                 if(characterInfoList.get(charInfoIndex).codepoint() != spaceCodepoint){
                     FontCharInfo currentCharInfo = characterInfoList.get(charInfoIndex);
