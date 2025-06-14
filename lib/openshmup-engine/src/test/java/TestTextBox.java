@@ -17,10 +17,10 @@ public class TestTextBox {
         String folderName = "testGame";
         Engine myEngine = new Engine(folderName);
 
-        /*StaticImageDisplay testBackground = new StaticImageDisplay(new StaticImage(Texture.createFromImageFile("lib/openshmup-engine/src/test/resources/textures/background_white.jpg"), 0,1.0f, 1.0f));
+        StaticImageDisplay testBackground = new StaticImageDisplay(new StaticImage(Texture.createFromImageFile("lib/openshmup-engine/src/test/resources/textures/background_white.jpg"), 0,0.5f, 0.5f));
         myEngine.getEditorDataManager().addCustomDisplays(1, testBackground);
-        myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(1, 0.5f, 0.5f));
-*/
+        myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(1, 0.75f, 0.75f));
+
         Font myFont = Font.createFromTTF("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf");
         /*StaticImageDisplay fontBitmap = new StaticImageDisplay(new StaticImage(myFont.getBitmap(), 1,0.35f, 0.35f));
         myEngine.getEditorDataManager().addCustomDisplays(3, fontBitmap);
@@ -37,7 +37,7 @@ public class TestTextBox {
         myEngine.getEditorDataManager().addCustomDisplays(4, aCharacterDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(4, 0.8f, 0.8f));
 */
-        TextBox myTextBox = new TextBox(2, false, 0.5f, 0.5f, 200.0f, "Hello World!\nThis is a test", myFont);
+        TextBox myTextBox = new TextBox(2, false, 0.5f, 0.5f, 100.0f, "Hello World!\nThis is a test", myFont);
         myEngine.getEditorDataManager().addCustomDisplays(2, myTextBox);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(2, 0.5f, 0.5f));
 

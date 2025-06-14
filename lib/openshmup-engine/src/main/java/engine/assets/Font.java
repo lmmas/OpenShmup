@@ -46,14 +46,14 @@ public class Font {
         final int ascentNativeValue = ascentBuf[0];
         float normalizedDescent = (float) descentBuf[0] / ascentNativeValue;
         float normalizedLineGap = (float) lineGapBuf[0] / ascentNativeValue;
-        float normalizedLineHeight = (float) (ascentNativeValue + descentBuf[0] + lineGapBuf[0]) / ascentNativeValue;
+        float normalizedLineHeight = (float) (ascentNativeValue - descentBuf[0] + lineGapBuf[0]) / ascentNativeValue;
 
         int startCodepoint = 10;
         int endCodepoint = 126;
 
         int bitmapWidth = 512;
         int bitmapHeight = 512;
-        float ascentPixels = 125.0f;
+        float ascentPixels = 75.0f;
 
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
         STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(endCodepoint - startCodepoint + 1);

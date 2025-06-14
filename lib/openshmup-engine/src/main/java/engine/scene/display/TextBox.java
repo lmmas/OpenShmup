@@ -100,7 +100,7 @@ public class TextBox implements SceneDisplay{
         for(int lineIndex = 0; lineIndex < lineCount; lineIndex++){
             float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
             float characterBaselineX = position.x - currentLineWidth / 2;
-            float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float)lineIndex) * font.getNormalizedLineHeight() * textHeight - textHeight / 2;
+            float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float)lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
             while(charInfoIndex < characterInfoList.size() && characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
                 if(characterInfoList.get(charInfoIndex).codepoint() != spaceCodepoint){
                     FontCharInfo currentCharInfo = characterInfoList.get(charInfoIndex);
