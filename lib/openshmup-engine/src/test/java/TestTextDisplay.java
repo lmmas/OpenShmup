@@ -33,7 +33,7 @@ public class TestTextDisplay {
         myEngine.getEditorDataManager().addCustomDisplays(4, aCharacterDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(4, 0.8f, 0.8f));
 */
-        TextDisplay myTextDisplay = new TextDisplay(2, false, 0.5f, 0.5f, 100.0f, "Hello World!\nThis is a test", myFont);
+        TextDisplay myTextDisplay = new TextDisplay(2, false, 0.5f, 0.5f, 24.0f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", myFont);
         myEngine.getEditorDataManager().addCustomDisplays(2, myTextDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(2, 0.5f, 0.5f));
 

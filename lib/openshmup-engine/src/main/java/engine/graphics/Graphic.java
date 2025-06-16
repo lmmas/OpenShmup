@@ -8,8 +8,8 @@ import engine.types.RGBAValue;
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
     final protected Shader shader;
     final protected RenderInfo renderInfo;
-    final private RGBAValue colorCoefs;
-    final private RGBAValue addedColor;
+    final protected RGBAValue colorCoefs;
+    final protected RGBAValue addedColor;
 
     public Graphic(int layer, GraphicType type, Shader shader){
         this.renderInfo = new RenderInfo(layer, type);
@@ -64,6 +64,13 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public class Primitive{
         Renderer<G,P>.Batch currentBatch;
+        public RGBAValue getColorCoefs(){
+            return Graphic.this.colorCoefs.copy();
+        }
+
+        public RGBAValue getAddedColor(){
+            return Graphic.this.addedColor.copy();
+        }
         public void setBatch(Renderer<G,P>.Batch newBatch){
             this.currentBatch = newBatch;
         }

@@ -50,9 +50,6 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         primitive.tellBatchDataChanged();
     }
 
-    public void setOrientation(float orientation){
-    }
-
     public void setPrimitiveData(float imagePositionX, float imagePositionY, float imageSizeX,  float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY){
         primitive.imagePosition.x = imagePositionX;
         primitive.imagePosition.y = imagePositionY;

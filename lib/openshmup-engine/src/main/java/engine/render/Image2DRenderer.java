@@ -3,6 +3,7 @@ package engine.render;
 import engine.GlobalVars;
 import engine.assets.Shader;
 import engine.assets.Texture;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.graphics.GraphicType;
 import engine.graphics.Image2D;
@@ -20,7 +21,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
         return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
     public Image2DRenderer(GraphicType type, int drawingType){
-        super(type, drawingType, 36);
+        super(type, drawingType, 68);
         this.batchSize = 100;
     }
 
@@ -28,7 +29,7 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
         protected ArrayList<Texture> textures;
         protected ArrayList<Integer> textureIndexes;
         final protected ByteBuffer dataBuffer;
-        protected static final int vertexAttributeCount = 9;
+        protected static final int vertexAttributeCount = 17;
 
         public ImageBatch(Shader shader, Texture texture){
             super(shader);
@@ -55,6 +56,8 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             glEnableVertexAttribArray(2);
             glEnableVertexAttribArray(3);
             glEnableVertexAttribArray(4);
+            glEnableVertexAttribArray(5);
+            glEnableVertexAttribArray(6);
             glDrawArrays(GL_POINTS, 0, primitives.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
@@ -75,13 +78,18 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
             int quadSizeLength = 2;
             int texturePositionLength = 2;
             int textureSizeLength = 2;
+            int textureIndexLength = 1;
+            int colorCoefsLength = 4;
+            int addedColorLength = 4;
             glBindVertexArray(Image2DRenderer.this.vaoID);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
             glVertexAttribPointer(2, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
             glVertexAttribPointer(3, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength) * Float.BYTES);
-            glVertexAttribIPointer(4, 1, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
+            glVertexAttribIPointer(4, textureIndexLength, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
+            glVertexAttribPointer(5, colorCoefsLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
+            glVertexAttribPointer(6, addedColorLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength + colorCoefsLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         }
@@ -94,6 +102,8 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
                 Vec2D imageSize = image.getImageSize();
                 Vec2D texturePosition = image.getTexturePosition();
                 Vec2D textureSize = image.getTextureSize();
+                RGBAValue colorCoefs = image.getColorCoefs();
+                RGBAValue addedColor = image.getAddedColor();
                 dataBuffer.putFloat(imagePosition.x);
                 dataBuffer.putFloat(imagePosition.y);
                 dataBuffer.putFloat(imageSize.x);
@@ -103,6 +113,14 @@ abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePri
                 dataBuffer.putFloat(textureSize.x);
                 dataBuffer.putFloat(textureSize.y);
                 dataBuffer.putInt(textureIndexes.get(i));
+                dataBuffer.putFloat(colorCoefs.r);
+                dataBuffer.putFloat(colorCoefs.g);
+                dataBuffer.putFloat(colorCoefs.b);
+                dataBuffer.putFloat(colorCoefs.a);
+                dataBuffer.putFloat(addedColor.r);
+                dataBuffer.putFloat(addedColor.g);
+                dataBuffer.putFloat(addedColor.b);
+                dataBuffer.putFloat(addedColor.a);
             }
             dataBuffer.flip();
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
