@@ -1,18 +1,14 @@
 import engine.Engine;
 import engine.assets.Font;
-import engine.assets.FontCharInfo;
 import engine.assets.Texture;
-import engine.graphics.Image2D;
 import engine.graphics.StaticImage;
 import engine.scene.display.StaticImageDisplay;
-import engine.scene.display.TextBox;
+import engine.scene.display.TextDisplay;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
-import engine.types.Vec2D;
 
 import java.io.IOException;
-import java.util.Optional;
 
-public class TestTextBox {
+public class TestTextDisplay {
     public static void main(String[] args) throws IOException {
         String folderName = "testGame";
         Engine myEngine = new Engine(folderName);
@@ -37,8 +33,8 @@ public class TestTextBox {
         myEngine.getEditorDataManager().addCustomDisplays(4, aCharacterDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(4, 0.8f, 0.8f));
 */
-        TextBox myTextBox = new TextBox(2, false, 0.5f, 0.5f, 100.0f, "Hello World!\nThis is a test", myFont);
-        myEngine.getEditorDataManager().addCustomDisplays(2, myTextBox);
+        TextDisplay myTextDisplay = new TextDisplay(2, false, 0.5f, 0.5f, 100.0f, "Hello World!\nThis is a test", myFont);
+        myEngine.getEditorDataManager().addCustomDisplays(2, myTextDisplay);
         myEngine.getEditorDataManager().getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(2, 0.5f, 0.5f));
 
         myEngine.run();

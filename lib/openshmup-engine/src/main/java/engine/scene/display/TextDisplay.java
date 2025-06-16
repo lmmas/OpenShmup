@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class TextBox implements SceneDisplay{
+public class TextDisplay implements SceneDisplay{
     final public int spaceCodepoint = " ".codePointAt(0);
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
@@ -26,7 +26,7 @@ public class TextBox implements SceneDisplay{
     final private ArrayList<Image2D> characterImageList;
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextBox(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, GraphicType.DYNAMIC_IMAGE);
         }
@@ -116,7 +116,7 @@ public class TextBox implements SceneDisplay{
 
     @Override
     public SceneDisplay copy() {
-        return new TextBox(renderInfo.layer(), renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
+        return new TextDisplay(renderInfo.layer(), renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
     }
 
     @Override
