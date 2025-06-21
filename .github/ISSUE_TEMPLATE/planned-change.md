@@ -2,7 +2,7 @@
 name: Planned change
 about: Feature or change planned by the dev
 title: ''
-labels: planned feature
+labels: planned change
 assignees: lmmas
 
 ---
