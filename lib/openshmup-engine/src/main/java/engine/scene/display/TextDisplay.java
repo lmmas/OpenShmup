@@ -7,23 +7,25 @@ import engine.assets.Texture;
 import engine.graphics.*;
 import engine.render.RenderInfo;
 import engine.scene.Scene;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TextDisplay implements SceneDisplay{
-    final public int spaceCodepoint = " ".codePointAt(0);
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
     private float textHeightPixels;
     private String displayedString;
     private Font font;
-    final private ArrayList<FontCharInfo> characterInfoList;
-    final private ArrayList<Image2D> characterImageList;
+    final private boolean dynamicText;
+    private final RGBAValue textColor;
+    final private ArrayList<ArrayList<TextCharacter>> textLines;
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
@@ -37,15 +39,16 @@ public class TextDisplay implements SceneDisplay{
         this.textHeightPixels = textHeightPixels;
         this.displayedString = displayedString;
         this.font = font;
-        this.characterImageList = new ArrayList<>(displayedString.length());
-        this.characterInfoList = new ArrayList<>(displayedString.length());
+        this.dynamicText = dynamicText;
+        this.textLines = new ArrayList<>();
         this.normalizedLineWidthsList = new ArrayList<>();
+        this.textColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
         updateText();
     }
 
     private void updateText(){
-        characterImageList.clear();
-        characterInfoList.clear();
+        textLines.clear();
+        textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
         calculateLineWidths();
         updateTextPosition();
@@ -53,70 +56,46 @@ public class TextDisplay implements SceneDisplay{
 
     private void calculateLineWidths(){
         normalizedLineWidthsList.clear();
-        int charInfoIndex = 0;
-        while(charInfoIndex < characterInfoList.size()){
-            float normalizedLineWidth = 0.0f;
-            if(characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
-                while (charInfoIndex + 1 < characterInfoList.size() && characterInfoList.get(charInfoIndex + 1).codepoint() != lineBreakCodepoint) {
-                    normalizedLineWidth += characterInfoList.get(charInfoIndex).normalizedAdvance();
-                    charInfoIndex++;
+        for(ArrayList<TextCharacter> line: textLines){
+            float currentLineWidth = 0.0f;
+            if(!line.isEmpty()){
+                for(int i = 0; i < line.size() - 1; i++){
+                    currentLineWidth += line.get(i).fontCharInfo.normalizedAdvance();
                 }
-                normalizedLineWidth += characterInfoList.get(charInfoIndex).normalizedQuadSize().x;
-                charInfoIndex++;
+                currentLineWidth += line.getLast().fontCharInfo.normalizedQuadSize().x;
             }
-            normalizedLineWidthsList.add(normalizedLineWidth);
-            charInfoIndex ++;
+            normalizedLineWidthsList.add(currentLineWidth);
         }
     }
 
     private void addCharacter(int newCodepoint){
-        float textHeight = textHeightPixels / GameConfig.getEditionHeight();
-        Optional<FontCharInfo> fontCharInfoOptional = font.getCharInfo(newCodepoint);
-        if(fontCharInfoOptional.isPresent()){
-            FontCharInfo newCharInfo = fontCharInfoOptional.orElseThrow();
-            characterInfoList.add(newCharInfo);
-            if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ){
-                Image2D newCharacterImage;
-                if(renderInfo.renderType() == RenderType.STATIC_IMAGE){
-                    newCharacterImage = new Image2D(font.getBitmap(), renderInfo.layer(), false,newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
-                }
-                else{
-                    newCharacterImage  = new Image2D(font.getBitmap(), renderInfo.layer(), true,newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
-                }
-                Vec2D textureSize = newCharInfo.bitmapTextureSize();
-                newCharacterImage.setTextureSize(textureSize.x, textureSize.y);
-                Vec2D texturePosition = newCharInfo.bitmapTexturePosition();
-                newCharacterImage.setTexturePosition(texturePosition.x, texturePosition.y);
-                characterImageList.add(newCharacterImage);
-            }
+        if(newCodepoint == lineBreakCodepoint){
+            textLines.add(new ArrayList<>());
+        }
+        else{
+            textLines.getLast().add(new TextCharacter(newCodepoint, font));
         }
     }
 
     private void updateTextPosition(){
         int lineCount = normalizedLineWidthsList.size();
         float textHeight = textHeightPixels / GameConfig.getEditionHeight();
-        int characterImageIndex = 0;
-        int charInfoIndex = 0;
         for(int lineIndex = 0; lineIndex < lineCount; lineIndex++){
+            ArrayList<TextCharacter> currentLine = textLines.get(lineIndex);
             float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
             float characterBaselineX = position.x - currentLineWidth / 2;
             float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float)lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
-            while(charInfoIndex < characterInfoList.size() && characterInfoList.get(charInfoIndex).codepoint() != lineBreakCodepoint){
-                if(characterInfoList.get(charInfoIndex).codepoint() != spaceCodepoint){
-                    FontCharInfo currentCharInfo = characterInfoList.get(charInfoIndex);
-                    characterImageList.get(characterImageIndex).setPosition(characterBaselineX + currentCharInfo.normalizedQuadPositionOffset().x * textHeight, characterBaselineY + currentCharInfo.normalizedQuadPositionOffset().y * textHeight);
-                    characterImageIndex++;
-                }
-                characterBaselineX+= characterInfoList.get(charInfoIndex).normalizedAdvance() * textHeight;
-                charInfoIndex++;
+            for(TextCharacter character: currentLine){
+                Vec2D characterPositionOffset = character.fontCharInfo.normalizedQuadPositionOffset();
+                character.setPosition(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight);
+                characterBaselineX += character.fontCharInfo.normalizedAdvance() * textHeight;
             }
-            charInfoIndex++;
         }
     }
 
     @Override
     public SceneDisplay copy() {
-        return new TextDisplay(renderInfo.layer(), renderInfo.renderType() == RenderType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
+        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeightPixels, displayedString, font);
     }
 
     @Override
@@ -126,7 +105,7 @@ public class TextDisplay implements SceneDisplay{
 
     @Override
     public List<Graphic<?, ?>> getGraphics() {
-        return Collections.unmodifiableList(characterImageList);
+        return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -139,6 +118,10 @@ public class TextDisplay implements SceneDisplay{
 
     }
 
+    public void setDisplayedString(String displayedString){
+        this.displayedString = displayedString;
+    }
+
     @Override
     public void setPosition(float positionX, float positionY) {
         position.x = positionX;
@@ -146,9 +129,16 @@ public class TextDisplay implements SceneDisplay{
         updateTextPosition();
     }
 
+    public void setTextColor(float r, float g, float b, float a){
+        this.textColor.r = r;
+        this.textColor.g = g;
+        this.textColor.b = b;
+        this.textColor.a = a;
+    }
+
     @Override
     public void update(float currentTimeSeconds) {
-        if(renderInfo.renderType() == RenderType.DYNAMIC_IMAGE){
+        if(dynamicText){
             updateText();
         }
     }
@@ -165,6 +155,29 @@ public class TextDisplay implements SceneDisplay{
         public TextCharacter(int codepoint, Font font){
             this.codepoint = codepoint;
             this.fontCharInfo = font.getCharInfo(codepoint).orElseThrow();
+            Vec2D charSize = fontCharInfo.normalizedQuadSize();
+            float textHeight = TextDisplay.this.textHeightPixels / GameConfig.getEditionHeight();
+            this.image = new Image2D(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textHeight, charSize.y * textHeight);
+            Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
+            Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
+            image.setTextureSize(bitmapTextureSize.x, bitmapTextureSize.y);
+            image.setTexturePosition(bitmapTexturePosition.x, bitmapTexturePosition.y);
+        }
+
+        public void setPosition(float positionX, float positionY){
+            image.setPosition(positionX, positionY);
+        }
+
+        public void setSize(float sizeX, float sizeY){
+            image.setSize(sizeX, sizeY);
+        }
+
+        public void setColor(float r, float g, float b, float a){
+            image.setColorCoefs(r,g,b,a);
+        }
+
+        public Image2D getImage(){
+            return image;
         }
     }
 }
