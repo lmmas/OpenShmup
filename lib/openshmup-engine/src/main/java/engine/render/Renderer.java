@@ -1,7 +1,7 @@
 package engine.render;
 
 import engine.assets.Shader;
-import engine.graphics.GraphicType;
+import engine.graphics.RenderType;
 import engine.scene.Scene;
 import engine.graphics.Graphic;
 
@@ -12,13 +12,13 @@ import static org.lwjgl.opengl.GL33.*;
 public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
     protected Scene scene;
     protected int vaoID;
-    protected GraphicType type;
+    protected RenderType type;
     final protected int drawingType;
     protected int layer;
     final protected int vboStrideBytes;
     protected int batchSize;
     protected ArrayList<Batch> batches;
-    public Renderer(GraphicType type, int drawingType, int vboStrideBytes){
+    public Renderer(RenderType type, int drawingType, int vboStrideBytes){
         this.vaoID = glGenVertexArrays();
         this.type = type;
         this.drawingType = drawingType;
@@ -34,7 +34,7 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
         batches.add(newBatch);
     }
 
-    public GraphicType getType() {
+    public RenderType getType() {
         return type;
     }
 

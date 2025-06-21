@@ -5,7 +5,7 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.GraphicType;
+import engine.graphics.RenderType;
 import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;
 
@@ -15,13 +15,13 @@ import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
-abstract public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
+public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
 
     protected Batch createBatchFromGraphic(Image2D graphic){
         return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
-    public Image2DRenderer(GraphicType type, int drawingType){
-        super(type, drawingType, 68);
+    public Image2DRenderer(RenderType type){
+        super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, 68);
         this.batchSize = 100;
     }
 

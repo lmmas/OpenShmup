@@ -7,7 +7,7 @@ import engine.assets.Shader;
 public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
     private final ColorRectanglePrimitive primitive;
     public ColorRectangle(int layer, float sizeX, float sizeY, float r, float g, float b, float a, Shader shader){
-        super(layer, GraphicType.COLOR_RECTANGLE, shader);
+        super(layer, RenderType.COLOR_RECTANGLE, shader);
         this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, r, g, b, a);
     }
     @Override

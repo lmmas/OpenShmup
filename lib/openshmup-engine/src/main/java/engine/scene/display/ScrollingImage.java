@@ -1,7 +1,7 @@
 package engine.scene.display;
 
-import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
+import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.Scene;
@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ScrollingImage implements SceneDisplay {
-    private final DynamicImage image1;
+    private final Image2D image1;
     private float positionX1;
     private float positionY1;
-    private final DynamicImage image2;
+    private final Image2D image2;
     private float positionX2;
     private float positionY2;
     private float sizeX;
@@ -24,8 +24,8 @@ public class ScrollingImage implements SceneDisplay {
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        this.image1 = new DynamicImage(texture, layer, sizeX, sizeY);
-        this.image2 = new DynamicImage(texture, layer, sizeX, sizeY);
+        this.image1 = new Image2D(texture, layer, true, sizeX, sizeY);
+        this.image2 = new Image2D(texture, layer, true, sizeX, sizeY);
         this.positionX1 = 0.5f;
         this.positionY1 = 0.5f;
         this.speed = speed;
@@ -36,7 +36,7 @@ public class ScrollingImage implements SceneDisplay {
         setPosition(0.5f, 0.5f);
     }
 
-    public ScrollingImage(DynamicImage image1, float positionX1, float positionY1, DynamicImage image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
+    public ScrollingImage(Image2D image1, float positionX1, float positionY1, Image2D image2, float positionX2, float positionY2, float sizeX, float sizeY, boolean horizontalScrolling, float speed) {
         //this constructor is only used for deep copying
         this.image1 = image1;
         this.positionX1 = positionX1;

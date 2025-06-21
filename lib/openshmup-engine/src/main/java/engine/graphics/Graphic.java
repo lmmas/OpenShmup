@@ -11,7 +11,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     final protected RGBAValue colorCoefs;
     final protected RGBAValue addedColor;
 
-    public Graphic(int layer, GraphicType type, Shader shader){
+    public Graphic(int layer, RenderType type, Shader shader){
         this.renderInfo = new RenderInfo(layer, type);
         this.shader = shader;
         this.colorCoefs = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
@@ -19,7 +19,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     }
 
     public Graphic(Graphic<?,?> graphic){
-        this.renderInfo = new RenderInfo(graphic.renderInfo.layer(), graphic.renderInfo.graphicType());
+        this.renderInfo = new RenderInfo(graphic.renderInfo.layer(), graphic.renderInfo.renderType());
         this.shader = graphic.shader;
         this.colorCoefs = new RGBAValue(graphic.colorCoefs.r, graphic.colorCoefs.g, graphic.colorCoefs.b, graphic.colorCoefs.a);
         this.addedColor = new RGBAValue(graphic.addedColor.r, graphic.addedColor.g, graphic.addedColor.b, graphic.addedColor.a);

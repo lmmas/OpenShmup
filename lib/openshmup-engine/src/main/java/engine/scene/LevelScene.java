@@ -10,7 +10,7 @@ import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.graphics.GraphicType;
+import engine.graphics.RenderType;
 import engine.assets.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -50,9 +50,9 @@ public class LevelScene extends Scene{
 
     void loadAssets(){
         HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
-        timelineRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, GraphicType.STATIC_IMAGE));
+        timelineRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, RenderType.STATIC_IMAGE));
         if(debugMode){
-            timelineRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, GraphicType.COLOR_RECTANGLE));
+            timelineRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, RenderType.COLOR_RECTANGLE));
         }
         graphicsManager.constructRenderers(timelineRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();

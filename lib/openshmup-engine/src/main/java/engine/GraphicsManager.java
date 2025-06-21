@@ -26,17 +26,12 @@ public class GraphicsManager {
         ArrayList<Renderer<?,?>> renderers = layers.get(renderInfo.layer());
         assert renderers != null: "bad Renderer generation";
         for(Renderer<?,?> renderer : renderers){
-            if(renderer.getType() == renderInfo.graphicType()){
-                switch (renderInfo.graphicType()){
-                    case STATIC_IMAGE -> {
-                        StaticImageRenderer staticImageRenderer = (StaticImageRenderer) renderer;
-                        StaticImage staticImage = (StaticImage) newGraphic;
-                        staticImageRenderer.addGraphic(staticImage);
-                    }
-                    case DYNAMIC_IMAGE -> {
-                        DynamicImageRenderer dynamicImageRenderer = (DynamicImageRenderer) renderer;
-                        DynamicImage dynamicImage = (DynamicImage) newGraphic;
-                        dynamicImageRenderer.addGraphic(dynamicImage);
+            if(renderer.getType() == renderInfo.renderType()){
+                switch (renderInfo.renderType()){
+                    case STATIC_IMAGE, DYNAMIC_IMAGE -> {
+                        Image2DRenderer staticImageRenderer = (Image2DRenderer) renderer;
+                        Image2D image = (Image2D) newGraphic;
+                        staticImageRenderer.addGraphic(image);
                     }
                     case COLOR_RECTANGLE -> {
                         ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
@@ -49,18 +44,14 @@ public class GraphicsManager {
         }
     }
 
-    private void createNewRenderer(int layer, GraphicType graphicType){
+    private void createNewRenderer(int layer, RenderType renderType){
         if(!layers.containsKey(layer)){
             layers.put(layer, new ArrayList<>());
         }
         ArrayList<Renderer<?,?>> rendererList = layers.get(layer);
-        switch (graphicType) {
-            case STATIC_IMAGE-> {
-                StaticImageRenderer newRenderer = new StaticImageRenderer();
-                rendererList.add(newRenderer);
-            }
-            case DYNAMIC_IMAGE -> {
-                DynamicImageRenderer newRenderer = new DynamicImageRenderer();
+        switch (renderType) {
+            case STATIC_IMAGE, DYNAMIC_IMAGE -> {
+                Image2DRenderer newRenderer = new Image2DRenderer(renderType);
                 rendererList.add(newRenderer);
             }
             case COLOR_RECTANGLE -> {
@@ -73,19 +64,19 @@ public class GraphicsManager {
     public void constructRenderers(HashSet<RenderInfo> allRenderInfos) {
         for(var renderInfo: allRenderInfos){
             if(!layers.containsKey(renderInfo.layer())){
-                createNewRenderer(renderInfo.layer(), renderInfo.graphicType());
+                createNewRenderer(renderInfo.layer(), renderInfo.renderType());
             }
             else{
                 ArrayList<Renderer<?,?>> rendererList = layers.get(renderInfo.layer());
                 boolean rendererFound = false;
                 for(var renderer: rendererList){
-                    if (renderer.getType() == renderInfo.graphicType()) {
+                    if (renderer.getType() == renderInfo.renderType()) {
                         rendererFound = true;
                         break;
                     }
                 }
                 if(!rendererFound){
-                    createNewRenderer(renderInfo.layer(), renderInfo.graphicType());
+                    createNewRenderer(renderInfo.layer(), renderInfo.renderType());
                 }
             }
         }

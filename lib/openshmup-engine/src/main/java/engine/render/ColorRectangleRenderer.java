@@ -5,7 +5,7 @@ import engine.assets.Shader;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.graphics.ColorRectangle;
-import engine.graphics.GraphicType;
+import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL33.*;
 public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
     final static private int vertexFloatCount = 8;
     public ColorRectangleRenderer(){
-        super(GraphicType.COLOR_RECTANGLE, GL_DYNAMIC_DRAW, vertexFloatCount * Float.BYTES);
+        super(RenderType.COLOR_RECTANGLE, GL_DYNAMIC_DRAW, vertexFloatCount * Float.BYTES);
         this.batchSize = 100;
     }
     @Override

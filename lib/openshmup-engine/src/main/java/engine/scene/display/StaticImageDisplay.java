@@ -1,7 +1,7 @@
 package engine.scene.display;
 
 import engine.graphics.Graphic;
-import engine.graphics.StaticImage;
+import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.Scene;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class StaticImageDisplay implements SceneDisplay{
-    StaticImage image;
+    Image2D image;
 
-    public StaticImageDisplay(StaticImage image){
+    public StaticImageDisplay(Image2D image){
         this.image = image;
     }
     @Override

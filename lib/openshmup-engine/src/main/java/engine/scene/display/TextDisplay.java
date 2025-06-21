@@ -28,10 +28,10 @@ public class TextDisplay implements SceneDisplay{
 
     public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
         if(dynamicText){
-            this.renderInfo = new RenderInfo(layer, GraphicType.DYNAMIC_IMAGE);
+            this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
         else{
-            this.renderInfo = new RenderInfo(layer, GraphicType.STATIC_IMAGE);
+            this.renderInfo = new RenderInfo(layer, RenderType.STATIC_IMAGE);
         }
         this.position = new Vec2D(positionX, positionY);
         this.textHeightPixels = textHeightPixels;
@@ -77,11 +77,11 @@ public class TextDisplay implements SceneDisplay{
             characterInfoList.add(newCharInfo);
             if (newCodepoint != " ".codePointAt(0) && newCodepoint != "\n".codePointAt(0) ){
                 Image2D newCharacterImage;
-                if(renderInfo.graphicType() == GraphicType.STATIC_IMAGE){
-                    newCharacterImage = new StaticImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
+                if(renderInfo.renderType() == RenderType.STATIC_IMAGE){
+                    newCharacterImage = new Image2D(font.getBitmap(), renderInfo.layer(), false,newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
                 }
                 else{
-                    newCharacterImage  = new DynamicImage(font.getBitmap(), renderInfo.layer(), newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
+                    newCharacterImage  = new Image2D(font.getBitmap(), renderInfo.layer(), true,newCharInfo.normalizedQuadSize().x * textHeight, newCharInfo.normalizedQuadSize().y * textHeight);
                 }
                 Vec2D textureSize = newCharInfo.bitmapTextureSize();
                 newCharacterImage.setTextureSize(textureSize.x, textureSize.y);
@@ -116,7 +116,7 @@ public class TextDisplay implements SceneDisplay{
 
     @Override
     public SceneDisplay copy() {
-        return new TextDisplay(renderInfo.layer(), renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
+        return new TextDisplay(renderInfo.layer(), renderInfo.renderType() == RenderType.DYNAMIC_IMAGE, position.x, position.y, textHeightPixels, displayedString, font);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class TextDisplay implements SceneDisplay{
 
     @Override
     public void update(float currentTimeSeconds) {
-        if(renderInfo.graphicType() == GraphicType.DYNAMIC_IMAGE){
+        if(renderInfo.renderType() == RenderType.DYNAMIC_IMAGE){
             updateText();
         }
     }
@@ -156,5 +156,15 @@ public class TextDisplay implements SceneDisplay{
     @Override
     public boolean shouldBeRemoved() {
         return false;
+    }
+
+    public class TextCharacter{
+        private int codepoint;
+        private FontCharInfo fontCharInfo;
+        private Image2D image;
+        public TextCharacter(int codepoint, Font font){
+            this.codepoint = codepoint;
+            this.fontCharInfo = font.getCharInfo(codepoint).orElseThrow();
+        }
     }
 }

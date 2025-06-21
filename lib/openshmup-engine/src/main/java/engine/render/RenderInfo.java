@@ -1,6 +1,6 @@
 package engine.render;
 
-import engine.graphics.GraphicType;
+import engine.graphics.RenderType;
 
-public record RenderInfo(int layer, GraphicType graphicType) {
+public record RenderInfo(int layer, RenderType renderType) {
 }

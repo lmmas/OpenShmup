@@ -1,7 +1,6 @@
 package engine.entity;
 
 import engine.assets.Texture;
-import engine.types.Vec2D;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.NonPlayerShot;
 import engine.entity.extraComponent.PlayerShot;
@@ -13,11 +12,12 @@ import engine.entity.sprite.EntitySprite;
 import engine.entity.sprite.SimpleSprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
-import engine.graphics.DynamicImage;
+import engine.graphics.Image2D;
 import engine.scene.LevelScene;
 import engine.scene.display.Animation;
 import engine.scene.display.AnimationInfo;
 import engine.scene.spawnable.Spawnable;
+import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -220,7 +220,7 @@ abstract public class Entity {
                 if(orientable){
 
                 }else{
-                    this.sprite = new SimpleSprite(new DynamicImage(texture, layer, size.x, size.y));
+                    this.sprite = new SimpleSprite(new Image2D(texture, layer, true, size.x, size.y));
                 }
             }
             return this;

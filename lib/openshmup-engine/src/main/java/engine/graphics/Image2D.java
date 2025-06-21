@@ -1,25 +1,23 @@
 package engine.graphics;
 
-import engine.GlobalVars;
-import engine.render.RenderInfo;
 import engine.types.Vec2D;
 import engine.assets.Shader;
 import engine.assets.Texture;
 
-abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
+public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     static private Shader defaultShader;
     static public void setDefaultShader(Shader defaultShader){
         Image2D.defaultShader = defaultShader;
     }
     protected Texture texture;
     protected ImagePrimitive primitive;
-    public Image2D(Texture texture, int layer, GraphicType type, float sizeX, float sizeY, Shader shader){
-        super(layer, type, shader);
+    public Image2D(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY, Shader shader){
+        super(layer, dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
         this.texture = texture;
         this.primitive = new ImagePrimitive(sizeX, sizeY);
     }
-    public Image2D(Texture texture, int layer, GraphicType type, float sizeX, float sizeY){
-        this(texture, layer, type, sizeX, sizeY, defaultShader);
+    public Image2D(Texture texture, int layer,  boolean dynamic, float sizeX, float sizeY){
+        this(texture, layer, dynamic, sizeX, sizeY, defaultShader);
     }
 
     public Image2D(Image2D image){
@@ -65,6 +63,12 @@ abstract public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public Texture getTexture() {
         return texture;
     }
+
+    @Override
+    public Image2D copy() {
+        return new Image2D(this);
+    }
+
     public int getPrimitiveCount(){
         return 1;
     }

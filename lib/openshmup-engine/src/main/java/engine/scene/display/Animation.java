@@ -1,7 +1,7 @@
 package engine.scene.display;
 
-import engine.graphics.DynamicImage;
 import engine.graphics.Graphic;
+import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.Scene;
@@ -9,7 +9,7 @@ import engine.scene.Scene;
 import java.util.*;
 
 public class Animation implements SceneDisplay {
-    final private DynamicImage image;
+    final private Image2D image;
     final private AnimationInfo info;
     final private boolean looping;
     private final float framePeriodSeconds;
@@ -21,13 +21,13 @@ public class Animation implements SceneDisplay {
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new DynamicImage(animationTexture, layer, sizeX, sizeY);
+        this.image = new Image2D(animationTexture, layer, true, sizeX, sizeY);
         this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;
     }
 
-    public Animation(DynamicImage image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
+    public Animation(Image2D image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
         //this constructor is only used for deep copying
         this.image = image;
         this.info = info;
@@ -62,7 +62,7 @@ public class Animation implements SceneDisplay {
     }
 
 
-    public DynamicImage getImage() {
+    public Image2D getImage() {
         return image;
     }
 

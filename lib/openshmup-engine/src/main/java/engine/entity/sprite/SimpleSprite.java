@@ -1,15 +1,15 @@
 package engine.entity.sprite;
 
 import engine.graphics.Graphic;
+import engine.graphics.Image2D;
 import engine.render.RenderInfo;
-import engine.graphics.DynamicImage;
 import engine.assets.Texture;
 
 import java.util.Optional;
 
 public class SimpleSprite implements EntitySprite{
-    final private DynamicImage image;
-    public SimpleSprite(DynamicImage image){
+    final private Image2D image;
+    public SimpleSprite(Image2D image){
         this.image = image;
     }
     @Override
