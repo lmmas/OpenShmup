@@ -22,6 +22,7 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
     }
     public Image2DRenderer(RenderType type){
         super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, 68);
+        assert type == RenderType.STATIC_IMAGE || type == RenderType.DYNAMIC_IMAGE: "incorrect render type for Image2D renderer";
         this.batchSize = 100;
     }
 

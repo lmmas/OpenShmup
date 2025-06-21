@@ -82,6 +82,7 @@ public class Texture {
     }
 
     public void flipImageBuffer(){
+        assert imageBuffer!= null: "trying to flip umage buffer while it is null";
         ByteBuffer flippedBuffer = BufferUtils.createByteBuffer(imageBuffer.capacity());
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

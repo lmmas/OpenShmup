@@ -52,10 +52,8 @@ public class Shader {
         assert success != GL_FALSE: glGetShaderInfoLog(vertexID);
         String log = glGetShaderInfoLog(vertexID);
         if (!log.isEmpty()) {
-            System.out.println("Vertex Shader Compilation Log:\n" + log);
+            System.err.println("Vertex Shader Compilation Log:\n" + log);
         }
-
-
 
         int geometryID = -1;
         if(geometrySource != null){
@@ -66,7 +64,7 @@ public class Shader {
             assert success != GL_FALSE: glGetShaderInfoLog(geometryID);
             log = glGetShaderInfoLog(geometryID);
             if (!log.isEmpty()) {
-                System.out.println("Geometry Shader Compilation Log:\n" + log);
+                System.err.println("Geometry Shader Compilation Log:\n" + log);
             }
         }
 
@@ -77,7 +75,7 @@ public class Shader {
         assert success != GL_FALSE: glGetShaderInfoLog(fragmentID);
         log = glGetShaderInfoLog(fragmentID);
         if (!log.isEmpty()) {
-            System.out.println("Fragment Shader Compilation Log:\n" + log);
+            System.err.println("Fragment Shader Compilation Log:\n" + log);
         }
 
         shaderProgramID = glCreateProgram();
@@ -92,7 +90,7 @@ public class Shader {
         assert success != GL_FALSE: glGetProgramInfoLog(shaderProgramID);
         log = glGetProgramInfoLog(shaderProgramID);
         if (!log.isEmpty()) {
-            System.out.println("Shader Linking Log:\n" + log);
+            System.err.println("Shader Linking Log:\n" + log);
         }
 
         glDeleteShader(vertexID);

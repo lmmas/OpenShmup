@@ -2,6 +2,7 @@ package engine.scene.display;
 
 import engine.graphics.Graphic;
 import engine.graphics.Image2D;
+import engine.graphics.RenderType;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.Scene;
@@ -14,6 +15,7 @@ public class StaticImageDisplay implements SceneDisplay{
 
     public StaticImageDisplay(Image2D image){
         this.image = image;
+        assert this.image.getRenderInfo().renderType() == RenderType.STATIC_IMAGE: "wrong RenderType for static display";
     }
     @Override
     public SceneDisplay copy() {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class NonShipEntity extends Entity {
 
     public NonShipEntity(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
-        super(startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, entityId, sprite, trajectory, hitbox, deathSpawn, extraComponents);
+        super(EntityType.PROJECTILE, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, entityId, sprite, trajectory, hitbox, deathSpawn, extraComponents);
     }
 
     @Override
@@ -21,10 +21,5 @@ public class NonShipEntity extends Entity {
             newExtracomponents.add(component.copyIfNotReusable());
         }
         return new NonShipEntity(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x , size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), deathSpawn.copy(), newExtracomponents);
-    }
-
-    @Override
-    public EntityType getType() {
-        return EntityType.PROJECTILE;
     }
 }

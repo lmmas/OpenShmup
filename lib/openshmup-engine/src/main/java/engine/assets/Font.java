@@ -72,7 +72,6 @@ public class Font {
         for(int i = 0; i < charBuffer.capacity(); i++){
             STBTTBakedChar charData = charBuffer.get(i);
             int codepoint = startCodepoint + i;
-            System.out.println(Character.toChars(codepoint));
             short x0 = charData.x0();
             int y0 = bitmapHeight - charData.y1();
             short x1 = charData.x1();
@@ -80,6 +79,7 @@ public class Font {
             float xoff = charData.xoff();
             float yoff = charData.yoff();
             float xadvance = charData.xadvance();
+            assert x1 -x0 != 0 || y1 - y0 != 0 || xadvance != 0 : "error loading font info for character of codepoint " + codepoint + " in font " + filepath;
 
             Vec2D normalizedQuadSize = new Vec2D((float)(x1 - x0) / capHeightPixels, (float)(y1 - y0) / capHeightPixels);
             Vec2D normalizedQuadPositionOffset = new Vec2D(xoff / capHeightPixels + normalizedQuadSize.x / 2, -yoff / capHeightPixels - normalizedQuadSize.y / 2);

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 abstract public class Entity {
-    protected LevelScene scene;
     protected int entityId;
+    protected EntityType type;
     protected boolean evil;
     final protected Vec2D position;
     final protected Vec2D trajectoryReferencePosition;
@@ -38,8 +38,10 @@ abstract public class Entity {
     protected Trajectory trajectory;
     protected Spawnable deathSpawn;
     protected ArrayList<ExtraComponent> extraComponents;
+    protected LevelScene scene;
 
-    public Entity(float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+        this.type = type;
         this.scene = null;
         this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
@@ -63,12 +65,15 @@ abstract public class Entity {
     abstract public Entity copy();
 
     public void setScene(LevelScene scene) {
+        assert scene != null;
         this.scene = scene;
         this.lifetimeSeconds = 0.0f;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
-    abstract public EntityType getType();
+    public EntityType getType(){
+        return this.type;
+    }
 
     public EntitySprite getSprite() {
         return sprite;
@@ -216,23 +221,19 @@ abstract public class Entity {
         }
 
         public Builder createSprite(int layer, Texture texture, boolean orientable){
-            if(size != null){
-                if(orientable){
+            if (orientable) {
 
-                }else{
-                    this.sprite = new SimpleSprite(new Image2D(texture, layer, true, size.x, size.y));
-                }
+            } else {
+                this.sprite = new SimpleSprite(new Image2D(texture, layer, true, size.x, size.y));
             }
             return this;
         }
 
         public Builder createSprite(int layer, Texture spriteTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable){
-            if(size != null){
-                if(orientable){
+            if (orientable) {
 
-                }else{
-                    this.sprite = new AnimatedSprite(new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y));
-                }
+            } else {
+                this.sprite = new AnimatedSprite(new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y));
             }
             return this;
         }

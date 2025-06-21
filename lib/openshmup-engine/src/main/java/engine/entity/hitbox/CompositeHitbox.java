@@ -26,10 +26,6 @@ public final class CompositeHitbox implements Hitbox{
         ByteBuffer image = texture.getImageBuffer();
         byte[] bytes = new byte[image.capacity()];
         image.get(bytes);
-        int[] colorValues = new int[bytes.length];
-        for(int i = 0; i < bytes.length; i++){
-            colorValues[i] = bytes[i] & 0xFF;
-        }
         boolean[][] rectanglePositions = new boolean[imageHeight][imageWidth];
         int detectionMargin = 3;
         for(int i = 0; i < imageHeight; i++){
@@ -113,6 +109,7 @@ public final class CompositeHitbox implements Hitbox{
                 boolean rectangleFound = false;
                 int j = 0;
                 while(j < tempPositionsList1.get(i).size() && !rectangleFound){
+                    assert referenceSize != null;
                     if(tempSizesList1.get(i).get(j).x == referenceSize.x && tempPositionsList1.get(i).get(j).x == referencePosition.x){
                         rectanglesToMerge.add(new IVec2D(j, i));
                         rectangleFound = true;
@@ -124,6 +121,7 @@ public final class CompositeHitbox implements Hitbox{
                 }
             }
             IVec2D lastMergedRectangleIndexes = rectanglesToMerge.getLast();
+            assert referencePosition != null;
             Vec2D mergedRectanglePosition = new Vec2D(referencePosition.x, (referencePosition.y + tempPositionsList1.get(lastMergedRectangleIndexes.y).get(lastMergedRectangleIndexes.x).y) / 2);
             Vec2D mergedRectangleSize = new Vec2D(referenceSize.x, 1.0f/ pixelHeight * rectanglesToMerge.size());
             this.rectangleRelativePositions.add(mergedRectanglePosition);
