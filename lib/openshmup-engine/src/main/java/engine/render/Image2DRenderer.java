@@ -103,7 +103,7 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
                 Vec2D imageSize = image.getImageSize();
                 Vec2D texturePosition = image.getTexturePosition();
                 Vec2D textureSize = image.getTextureSize();
-                RGBAValue colorCoefs = image.getColorCoefs();
+                RGBAValue colorCoefs = image.getTextureColorCoefs();
                 RGBAValue addedColor = image.getAddedColor();
                 dataBuffer.putFloat(imagePosition.x);
                 dataBuffer.putFloat(imagePosition.y);

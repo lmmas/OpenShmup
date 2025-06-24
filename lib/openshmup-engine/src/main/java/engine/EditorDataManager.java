@@ -67,8 +67,8 @@ public class EditorDataManager {
         return customDisplays.get(id).getTexture();
     }
 
-    public void addCustomEntity(int id, Entity constructor){
-        customEntities.put(id, constructor);
+    public void addCustomEntity(int id, Entity entity){
+        customEntities.put(id, entity);
     }
 
     public Entity buildCustomEntity(int id){

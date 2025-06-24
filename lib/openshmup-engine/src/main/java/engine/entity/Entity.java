@@ -80,11 +80,11 @@ abstract public class Entity {
     }
 
     public Vec2D getTrajectoryReferencePosition() {
-        return trajectoryReferencePosition.copy();
+        return new Vec2D(trajectoryReferencePosition);
     }
 
     public Vec2D getPosition(){
-        return position.copy();
+        return new Vec2D(position);
     }
 
     public float getOrientationRadians() {

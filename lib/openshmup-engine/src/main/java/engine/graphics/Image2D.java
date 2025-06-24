@@ -1,5 +1,6 @@
 package engine.graphics;
 
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.assets.Shader;
 import engine.assets.Texture;
@@ -80,6 +81,14 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public void delete() {
         primitive.delete();
     }
+
+    public void setColorCoefs(float r, float g, float b, float a){
+        primitive.textureColorCoefs.r = r;
+        primitive.textureColorCoefs.g = g;
+        primitive.textureColorCoefs.b = b;
+        primitive.textureColorCoefs.a = a;
+    }
+
     public class ImagePrimitive extends Graphic<Image2D, ImagePrimitive>.Primitive{
 
         private Vec2D imagePosition;
@@ -89,44 +98,53 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         private Vec2D texturePosition;
 
         private Vec2D textureSize;
+
+        private RGBAValue textureColorCoefs;
+        private RGBAValue addedColor;
         public ImagePrimitive(float sizeX, float sizeY){
             this.imagePosition = new Vec2D(0.0f, 0.0f);
             this.imageSize = new Vec2D(sizeX, sizeY);
             this.texturePosition = new Vec2D(0.0f, 0.0f);
             this.textureSize = new Vec2D(1.0f, 1.0f);
-        }
-        public ImagePrimitive(float imagePositionX, float imagePositionY, float imageSizeX, float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY){
-            this.imagePosition = new Vec2D(imagePositionX, imagePositionY);
-            this.imageSize = new Vec2D(imageSizeX, imageSizeY);
-            this.texturePosition = new Vec2D(texturePositionX, texturePositionY);
-            this.textureSize = new Vec2D(textureSizeX, textureSizeY);
+            this.textureColorCoefs = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+            this.addedColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
         }
 
         public ImagePrimitive(ImagePrimitive imagePrimitive){
-            this.imagePosition = new Vec2D(imagePrimitive.imagePosition.x, imagePrimitive.imagePosition.y);
-            this.imageSize = new Vec2D(imagePrimitive.imageSize.x, imagePrimitive.imageSize.y);
-            this.texturePosition = new Vec2D(imagePrimitive.texturePosition.x, imagePrimitive.texturePosition.y);
-            this.textureSize = new Vec2D(imagePrimitive.textureSize.x, imagePrimitive.textureSize.y);
+            this.imagePosition = new Vec2D(imagePrimitive.imagePosition);
+            this.imageSize = new Vec2D(imagePrimitive.imageSize);
+            this.texturePosition = new Vec2D(imagePrimitive.texturePosition);
+            this.textureSize = new Vec2D(imagePrimitive.textureSize);
+            this.textureColorCoefs = new RGBAValue(imagePrimitive.textureColorCoefs);
+            this.addedColor = new RGBAValue(imagePrimitive.addedColor);
         }
 
         public Vec2D getImagePosition() {
-            return imagePosition.copy();
+            return new Vec2D(imagePosition);
         }
 
         public Vec2D getImageSize() {
-            return imageSize.copy();
+            return new Vec2D(imageSize);
         }
 
         public Vec2D getTexturePosition() {
-            return texturePosition.copy();
+            return new Vec2D(texturePosition);
         }
 
         public Vec2D getTextureSize() {
-            return textureSize.copy();
+            return new Vec2D(textureSize);
         }
 
         public Texture getTexture(){
             return Image2D.this.texture;
+        }
+
+        public RGBAValue getTextureColorCoefs(){
+            return new RGBAValue(textureColorCoefs);
+        }
+
+        public RGBAValue getAddedColor() {
+            return addedColor;
         }
     }
 }

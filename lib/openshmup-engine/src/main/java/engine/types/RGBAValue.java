@@ -12,7 +12,10 @@ public class RGBAValue {
         this.a = a;
     }
 
-    public RGBAValue copy(){
-        return new RGBAValue(r, g, b, a);
+    public RGBAValue(RGBAValue rgba){
+        this.r = rgba.r;
+        this.g = rgba.g;
+        this.b = rgba.b;
+        this.a = rgba.a;
     }
 }

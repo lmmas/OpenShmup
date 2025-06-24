@@ -48,15 +48,15 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
         RGBAValue color;
 
         public Vec2D getPosition() {
-            return position.copy();
+            return new Vec2D(position);
         }
 
         public Vec2D getSize() {
-            return size.copy();
+            return new Vec2D(size);
         }
 
         public RGBAValue getColor() {
-            return color.copy();
+            return new RGBAValue(color);
         }
 
         public ColorRectanglePrimitive(float sizeX, float sizeY, float r, float g, float b, float a){

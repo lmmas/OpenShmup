@@ -27,14 +27,13 @@ public class Animation implements SceneDisplay {
         this.timeOfLastFrame = 0.0f;
     }
 
-    public Animation(Image2D image, AnimationInfo info, boolean looping, float framePeriodSeconds) {
-        //this constructor is only used for deep copying
-        this.image = image;
-        this.info = info;
-        this.looping = looping;
-        this.framePeriodSeconds = framePeriodSeconds;
-        this.frameIndex = 0;
-        this.timeOfLastFrame = 0.0f;
+    public Animation(Animation animation){
+        this.image = animation.image.copy();
+        this.info = animation.info;
+        this.looping = animation.looping;
+        this.framePeriodSeconds = animation.framePeriodSeconds;
+        this.frameIndex = animation.frameIndex;
+        this.timeOfLastFrame = animation.timeOfLastFrame;
     }
     private void updateTexturePosition(){
         float texturePositionX = frameIndex * info.strideX() + info.startPosX();
@@ -44,7 +43,7 @@ public class Animation implements SceneDisplay {
 
     @Override
     public Animation copy() {
-        return new Animation(image.copy(), info, looping, framePeriodSeconds);
+        return new Animation(this);
     }
 
     @Override
