@@ -1,0 +1,105 @@
+@startuml
+class engine.EditorDataManager {
+- Engine engine
+- HashMap<Integer,SceneDisplay> customDisplays
+- HashMap<Integer,Trajectory> customTrajectories
+- HashMap<Integer,Entity> customEntities
+- ArrayList<LevelTimeline> customTimelines
+~ void loadGameParameters()
+~ void loadGameContents()
++ void addCustomDisplays(int,SceneDisplay)
++ Optional<RenderInfo> getRenderInfoOfDisplay(int)
++ SceneDisplay buildCustomDisplay(int)
++ Optional<Texture> getTextureOfDisplay(int)
++ void addCustomEntity(int,Entity)
++ Entity buildCustomEntity(int)
++ ArrayList<Spawnable> getSpawnablesOfEntity(int)
++ ArrayList<RenderInfo> getRenderInfoOfEntity(int)
++ Optional<Texture> getTextureOfEntity(int)
++ void addTrajectory(int,Trajectory)
++ Trajectory getTrajectory(int)
++ void addTimeline(LevelTimeline)
++ LevelTimeline getTimeline(int)
+}
+
+
+class engine.InputStatesManager {
+- long window
+- HashMap<Integer,GameControl> controlsMap
+- ArrayList<Boolean> controlStatesList
++ void updateControlStates()
++ List<Boolean> getControlStates()
+}
+
+
+class engine.AssetManager {
+- HashMap<String,Shader> shaderMap
+- HashMap<String,Texture> imageFileMap
++ Texture getTexture(String)
++ Shader getShader(String)
+}
+
+
+class engine.Engine {
+- long glfwWindow
+- EditorDataManager editorDataManager
+- AssetManager assetManager
+- GraphicsManager graphicsManager
+- InputStatesManager inputStatesManager
+- Scene currentScene
+- Consumer<Engine> testInit
+- Consumer<Engine> testInLoop
++ {static} void main(String[])
++ void run()
++ void gameInit()
++ void loop()
++ long getWindow()
++ EditorDataManager getEditorDataManager()
++ AssetManager getAssetManager()
++ GraphicsManager getGraphicsManager()
++ InputStatesManager getInputStatesManager()
++ Scene getCurrentScene()
++ void setTestInit(Consumer<Engine>)
++ void setTestInLoop(Consumer<Engine>)
+}
+
+
+abstract class engine.scene.Scene {
+# EditorDataManager editorDataManager
+# GraphicsManager graphicsManager
+# AssetManager assetManager
+# float sceneTime
+# SceneTimer timer
+# float lastDrawTime
+~ HashSet<SceneDisplay> displayList
+~ HashSet<SceneDisplay> displaysToRemove
+# boolean debugMode
++ {abstract}void handleInputs()
++ void update()
++ void addDisplay(SceneDisplay)
++ void deleteDisplay(SceneDisplay)
++ float getSceneTimeSeconds()
++ void setSpeed(float)
+}
+
+
+class engine.GraphicsManager {
+- TreeMap<Integer,ArrayList<Renderer<?,?>>> layers
++ void drawGraphics()
++ void addGraphic(Graphic<?,?>)
+- void createNewRenderer(int,RenderType)
++ void constructRenderers(HashSet<RenderInfo>)
++ void clearLayers()
+}
+
+engine.Engine *-- engine.AssetManager
+engine.Engine *-- engine.EditorDataManager
+engine.Engine *-- engine.GraphicsManager
+engine.Engine *-- engine.InputStatesManager
+engine.Engine *-- engine.scene.Scene
+engine.scene.Scene --> engine.AssetManager
+engine.scene.Scene --> engine.EditorDataManager
+engine.scene.Scene --> engine.GraphicsManager
+engine.scene.Scene --> engine.InputStatesManager
+
+@enduml

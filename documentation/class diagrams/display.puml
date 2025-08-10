@@ -1,0 +1,92 @@
+@startuml
+class engine.scene.display.ScrollingImageDisplay {
+- Image2D image1
+- Vec2D position1
+- Image2D image2
+- Vec2D position2
+- float sizeX
+- float sizeY
+~ boolean horizontalScrolling
+- float speed
+- float lastUpdateTimeSeconds
++ SceneDisplay copy()
++ Optional<RenderInfo> getRenderInfo()
++ List<Graphic<?,?>> getGraphics()
++ Optional<Texture> getTexture()
++ void setScene(Scene)
++ void setPosition(float,float)
++ void update(float)
++ boolean shouldBeRemoved()
+}
+
+
+interface engine.scene.display.SceneDisplay {
+~ SceneDisplay copy()
+~ Optional<RenderInfo> getRenderInfo()
+~ List<Graphic<?,?>> getGraphics()
+~ Optional<Texture> getTexture()
+~ void setScene(Scene)
+~ void setPosition(float,float)
+~ void update(float)
+~ boolean shouldBeRemoved()
+}
+
+class engine.scene.display.TextDisplay {
++ int lineBreakCodepoint
+- RenderInfo renderInfo
+- Vec2D position
+- float textHeightPixels
+- String displayedString
+- Font font
+- boolean dynamicText
+- RGBAValue textColor
+- ArrayList<ArrayList<TextCharacter>> textLines
+- ArrayList<Float> normalizedLineWidthsList
+- void updateText()
+- void calculateLineWidths()
+- void addCharacter(int)
+- void updateTextPosition()
++ SceneDisplay copy()
++ Optional<RenderInfo> getRenderInfo()
++ List<Graphic<?,?>> getGraphics()
++ Optional<Texture> getTexture()
++ void setScene(Scene)
++ void setDisplayedString(String)
++ void setPosition(float,float)
++ void setTextColor(float,float,float,float)
++ void update(float)
++ boolean shouldBeRemoved()
+}
+
+
+class engine.scene.display.TextDisplay$TextCharacter {
+- int codepoint
+- FontCharInfo fontCharInfo
+- Image2D image
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setColor(float,float,float,float)
++ Image2D getImage()
+}
+
+
+class engine.scene.display.StaticImageDisplay {
+~ Image2D image
++ SceneDisplay copy()
++ Optional<RenderInfo> getRenderInfo()
++ List<Graphic<?,?>> getGraphics()
++ Optional<Texture> getTexture()
++ void setScene(Scene)
++ void setPosition(float,float)
++ void update(float)
++ boolean shouldBeRemoved()
+}
+
+
+
+
+engine.scene.display.SceneDisplay <|.. engine.scene.display.ScrollingImageDisplay
+engine.scene.display.SceneDisplay <|.. engine.scene.display.TextDisplay
+engine.scene.display.TextDisplay +.. engine.scene.display.TextDisplay$TextCharacter
+engine.scene.display.SceneDisplay <|.. engine.scene.display.StaticImageDisplay
+@enduml

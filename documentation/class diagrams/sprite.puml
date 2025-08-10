@@ -1,0 +1,59 @@
+@startuml
+interface engine.entity.sprite.EntitySprite {
+~ void setPosition(float,float)
+~ void setSize(float,float)
+~ void setOrientation(float)
+~ Optional<RenderInfo> getRenderInfo()
+~ Optional<Graphic<?,?>> getGraphic()
+~ Optional<Texture> getTexture()
+~ void update(float)
+~ EntitySprite copy()
+~ {static} EntitySprite DEFAULT()
+}
+
+class engine.entity.sprite.AnimatedSprite {
+- Animation animation
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
++ Optional<RenderInfo> getRenderInfo()
++ Optional<Graphic<?,?>> getGraphic()
++ Optional<Texture> getTexture()
++ void update(float)
++ EntitySprite copy()
+}
+
+
+class engine.entity.sprite.SimpleSprite {
+- Image2D image
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
++ Optional<RenderInfo> getRenderInfo()
++ Optional<Graphic<?,?>> getGraphic()
++ Optional<Texture> getTexture()
++ void update(float)
++ EntitySprite copy()
+}
+
+
+class engine.entity.sprite.EmptySprite {
+- {static} EmptySprite instance
++ {static} EmptySprite getInstance()
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
++ Optional<RenderInfo> getRenderInfo()
++ Optional<Graphic<?,?>> getGraphic()
++ Optional<Texture> getTexture()
++ void update(float)
++ EntitySprite copy()
+}
+
+
+
+
+engine.entity.sprite.EntitySprite <|.. engine.entity.sprite.AnimatedSprite
+engine.entity.sprite.EntitySprite <|.. engine.entity.sprite.SimpleSprite
+engine.entity.sprite.EntitySprite <|.. engine.entity.sprite.EmptySprite
+@enduml

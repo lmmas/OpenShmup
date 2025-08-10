@@ -1,0 +1,56 @@
+@startuml
+interface engine.entity.extraComponent.ExtraComponent {
+~ ExtraComponent copyIfNotReusable()
+~ Spawnable getSpawnable()
+~ List<RenderInfo> getRenderInfos()
+~ List<Graphic<?,?>> getGraphics()
+~ List<Texture> getTextures()
+~ void update(Entity,LevelScene)
+}
+
+class engine.entity.extraComponent.NonPlayerShot {
+- Spawnable spawnable
+- float shotPeriodSeconds
+- float nextShotTimeSeconds
++ ExtraComponent copyIfNotReusable()
++ Spawnable getSpawnable()
++ List<RenderInfo> getRenderInfos()
++ List<Graphic<?,?>> getGraphics()
++ List<Texture> getTextures()
++ void update(Entity,LevelScene)
+}
+
+
+class engine.entity.extraComponent.HitboxDebugDisplay {
+- {static} Shader hitboxShader
+- SimpleRectangleHitbox simpleRectangleHitbox
+- ColorRectangle debugDisplay
++ {static} void setHitboxShader(Shader)
++ ExtraComponent copyIfNotReusable()
++ Spawnable getSpawnable()
++ List<RenderInfo> getRenderInfos()
++ List<Graphic<?,?>> getGraphics()
++ List<Texture> getTextures()
++ void update(Entity,LevelScene)
+}
+
+
+class engine.entity.extraComponent.PlayerShot {
+- Spawnable spawnable
+- float shotPeriodSeconds
+- float nextShotTimeSeconds
++ ExtraComponent copyIfNotReusable()
++ Spawnable getSpawnable()
++ List<RenderInfo> getRenderInfos()
++ List<Graphic<?,?>> getGraphics()
++ List<Texture> getTextures()
++ void update(Entity,LevelScene)
+}
+
+
+
+
+engine.entity.extraComponent.ExtraComponent <|.. engine.entity.extraComponent.NonPlayerShot
+engine.entity.extraComponent.ExtraComponent <|.. engine.entity.extraComponent.HitboxDebugDisplay
+engine.entity.extraComponent.ExtraComponent <|.. engine.entity.extraComponent.PlayerShot
+@enduml

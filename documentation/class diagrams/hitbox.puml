@@ -1,0 +1,57 @@
+@startuml
+class engine.entity.hitbox.CompositeHitbox {
+- Vec2D position
+- Vec2D size
+- ArrayList<Hitbox> rectangleList
+- ArrayList<Vec2D> rectangleRelativePositions
+- ArrayList<Vec2D> rectangleRelativeSizes
+- void generateSimplifiedRectangles(boolean[][])
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
++ Hitbox copy()
++ ArrayList<Hitbox> getRectangleList()
+}
+
+
+interface engine.entity.hitbox.Hitbox {
+~ void setPosition(float,float)
+~ void setSize(float,float)
+~ void setOrientation(float)
+~ Hitbox copy()
+~ {static} Hitbox DEFAULT()
+~ {static} boolean intersection(Hitbox,Hitbox)
+}
+
+class engine.entity.hitbox.SimpleRectangleHitbox {
++ Vec2D position
++ Vec2D size
++ float leftBound
++ float rightBound
++ float upBound
++ float downBound
++ SimpleRectangleHitbox copy()
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
+- void updateBounds()
++ boolean intersects(SimpleRectangleHitbox)
+}
+
+
+class engine.entity.hitbox.EmptyHitbox {
+- {static} EmptyHitbox instance
++ {static} EmptyHitbox getInstance()
++ void setPosition(float,float)
++ void setSize(float,float)
++ void setOrientation(float)
++ Hitbox copy()
+}
+
+
+
+
+engine.entity.hitbox.Hitbox <|.. engine.entity.hitbox.CompositeHitbox
+engine.entity.hitbox.Hitbox <|.. engine.entity.hitbox.SimpleRectangleHitbox
+engine.entity.hitbox.Hitbox <|.. engine.entity.hitbox.EmptyHitbox
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+
+
+interface engine.entity.trajectory.Trajectory {
+~ void update(Entity,LevelScene)
+~ Trajectory copyIfNotReusable()
+~ {static} Trajectory DEFAULT()
+}
+
+class engine.entity.trajectory.PlayerControlledTrajectory {
+- LevelScene scene
+- float speed
+- float lastUpdateTimeSeconds
++ void update(Entity,LevelScene)
++ Trajectory copyIfNotReusable()
+}
+
+
+class engine.entity.trajectory.CompositeTrajectory {
+- float[] bounds
+- Trajectory[] trajectories
+- int trajectoryIndex
++ Trajectory copyIfNotReusable()
++ void update(Entity,LevelScene)
+}
+
+
+class engine.entity.trajectory.EmptyTrajectory {
+- {static} EmptyTrajectory instance
++ {static} EmptyTrajectory getInstance()
++ Trajectory copyIfNotReusable()
++ void update(Entity,LevelScene)
+}
+
+
+class engine.entity.trajectory.FixedTrajectory {
+- Function<Float,Float> trajectoryFunctionX
+- Function<Float,Float> trajectoryFunctionY
+- boolean relativeTrajectory
++ void update(Entity,LevelScene)
++ Trajectory copyIfNotReusable()
+}
+
+
+
+
+engine.entity.trajectory.Trajectory <|.. engine.entity.trajectory.PlayerControlledTrajectory
+engine.entity.trajectory.Trajectory <|.. engine.entity.trajectory.CompositeTrajectory
+engine.entity.trajectory.Trajectory <|.. engine.entity.trajectory.EmptyTrajectory
+engine.entity.trajectory.Trajectory <|.. engine.entity.trajectory.FixedTrajectory
+@enduml
