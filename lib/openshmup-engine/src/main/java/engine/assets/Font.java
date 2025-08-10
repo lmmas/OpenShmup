@@ -49,7 +49,7 @@ final public class Font {
         int[] x1H = new int[1];
         int[] y0H = new int[1];
         int[] y1H = new int[1];
-        stbtt_GetCodepointBox(fontinfo, 'H', x0H, y0H, x1H, y1H);
+        stbtt_GetCodepointBox(fontinfo, 'M', x0H, y0H, x1H, y1H);
         int capHeightNativeValue = y1H[0] - y0H[0];
         float normalizedAscent = (float) ascentBuf[0] / capHeightNativeValue;
         float normalizedDescent = (float) descentBuf[0] / capHeightNativeValue;
