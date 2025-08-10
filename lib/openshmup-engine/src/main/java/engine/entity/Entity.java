@@ -175,10 +175,10 @@ abstract public class Entity {
         private final Vec2D size = new Vec2D(0.0f, 0.0f);
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
         private float orientationRadians = 0.0f;
-        private EntitySprite sprite = EntitySprite.DEFAULT();
-        private Hitbox hitbox = Hitbox.DEFAULT();
-        private Trajectory trajectory = Trajectory.DEFAULT();
-        private Spawnable deathSpawn = Spawnable.DEFAULT();
+        private EntitySprite sprite = EntitySprite.DEFAULT_EMPTY();
+        private Hitbox hitbox = Hitbox.DEFAULT_EMPTY();
+        private Trajectory trajectory = Trajectory.DEFAULT_EMPTY();
+        private Spawnable deathSpawn = Spawnable.DEFAULT_EMPTY();
         private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
 
         public Builder setType(EntityType type){
@@ -295,7 +295,7 @@ abstract public class Entity {
         public Entity build(){
             assert (sprite != null): "Entity construction error: null fields";
             if(type != EntityType.SHIP){
-                return new NonShipEntity(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
+                return new Projectile(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
             }
             else{
                 return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hitPoints);

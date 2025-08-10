@@ -6,29 +6,20 @@ public enum EntityType {
     ITEM;
 
     public static EntityType fromString(String input){
-        if(input.equals("ship")){
-            return SHIP;
-        }
-        if(input.equals("projectile")){
-            return PROJECTILE;
-        }
-        if(input.equals("item")){
-            return ITEM;
-        }
-        throw new IllegalArgumentException("illegal string value: \"" + input + "\"");
+        return switch (input) {
+            case "ship" -> SHIP;
+            case "projectile" -> PROJECTILE;
+            case "item" -> ITEM;
+            default -> throw new IllegalArgumentException("illegal string value: \"" + input + "\"");
+        };
     }
 
     @Override
     public String toString() {
-        if(this.equals(SHIP)){
-            return "ship";
-        }
-        if(this.equals(PROJECTILE)){
-            return "projectile";
-        }
-        if(this.equals(ITEM)){
-            return "item";
-        }
-        return "null";
+        return switch (this) {
+            case SHIP -> "ship";
+            case PROJECTILE -> "projectile";
+            case ITEM -> "ITEM";
+        };
     }
 }

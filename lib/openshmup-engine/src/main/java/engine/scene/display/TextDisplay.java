@@ -148,7 +148,7 @@ final public class TextDisplay implements SceneDisplay{
         return false;
     }
 
-    public class TextCharacter{
+    final public class TextCharacter{
         private int codepoint;
         private FontCharInfo fontCharInfo;
         private Image2D image;

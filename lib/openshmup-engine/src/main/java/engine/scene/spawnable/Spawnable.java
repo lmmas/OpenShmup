@@ -6,7 +6,7 @@ public interface Spawnable {
     void spawn(LevelScene scene);
     Spawnable copy();
     Spawnable copyWithOffset(float offsetX, float offsetY);
-    static Spawnable DEFAULT(){
+    static Spawnable DEFAULT_EMPTY(){
         return EmptySpawnable.getInstance();
     }
 }

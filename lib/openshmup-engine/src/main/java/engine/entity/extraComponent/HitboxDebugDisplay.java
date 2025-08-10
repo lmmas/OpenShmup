@@ -34,7 +34,7 @@ final public class HitboxDebugDisplay implements ExtraComponent{
 
     @Override
     public Spawnable getSpawnable() {
-        return Spawnable.DEFAULT();
+        return Spawnable.DEFAULT_EMPTY();
     }
 
     @Override

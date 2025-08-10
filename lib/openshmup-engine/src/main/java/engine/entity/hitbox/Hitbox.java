@@ -7,7 +7,7 @@ public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRecta
     void setSize(float sizeX, float sizeY);
     void setOrientation(float orientationRadians);
     Hitbox copy();
-    static Hitbox DEFAULT(){
+    static Hitbox DEFAULT_EMPTY(){
         return EmptyHitbox.getInstance();
     }
 
@@ -21,37 +21,33 @@ public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRecta
         if(hitbox instanceof SimpleRectangleHitbox simpleRectangleHitbox){
             if(otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox){
                 return !(simpleRectangleHitbox.downBound > otherSimpleHitbox.upBound) && !(simpleRectangleHitbox.upBound < otherSimpleHitbox.downBound) && !(simpleRectangleHitbox.rightBound < otherSimpleHitbox.leftBound) && !(simpleRectangleHitbox.leftBound > otherSimpleHitbox.rightBound);
-            } else {
-                CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
-                ArrayList<Hitbox> rectangleList = otherCompositeHitbox.getRectangleList();
-                for(Hitbox rectangle: rectangleList){
-                    if(intersection(hitbox, rectangle)){
-                        return true;
-                    }
-                }
-                return false;
             }
-        }
-        else{
-            CompositeHitbox compositeHitbox = (CompositeHitbox) hitbox;
-            if(otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox){
-                for(Hitbox rectangle: compositeHitbox.getRectangleList()){
-                    if(intersection(rectangle, otherSimpleHitbox)){
-                        return true;
-                    }
-                }
-            }
-            else{
-                CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
-                for( Hitbox rectangle: compositeHitbox.getRectangleList()){
-                    for(Hitbox otherRectangle: otherCompositeHitbox.getRectangleList()){
-                        if(intersection(rectangle, otherRectangle)){
-                            return true;
-                        }
-                    }
+            CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
+            ArrayList<Hitbox> rectangleList = otherCompositeHitbox.getRectangleList();
+            for(Hitbox rectangle: rectangleList){
+                if(intersection(hitbox, rectangle)){
+                    return true;
                 }
             }
             return false;
         }
+        CompositeHitbox compositeHitbox = (CompositeHitbox) hitbox;
+        if(otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox){
+            for(Hitbox rectangle: compositeHitbox.getRectangleList()){
+                if(intersection(rectangle, otherSimpleHitbox)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
+        for( Hitbox rectangle: compositeHitbox.getRectangleList()){
+            for(Hitbox otherRectangle: otherCompositeHitbox.getRectangleList()){
+                if(intersection(rectangle, otherRectangle)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

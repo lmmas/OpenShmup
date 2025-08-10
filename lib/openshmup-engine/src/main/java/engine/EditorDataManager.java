@@ -34,7 +34,7 @@ final public class EditorDataManager {
         EditorDataLoader editorDataLoader = new EditorDataLoader(engine);
         try {
             editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
-        } catch (FileNotFoundException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
@@ -46,7 +46,7 @@ final public class EditorDataManager {
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
             editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
             editorDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
-        } catch (FileNotFoundException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }

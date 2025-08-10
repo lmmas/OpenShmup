@@ -15,7 +15,7 @@ public interface EntitySprite{
     Optional<Texture> getTexture();
     void update(float currentTimeSeconds);
     EntitySprite copy();
-    static EntitySprite DEFAULT(){
+    static EntitySprite DEFAULT_EMPTY(){
         return EmptySprite.getInstance();
     }
 }

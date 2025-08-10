@@ -48,9 +48,8 @@ final public class LevelTimeline {
                                 ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
                                 spawnablesToCheck.addAll(entitySpawnables);
                             }
-                            if(currentSpawnable instanceof MultiSpawnable multiSpawnable){
-                                ArrayList<Spawnable> entitySpawnables = multiSpawnable.spawnables();
-                                spawnablesToCheck.addAll(entitySpawnables);
+                            if(currentSpawnable instanceof MultiSpawnable(ArrayList<Spawnable> spawnables)){
+                                spawnablesToCheck.addAll(spawnables);
                             }
                         }
                     }

@@ -36,7 +36,7 @@ final public class EditorDataLoader {
         this.assetManager = engine.getAssetManager();
     }
 
-    public void loadGameParameters(String filepath) throws FileNotFoundException, IllegalArgumentException {
+    public void loadGameParameters(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
 
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
@@ -53,7 +53,7 @@ final public class EditorDataLoader {
         GameConfig.LevelUI.Lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
         GameConfig.LevelUI.Lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
     }
-    public void loadCustomDisplays(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException, FileNotFoundException {
+    public void loadCustomDisplays(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> displayList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode displayNode: displayList){
@@ -107,7 +107,7 @@ final public class EditorDataLoader {
             }
         }
     }
-    public void loadCustomEntities(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
+    public void loadCustomEntities(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode entityNode: customEntities){
@@ -248,7 +248,7 @@ final public class EditorDataLoader {
             editorDataManager.addCustomEntity(id, customEntityBuilder.build());
         }
     }
-    public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
+    public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode trajectoryNode: elementList){
@@ -275,7 +275,7 @@ final public class EditorDataLoader {
             editorDataManager.addTrajectory(id, newTrajectory);
         }
     }
-    public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws FileNotFoundException, IllegalArgumentException {
+    public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
         SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");
