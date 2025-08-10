@@ -7,7 +7,7 @@ import engine.scene.spawnable.*;
 
 import java.util.*;
 
-public class LevelTimeline {
+final public class LevelTimeline {
     final private EditorDataManager editorDataManager;
     private final float levelDuration;
     private final TreeMap<Float, ArrayList<Spawnable>> spawnList;

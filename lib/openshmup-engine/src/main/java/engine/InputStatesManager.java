@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class InputStatesManager {
+final public class InputStatesManager {
     final private long window;
     final private HashMap<Integer, GameControl> controlsMap;
     final private ArrayList<Boolean> controlStatesList;

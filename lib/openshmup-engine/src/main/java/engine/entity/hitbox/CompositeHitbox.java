@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import static org.lwjgl.stb.STBImage.*;
 
-public final class CompositeHitbox implements Hitbox{
+final public class CompositeHitbox implements Hitbox{
     private Vec2D position;
     private Vec2D size;
     private ArrayList<Hitbox> rectangleList;

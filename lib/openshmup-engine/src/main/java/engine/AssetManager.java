@@ -8,7 +8,7 @@ import engine.graphics.Image2D;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class AssetManager {
+final public class AssetManager {
     final private HashMap<String, Shader> shaderMap;
     final private HashMap<String, Texture> imageFileMap;
     public AssetManager() throws IOException {

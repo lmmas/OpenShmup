@@ -11,7 +11,7 @@ import engine.scene.spawnable.Spawnable;
 import java.util.Collections;
 import java.util.List;
 
-public class NonPlayerShot implements ExtraComponent{
+final public class NonPlayerShot implements ExtraComponent{
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;

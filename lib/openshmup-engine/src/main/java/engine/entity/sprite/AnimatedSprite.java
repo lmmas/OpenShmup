@@ -1,13 +1,13 @@
 package engine.entity.sprite;
 
 import engine.assets.Texture;
-import engine.scene.display.Animation;
+import engine.graphics.Animation;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 
 import java.util.Optional;
 
-public class AnimatedSprite implements EntitySprite{
+final public class AnimatedSprite implements EntitySprite{
     final private Animation animation;
 
     public AnimatedSprite(Animation animation) {

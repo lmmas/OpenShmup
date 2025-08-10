@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Engine {
+final public class Engine {
     private long glfwWindow;
     private final EditorDataManager editorDataManager;
     private final AssetManager assetManager;

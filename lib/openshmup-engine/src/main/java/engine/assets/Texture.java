@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 
-public class Texture {
+final public class Texture {
     private Integer textureID;
     private final int width;
     private final int height;

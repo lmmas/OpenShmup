@@ -2,7 +2,7 @@ package engine;
 
 import java.net.URISyntaxException;
 
-public class GlobalVars {
+final public class GlobalVars {
     public static int MAX_TEXTURE_SLOTS;
     public static float playerSpeed = 0.7f;
     final public static int debugDisplayLayer = 2048;

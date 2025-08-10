@@ -1,6 +1,6 @@
 package engine.scene;
 
-public class SceneTimer {
+final public class SceneTimer {
     private long referenceTimeMillis;
     private boolean alreadyStarted;
     private long pausedTime;

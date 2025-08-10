@@ -7,7 +7,7 @@ import engine.assets.Texture;
 
 import java.util.Optional;
 
-public class SimpleSprite implements EntitySprite{
+final public class SimpleSprite implements EntitySprite{
     final private Image2D image;
     public SimpleSprite(Image2D image){
         this.image = image;

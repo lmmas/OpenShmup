@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SafeJsonNode {
+final public class SafeJsonNode {
     final private JsonNode node;
     final private String path;
 

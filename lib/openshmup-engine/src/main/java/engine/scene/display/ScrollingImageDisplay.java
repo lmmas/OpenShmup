@@ -10,7 +10,7 @@ import engine.types.Vec2D;
 import java.util.List;
 import java.util.Optional;
 
-public class ScrollingImage implements SceneDisplay {
+final public class ScrollingImageDisplay implements SceneDisplay {
     private final Image2D image1;
     final private Vec2D position1;
     private final Image2D image2;
@@ -20,7 +20,7 @@ public class ScrollingImage implements SceneDisplay {
     boolean horizontalScrolling;
     private float speed;
     private float lastUpdateTimeSeconds;
-    public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+    public ScrollingImageDisplay(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.image1 = new Image2D(texture, layer, true, sizeX, sizeY);
@@ -35,20 +35,20 @@ public class ScrollingImage implements SceneDisplay {
         setPosition(0.5f, 0.5f);
     }
 
-    public ScrollingImage(ScrollingImage scrollingImage){
-        this.image1 = scrollingImage.image1.copy();
-        this.position1 = new Vec2D(scrollingImage.position1);
-        this.position2 = new Vec2D(scrollingImage.position2);
-        this.image2 = scrollingImage.image2.copy();
-        this.sizeX = scrollingImage.sizeX;
-        this.sizeY = scrollingImage.sizeY;
-        this.horizontalScrolling = scrollingImage.horizontalScrolling;
-        this.speed = scrollingImage.speed;
-        this.lastUpdateTimeSeconds = scrollingImage.lastUpdateTimeSeconds;
+    public ScrollingImageDisplay(ScrollingImageDisplay scrollingImageDisplay){
+        this.image1 = scrollingImageDisplay.image1.copy();
+        this.position1 = new Vec2D(scrollingImageDisplay.position1);
+        this.position2 = new Vec2D(scrollingImageDisplay.position2);
+        this.image2 = scrollingImageDisplay.image2.copy();
+        this.sizeX = scrollingImageDisplay.sizeX;
+        this.sizeY = scrollingImageDisplay.sizeY;
+        this.horizontalScrolling = scrollingImageDisplay.horizontalScrolling;
+        this.speed = scrollingImageDisplay.speed;
+        this.lastUpdateTimeSeconds = scrollingImageDisplay.lastUpdateTimeSeconds;
     }
     @Override
     public SceneDisplay copy() {
-        return new ScrollingImage(this);
+        return new ScrollingImageDisplay(this);
     }
 
     @Override

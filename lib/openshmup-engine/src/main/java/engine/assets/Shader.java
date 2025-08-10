@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import static org.lwjgl.opengl.GL33.*;
 
 
-public class Shader {
+final public class Shader {
 
     private int shaderProgramID;
     private final String filepath;

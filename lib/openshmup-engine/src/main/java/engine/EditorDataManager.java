@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class EditorDataManager {
+final public class EditorDataManager {
     final private Engine engine;
     private final HashMap<Integer, SceneDisplay> customDisplays;
     private final HashMap<Integer, Trajectory> customTrajectories;

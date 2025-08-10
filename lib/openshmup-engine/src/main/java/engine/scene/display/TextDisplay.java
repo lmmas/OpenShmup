@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TextDisplay implements SceneDisplay{
+final public class TextDisplay implements SceneDisplay{
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;

@@ -14,7 +14,7 @@ import engine.scene.spawnable.Spawnable;
 import java.util.Collections;
 import java.util.List;
 
-public class HitboxDebugDisplay implements ExtraComponent{
+final public class HitboxDebugDisplay implements ExtraComponent{
     static private Shader hitboxShader;
     static public void setHitboxShader(Shader hitboxShader){
         HitboxDebugDisplay.hitboxShader = hitboxShader;

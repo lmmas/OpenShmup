@@ -12,7 +12,7 @@ import engine.scene.spawnable.Spawnable;
 import java.util.Collections;
 import java.util.List;
 
-public class PlayerShot implements ExtraComponent{
+final public class PlayerShot implements ExtraComponent{
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;

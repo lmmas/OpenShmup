@@ -1,6 +1,6 @@
 package engine.entity.hitbox;
 
-public final class EmptyHitbox implements Hitbox{
+final public class EmptyHitbox implements Hitbox{
     private static EmptyHitbox instance = null;
     private EmptyHitbox(){
 

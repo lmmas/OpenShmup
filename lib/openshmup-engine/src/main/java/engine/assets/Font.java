@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class Font {
+final public class Font {
     final private String fontFilepath;
     final private Texture bitmap;
     final private float capHeightPixels;

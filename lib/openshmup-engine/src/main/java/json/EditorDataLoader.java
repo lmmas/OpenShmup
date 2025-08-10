@@ -6,16 +6,16 @@ import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
 import engine.entity.trajectory.PlayerControlledTrajectory;
-import engine.scene.display.Animation;
+import engine.graphics.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
-import engine.scene.display.AnimationInfo;
+import engine.graphics.AnimationInfo;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.spawnable.Spawnable;
-import engine.scene.display.ScrollingImage;
+import engine.scene.display.ScrollingImageDisplay;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class EditorDataLoader {
+final public class EditorDataLoader {
     final private ObjectMapper objectMapper;
     final private AssetManager assetManager;
     public EditorDataLoader(Engine engine){
@@ -75,7 +75,7 @@ public class EditorDataLoader {
                     normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
                 }
 
-                editorDataManager.addCustomDisplays(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                editorDataManager.addCustomDisplays(id, new ScrollingImageDisplay(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
                 SafeJsonNode animationInfoNode = displayNode.checkAndGetObject("animationInfo");

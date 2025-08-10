@@ -14,8 +14,8 @@ import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Image2D;
 import engine.scene.LevelScene;
-import engine.scene.display.Animation;
-import engine.scene.display.AnimationInfo;
+import engine.graphics.Animation;
+import engine.graphics.AnimationInfo;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 

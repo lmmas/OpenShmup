@@ -1,10 +1,9 @@
-package engine.scene.display;
+package engine.graphics;
 
-import engine.graphics.Graphic;
-import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.Scene;
+import engine.scene.display.SceneDisplay;
 
 import java.util.*;
 

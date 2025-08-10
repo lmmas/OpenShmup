@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class GraphicsManager {
+final public class GraphicsManager {
     final private TreeMap<Integer, ArrayList<Renderer<?,?>>> layers;
     public GraphicsManager(){
         this.layers = new TreeMap<>();

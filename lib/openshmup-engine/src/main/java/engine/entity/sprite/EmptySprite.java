@@ -6,7 +6,7 @@ import engine.assets.Texture;
 
 import java.util.Optional;
 
-public class EmptySprite implements EntitySprite{
+final public class EmptySprite implements EntitySprite{
     private static EmptySprite instance = null;
     private EmptySprite(){
 

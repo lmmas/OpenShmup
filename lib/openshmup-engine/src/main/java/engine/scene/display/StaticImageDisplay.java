@@ -10,7 +10,7 @@ import engine.scene.Scene;
 import java.util.List;
 import java.util.Optional;
 
-public class StaticImageDisplay implements SceneDisplay{
+final public class StaticImageDisplay implements SceneDisplay{
     Image2D image;
 
     public StaticImageDisplay(Image2D image){

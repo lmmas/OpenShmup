@@ -2,7 +2,7 @@ package engine.entity.hitbox;
 
 import engine.types.Vec2D;
 
-public final class SimpleRectangleHitbox implements Hitbox{
+final public class SimpleRectangleHitbox implements Hitbox{
     final public Vec2D position;
     final public Vec2D size;
     public float leftBound;
