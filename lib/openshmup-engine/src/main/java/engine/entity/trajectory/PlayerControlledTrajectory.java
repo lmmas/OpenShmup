@@ -4,7 +4,7 @@ import engine.entity.Entity;
 import engine.scene.GameControl;
 import engine.scene.LevelScene;
 
-public class PlayerControlledTrajectory implements Trajectory{
+final public class PlayerControlledTrajectory implements Trajectory{
     private LevelScene scene;
     private float speed;
     private float lastUpdateTimeSeconds;

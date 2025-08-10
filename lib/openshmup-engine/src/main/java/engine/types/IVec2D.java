@@ -1,6 +1,6 @@
 package engine.types;
 
-public class IVec2D {
+final public class IVec2D {
     public int x;
     public int y;
     public IVec2D(int x, int y){

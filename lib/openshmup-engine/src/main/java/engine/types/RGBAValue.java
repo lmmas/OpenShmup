@@ -1,6 +1,6 @@
 package engine.types;
 
-public class RGBAValue {
+final public class RGBAValue {
     public float r;
     public float g;
     public float b;

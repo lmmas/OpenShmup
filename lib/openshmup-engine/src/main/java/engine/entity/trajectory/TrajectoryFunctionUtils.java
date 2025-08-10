@@ -2,9 +2,9 @@ package engine.entity.trajectory;
 //DO NOT OPTIMIZE IMPORTS
 import static java.lang.Math.*;
 
-public class TrajectoryFunctionUtils {
+final public class TrajectoryFunctionUtils {
 
-    public static class MathFloatOverloads {
+    final public static class MathFloatOverloads {
     //WARNING: DO NOT DELETE
         public static float sin(float x){
             return (float) Math.sin(x);

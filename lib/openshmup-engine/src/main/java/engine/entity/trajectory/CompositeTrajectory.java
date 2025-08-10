@@ -4,7 +4,7 @@ import engine.types.Vec2D;
 import engine.entity.Entity;
 import engine.scene.LevelScene;
 
-public class CompositeTrajectory implements Trajectory{
+final public class CompositeTrajectory implements Trajectory{
     final private float[] bounds;
     final private Trajectory[] trajectories;
     private int trajectoryIndex;

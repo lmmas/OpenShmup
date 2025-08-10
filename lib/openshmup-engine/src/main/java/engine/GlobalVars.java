@@ -7,7 +7,7 @@ final public class GlobalVars {
     public static float playerSpeed = 0.7f;
     final public static int debugDisplayLayer = 2048;
 
-    public static class Paths{
+    final public static class Paths{
         static public String placeholderTextureFile;
         static public String customGameFolder;
         static public String customGameParametersFile;
@@ -36,7 +36,7 @@ final public class GlobalVars {
             Paths.editorCustomTimelineFile = Paths.customGameFolder + Partial.editorCustomTimelineFile;
             Paths.placeholderTextureFile = rootFolderAbsolutePath + Partial.missingTextureFile;
         }
-        public static class Partial {
+        final public static class Partial {
 
             final static public String customGamesFolder = "/Games/";
             final static public String customGameParametersFile = "/json/gameParameters.json";

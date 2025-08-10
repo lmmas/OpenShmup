@@ -6,7 +6,7 @@ import engine.scene.LevelScene;
 
 import java.util.function.Function;
 
-public class FixedTrajectory implements Trajectory {
+final public class FixedTrajectory implements Trajectory {
 
     final private Function<Float, Float> trajectoryFunctionX;
     final private Function<Float, Float> trajectoryFunctionY;

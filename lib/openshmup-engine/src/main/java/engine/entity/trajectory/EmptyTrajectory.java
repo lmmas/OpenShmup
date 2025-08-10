@@ -3,7 +3,7 @@ package engine.entity.trajectory;
 import engine.entity.Entity;
 import engine.scene.LevelScene;
 
-public class EmptyTrajectory implements Trajectory {
+final public class EmptyTrajectory implements Trajectory {
     private static EmptyTrajectory instance = null;
     private EmptyTrajectory(){
 
