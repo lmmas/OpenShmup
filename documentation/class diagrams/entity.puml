@@ -1,0 +1,146 @@
+@startuml
+interface engine.entity.extraComponent.ExtraComponent {
+~ ExtraComponent copyIfNotReusable()
+~ Spawnable getSpawnable()
+~ List<RenderInfo> getRenderInfos()
+~ List<Graphic<?,?>> getGraphics()
+~ List<Texture> getTextures()
+~ void update(Entity,LevelScene)
+}
+
+interface engine.entity.trajectory.Trajectory {
+~ void update(Entity,LevelScene)
+~ Trajectory copyIfNotReusable()
+~ {static} Trajectory DEFAULT()
+}
+
+interface engine.entity.sprite.EntitySprite {
+~ void setPosition(float,float)
+~ void setSize(float,float)
+~ void setOrientation(float)
+~ Optional<RenderInfo> getRenderInfo()
+~ Optional<Graphic<?,?>> getGraphic()
+~ Optional<Texture> getTexture()
+~ void update(float)
+~ EntitySprite copy()
+~ {static} EntitySprite DEFAULT()
+}
+
+class engine.entity.Ship {
+- int hitPoints
++ void takeDamage(int)
++ boolean isDead()
++ int getHP()
++ Entity copy()
+}
+
+
+class engine.entity.NonShipEntity {
++ Entity copy()
+}
+
+enum engine.entity.EntityType {
++  SHIP
++  PROJECTILE
++  ITEM
++ {static} EntityType fromString(String)
++ String toString()
+}
+
+
+interface engine.entity.hitbox.Hitbox {
+~ void setPosition(float,float)
+~ void setSize(float,float)
+~ void setOrientation(float)
+~ Hitbox copy()
+~ {static} Hitbox DEFAULT()
+~ {static} boolean intersection(Hitbox,Hitbox)
+}
+
+abstract class engine.entity.Entity {
+# int entityId
+# EntityType type
+# boolean evil
+# Vec2D position
+# Vec2D trajectoryReferencePosition
+# Vec2D size
+# float orientationRadians
+# boolean invincible
+# float startingTimeSeconds
+# float lifetimeSeconds
+# EntitySprite sprite
+# Hitbox hitbox
+# Trajectory trajectory
+# Spawnable deathSpawn
+# ArrayList<ExtraComponent> extraComponents
+# LevelScene scene
++ {abstract}Entity copy()
++ EntityType getType()
++ void setSize(float,float)
++ Vec2D getPosition()
++ void setPosition(float,float)
++ Vec2D getTrajectoryReferencePosition()
++ void setTrajectoryStartingPosition(float,float)
++ void setTrajectory(Trajectory)
++ float getOrientationRadians()
++ void setOrientation(float)
++ float getLifetimeSeconds()
++ boolean isEvil()
++ boolean isInvincible()
++ void setInvincible(boolean)
++ EntitySprite getSprite()
++ Hitbox getHitbox()
++ Spawnable getDeathSpawn()
++ ArrayList<ExtraComponent> getExtraComponents()
++ void addExtraComponent(ExtraComponent)
++ void setScene(LevelScene)
++ void update(float)
++ void deathEvent()
+}
+
+
+class engine.entity.Entity$Builder {
+- int id
+- EntityType type
+- int hitPoints
+- boolean evil
+- Vec2D size
+- Vec2D startingPosition
+- float orientationRadians
+- EntitySprite sprite
+- Hitbox hitbox
+- Trajectory trajectory
+- Spawnable deathSpawn
+- ArrayList<ExtraComponent> extraComponents
++ Builder setType(EntityType)
++ Builder setHitPoints(int)
++ Builder setStartingPosition(float,float)
++ Builder setSize(float,float)
++ Builder setOrientation(float)
++ Builder setId(int)
++ Builder setEvil(boolean)
++ Builder createSprite(int,Texture,boolean)
++ Builder createSprite(int,Texture,AnimationInfo,float,boolean,boolean)
++ Builder createFixedTrajectory(Function<Float,Float>,Function<Float,Float>)
++ Builder createFixedTrajectory(Function<Float,Float>,Function<Float,Float>,boolean)
++ Builder setTrajectory(Trajectory)
++ Builder setDeathSpawn(Spawnable)
++ Builder addCompositeHitbox(Texture,boolean)
++ Builder addRectangleHitbox(boolean)
++ Builder createShot(Spawnable,float,float)
++ Builder addExtraComponent(ExtraComponent)
++ Entity build()
+}
+
+
+
+
+engine.entity.Entity <|-- engine.entity.Ship
+engine.entity.Entity <|-- engine.entity.NonShipEntity
+engine.entity.Entity +.. engine.entity.Entity$Builder
+engine.entity.Entity --> engine.entity.EntityType
+engine.entity.Entity --> engine.entity.hitbox.Hitbox
+engine.entity.Entity --> engine.entity.sprite.EntitySprite
+engine.entity.Entity --> engine.entity.trajectory.Trajectory
+engine.entity.Entity --> engine.entity.extraComponent.ExtraComponent
+@enduml

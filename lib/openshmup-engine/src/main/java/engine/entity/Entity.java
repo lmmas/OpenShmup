@@ -64,31 +64,49 @@ abstract public class Entity {
 
     abstract public Entity copy();
 
-    public void setScene(LevelScene scene) {
-        assert scene != null;
-        this.scene = scene;
-        this.lifetimeSeconds = 0.0f;
-        this.startingTimeSeconds = scene.getSceneTimeSeconds();
-    }
-
     public EntityType getType(){
         return this.type;
     }
 
-    public EntitySprite getSprite() {
-        return sprite;
-    }
-
-    public Vec2D getTrajectoryReferencePosition() {
-        return new Vec2D(trajectoryReferencePosition);
+    public void setSize(float sizeX, float sizeY){
+        this.size.x = sizeX;
+        this.size.y = sizeY;
+        sprite.setSize(sizeX, sizeY);
+        hitbox.setSize(sizeX, sizeY);
     }
 
     public Vec2D getPosition(){
         return new Vec2D(position);
     }
 
+    public void setPosition(float positionX, float positionY){
+        position.x = positionX;
+        position.y = positionY;
+        sprite.setPosition(positionX, positionY);
+        hitbox.setPosition(positionX, positionY);
+    }
+
+    public Vec2D getTrajectoryReferencePosition() {
+        return new Vec2D(trajectoryReferencePosition);
+    }
+
+    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY){
+        trajectoryReferencePosition.x = startingPositionX;
+        trajectoryReferencePosition.y = startingPositionY;
+    }
+
+    public void setTrajectory(Trajectory trajectory) {
+        this.trajectory = trajectory;
+    }
+
     public float getOrientationRadians() {
         return orientationRadians;
+    }
+
+    public void setOrientation(float orientationRadians) {
+        this.orientationRadians = orientationRadians;
+        sprite.setOrientation(orientationRadians);
+        hitbox.setOrientation(orientationRadians);
     }
 
     final public float getLifetimeSeconds() {
@@ -107,45 +125,12 @@ abstract public class Entity {
         this.invincible = invincible;
     }
 
+    public EntitySprite getSprite() {
+        return sprite;
+    }
+
     public Hitbox getHitbox(){
         return hitbox;
-    }
-
-    public void setPosition(float positionX, float positionY){
-        position.x = positionX;
-        position.y = positionY;
-        sprite.setPosition(positionX, positionY);
-        hitbox.setPosition(positionX, positionY);
-    }
-
-    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY){
-        trajectoryReferencePosition.x = startingPositionX;
-        trajectoryReferencePosition.y = startingPositionY;
-    }
-    public void setSize(float sizeX, float sizeY){
-        this.size.x = sizeX;
-        this.size.y = sizeY;
-        sprite.setSize(sizeX, sizeY);
-        hitbox.setSize(sizeX, sizeY);
-    }
-
-    public void setOrientation(float orientationRadians) {
-        this.orientationRadians = orientationRadians;
-        sprite.setOrientation(orientationRadians);
-        hitbox.setOrientation(orientationRadians);
-    }
-
-    public void setTrajectory(Trajectory trajectory) {
-        this.trajectory = trajectory;
-    }
-
-    public void update(float currentTimeSeconds){
-        lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
-        trajectory.update(this, scene);
-        for(ExtraComponent extraComponent: extraComponents){
-            extraComponent.update(this, scene);
-        }
-        sprite.update(currentTimeSeconds);
     }
 
     public Spawnable getDeathSpawn() {
@@ -158,6 +143,22 @@ abstract public class Entity {
 
     public void addExtraComponent(ExtraComponent extraComponent){
         extraComponents.add(extraComponent);
+    }
+
+    public void setScene(LevelScene scene) {
+        assert scene != null;
+        this.scene = scene;
+        this.lifetimeSeconds = 0.0f;
+        this.startingTimeSeconds = scene.getSceneTimeSeconds();
+    }
+
+    public void update(float currentTimeSeconds){
+        lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
+        trajectory.update(this, scene);
+        for(ExtraComponent extraComponent: extraComponents){
+            extraComponent.update(this, scene);
+        }
+        sprite.update(currentTimeSeconds);
     }
 
     public void deathEvent(){
