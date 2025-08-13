@@ -89,5 +89,10 @@ public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectan
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);
         }
+
+        @Override
+        public void removePrimitive(int primitiveToRemoveIndex) {
+            primitives.remove(primitiveToRemoveIndex);
+        }
     }
 }

@@ -41,15 +41,7 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
     public void draw(){
         glBindVertexArray(this.vaoID);
         for(Batch batch : batches) {
-            batch.setupVertexAttributes();
-            glBindVertexArray(this.vaoID);
-            Shader batchShader = batch.getShader();
-            batchShader.use();
-            if(batch.dataHasChanged){
-                batch.uploadData();
-                batch.dataHasChanged = false;
-            }
-            batch.draw();
+            batch.update();
         }
         glBindVertexArray(0);
     }
@@ -102,8 +94,32 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
         public void dataHasChanged(){
             dataHasChanged = true;
         }
-        public void removePrimitive(P primitive){
-            primitives.remove(primitive);
+
+        abstract public void removePrimitive(int primitiveToRemoveIndex);
+
+        public void cleanupPrimitives(){
+            int i = 0;
+            while (i < primitives.size()){
+                if(primitives.get(i).shouldBeRemoved()){
+                    removePrimitive(i);
+                    dataHasChanged();
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+
+        public void update(){
+            this.cleanupPrimitives();
+            this.setupVertexAttributes();
+            glBindVertexArray(Renderer.this.vaoID);
+            this.shader.use();
+            if(this.dataHasChanged){
+                this.uploadData();
+                this.dataHasChanged = false;
+            }
+            this.draw();
         }
     }
 }

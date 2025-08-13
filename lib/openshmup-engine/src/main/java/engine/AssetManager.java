@@ -1,5 +1,6 @@
 package engine;
 
+import engine.assets.Font;
 import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.entity.extraComponent.HitboxDebugDisplay;
@@ -11,13 +12,20 @@ import java.util.HashMap;
 final public class AssetManager {
     final private HashMap<String, Shader> shaderMap;
     final private HashMap<String, Texture> imageFileMap;
+    final private HashMap<String, Font> fontFileMap;
     public AssetManager() throws IOException {
         this.shaderMap = new HashMap<>();
         this.imageFileMap = new HashMap<>();
+        this.fontFileMap = new HashMap<>();
         Image2D.setDefaultShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
         HitboxDebugDisplay.setHitboxShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
         Texture placeholderTexture = Texture.createFromImageFile(GlobalVars.Paths.placeholderTextureFile);
         imageFileMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
+
+        Font defaultFont = Font.createFromTTF(GlobalVars.Paths.defaultFont);
+        fontFileMap.put(GlobalVars.Paths.defaultFont, defaultFont);
+        defaultFont.getBitmap().loadInGPU();
+        imageFileMap.put(GlobalVars.Paths.defaultFont, defaultFont.getBitmap());
     }
 
     public Texture getTexture(String filepath){
@@ -45,6 +53,21 @@ final public class AssetManager {
             shaderMap.put(filepath, newShader);
             newShader.compile();
             return newShader;
+        }
+    }
+
+    public Font getFont(String filepath){
+        if(fontFileMap.containsKey(filepath)){
+            return fontFileMap.get(filepath);
+        }
+        else{
+            try {
+                Font newFont = Font.createFromTTF(filepath);
+                fontFileMap.put(filepath, newFont);
+                return newFont;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

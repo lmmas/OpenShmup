@@ -2,7 +2,6 @@ package engine.graphics;
 import engine.render.RenderInfo;
 import engine.assets.Shader;
 import engine.render.Renderer;
-import engine.types.RGBAValue;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
@@ -36,6 +35,13 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public class Primitive{
         Renderer<G,P>.Batch currentBatch;
+
+        protected boolean shouldBeRemoved;
+
+        public Primitive(){
+            this.currentBatch = null;
+            this.shouldBeRemoved = false;
+        }
         public void setBatch(Renderer<G,P>.Batch newBatch){
             this.currentBatch = newBatch;
         }
@@ -44,9 +50,13 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
                 currentBatch.dataHasChanged();
             }
         }
-        @SuppressWarnings("unchecked")
+
+        public boolean shouldBeRemoved() {
+            return shouldBeRemoved;
+        }
+
         public void delete(){
-            currentBatch.removePrimitive((P) this);
+            this.shouldBeRemoved = true;
         }
     }
 }

@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static engine.Engine.assetManager;
+
 final public class EditorDataLoader {
     final private ObjectMapper objectMapper;
-    final private AssetManager assetManager;
-    public EditorDataLoader(Engine engine){
+    public EditorDataLoader(){
         this.objectMapper = new ObjectMapper();
-        this.assetManager = engine.getAssetManager();
     }
 
     public void loadGameParameters(String filepath) throws IllegalArgumentException {

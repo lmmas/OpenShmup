@@ -19,10 +19,10 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 final public class Engine {
     private long glfwWindow;
-    private final EditorDataManager editorDataManager;
-    private final AssetManager assetManager;
-    private final GraphicsManager graphicsManager;
-    private final InputStatesManager inputStatesManager;
+    public static EditorDataManager editorDataManager;
+    public static AssetManager assetManager;
+    public static GraphicsManager graphicsManager;
+    public static InputStatesManager inputStatesManager;
     private Scene currentScene;
     private Consumer<Engine> testInit;
     private Consumer<Engine> testInLoop;
@@ -36,9 +36,8 @@ final public class Engine {
     public Engine(String gameFolder) throws IOException {
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
-        this.editorDataManager = new EditorDataManager(this);
+        editorDataManager = new EditorDataManager(this);
         editorDataManager.loadGameParameters();
-        this.graphicsManager = new GraphicsManager();
         PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
 
         GLFWErrorCallback.createPrint(System.err).set();
@@ -85,9 +84,10 @@ final public class Engine {
             glfwShowWindow(glfwWindow);
         }
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-        this.assetManager = new AssetManager();
+        graphicsManager = new GraphicsManager();
+        assetManager = new AssetManager();
         editorDataManager.loadGameContents();
-        this.inputStatesManager = new InputStatesManager(glfwWindow);
+        inputStatesManager = new InputStatesManager(glfwWindow);
         this.testInit = engine -> {};
         this.testInLoop = engine -> {};
     }
@@ -104,7 +104,7 @@ final public class Engine {
     }
 
     public void gameInit(){
-        this.currentScene = new LevelScene(this, editorDataManager.getTimeline(0), GameConfig.debugMode);
+        this.currentScene = new LevelScene(editorDataManager.getTimeline(0), GameConfig.debugMode);
     }
 
     public void loop(){

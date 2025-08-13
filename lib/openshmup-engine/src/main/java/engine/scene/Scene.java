@@ -1,35 +1,36 @@
 package engine.scene;
 
-import engine.AssetManager;
-import engine.EditorDataManager;
-import engine.Engine;
-import engine.GraphicsManager;
+import engine.*;
 import engine.graphics.*;
 import engine.scene.display.SceneDisplay;
+import engine.scene.display.TextDisplay;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 
+import static engine.Engine.assetManager;
+import static engine.Engine.graphicsManager;
+import static engine.GlobalVars.Paths.defaultFont;
+import static engine.GlobalVars.debugDisplayLayer;
+
 
 abstract public class Scene {
-    final protected EditorDataManager editorDataManager;
-    final protected GraphicsManager graphicsManager;
-    final protected AssetManager assetManager;
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
     HashSet<SceneDisplay> displayList;
     HashSet<SceneDisplay> displaysToRemove;
     protected boolean debugMode;
-    public Scene(Engine engine, boolean debugMode) {
-        this.editorDataManager = engine.getEditorDataManager();
-        this.graphicsManager = engine.getGraphicsManager();
-        this.assetManager = engine.getAssetManager();
+    protected Debug debug;
+    public Scene(boolean debugMode) {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.displayList = new HashSet<>();
         this.displaysToRemove = new HashSet<>();
         this.debugMode = debugMode;
+        this.debug = new Debug(debugMode);
     }
 
     abstract public void handleInputs();
@@ -48,12 +49,8 @@ abstract public class Scene {
             }
             displaysToRemove.clear();
         }
-        if(debugMode){
-            float currentTime = timer.getTimeSeconds();
-            System.out.println("current time: " + currentTime);
-            System.out.println((1.0f / (currentTime - lastDrawTime)) + " FPS");
-            lastDrawTime = currentTime;
-        }
+        debug.update();
+        lastDrawTime = sceneTime;
     }
 
 
@@ -80,6 +77,42 @@ abstract public class Scene {
 
     final public void setSpeed(float speed){
         timer.setSpeed(speed);
+    }
+
+    protected class Debug{
+        protected boolean debugModeEnabled;
+        protected TextDisplay fpsDisplay;
+
+        public Debug(boolean debugModeEnabled){
+            if(debugModeEnabled){
+                this.enable();
+            }
+        }
+        public void enable(){
+            if(!debugModeEnabled){
+                debugModeEnabled = true;
+                this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "test", assetManager.getFont(defaultFont));
+                fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
+                Scene.this.addDisplay(fpsDisplay);
+            }
+        }
+
+        public void disable(){
+            if (debugModeEnabled){
+                debugModeEnabled = false;
+                Scene.this.deleteDisplay(fpsDisplay);
+            }
+        }
+
+        public void update(){
+            if(debugModeEnabled){
+                DecimalFormat df = new DecimalFormat("#.#");
+                df.setRoundingMode(RoundingMode.HALF_DOWN);
+                float fpsVal = 1 / (sceneTime - lastDrawTime);
+                fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
+
+            }
+        }
     }
 
 }

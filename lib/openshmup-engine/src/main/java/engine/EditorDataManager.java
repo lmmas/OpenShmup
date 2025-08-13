@@ -31,7 +31,7 @@ final public class EditorDataManager {
     }
 
     void loadGameParameters(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader(engine);
+        EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
             editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
         } catch (IllegalArgumentException e) {
@@ -40,7 +40,7 @@ final public class EditorDataManager {
     }
 
     void loadGameContents(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader(engine);
+        EditorDataLoader editorDataLoader = new EditorDataLoader();
         try {
             editorDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile, this);
             editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);

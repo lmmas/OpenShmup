@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static engine.Engine.graphicsManager;
+
 final public class TextDisplay implements SceneDisplay{
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
@@ -47,6 +49,11 @@ final public class TextDisplay implements SceneDisplay{
     }
 
     private void updateText(){
+        for(var line: textLines){
+            for(TextCharacter character: line){
+                character.image.delete();
+            }
+        }
         textLines.clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
@@ -73,7 +80,9 @@ final public class TextDisplay implements SceneDisplay{
             textLines.add(new ArrayList<>());
         }
         else{
-            textLines.getLast().add(new TextCharacter(newCodepoint, font));
+            TextCharacter newCharacter = new TextCharacter(newCodepoint, font);
+            textLines.getLast().add(newCharacter);
+            graphicsManager.addGraphic(newCharacter.image);
         }
     }
 
@@ -134,6 +143,11 @@ final public class TextDisplay implements SceneDisplay{
         this.textColor.g = g;
         this.textColor.b = b;
         this.textColor.a = a;
+        for(ArrayList<TextCharacter> line: textLines){
+            for(TextCharacter character: line){
+                character.setColor(textColor.r, textColor.g, textColor.b, textColor.a);
+            }
+        }
     }
 
     @Override

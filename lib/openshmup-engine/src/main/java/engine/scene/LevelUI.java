@@ -9,13 +9,13 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 
+import static engine.Engine.assetManager;
+
 public class LevelUI {
-    final private AssetManager assetManager;
     final private LevelScene scene;
     final private ArrayList<StaticImageDisplay> playerLives;
     private Ship playerShip;
-    public LevelUI(LevelScene scene, AssetManager assetManager){
-        this.assetManager = assetManager;
+    public LevelUI(LevelScene scene){
         this.scene = scene;
         this.playerLives = new ArrayList<>();
         this.playerShip = null;

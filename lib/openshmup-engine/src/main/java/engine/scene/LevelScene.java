@@ -20,8 +20,9 @@ import engine.types.Vec2D;
 
 import java.util.*;
 
+import static engine.Engine.*;
+
 public class LevelScene extends Scene{
-    final protected InputStatesManager inputStatesManager;
     protected HashSet<Entity> goodEntities;
     protected HashSet<Entity> evilEntities;
     protected HashSet<EntitySpawnInfo> entitiesToSpawn;
@@ -32,9 +33,8 @@ public class LevelScene extends Scene{
     protected LevelTimeline timeline;
     final protected LevelUI levelUI;
 
-    public LevelScene(Engine engine, LevelTimeline timeline, boolean debugMode) {
-        super(engine, debugMode);
-        this.inputStatesManager = engine.getInputStatesManager();
+    public LevelScene(LevelTimeline timeline, boolean debugMode) {
+        super(debugMode);
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
@@ -42,7 +42,7 @@ public class LevelScene extends Scene{
         this.displaysToSpawn = new HashSet<>();
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
-        this.levelUI = new LevelUI(this, engine.getAssetManager());
+        this.levelUI = new LevelUI(this);
         this.timeline = timeline;
         loadAssets();
         this.timer.start();
@@ -51,9 +51,6 @@ public class LevelScene extends Scene{
     void loadAssets(){
         HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
         timelineRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, RenderType.STATIC_IMAGE));
-        if(debugMode){
-            timelineRenderInfos.add(new RenderInfo(GlobalVars.debugDisplayLayer, RenderType.COLOR_RECTANGLE));
-        }
         graphicsManager.constructRenderers(timelineRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(assetManager.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
