@@ -113,7 +113,6 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
         public void update(){
             this.cleanupPrimitives();
             this.setupVertexAttributes();
-            glBindVertexArray(Renderer.this.vaoID);
             this.shader.use();
             if(this.dataHasChanged){
                 this.uploadData();

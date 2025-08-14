@@ -123,7 +123,7 @@ final public class TextDisplay implements SceneDisplay{
     }
 
     @Override
-    public void setScene(Scene scene) {
+    public void initDisplay(float startingTimeSeconds) {
 
     }
 

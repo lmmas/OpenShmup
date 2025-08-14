@@ -1,6 +1,5 @@
 package engine.scene;
 
-import engine.*;
 import engine.graphics.*;
 import engine.scene.display.SceneDisplay;
 import engine.scene.display.TextDisplay;
@@ -60,7 +59,7 @@ abstract public class Scene {
             graphicsManager.addGraphic(graphic);
         }
         displayList.add(display);
-        display.setScene(this);
+        display.initDisplay(this.sceneTime);
     }
 
     public void deleteDisplay(SceneDisplay display){

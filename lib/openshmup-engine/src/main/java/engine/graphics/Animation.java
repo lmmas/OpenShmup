@@ -75,8 +75,8 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public void setScene(Scene scene) {
-        this.timeOfLastFrame = scene.getSceneTimeSeconds();
+    public void initDisplay(float startingTimeSeconds) {
+        this.timeOfLastFrame = startingTimeSeconds;
     }
 
     @Override

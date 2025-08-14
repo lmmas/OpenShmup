@@ -82,7 +82,6 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
             int textureIndexLength = 1;
             int colorCoefsLength = 4;
             int addedColorLength = 4;
-            glBindVertexArray(Image2DRenderer.this.vaoID);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
@@ -92,7 +91,6 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
             glVertexAttribPointer(5, colorCoefsLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
             glVertexAttribPointer(6, addedColorLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength + colorCoefsLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
         }
 
         public void uploadData(){

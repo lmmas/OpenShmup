@@ -67,8 +67,8 @@ final public class ScrollingImageDisplay implements SceneDisplay {
     }
 
     @Override
-    public void setScene(Scene scene) {
-        this.lastUpdateTimeSeconds = scene.getSceneTimeSeconds();
+    public void initDisplay(float startingTimeSeconds) {
+        this.lastUpdateTimeSeconds = startingTimeSeconds;
     }
 
     @Override

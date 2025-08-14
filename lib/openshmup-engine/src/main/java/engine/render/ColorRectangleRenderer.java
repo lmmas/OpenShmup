@@ -44,13 +44,11 @@ public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectan
             int positionLength = 2;
             int quadSizeLength = 2;
             int colorLength = 4;
-            glBindVertexArray(ColorRectangleRenderer.this.vaoID);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
             glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
             glVertexAttribPointer(2, colorLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
         }
 
         @Override
