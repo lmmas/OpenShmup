@@ -9,5 +9,5 @@ public enum GameControl {
     FIRE,
     BOMB,
     SLOWDOWN,
-    TOGGLE_DEBUG_MODE
+    TOGGLE_DEBUG
 }

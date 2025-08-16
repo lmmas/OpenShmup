@@ -32,6 +32,7 @@ public class LevelScene extends Scene{
     protected List<Boolean> lastControlStates;
     protected LevelTimeline timeline;
     final protected LevelUI levelUI;
+    final private LevelDebug levelDebug;
 
     public LevelScene(LevelTimeline timeline, boolean debugMode) {
         super(debugMode);
@@ -44,6 +45,7 @@ public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
+        this.levelDebug = new LevelDebug(debugMode);
         loadAssets();
         this.timer.start();
     }
@@ -78,7 +80,16 @@ public class LevelScene extends Scene{
         if(getControlDeactivation(GameControl.SLOWDOWN)){
             setSpeed(1.0f);
         }
+        if(getControlActivation(GameControl.TOGGLE_DEBUG)){
+            this.toggleDebug();
+        }
         this.lastControlStates = controlStates;
+    }
+
+    private void toggleDebug() {
+        sceneDebug.toggle();
+        levelDebug.toggle();
+        this.debugModeEnabled = !debugModeEnabled;
     }
 
     @Override
@@ -131,7 +142,7 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
-        if(debugMode){
+        if(debugModeEnabled){
             RGBAValue hitboxColor;
             if(entity.getType() == EntityType.SHIP){
                 if(entity.isEvil()){
@@ -273,5 +284,82 @@ public class LevelScene extends Scene{
             }
         }
     }
+    private class LevelDebug{
 
+        public LevelDebug(boolean debugModeEnabled){
+            if(debugModeEnabled){
+                this.enable();
+            }
+        }
+
+        private void enable() {
+            for(Entity entity: goodEntities){
+                RGBAValue hitboxColor;
+                if (entity.getType() == EntityType.SHIP) {
+                    if (entity.isEvil()) {
+                        hitboxColor = new RGBAValue(1.0f, 0.0f, 0.0f, 1.0f);
+                    } else {
+                        hitboxColor = new RGBAValue(0.0f, 1.0f, 0.0f, 1.0f);
+                    }
+                } else if (entity.getType() == EntityType.PROJECTILE) {
+                    if (entity.isEvil()) {
+                        hitboxColor = new RGBAValue(1.0f, 1.0f, 0.0f, 1.0f);
+                    } else {
+                        hitboxColor = new RGBAValue(0.0f, 1.0f, 1.0f, 1.0f);
+                    }
+                } else {
+                    hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                Hitbox entityHitbox = entity.getHitbox();
+                switch (entityHitbox) {
+                    case EmptyHitbox ignored -> {
+                    }
+                    case SimpleRectangleHitbox simpleRectangleHitbox ->
+                            entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
+                    case CompositeHitbox compositeHitbox -> {
+                        for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
+                            if (rectangle instanceof SimpleRectangleHitbox simpleRectangle) {
+                                entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void disable() {
+            for(Entity entity: evilEntities) {
+                ArrayList<HitboxDebugDisplay> debugDisplaysToRemove = new ArrayList<>();
+                for(ExtraComponent extraComponent: entity.getExtraComponents()){
+                    if(extraComponent instanceof  HitboxDebugDisplay hitboxDebugDisplay){
+                        debugDisplaysToRemove.add(hitboxDebugDisplay);
+                    }
+                }
+                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.this.deleteComponent(entity,hitboxDebugDisplay));
+            }
+            for(Entity entity: goodEntities){
+                ArrayList<HitboxDebugDisplay> debugDisplaysToRemove = new ArrayList<>();
+                for(ExtraComponent extraComponent: entity.getExtraComponents()){
+                    if(extraComponent instanceof  HitboxDebugDisplay hitboxDebugDisplay){
+                        debugDisplaysToRemove.add(hitboxDebugDisplay);
+                    }
+                }
+                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.this.deleteComponent(entity,hitboxDebugDisplay));
+            }
+        }
+
+        public void toggle() {
+            if(debugModeEnabled){
+                this.disable();
+            }
+            else{
+                this.enable();
+            }
+        }
+    }
+
+    private void deleteComponent(Entity entity, ExtraComponent extraComponent) {
+        extraComponent.getGraphics().forEach(Graphic::delete);
+        entity.getExtraComponents().remove(extraComponent);
+    }
 }

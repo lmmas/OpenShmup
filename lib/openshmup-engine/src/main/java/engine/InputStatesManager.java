@@ -25,6 +25,7 @@ final public class InputStatesManager {
         controlsMap.put(GLFW_KEY_P, GameControl.PAUSE);
         controlsMap.put(GLFW_KEY_S, GameControl.SLOWDOWN);
         controlsMap.put(GLFW_KEY_T, GameControl.SLOWDOWN);
+        controlsMap.put(GLFW_KEY_F3, GameControl.TOGGLE_DEBUG);
         this.controlStatesList = new ArrayList<>(Collections.nCopies(controlsMap.size(), Boolean.FALSE));
     }
 

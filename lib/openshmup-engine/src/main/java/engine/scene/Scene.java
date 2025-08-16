@@ -21,15 +21,15 @@ abstract public class Scene {
     protected float lastDrawTime = 0.0f;
     HashSet<SceneDisplay> displayList;
     HashSet<SceneDisplay> displaysToRemove;
-    protected boolean debugMode;
-    protected Debug debug;
-    public Scene(boolean debugMode) {
+    protected boolean debugModeEnabled = false;
+    protected SceneDebug sceneDebug;
+    public Scene(boolean debugModeEnabled) {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.displayList = new HashSet<>();
         this.displaysToRemove = new HashSet<>();
-        this.debugMode = debugMode;
-        this.debug = new Debug(debugMode);
+        this.sceneDebug = new SceneDebug(debugModeEnabled);
+        this.debugModeEnabled = debugModeEnabled;
     }
 
     abstract public void handleInputs();
@@ -48,7 +48,7 @@ abstract public class Scene {
             }
             displaysToRemove.clear();
         }
-        debug.update();
+        sceneDebug.update();
         lastDrawTime = sceneTime;
     }
 
@@ -78,38 +78,40 @@ abstract public class Scene {
         timer.setSpeed(speed);
     }
 
-    protected class Debug{
-        protected boolean debugModeEnabled;
+    protected class SceneDebug {
         protected TextDisplay fpsDisplay;
 
-        public Debug(boolean debugModeEnabled){
+        public SceneDebug(boolean debugModeEnabled){
             if(debugModeEnabled){
                 this.enable();
             }
         }
+
         public void enable(){
-            if(!debugModeEnabled){
-                debugModeEnabled = true;
-                this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "test", assetManager.getFont(defaultFont));
-                fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
-                Scene.this.addDisplay(fpsDisplay);
-            }
+            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "", assetManager.getFont(defaultFont));
+            fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
+            Scene.this.addDisplay(fpsDisplay);
         }
 
         public void disable(){
-            if (debugModeEnabled){
-                debugModeEnabled = false;
-                Scene.this.deleteDisplay(fpsDisplay);
+            Scene.this.deleteDisplay(fpsDisplay);
+        }
+
+        public void toggle(){
+            if(debugModeEnabled){
+                this.disable();
+            }
+            else{
+                this.enable();
             }
         }
 
         public void update(){
             if(debugModeEnabled){
-                DecimalFormat df = new DecimalFormat("#.#");
+                DecimalFormat df = new DecimalFormat("#");
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
                 float fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
-
             }
         }
     }
