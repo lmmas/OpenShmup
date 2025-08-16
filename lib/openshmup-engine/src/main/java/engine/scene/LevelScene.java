@@ -142,39 +142,6 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
-        if(debugModeEnabled){
-            RGBAValue hitboxColor;
-            if(entity.getType() == EntityType.SHIP){
-                if(entity.isEvil()){
-                    hitboxColor = new RGBAValue(1.0f, 0.0f, 0.0f, 1.0f);
-                }
-                else{
-                    hitboxColor = new RGBAValue(0.0f, 1.0f, 0.0f, 1.0f);
-                }
-            } else if (entity.getType() == EntityType.PROJECTILE) {
-                if(entity.isEvil()){
-                    hitboxColor = new RGBAValue(1.0f, 1.0f, 0.0f, 1.0f);
-                }
-                else{
-                    hitboxColor = new RGBAValue(0.0f, 1.0f, 1.0f, 1.0f);
-                }
-            }else {
-                hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
-            }
-            Hitbox entityHitbox = entity.getHitbox();
-            switch (entityHitbox){
-                case EmptyHitbox ignored -> {
-                }
-                case SimpleRectangleHitbox simpleRectangleHitbox -> entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
-                case CompositeHitbox compositeHitbox -> {
-                    for(Hitbox rectangle: compositeHitbox.getRectangleList()){
-                        if(rectangle instanceof SimpleRectangleHitbox simpleRectangle){
-                            entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
-                        }
-                    }
-                }
-            }
-        }
         Optional<Graphic<?, ?>> spriteGraphic = entity.getSprite().getGraphic();
         if(spriteGraphic.isPresent()){
             Graphic<?, ?> newGraphic = spriteGraphic.orElseThrow();
@@ -186,6 +153,9 @@ public class LevelScene extends Scene{
             for(var graphic: graphicsList){
                 graphicsManager.addGraphic(graphic);
             }
+        }
+        if(debugModeEnabled){
+            LevelDebug.addHitboxDebugDisplay(entity);
         }
         if(entity.isEvil()){
             evilEntities.add(entity);
@@ -284,6 +254,17 @@ public class LevelScene extends Scene{
             }
         }
     }
+
+    private static void addComponent(Entity entity, ExtraComponent component){
+        component.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
+        entity.addExtraComponent(component);
+    }
+
+    private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
+        extraComponent.getGraphics().forEach(Graphic::delete);
+        entity.getExtraComponents().remove(extraComponent);
+    }
+
     private class LevelDebug{
 
         public LevelDebug(boolean debugModeEnabled){
@@ -292,38 +273,53 @@ public class LevelScene extends Scene{
             }
         }
 
-        private void enable() {
-            for(Entity entity: goodEntities){
-                RGBAValue hitboxColor;
-                if (entity.getType() == EntityType.SHIP) {
-                    if (entity.isEvil()) {
-                        hitboxColor = new RGBAValue(1.0f, 0.0f, 0.0f, 1.0f);
-                    } else {
-                        hitboxColor = new RGBAValue(0.0f, 1.0f, 0.0f, 1.0f);
-                    }
-                } else if (entity.getType() == EntityType.PROJECTILE) {
-                    if (entity.isEvil()) {
-                        hitboxColor = new RGBAValue(1.0f, 1.0f, 0.0f, 1.0f);
-                    } else {
-                        hitboxColor = new RGBAValue(0.0f, 1.0f, 1.0f, 1.0f);
-                    }
-                } else {
-                    hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+        private static void addHitboxDebugDisplay(Entity entity){
+            RGBAValue hitboxColor = getHitboxDebugDisplayColor(entity);
+            Hitbox entityHitbox = entity.getHitbox();
+            switch (entityHitbox) {
+                case EmptyHitbox ignored -> {
                 }
-                Hitbox entityHitbox = entity.getHitbox();
-                switch (entityHitbox) {
-                    case EmptyHitbox ignored -> {
-                    }
-                    case SimpleRectangleHitbox simpleRectangleHitbox ->
-                            entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
-                    case CompositeHitbox compositeHitbox -> {
-                        for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
-                            if (rectangle instanceof SimpleRectangleHitbox simpleRectangle) {
-                                entity.addExtraComponent(new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a));
-                            }
+                case SimpleRectangleHitbox simpleRectangleHitbox -> {
+                    HitboxDebugDisplay debugDisplay = new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
+                    addComponent(entity, debugDisplay);
+                }
+                case CompositeHitbox compositeHitbox -> {
+                    for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
+                        if (rectangle instanceof SimpleRectangleHitbox simpleRectangle) {
+                            HitboxDebugDisplay debugDisplay = new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
+                            addComponent(entity, debugDisplay);
                         }
                     }
                 }
+            }
+        }
+
+        private static RGBAValue getHitboxDebugDisplayColor(Entity entity) {
+            RGBAValue hitboxColor;
+            if (entity.getType() == EntityType.SHIP) {
+                if (entity.isEvil()) {
+                    hitboxColor = new RGBAValue(1.0f, 0.0f, 0.0f, 1.0f);
+                } else {
+                    hitboxColor = new RGBAValue(0.0f, 1.0f, 0.0f, 1.0f);
+                }
+            } else if (entity.getType() == EntityType.PROJECTILE) {
+                if (entity.isEvil()) {
+                    hitboxColor = new RGBAValue(1.0f, 1.0f, 0.0f, 1.0f);
+                } else {
+                    hitboxColor = new RGBAValue(0.0f, 1.0f, 1.0f, 1.0f);
+                }
+            } else {
+                hitboxColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+            return hitboxColor;
+        }
+
+        private void enable() {
+            for(Entity entity: goodEntities){
+                addHitboxDebugDisplay(entity);
+            }
+            for (Entity entity: evilEntities){
+                addHitboxDebugDisplay(entity);
             }
         }
 
@@ -335,7 +331,7 @@ public class LevelScene extends Scene{
                         debugDisplaysToRemove.add(hitboxDebugDisplay);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.this.deleteComponent(entity,hitboxDebugDisplay));
+                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.deleteComponent(entity,hitboxDebugDisplay));
             }
             for(Entity entity: goodEntities){
                 ArrayList<HitboxDebugDisplay> debugDisplaysToRemove = new ArrayList<>();
@@ -344,7 +340,7 @@ public class LevelScene extends Scene{
                         debugDisplaysToRemove.add(hitboxDebugDisplay);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.this.deleteComponent(entity,hitboxDebugDisplay));
+                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.deleteComponent(entity,hitboxDebugDisplay));
             }
         }
 
@@ -358,8 +354,4 @@ public class LevelScene extends Scene{
         }
     }
 
-    private void deleteComponent(Entity entity, ExtraComponent extraComponent) {
-        extraComponent.getGraphics().forEach(Graphic::delete);
-        entity.getExtraComponents().remove(extraComponent);
-    }
 }

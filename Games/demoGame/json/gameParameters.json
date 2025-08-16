@@ -8,5 +8,5 @@
             "stride": [40, 0]
         }
     },
-    "debugMode": true
+    "debugMode": false
 }
