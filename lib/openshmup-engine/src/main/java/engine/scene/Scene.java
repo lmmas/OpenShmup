@@ -11,7 +11,7 @@ import java.util.List;
 
 import static engine.Engine.assetManager;
 import static engine.Engine.graphicsManager;
-import static engine.GlobalVars.Paths.defaultFont;
+import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.debugDisplayLayer;
 
 
@@ -88,7 +88,7 @@ abstract public class Scene {
         }
 
         public void enable(){
-            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "", assetManager.getFont(defaultFont));
+            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "", assetManager.getFont(debugFont));
             fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
             Scene.this.addDisplay(fpsDisplay);
         }

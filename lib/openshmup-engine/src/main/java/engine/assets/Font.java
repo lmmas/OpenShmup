@@ -59,17 +59,19 @@ final public class Font {
         int startCodepoint = 10;
         int endCodepoint = 126;
 
+        int charCount = endCodepoint - startCodepoint + 1;
         int bitmapWidth = 512;
         int bitmapHeight = 512;
         float capHeightPixels = 50.0f;
 
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
-        STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(endCodepoint - startCodepoint + 1);
-        stbtt_BakeFontBitmap(
+        STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(charCount);
+        int result = stbtt_BakeFontBitmap(
                 dataBuffer, capHeightPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, startCodepoint, charBuffer);
+        assert result > 0: "Font "+ filepath +": loading failed";
 
-        HashMap<Integer, FontCharInfo> charInfoMap = new HashMap<>(endCodepoint - startCodepoint + 1);
-        for(int i = 0; i < charBuffer.capacity(); i++){
+        HashMap<Integer, FontCharInfo> charInfoMap = new HashMap<>(charCount);
+        for(int i = 0; i < charCount; i++){
             STBTTBakedChar charData = charBuffer.get(i);
             int codepoint = startCodepoint + i;
             short x0 = charData.x0();

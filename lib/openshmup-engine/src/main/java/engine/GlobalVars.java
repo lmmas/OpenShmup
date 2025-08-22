@@ -17,7 +17,7 @@ final public class GlobalVars {
         static public String editorCustomEntitiesFile;
         static public String editorCustomTimelineFile;
         static public String rootFolderAbsolutePath;
-        static public String defaultFont;
+        static public String debugFont;
         static public void detectRootFolder(){
             try {
                 rootFolderAbsolutePath = java.nio.file.Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
@@ -36,7 +36,7 @@ final public class GlobalVars {
             Paths.editorCustomEntitiesFile = Paths.customGameFolder + Partial.editorCustomEntitiesFile;
             Paths.editorCustomTimelineFile = Paths.customGameFolder + Partial.editorCustomTimelineFile;
             Paths.placeholderTextureFile = rootFolderAbsolutePath + Partial.missingTextureFile;
-            Paths.defaultFont = rootFolderAbsolutePath + Partial.defaultFont;
+            Paths.debugFont = rootFolderAbsolutePath + Partial.debugFont;
         }
         final private static class Partial {
 
@@ -48,7 +48,7 @@ final public class GlobalVars {
             final static public String editorCustomEntitiesFile = "/json/entities.json";
             final static public String editorCustomTimelineFile = "/json/timeline1.json";
             final static public String missingTextureFile = "/lib/openshmup-engine/src/main/resources/textures/missingTexture.png";
-            final static public String defaultFont = "/lib/openshmup-engine/src/main/resources/fonts/DejaVuSansMono.ttf";
+            final static public String debugFont = "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf";
         }
     }
 }

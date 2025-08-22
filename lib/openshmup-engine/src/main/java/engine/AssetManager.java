@@ -3,7 +3,7 @@ package engine;
 import engine.assets.Font;
 import engine.assets.Shader;
 import engine.assets.Texture;
-import engine.entity.extraComponent.HitboxDebugDisplay;
+import engine.entity.extraComponent.HitboxDebugRectangle;
 import engine.graphics.Image2D;
 
 import java.io.IOException;
@@ -18,14 +18,14 @@ final public class AssetManager {
         this.imageFileMap = new HashMap<>();
         this.fontFileMap = new HashMap<>();
         Image2D.setDefaultShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
-        HitboxDebugDisplay.setHitboxShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
+        HitboxDebugRectangle.setHitboxShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
         Texture placeholderTexture = Texture.createFromImageFile(GlobalVars.Paths.placeholderTextureFile);
         imageFileMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
 
-        Font defaultFont = Font.createFromTTF(GlobalVars.Paths.defaultFont);
-        fontFileMap.put(GlobalVars.Paths.defaultFont, defaultFont);
+        Font defaultFont = Font.createFromTTF(GlobalVars.Paths.debugFont);
+        fontFileMap.put(GlobalVars.Paths.debugFont, defaultFont);
         defaultFont.getBitmap().loadInGPU();
-        imageFileMap.put(GlobalVars.Paths.defaultFont, defaultFont.getBitmap());
+        imageFileMap.put(GlobalVars.Paths.debugFont, defaultFont.getBitmap());
     }
 
     public Texture getTexture(String filepath){

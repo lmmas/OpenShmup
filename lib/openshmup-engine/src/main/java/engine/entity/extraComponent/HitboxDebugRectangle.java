@@ -14,15 +14,15 @@ import engine.scene.spawnable.Spawnable;
 import java.util.Collections;
 import java.util.List;
 
-final public class HitboxDebugDisplay implements ExtraComponent{
+final public class HitboxDebugRectangle implements ExtraComponent{
     static private Shader hitboxShader;
     static public void setHitboxShader(Shader hitboxShader){
-        HitboxDebugDisplay.hitboxShader = hitboxShader;
+        HitboxDebugRectangle.hitboxShader = hitboxShader;
     }
     private final SimpleRectangleHitbox simpleRectangleHitbox;
     private final ColorRectangle debugDisplay;
 
-    public HitboxDebugDisplay(SimpleRectangleHitbox simpleRectangleHitbox, float r, float g, float b, float a){
+    public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, float r, float g, float b, float a){
         this.simpleRectangleHitbox = simpleRectangleHitbox;
         this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, r, g, b, a, hitboxShader);
     }

@@ -3,7 +3,7 @@ package engine.scene;
 import engine.*;
 import engine.entity.*;
 import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.extraComponent.HitboxDebugDisplay;
+import engine.entity.extraComponent.HitboxDebugRectangle;
 import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
@@ -280,13 +280,13 @@ public class LevelScene extends Scene{
                 case EmptyHitbox ignored -> {
                 }
                 case SimpleRectangleHitbox simpleRectangleHitbox -> {
-                    HitboxDebugDisplay debugDisplay = new HitboxDebugDisplay(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
+                    HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(simpleRectangleHitbox, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
                     addComponent(entity, debugDisplay);
                 }
                 case CompositeHitbox compositeHitbox -> {
                     for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
                         if (rectangle instanceof SimpleRectangleHitbox simpleRectangle) {
-                            HitboxDebugDisplay debugDisplay = new HitboxDebugDisplay(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
+                            HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(simpleRectangle, hitboxColor.r, hitboxColor.g, hitboxColor.b, hitboxColor.a);
                             addComponent(entity, debugDisplay);
                         }
                     }
@@ -325,22 +325,22 @@ public class LevelScene extends Scene{
 
         private void disable() {
             for(Entity entity: evilEntities) {
-                ArrayList<HitboxDebugDisplay> debugDisplaysToRemove = new ArrayList<>();
+                ArrayList<HitboxDebugRectangle> debugDisplaysToRemove = new ArrayList<>();
                 for(ExtraComponent extraComponent: entity.getExtraComponents()){
-                    if(extraComponent instanceof  HitboxDebugDisplay hitboxDebugDisplay){
-                        debugDisplaysToRemove.add(hitboxDebugDisplay);
+                    if(extraComponent instanceof  HitboxDebugRectangle hitboxDebugRectangle){
+                        debugDisplaysToRemove.add(hitboxDebugRectangle);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.deleteComponent(entity,hitboxDebugDisplay));
+                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> LevelScene.deleteComponent(entity, hitboxDebugRectangle));
             }
             for(Entity entity: goodEntities){
-                ArrayList<HitboxDebugDisplay> debugDisplaysToRemove = new ArrayList<>();
+                ArrayList<HitboxDebugRectangle> debugDisplaysToRemove = new ArrayList<>();
                 for(ExtraComponent extraComponent: entity.getExtraComponents()){
-                    if(extraComponent instanceof  HitboxDebugDisplay hitboxDebugDisplay){
-                        debugDisplaysToRemove.add(hitboxDebugDisplay);
+                    if(extraComponent instanceof  HitboxDebugRectangle hitboxDebugRectangle){
+                        debugDisplaysToRemove.add(hitboxDebugRectangle);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugDisplay -> LevelScene.deleteComponent(entity,hitboxDebugDisplay));
+                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> LevelScene.deleteComponent(entity, hitboxDebugRectangle));
             }
         }
 
