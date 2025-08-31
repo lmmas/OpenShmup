@@ -6,18 +6,25 @@ import engine.assets.Texture;
 
 import java.util.List;
 
-public interface SceneVisual {
-    SceneVisual copy();
-    List<RenderInfo> getRenderInfos();
-    List<Graphic<?, ?>> getGraphics();
-    List<Texture> getTextures();
-    boolean shouldBeRemoved();
-    void setPosition(float positionX, float positionY);
-    void setScale(float scaleX, float scaleY);
-    void initDisplay(float startingTimeSeconds);
-    void update(float currentTimeSeconds);
+abstract public class SceneVisual {
+    private boolean visualShouldBeRemoved = false;
 
-    static SceneVisual DEFAULT_EMPTY(){
+    abstract public SceneVisual copy();
+    abstract public List<RenderInfo> getRenderInfos();
+    abstract public List<Graphic<?, ?>> getGraphics();
+    abstract public List<Texture> getTextures();
+    public boolean shouldBeRemoved(){
+        return visualShouldBeRemoved;
+    }
+    public void setShouldBeRemoved(){
+        visualShouldBeRemoved = true;
+    }
+    abstract public void setPosition(float positionX, float positionY);
+    abstract public void setScale(float scaleX, float scaleY);
+    abstract public void initDisplay(float startingTimeSeconds);
+    abstract public void update(float currentTimeSeconds);
+
+    public static SceneVisual DEFAULT_EMPTY(){
         return EmptyVisual.getInstance();
     }
 }

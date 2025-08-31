@@ -156,7 +156,6 @@ abstract public class Entity {
         for(ExtraComponent extraComponent: extraComponents){
             extraComponent.update(this, scene);
         }
-        sprite.update(currentTimeSeconds);
     }
 
     public void deathEvent(){

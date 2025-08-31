@@ -6,7 +6,7 @@ import engine.render.RenderInfo;
 
 import java.util.List;
 
-final public class EmptyVisual implements SceneVisual {
+final public class EmptyVisual extends SceneVisual {
     public static EmptyVisual instance = null;
 
     private EmptyVisual() {
@@ -38,11 +38,6 @@ final public class EmptyVisual implements SceneVisual {
     @Override
     public List<Texture> getTextures() {
         return List.of();
-    }
-
-    @Override
-    public boolean shouldBeRemoved() {
-        return false;
     }
 
     @Override

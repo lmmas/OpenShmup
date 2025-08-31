@@ -7,7 +7,7 @@ import engine.assets.Texture;
 
 import java.util.List;
 
-final public class ImageDisplay implements SceneVisual {
+final public class ImageDisplay extends SceneVisual {
     Image2D image;
 
     public ImageDisplay(Image2D image){

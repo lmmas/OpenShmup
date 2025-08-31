@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static engine.Engine.graphicsManager;
 
-final public class TextDisplay implements SceneVisual {
+final public class TextDisplay extends SceneVisual {
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
@@ -136,11 +136,6 @@ final public class TextDisplay implements SceneVisual {
     }
 
     @Override
-    public boolean shouldBeRemoved() {
-        return false;
-    }
-
-    @Override
     public void setPosition(float positionX, float positionY) {
         position.x = positionX;
         position.y = positionY;
@@ -165,7 +160,7 @@ final public class TextDisplay implements SceneVisual {
     }
 
     final public class TextCharacter{
-        private int codepoint;
+        final private int codepoint;
         private FontCharInfo fontCharInfo;
         private Image2D image;
         public TextCharacter(int codepoint, Font font){

@@ -24,11 +24,11 @@ import java.util.*;
 import static engine.Engine.*;
 
 final public class LevelScene extends Scene{
-    private HashSet<Entity> goodEntities;
-    private HashSet<Entity> evilEntities;
-    private HashSet<EntitySpawnInfo> entitiesToSpawn;
-    private HashSet<Entity> entitiesToRemove;
-    private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
+    final private HashSet<Entity> goodEntities;
+    final private HashSet<Entity> evilEntities;
+    final private HashSet<EntitySpawnInfo> entitiesToSpawn;
+    final private HashSet<Entity> entitiesToRemove;
+    final private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
     private List<Boolean> controlStates;
     private List<Boolean> lastControlStates;
     private LevelTimeline timeline;
@@ -143,8 +143,7 @@ final public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
-        List<Graphic<?, ?>> spriteGraphics = entity.getSprite().getGraphics();
-        spriteGraphics.forEach(graphic -> graphicsManager.addGraphic(graphic));
+        addVisual(entity.getSprite());
 
         for(ExtraComponent component: entity.getExtraComponents()){
             List<Graphic<?,?>> graphicsList = component.getGraphics();
@@ -171,7 +170,7 @@ final public class LevelScene extends Scene{
         else{
             goodEntities.remove(entity);
         }
-        entity.getSprite().getGraphics().forEach(Graphic::delete);
+        entity.getSprite().setShouldBeRemoved();
         List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
         for(var component: extraComponentsList){
             List<Graphic<?,?>> graphicsList = component.getGraphics();

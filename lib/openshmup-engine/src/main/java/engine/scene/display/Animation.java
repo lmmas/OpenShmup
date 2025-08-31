@@ -8,7 +8,7 @@ import engine.assets.Texture;
 
 import java.util.*;
 
-final public class Animation implements SceneVisual {
+final public class Animation extends SceneVisual {
     final private Image2D image;
     final private AnimationInfo info;
     final private boolean looping;
@@ -62,11 +62,6 @@ final public class Animation implements SceneVisual {
     }
 
     @Override
-    public boolean shouldBeRemoved() {
-        return !looping && frameIndex >= info.frameCount();
-    }
-
-    @Override
     public void setPosition(float positionX, float positionY) {
         image.setPosition(positionX, positionY);
     }
@@ -90,6 +85,7 @@ final public class Animation implements SceneVisual {
                     frameIndex = 0;
                 }
                 else{
+                    this.setShouldBeRemoved();
                     return;
                 }
             }

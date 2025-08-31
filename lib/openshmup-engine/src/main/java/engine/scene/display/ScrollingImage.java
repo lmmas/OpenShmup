@@ -8,20 +8,18 @@ import engine.types.Vec2D;
 
 import java.util.List;
 
-final public class ScrollingImage implements SceneVisual {
+final public class ScrollingImage extends SceneVisual {
     private final Image2D image1;
     final private Vec2D position1;
     private final Image2D image2;
     final private Vec2D position2;
-    private float sizeX;
-    private float sizeY;
+    final private Vec2D size;
     boolean horizontalScrolling;
     private float speed;
     private float lastUpdateTimeSeconds;
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        this.size = new Vec2D(sizeX, sizeY);
         this.image1 = new Image2D(texture, layer, true, sizeX, sizeY);
         this.image2 = new Image2D(texture, layer, true, sizeX, sizeY);
         this.position1 = new Vec2D(0.5f, 0.5f);
@@ -39,8 +37,7 @@ final public class ScrollingImage implements SceneVisual {
         this.position1 = new Vec2D(scrollingImage.position1);
         this.position2 = new Vec2D(scrollingImage.position2);
         this.image2 = scrollingImage.image2.copy();
-        this.sizeX = scrollingImage.sizeX;
-        this.sizeY = scrollingImage.sizeY;
+        this.size = new Vec2D(scrollingImage.size);
         this.horizontalScrolling = scrollingImage.horizontalScrolling;
         this.speed = scrollingImage.speed;
         this.lastUpdateTimeSeconds = scrollingImage.lastUpdateTimeSeconds;
@@ -66,21 +63,16 @@ final public class ScrollingImage implements SceneVisual {
     }
 
     @Override
-    public boolean shouldBeRemoved() {
-        return false;
-    }
-
-    @Override
     public void setPosition(float positionX, float positionY) {
         position1.x = positionX;
         position1.y = positionY;
         if(horizontalScrolling){
-            this.position2.x = this.position1.x - Math.signum(speed) * sizeX;
+            this.position2.x = this.position1.x - Math.signum(speed) * size.x;
             this.position2.y = position1.y;
         }
         else{
             this.position2.x = position1.x;
-            this.position2.y = position1.y - Math.signum(speed) * sizeY;
+            this.position2.y = position1.y - Math.signum(speed) * size.y;
         }
         image1.setPosition(position1.x, position1.y);
         image2.setPosition(position2.x, position2.y);
@@ -88,6 +80,8 @@ final public class ScrollingImage implements SceneVisual {
 
     @Override
     public void setScale(float scaleX, float scaleY) {
+        this.size.x = scaleX;
+        this.size.y = scaleY;
         image1.setScale(scaleX, scaleY);
         image2.setScale(scaleX, scaleY);
     }
@@ -103,33 +97,33 @@ final public class ScrollingImage implements SceneVisual {
         if(horizontalScrolling){
             position1.x += speed * deltaTime;
             position2.x+= speed * deltaTime;
-            if(position1.x > 0.5f + sizeX){
-                position1.x -= 2 * sizeX;
+            if(position1.x > 0.5f + size.x){
+                position1.x -= 2 * size.x;
             }
-            if(position1.x < 0.5f - sizeX){
-                position1.x += 2 * sizeX;
+            if(position1.x < 0.5f - size.x){
+                position1.x += 2 * size.x;
             }
-            if(position2.x > 0.5f + sizeX){
-                position2.x -= 2 * sizeX;
+            if(position2.x > 0.5f + size.x){
+                position2.x -= 2 * size.x;
             }
-            if(position2.x < 0.5f - sizeX){
-                position2.x += 2 * sizeX;
+            if(position2.x < 0.5f - size.x){
+                position2.x += 2 * size.x;
             }
         }
         else{
             position1.y += speed * deltaTime;
             position2.y += speed * deltaTime;
-            if(position1.y > 0.5f + sizeY){
-                position1.y -= 2 * sizeY;
+            if(position1.y > 0.5f + size.y){
+                position1.y -= 2 * size.y;
             }
-            if(position1.y < 0.5f - sizeY){
-                position1.y += 2 * sizeY;
+            if(position1.y < 0.5f - size.y){
+                position1.y += 2 * size.y;
             }
-            if(position2.y > 0.5f + sizeY){
-                position2.y -= 2 * sizeY;
+            if(position2.y > 0.5f + size.y){
+                position2.y -= 2 * size.y;
             }
-            if(position2.y < 0.5f - sizeY){
-                position2.y += 2 * sizeY;
+            if(position2.y < 0.5f - size.y){
+                position2.y += 2 * size.y;
             }
         }
         image1.setPosition(position1.x, position1.y);
