@@ -1,4 +1,4 @@
-package engine.scene;
+package engine.types;
 
 public enum GameControl {
     MOVE_UP,

@@ -5,7 +5,7 @@ import engine.entity.Entity;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
-import engine.scene.GameControl;
+import engine.types.GameControl;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 

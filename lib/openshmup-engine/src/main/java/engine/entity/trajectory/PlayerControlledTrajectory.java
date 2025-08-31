@@ -1,7 +1,7 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.scene.GameControl;
+import engine.types.GameControl;
 import engine.scene.LevelScene;
 
 final public class PlayerControlledTrajectory implements Trajectory{

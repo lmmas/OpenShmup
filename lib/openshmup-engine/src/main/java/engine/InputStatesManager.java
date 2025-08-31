@@ -1,6 +1,6 @@
 package engine;
 
-import engine.scene.GameControl;
+import engine.types.GameControl;
 
 import java.util.ArrayList;
 import java.util.Collections;

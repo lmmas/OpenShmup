@@ -15,6 +15,7 @@ import engine.assets.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneDisplay;
+import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
