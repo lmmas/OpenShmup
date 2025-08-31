@@ -55,6 +55,6 @@ final public class HitboxDebugRectangle implements ExtraComponent{
     @Override
     public void update(Entity entity, LevelScene scene) {
         debugDisplay.setPosition(simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y);
-        debugDisplay.setSize(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y);
+        debugDisplay.setScale(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y);
     }
 }

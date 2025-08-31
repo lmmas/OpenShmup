@@ -6,18 +6,17 @@ import engine.entity.trajectory.Trajectory;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.LevelTimeline;
-import engine.scene.display.SceneDisplay;
+import engine.scene.display.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 import json.EditorDataLoader;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
+import java.util.List;
 
 final public class EditorDataManager {
     final private Engine engine;
-    private final HashMap<Integer, SceneDisplay> customDisplays;
+    private final HashMap<Integer, SceneVisual> customDisplays;
     private final HashMap<Integer, Trajectory> customTrajectories;
     private final HashMap<Integer, Entity> customEntities;
     private final ArrayList<LevelTimeline> customTimelines;
@@ -51,20 +50,20 @@ final public class EditorDataManager {
         }
     }
 
-    public void addCustomDisplays(int id, SceneDisplay display){
+    public void addCustomDisplays(int id, SceneVisual display){
         customDisplays.put(id, display);
     }
 
-    public RenderInfo getRenderInfoOfDisplay(int id){
-        return customDisplays.get(id).getRenderInfo();
+    public List<RenderInfo> getRenderInfosOfDisplay(int id){
+        return customDisplays.get(id).getRenderInfos();
     }
 
-    public SceneDisplay buildCustomDisplay(int id){
+    public SceneVisual buildCustomDisplay(int id){
         return customDisplays.get(id).copy();
     }
 
-    public Optional<Texture> getTextureOfDisplay(int id){
-        return customDisplays.get(id).getTexture();
+    public List<Texture> getTexturesOfDisplay(int id){
+        return customDisplays.get(id).getTextures();
     }
 
     public void addCustomEntity(int id, Entity entity){
@@ -85,18 +84,13 @@ final public class EditorDataManager {
         return spawnablesList;
     }
 
-    public ArrayList<RenderInfo> getRenderInfoOfEntity(int id){
-        ArrayList<RenderInfo> renderInfoList = new ArrayList<>();
+    public List<RenderInfo> getRenderInfosOfEntity(int id){
         Entity entity = customEntities.get(id);
-        Optional<RenderInfo> renderInfoOptional = entity.getSprite().getRenderInfo();
-        if(renderInfoOptional.isPresent()){
-            renderInfoList.add(renderInfoOptional.orElseThrow());
-        }
-        return renderInfoList;
+        return entity.getSprite().getRenderInfos();
     }
 
-    public Optional<Texture> getTextureOfEntity(int id){
-        return customEntities.get(id).getSprite().getTexture();
+    public List<Texture> getTexturesOfEntity(int id){
+        return customEntities.get(id).getSprite().getTextures();
     }
 
     public void addTrajectory(int id, Trajectory trajectory){

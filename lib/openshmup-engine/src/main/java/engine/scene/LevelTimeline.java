@@ -64,11 +64,10 @@ final public class LevelTimeline {
         HashSet<Spawnable> allSpawnablesSet = getAllSpawnables();
         for(var spawnable: allSpawnablesSet){
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                allRenderInfos.addAll(editorDataManager.getRenderInfoOfEntity(entitySpawnInfo.id()));
+                allRenderInfos.addAll(editorDataManager.getRenderInfosOfEntity(entitySpawnInfo.id()));
             }
             if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
-                RenderInfo renderInfo = editorDataManager.getRenderInfoOfDisplay(sceneDisplaySpawnInfo.id());
-                allRenderInfos.add(renderInfo);
+                allRenderInfos.addAll(editorDataManager.getRenderInfosOfDisplay(sceneDisplaySpawnInfo.id()));
             }
         }
         return allRenderInfos;
@@ -79,12 +78,12 @@ final public class LevelTimeline {
         HashSet<Spawnable> allSpawnables = getAllSpawnables();
         for(var spawnable: allSpawnables){
             if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
-                Optional<Texture> textureOptional = editorDataManager.getTextureOfDisplay(sceneDisplaySpawnInfo.id());
-                textureOptional.ifPresent(allTextures::add);
+                List<Texture> textures = editorDataManager.getTexturesOfDisplay(sceneDisplaySpawnInfo.id());
+                allTextures.addAll(textures);
             }
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                Optional<Texture> textureOptional = editorDataManager.getTextureOfEntity(entitySpawnInfo.id());
-                textureOptional.ifPresent(allTextures::add);
+                List<Texture> textures = editorDataManager.getTexturesOfEntity(entitySpawnInfo.id());
+                allTextures.addAll(textures);
             }
         }
         return allTextures;

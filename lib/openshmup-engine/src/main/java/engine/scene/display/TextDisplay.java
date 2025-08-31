@@ -6,19 +6,16 @@ import engine.assets.FontCharInfo;
 import engine.assets.Texture;
 import engine.graphics.*;
 import engine.render.RenderInfo;
-import engine.scene.Scene;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static engine.Engine.graphicsManager;
 
-final public class TextDisplay implements SceneDisplay{
+final public class TextDisplay implements SceneVisual {
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
@@ -102,40 +99,8 @@ final public class TextDisplay implements SceneDisplay{
         }
     }
 
-    @Override
-    public SceneDisplay copy() {
-        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeightPixels, displayedString, font);
-    }
-
-    @Override
-    public RenderInfo getRenderInfo() {
-        return renderInfo;
-    }
-
-    @Override
-    public List<Graphic<?, ?>> getGraphics() {
-        return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
-    public Optional<Texture> getTexture() {
-        return Optional.of(font.getBitmap());
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
-
-    }
-
     public void setDisplayedString(String displayedString){
         this.displayedString = displayedString;
-    }
-
-    @Override
-    public void setPosition(float positionX, float positionY) {
-        position.x = positionX;
-        position.y = positionY;
-        updateTextPosition();
     }
 
     public void setTextColor(float r, float g, float b, float a){
@@ -151,15 +116,52 @@ final public class TextDisplay implements SceneDisplay{
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
-        if(dynamicText){
-            updateText();
-        }
+    public SceneVisual copy() {
+        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeightPixels, displayedString, font);
+    }
+
+    @Override
+    public List<RenderInfo> getRenderInfos() {
+        return List.of(renderInfo);
+    }
+
+    @Override
+    public List<Graphic<?, ?>> getGraphics() {
+        return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<Texture> getTextures() {
+        return List.of(font.getBitmap());
     }
 
     @Override
     public boolean shouldBeRemoved() {
         return false;
+    }
+
+    @Override
+    public void setPosition(float positionX, float positionY) {
+        position.x = positionX;
+        position.y = positionY;
+        updateTextPosition();
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+
+    }
+
+    @Override
+    public void initDisplay(float startingTimeSeconds) {
+
+    }
+
+    @Override
+    public void update(float currentTimeSeconds) {
+        if(dynamicText){
+            updateText();
+        }
     }
 
     final public class TextCharacter{
@@ -183,7 +185,7 @@ final public class TextDisplay implements SceneDisplay{
         }
 
         public void setSize(float sizeX, float sizeY){
-            image.setSize(sizeX, sizeY);
+            image.setScale(sizeX, sizeY);
         }
 
         public void setColor(float r, float g, float b, float a){

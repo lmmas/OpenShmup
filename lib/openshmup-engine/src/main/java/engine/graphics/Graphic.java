@@ -2,6 +2,7 @@ package engine.graphics;
 import engine.render.RenderInfo;
 import engine.assets.Shader;
 import engine.render.Renderer;
+import engine.types.Vec2D;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
@@ -28,9 +29,18 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         return renderInfo;
     }
 
+    abstract public Vec2D getPosition();
+
+    abstract public Vec2D getScale();
+
+    abstract public void setPosition(float positionX, float positionY);
+
+    abstract public void setScale(float scaleX, float scaleY);
+
     abstract public int getPrimitiveCount();
 
     abstract public P getPrimitive(int index);
+
     abstract public void delete();
 
     abstract public class Primitive{
@@ -42,9 +52,11 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
             this.currentBatch = null;
             this.shouldBeRemoved = false;
         }
+
         public void setBatch(Renderer<G,P>.Batch newBatch){
             this.currentBatch = newBatch;
         }
+
         public void tellBatchDataChanged(){
             if(currentBatch !=null){
                 currentBatch.dataHasChanged();

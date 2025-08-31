@@ -1,9 +1,8 @@
 package engine.scene;
 
 import engine.graphics.*;
-import engine.scene.display.SceneDisplay;
+import engine.scene.display.SceneVisual;
 import engine.scene.display.TextDisplay;
-import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
 
 import java.math.RoundingMode;
@@ -11,7 +10,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static engine.Engine.assetManager;
 import static engine.Engine.graphicsManager;
@@ -23,18 +21,18 @@ abstract public class Scene {
     protected float sceneTime;
     final protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
-    final protected HashSet<SceneDisplay> displayList;
-    final protected HashSet<SceneDisplay> displaysToRemove;
+    final protected HashSet<SceneVisual> sceneVisuals;
+    final protected HashSet<SceneVisual> visualsToRemove;
     final protected ArrayList<MenuScreen> displayedMenus;
     protected MenuScreen activeMenu;
     protected boolean debugModeEnabled = false;
-    final private SceneDebug sceneDebug;
+    final protected SceneDebug sceneDebug;
 
     public Scene(boolean debugModeEnabled) {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
-        this.displayList = new HashSet<>();
-        this.displaysToRemove = new HashSet<>();
+        this.sceneVisuals = new HashSet<>();
+        this.visualsToRemove = new HashSet<>();
         this.displayedMenus = new ArrayList<>();
         this.sceneDebug = new SceneDebug(debugModeEnabled);
         this.debugModeEnabled = debugModeEnabled;
@@ -42,34 +40,34 @@ abstract public class Scene {
 
     abstract public void handleInputs();
 
-    final public void update(){
+    public void update(){
         if(!timer.isPaused()){
             sceneTime = timer.getTimeSeconds();
-            for(SceneDisplay display: displayList){
+            for(SceneVisual display: sceneVisuals){
                 display.update(sceneTime);
                 if(display.shouldBeRemoved()){
-                    displaysToRemove.add(display);
+                    visualsToRemove.add(display);
                 }
             }
-            for(var display: displaysToRemove){
-                deleteDisplay(display);
+            for(var display: visualsToRemove){
+                deleteVisual(display);
             }
-            displaysToRemove.clear();
+            visualsToRemove.clear();
         }
         sceneDebug.update();
         lastDrawTime = sceneTime;
     }
 
 
-    final public void addDisplay(SceneDisplay display){
-        display.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
-        displayList.add(display);
-        display.initDisplay(this.sceneTime);
+    final public void addVisual(SceneVisual visual){
+        visual.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
+        sceneVisuals.add(visual);
+        visual.initDisplay(this.sceneTime);
     }
 
-    final public void deleteDisplay(SceneDisplay display){
-        displayList.remove(display);
-        List<Graphic<?, ?>> graphics = display.getGraphics();
+    final public void deleteVisual(SceneVisual visual){
+        sceneVisuals.remove(visual);
+        List<Graphic<?, ?>> graphics = visual.getGraphics();
         for(var graphic: graphics){
             graphic.delete();
         }
@@ -87,9 +85,9 @@ abstract public class Scene {
         menuScreen.menuItems().stream()
                 .flatMap(item -> item.getGraphics().stream())
                 .forEach(graphic -> graphicsManager.addGraphic(graphic));
-        SceneDisplay menuBackground = menuScreen.backgroundDisplay();
+        SceneVisual menuBackground = menuScreen.backgroundDisplay();
         if(menuBackground != null){
-            addDisplay(menuBackground);
+            addVisual(menuBackground);
         }
         displayedMenus.add(menuScreen);
     }
@@ -104,7 +102,7 @@ abstract public class Scene {
         }
     }
 
-    private class SceneDebug {
+    protected class SceneDebug {
         private TextDisplay fpsDisplay;
 
         public SceneDebug(boolean debugModeEnabled){
@@ -116,11 +114,11 @@ abstract public class Scene {
         public void enable(){
             this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 25, "", assetManager.getFont(debugFont));
             fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
-            Scene.this.addDisplay(fpsDisplay);
+            Scene.this.addVisual(fpsDisplay);
         }
 
         public void disable(){
-            Scene.this.deleteDisplay(fpsDisplay);
+            Scene.this.deleteVisual(fpsDisplay);
         }
 
         public void toggle(){

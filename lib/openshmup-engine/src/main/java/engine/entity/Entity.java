@@ -7,15 +7,14 @@ import engine.entity.extraComponent.PlayerShot;
 import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
-import engine.entity.sprite.AnimatedSprite;
-import engine.entity.sprite.EntitySprite;
-import engine.entity.sprite.SimpleSprite;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.Image2D;
 import engine.scene.LevelScene;
-import engine.graphics.Animation;
+import engine.scene.display.Animation;
 import engine.graphics.AnimationInfo;
+import engine.scene.display.ImageDisplay;
+import engine.scene.display.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 
@@ -33,14 +32,14 @@ abstract public class Entity {
     protected boolean invincible;
     protected float startingTimeSeconds;
     protected float lifetimeSeconds;
-    protected EntitySprite sprite;
+    protected SceneVisual sprite;
     protected Hitbox hitbox;
     protected Trajectory trajectory;
     protected Spawnable deathSpawn;
     protected ArrayList<ExtraComponent> extraComponents;
     protected LevelScene scene;
 
-    public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, EntitySprite sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.type = type;
         this.scene = null;
         this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
@@ -71,7 +70,7 @@ abstract public class Entity {
     public void setSize(float sizeX, float sizeY){
         this.size.x = sizeX;
         this.size.y = sizeY;
-        sprite.setSize(sizeX, sizeY);
+        sprite.setScale(sizeX, sizeY);
         hitbox.setSize(sizeX, sizeY);
     }
 
@@ -105,7 +104,6 @@ abstract public class Entity {
 
     public void setOrientation(float orientationRadians) {
         this.orientationRadians = orientationRadians;
-        sprite.setOrientation(orientationRadians);
         hitbox.setOrientation(orientationRadians);
     }
 
@@ -125,7 +123,7 @@ abstract public class Entity {
         this.invincible = invincible;
     }
 
-    public EntitySprite getSprite() {
+    public SceneVisual getSprite() {
         return sprite;
     }
 
@@ -175,7 +173,7 @@ abstract public class Entity {
         private final Vec2D size = new Vec2D(0.0f, 0.0f);
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
         private float orientationRadians = 0.0f;
-        private EntitySprite sprite = EntitySprite.DEFAULT_EMPTY();
+        private SceneVisual sprite = SceneVisual.DEFAULT_EMPTY();
         private Hitbox hitbox = Hitbox.DEFAULT_EMPTY();
         private Trajectory trajectory = Trajectory.DEFAULT_EMPTY();
         private Spawnable deathSpawn = Spawnable.DEFAULT_EMPTY();
@@ -225,7 +223,7 @@ abstract public class Entity {
             if (orientable) {
 
             } else {
-                this.sprite = new SimpleSprite(new Image2D(texture, layer, true, size.x, size.y));
+                this.sprite = new ImageDisplay(new Image2D(texture, layer, true, size.x, size.y));
             }
             return this;
         }
@@ -234,7 +232,7 @@ abstract public class Entity {
             if (orientable) {
 
             } else {
-                this.sprite = new AnimatedSprite(new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y));
+                this.sprite = new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y);
             }
             return this;
         }

@@ -25,6 +25,14 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
         return primitive;
     }
 
+    public Vec2D getPosition(){
+        return new Vec2D(primitive.position);
+    }
+
+    public Vec2D getScale(){
+        return new Vec2D(primitive.size);
+    }
+
     @Override
     public void delete() {
         primitive.delete();
@@ -36,16 +44,19 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
         primitive.tellBatchDataChanged();
     }
 
-    public void setSize(float sizeX, float sizeY){
-        primitive.size.x = sizeX;
-        primitive.size.y = sizeY;
+    public void setScale(float scaleX, float scaleY){
+        primitive.size.x = scaleX;
+        primitive.size.y = scaleY;
         primitive.tellBatchDataChanged();
     }
 
     public class ColorRectanglePrimitive extends Graphic<ColorRectangle, ColorRectanglePrimitive>.Primitive{
-        Vec2D position;
-        Vec2D size;
-        RGBAValue color;
+
+        private final Vec2D position;
+
+        private final Vec2D size;
+
+        private final RGBAValue color;
 
         public Vec2D getPosition() {
             return new Vec2D(position);

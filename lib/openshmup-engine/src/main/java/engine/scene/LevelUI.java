@@ -1,10 +1,9 @@
 package engine.scene;
 
-import engine.AssetManager;
 import engine.GameConfig;
 import engine.entity.Ship;
 import engine.graphics.Image2D;
-import engine.scene.display.StaticImageDisplay;
+import engine.scene.display.ImageDisplay;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import static engine.Engine.assetManager;
 
 public class LevelUI {
     final private LevelScene scene;
-    final private ArrayList<StaticImageDisplay> playerLives;
+    final private ArrayList<ImageDisplay> playerLives;
     private Ship playerShip;
     public LevelUI(LevelScene scene){
         this.scene = scene;
@@ -37,12 +36,12 @@ public class LevelUI {
                     float pointPositionX = position.x + stride.x * playerLives.size();
                     float pointPositionY = position.y + stride.y * playerLives.size();
                     hpPointImage.setPosition(pointPositionX, pointPositionY);
-                    StaticImageDisplay hpPointDisplay = new StaticImageDisplay(hpPointImage);
-                    scene.addDisplay(new StaticImageDisplay(hpPointImage));
+                    ImageDisplay hpPointDisplay = new ImageDisplay(hpPointImage);
+                    scene.addVisual(new ImageDisplay(hpPointImage));
                     playerLives.add(hpPointDisplay);
                 }
                 while(playerLives.size() > playerHP){
-                    scene.deleteDisplay(playerLives.getLast());
+                    scene.deleteVisual(playerLives.getLast());
                     playerLives.removeLast();
                 }
             }

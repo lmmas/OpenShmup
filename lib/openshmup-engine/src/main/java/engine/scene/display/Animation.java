@@ -1,13 +1,14 @@
-package engine.graphics;
+package engine.scene.display;
 
+import engine.graphics.AnimationInfo;
+import engine.graphics.Graphic;
+import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
-import engine.scene.Scene;
-import engine.scene.display.SceneDisplay;
 
 import java.util.*;
 
-public class Animation implements SceneDisplay {
+final public class Animation implements SceneVisual {
     final private Image2D image;
     final private AnimationInfo info;
     final private boolean looping;
@@ -46,22 +47,8 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public RenderInfo getRenderInfo() {
-        return image.getRenderInfo();
-    }
-
-    @Override
-    public void setPosition(float positionX, float positionY) {
-        image.setPosition(positionX, positionY);
-    }
-
-    public void setSize(float sizeX, float sizeY) {
-        image.setSize(sizeX, sizeY);
-    }
-
-
-    public Image2D getImage() {
-        return image;
+    public List<RenderInfo> getRenderInfos() {
+        return List.of(image.getRenderInfo());
     }
 
     @Override
@@ -70,8 +57,23 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public Optional<Texture> getTexture() {
-        return Optional.of(image.getTexture());
+    public List<Texture> getTextures() {
+        return List.of(image.getTexture());
+    }
+
+    @Override
+    public boolean shouldBeRemoved() {
+        return !looping && frameIndex >= info.frameCount();
+    }
+
+    @Override
+    public void setPosition(float positionX, float positionY) {
+        image.setPosition(positionX, positionY);
+    }
+
+    @Override
+    public void setScale(float sizeX, float sizeY) {
+        image.setScale(sizeX, sizeY);
     }
 
     @Override
@@ -94,10 +96,5 @@ public class Animation implements SceneDisplay {
             updateTexturePosition();
             timeOfLastFrame += framePeriodSeconds;
         }
-    }
-
-    @Override
-    public boolean shouldBeRemoved() {
-        return !looping && frameIndex >= info.frameCount();
     }
 }

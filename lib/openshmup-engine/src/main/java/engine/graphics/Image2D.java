@@ -32,9 +32,10 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         primitive.imagePosition.y = imagePositionY;
         primitive.tellBatchDataChanged();
     }
-    public void setSize(float imageSizeX, float imageSizeY){
-        primitive.imageSize.x = imageSizeX;
-        primitive.imageSize.y = imageSizeY;
+
+    public void setScale(float scaleX, float scaleY){
+        primitive.imageSize.x = scaleX;
+        primitive.imageSize.y = scaleY;
         primitive.tellBatchDataChanged();
     }
 
@@ -70,9 +71,18 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         return new Image2D(this);
     }
 
+    public Vec2D getPosition(){
+        return new Vec2D(primitive.imagePosition);
+    }
+
+    public Vec2D getScale(){
+        return new Vec2D(primitive.imageSize);
+    }
+
     public int getPrimitiveCount(){
         return 1;
     }
+
     public ImagePrimitive getPrimitive(int primitiveIndex){
         return this.primitive;
     }
@@ -91,16 +101,18 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
 
     public class ImagePrimitive extends Graphic<Image2D, ImagePrimitive>.Primitive{
 
-        private Vec2D imagePosition;
+        private final Vec2D imagePosition;
 
-        private Vec2D imageSize;
+        private final Vec2D imageSize;
 
-        private Vec2D texturePosition;
+        private final Vec2D texturePosition;
 
-        private Vec2D textureSize;
+        private final Vec2D textureSize;
 
-        private RGBAValue textureColorCoefs;
-        private RGBAValue addedColor;
+        private final RGBAValue textureColorCoefs;
+
+        private final RGBAValue addedColor;
+
         public ImagePrimitive(float sizeX, float sizeY){
             this.imagePosition = new Vec2D(0.0f, 0.0f);
             this.imageSize = new Vec2D(sizeX, sizeY);

@@ -14,7 +14,7 @@ import engine.graphics.RenderType;
 import engine.assets.Texture;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
-import engine.scene.display.SceneDisplay;
+import engine.scene.display.SceneVisual;
 import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -23,16 +23,16 @@ import java.util.*;
 
 import static engine.Engine.*;
 
-public class LevelScene extends Scene{
-    protected HashSet<Entity> goodEntities;
-    protected HashSet<Entity> evilEntities;
-    protected HashSet<EntitySpawnInfo> entitiesToSpawn;
-    protected HashSet<Entity> entitiesToRemove;
-    protected HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
-    protected List<Boolean> controlStates;
-    protected List<Boolean> lastControlStates;
-    protected LevelTimeline timeline;
-    final protected LevelUI levelUI;
+final public class LevelScene extends Scene{
+    private HashSet<Entity> goodEntities;
+    private HashSet<Entity> evilEntities;
+    private HashSet<EntitySpawnInfo> entitiesToSpawn;
+    private HashSet<Entity> entitiesToRemove;
+    private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
+    private List<Boolean> controlStates;
+    private List<Boolean> lastControlStates;
+    private LevelTimeline timeline;
+    final private LevelUI levelUI;
     final private LevelDebug levelDebug;
 
     public LevelScene(LevelTimeline timeline, boolean debugMode) {
@@ -131,9 +131,9 @@ public class LevelScene extends Scene{
 
     private void spawnDisplays(){
         for(var displaySpawn: displaysToSpawn){
-            SceneDisplay newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
+            SceneVisual newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
-            addDisplay(newDisplay);
+            addVisual(newDisplay);
         }
         displaysToSpawn.clear();
     }
@@ -143,11 +143,8 @@ public class LevelScene extends Scene{
     }
 
     public void addEntity(Entity entity){
-        Optional<Graphic<?, ?>> spriteGraphic = entity.getSprite().getGraphic();
-        if(spriteGraphic.isPresent()){
-            Graphic<?, ?> newGraphic = spriteGraphic.orElseThrow();
-            graphicsManager.addGraphic(newGraphic);
-        }
+        List<Graphic<?, ?>> spriteGraphics = entity.getSprite().getGraphics();
+        spriteGraphics.forEach(graphic -> graphicsManager.addGraphic(graphic));
 
         for(ExtraComponent component: entity.getExtraComponents()){
             List<Graphic<?,?>> graphicsList = component.getGraphics();
@@ -174,7 +171,7 @@ public class LevelScene extends Scene{
         else{
             goodEntities.remove(entity);
         }
-        entity.getSprite().getGraphic().ifPresent(Graphic::delete);
+        entity.getSprite().getGraphics().forEach(Graphic::delete);
         List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
         for(var component: extraComponentsList){
             List<Graphic<?,?>> graphicsList = component.getGraphics();

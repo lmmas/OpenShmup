@@ -4,13 +4,11 @@ import engine.graphics.Graphic;
 import engine.graphics.Image2D;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
-import engine.scene.Scene;
 import engine.types.Vec2D;
 
 import java.util.List;
-import java.util.Optional;
 
-final public class ScrollingImageDisplay implements SceneDisplay {
+final public class ScrollingImage implements SceneVisual {
     private final Image2D image1;
     final private Vec2D position1;
     private final Image2D image2;
@@ -20,7 +18,8 @@ final public class ScrollingImageDisplay implements SceneDisplay {
     boolean horizontalScrolling;
     private float speed;
     private float lastUpdateTimeSeconds;
-    public ScrollingImageDisplay(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+
+    public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.image1 = new Image2D(texture, layer, true, sizeX, sizeY);
@@ -29,31 +28,31 @@ final public class ScrollingImageDisplay implements SceneDisplay {
         this.position2 = new Vec2D(0.0f, 0.0f);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
-        image1.setSize(sizeX, sizeY);
-        image2.setSize(sizeX, sizeY);
+        image1.setScale(sizeX, sizeY);
+        image2.setScale(sizeX, sizeY);
         lastUpdateTimeSeconds = 0.0f;
         setPosition(0.5f, 0.5f);
     }
 
-    public ScrollingImageDisplay(ScrollingImageDisplay scrollingImageDisplay){
-        this.image1 = scrollingImageDisplay.image1.copy();
-        this.position1 = new Vec2D(scrollingImageDisplay.position1);
-        this.position2 = new Vec2D(scrollingImageDisplay.position2);
-        this.image2 = scrollingImageDisplay.image2.copy();
-        this.sizeX = scrollingImageDisplay.sizeX;
-        this.sizeY = scrollingImageDisplay.sizeY;
-        this.horizontalScrolling = scrollingImageDisplay.horizontalScrolling;
-        this.speed = scrollingImageDisplay.speed;
-        this.lastUpdateTimeSeconds = scrollingImageDisplay.lastUpdateTimeSeconds;
+    public ScrollingImage(ScrollingImage scrollingImage){
+        this.image1 = scrollingImage.image1.copy();
+        this.position1 = new Vec2D(scrollingImage.position1);
+        this.position2 = new Vec2D(scrollingImage.position2);
+        this.image2 = scrollingImage.image2.copy();
+        this.sizeX = scrollingImage.sizeX;
+        this.sizeY = scrollingImage.sizeY;
+        this.horizontalScrolling = scrollingImage.horizontalScrolling;
+        this.speed = scrollingImage.speed;
+        this.lastUpdateTimeSeconds = scrollingImage.lastUpdateTimeSeconds;
     }
     @Override
-    public SceneDisplay copy() {
-        return new ScrollingImageDisplay(this);
+    public SceneVisual copy() {
+        return new ScrollingImage(this);
     }
 
     @Override
-    public RenderInfo getRenderInfo() {
-        return image1.getRenderInfo();
+    public List<RenderInfo> getRenderInfos() {
+        return List.of(image1.getRenderInfo());
     }
 
     @Override
@@ -62,13 +61,13 @@ final public class ScrollingImageDisplay implements SceneDisplay {
     }
 
     @Override
-    public Optional<Texture> getTexture() {
-        return Optional.of(image1.getTexture());
+    public List<Texture> getTextures() {
+        return List.of(image1.getTexture());
     }
 
     @Override
-    public void initDisplay(float startingTimeSeconds) {
-        this.lastUpdateTimeSeconds = startingTimeSeconds;
+    public boolean shouldBeRemoved() {
+        return false;
     }
 
     @Override
@@ -85,6 +84,17 @@ final public class ScrollingImageDisplay implements SceneDisplay {
         }
         image1.setPosition(position1.x, position1.y);
         image2.setPosition(position2.x, position2.y);
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+        image1.setScale(scaleX, scaleY);
+        image2.setScale(scaleX, scaleY);
+    }
+
+    @Override
+    public void initDisplay(float startingTimeSeconds) {
+        this.lastUpdateTimeSeconds = startingTimeSeconds;
     }
 
     @Override
@@ -125,10 +135,5 @@ final public class ScrollingImageDisplay implements SceneDisplay {
         image1.setPosition(position1.x, position1.y);
         image2.setPosition(position2.x, position2.y);
         lastUpdateTimeSeconds = currentTimeSeconds;
-    }
-
-    @Override
-    public boolean shouldBeRemoved() {
-        return false;
     }
 }
