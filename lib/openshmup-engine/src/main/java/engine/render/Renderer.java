@@ -14,7 +14,6 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
     protected int vaoID;
     protected RenderType type;
     final protected int drawingType;
-    private int layer;
     final protected int vboStrideBytes;
     protected int batchSize;
     protected ArrayList<Batch> batches;

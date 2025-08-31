@@ -19,8 +19,8 @@ abstract public class Scene {
     protected float sceneTime;
     protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
-    HashSet<SceneDisplay> displayList;
-    HashSet<SceneDisplay> displaysToRemove;
+    protected HashSet<SceneDisplay> displayList;
+    protected HashSet<SceneDisplay> displaysToRemove;
     protected boolean debugModeEnabled = false;
     protected SceneDebug sceneDebug;
     public Scene(boolean debugModeEnabled) {

@@ -27,22 +27,30 @@ final public class GraphicsManager {
     public void addGraphic(Graphic<?,?> newGraphic){
         RenderInfo renderInfo = newGraphic.getRenderInfo();
         ArrayList<Renderer<?,?>> renderers = layers.get(renderInfo.layer());
-        assert renderers != null: "bad Renderer generation";
-        for(Renderer<?,?> renderer : renderers){
-            if(renderer.getType() == renderInfo.renderType()){
-                switch (renderInfo.renderType()){
-                    case STATIC_IMAGE, DYNAMIC_IMAGE -> {
-                        Image2DRenderer staticImageRenderer = (Image2DRenderer) renderer;
-                        Image2D image = (Image2D) newGraphic;
-                        staticImageRenderer.addGraphic(image);
-                    }
-                    case COLOR_RECTANGLE -> {
-                        ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
-                        ColorRectangle colorRectangle = (ColorRectangle) newGraphic;
-                        colorRectangleRenderer.addGraphic(colorRectangle);
-                    }
+        if (renderers != null) {
+            for (Renderer<?, ?> renderer : renderers) {
+                if (renderer.getType() == renderInfo.renderType()) {
+                    addGraphicToMatchingRenderer(newGraphic, renderer);
+                    return;
                 }
-                return;
+            }
+        }
+        createNewRenderer(renderInfo.layer(), renderInfo.renderType());
+        addGraphicToMatchingRenderer(newGraphic, layers.get(renderInfo.layer()).getLast());
+    }
+
+    private void addGraphicToMatchingRenderer(Graphic<?,?> newGraphic, Renderer<?,?> renderer){
+        assert newGraphic.getRenderInfo().renderType() == renderer.getType(): "wrong renderer for graphic";
+        switch (renderer.getType()){
+            case STATIC_IMAGE, DYNAMIC_IMAGE -> {
+                Image2DRenderer ImageRenderer = (Image2DRenderer) renderer;
+                Image2D image = (Image2D) newGraphic;
+                ImageRenderer.addGraphic(image);
+            }
+            case COLOR_RECTANGLE -> {
+                ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
+                ColorRectangle colorRectangle = (ColorRectangle) newGraphic;
+                colorRectangleRenderer.addGraphic(colorRectangle);
             }
         }
     }

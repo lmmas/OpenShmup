@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface SceneDisplay {
     SceneDisplay copy();
-    Optional<RenderInfo> getRenderInfo();
+    RenderInfo getRenderInfo();
     List<Graphic<?, ?>> getGraphics();
     Optional<Texture> getTexture();
     void initDisplay(float startingTimeSeconds);

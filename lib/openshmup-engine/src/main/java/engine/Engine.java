@@ -9,7 +9,6 @@ import org.lwjgl.system.*;
 
 import java.io.IOException;
 import java.nio.*;
-import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -17,22 +16,24 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 final public class Engine {
+    public static Engine engine;
     private long glfwWindow;
     public static EditorDataManager editorDataManager;
     public static AssetManager assetManager;
     public static GraphicsManager graphicsManager;
     public static InputStatesManager inputStatesManager;
     private Scene currentScene;
-    private Consumer<Engine> testInit;
-    private Consumer<Engine> testInLoop;
+    private final Runnable initScript;
+    private final Runnable inLoopScript;
 
     public static void main(String[] args) throws IOException {
         if(args.length != 1){
             throw new IllegalArgumentException("invalid engine arguments");
         }
-        new Engine(args[0]).run();
+        new Engine(args[0], () -> {}, () -> {});
     }
-    public Engine(String gameFolder) throws IOException {
+    public Engine(String gameFolder, Runnable initScript, Runnable inLoopScript) throws IOException {
+        engine = this;
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolder);
         editorDataManager = new EditorDataManager(this);
@@ -87,12 +88,13 @@ final public class Engine {
         assetManager = new AssetManager();
         editorDataManager.loadGameContents();
         inputStatesManager = new InputStatesManager(glfwWindow);
-        this.testInit = engine -> {};
-        this.testInLoop = engine -> {};
+        this.initScript = initScript;
+        this.inLoopScript = inLoopScript;
+        this.run();
     }
-    public void run(){
+    private void run(){
+        initScript.run();
         gameInit();
-        testInit.accept(this);
         loop();
 
         Callbacks.glfwFreeCallbacks(glfwWindow);
@@ -106,11 +108,11 @@ final public class Engine {
         this.currentScene = new LevelScene(editorDataManager.getTimeline(0), GameConfig.debugMode);
     }
 
-    public void loop(){
+    private void loop(){
         while (!glfwWindowShouldClose(glfwWindow)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
-            testInLoop.accept(this);
+            inLoopScript.run();
             inputStatesManager.updateControlStates();
             currentScene.update();
             graphicsManager.drawGraphics();
@@ -123,31 +125,7 @@ final public class Engine {
         return glfwWindow;
     }
 
-    public EditorDataManager getEditorDataManager() {
-        return editorDataManager;
-    }
-
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-
-    public GraphicsManager getGraphicsManager() {
-        return graphicsManager;
-    }
-
-    public InputStatesManager getInputStatesManager() {
-        return inputStatesManager;
-    }
-
     public Scene getCurrentScene() {
         return currentScene;
-    }
-
-    public void setTestInit(Consumer<Engine> testInit) {
-        this.testInit = testInit;
-    }
-
-    public void setTestInLoop(Consumer<Engine> testInLoop) {
-        this.testInLoop = testInLoop;
     }
 }

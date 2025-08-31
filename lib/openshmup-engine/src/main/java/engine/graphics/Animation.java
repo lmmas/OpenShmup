@@ -46,8 +46,8 @@ public class Animation implements SceneDisplay {
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
-        return Optional.of(image.getRenderInfo());
+    public RenderInfo getRenderInfo() {
+        return image.getRenderInfo();
     }
 
     @Override

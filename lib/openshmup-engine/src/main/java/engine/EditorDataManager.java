@@ -55,7 +55,7 @@ final public class EditorDataManager {
         customDisplays.put(id, display);
     }
 
-    public Optional<RenderInfo> getRenderInfoOfDisplay(int id){
+    public RenderInfo getRenderInfoOfDisplay(int id){
         return customDisplays.get(id).getRenderInfo();
     }
 

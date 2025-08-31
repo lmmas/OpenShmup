@@ -52,8 +52,8 @@ final public class ScrollingImageDisplay implements SceneDisplay {
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
-        return Optional.of(image1.getRenderInfo());
+    public RenderInfo getRenderInfo() {
+        return image1.getRenderInfo();
     }
 
     @Override

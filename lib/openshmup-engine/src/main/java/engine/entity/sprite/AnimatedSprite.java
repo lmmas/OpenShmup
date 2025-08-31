@@ -31,12 +31,12 @@ final public class AnimatedSprite implements EntitySprite{
 
     @Override
     public Optional<RenderInfo> getRenderInfo() {
-        return Optional.of(animation.getImage().getRenderInfo());
+        return Optional.of(animation.getRenderInfo());
     }
 
     @Override
     public Optional<Graphic<?, ?>> getGraphic() {
-        return Optional.of(animation.getImage());
+        return Optional.of(animation.getGraphics().getFirst());
     }
 
     @Override

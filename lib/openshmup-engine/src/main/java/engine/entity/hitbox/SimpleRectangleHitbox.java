@@ -22,6 +22,11 @@ final public class SimpleRectangleHitbox implements Hitbox{
     }
 
     @Override
+    public boolean containsPoint(Vec2D position) {
+        return position.x > leftBound && position.x < rightBound && position.y > downBound && position.y < upBound;
+    }
+
+    @Override
     public void setPosition(float positionX, float positionY){
         this.position.x = positionX;
         this.position.y = positionY;

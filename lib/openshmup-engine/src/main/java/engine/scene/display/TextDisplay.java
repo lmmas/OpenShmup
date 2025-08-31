@@ -108,8 +108,8 @@ final public class TextDisplay implements SceneDisplay{
     }
 
     @Override
-    public Optional<RenderInfo> getRenderInfo() {
-        return Optional.of(renderInfo);
+    public RenderInfo getRenderInfo() {
+        return renderInfo;
     }
 
     @Override

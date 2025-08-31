@@ -3,13 +3,9 @@ package engine.entity.hitbox;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 import engine.assets.Texture;
-import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
-
-import static org.lwjgl.stb.STBImage.*;
 
 final public class CompositeHitbox implements Hitbox{
     private Vec2D position;
@@ -137,6 +133,11 @@ final public class CompositeHitbox implements Hitbox{
             rectangleList.add(new SimpleRectangleHitbox(0.0f,0.0f,0.0f,0.0f));
         }
         setSize(size.x, size.y);
+    }
+
+    @Override
+    public boolean containsPoint(Vec2D position) {
+        return rectangleList.stream().anyMatch((Hitbox hitbox) -> hitbox.containsPoint(position));
     }
 
     @Override

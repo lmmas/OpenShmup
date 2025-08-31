@@ -1,5 +1,7 @@
 package engine.entity.hitbox;
 
+import engine.types.Vec2D;
+
 final public class EmptyHitbox implements Hitbox{
     private static EmptyHitbox instance = null;
     private EmptyHitbox(){
@@ -11,6 +13,11 @@ final public class EmptyHitbox implements Hitbox{
             instance = new EmptyHitbox();
         }
         return instance;
+    }
+
+    @Override
+    public boolean containsPoint(Vec2D position) {
+        return false;
     }
 
     @Override

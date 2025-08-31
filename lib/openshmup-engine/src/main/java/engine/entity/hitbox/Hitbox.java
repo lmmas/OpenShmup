@@ -1,8 +1,11 @@
 package engine.entity.hitbox;
 
+import engine.types.Vec2D;
+
 import java.util.ArrayList;
 
 public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRectangleHitbox {
+    boolean containsPoint(Vec2D position);
     void setPosition(float positionX, float positionY);
     void setSize(float sizeX, float sizeY);
     void setOrientation(float orientationRadians);
