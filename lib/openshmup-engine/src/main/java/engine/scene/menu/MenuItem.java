@@ -1,16 +1,31 @@
 package engine.scene.menu;
 
-import engine.assets.Texture;
 import engine.entity.hitbox.Hitbox;
-import engine.graphics.Graphic;
-import engine.render.RenderInfo;
+import engine.scene.display.SceneVisual;
 
-import java.util.List;
 
-public interface MenuItem {
-    List<RenderInfo> getRenderInfos();
-    List<Graphic<?, ?>> getGraphics();
-    List<Texture> getTexture();
-    Hitbox getClickHitbox();
-    void onClick();
+public class MenuItem {
+    private SceneVisual visual;
+
+    private Hitbox clickHitbox;
+
+    private Runnable onClick;
+
+    public MenuItem(SceneVisual visual, Hitbox clickHitbox, Runnable onClick){
+        this.visual = visual;
+        this.clickHitbox = clickHitbox;
+        this.onClick = onClick;
+    }
+
+    public SceneVisual getVisual(){
+        return visual;
+    }
+
+    public Hitbox getClickHitbox(){
+        return clickHitbox;
+    }
+
+    public void onClick() {
+        onClick.run();
+    }
 }
