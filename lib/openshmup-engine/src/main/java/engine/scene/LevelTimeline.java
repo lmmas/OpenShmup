@@ -104,4 +104,8 @@ final public class LevelTimeline {
         EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
         addSpawnable(time, entitySpawnInfo);
     }
+
+    public void resetTime(){
+        this.nextSpawnTime = spawnList.higherKey(-1.0f);
+    }
 }

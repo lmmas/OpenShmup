@@ -8,10 +8,15 @@ import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
+import engine.graphics.ColorRectangle;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.graphics.RenderType;
 import engine.assets.Texture;
+import engine.scene.display.ColorShape;
+import engine.scene.menu.MenuActions;
+import engine.scene.menu.MenuItem;
+import engine.scene.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.display.SceneVisual;
@@ -33,6 +38,7 @@ final public class LevelScene extends Scene{
     private List<Boolean> lastControlStates;
     private LevelTimeline timeline;
     final private LevelUI levelUI;
+    final private MenuScreen pauseMenu;
     final private LevelDebug levelDebug;
 
     public LevelScene(LevelTimeline timeline, boolean debugMode) {
@@ -46,6 +52,13 @@ final public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
+        ColorShape redRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        redRectangle.setPosition(0.5f, 0.5f);
+        this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, null, List.of(new MenuItem(
+                redRectangle,
+                new SimpleRectangleHitbox(0.5f, 0.5f, 0.5f, 0.5f),
+                MenuActions.reloadGame
+        )));
         this.levelDebug = new LevelDebug(debugMode);
         loadAssets();
         this.timer.start();
@@ -66,13 +79,17 @@ final public class LevelScene extends Scene{
 
     @Override
     public void handleInputs() {
-        controlStates = inputStatesManager.getControlStates();
+        super.handleInputs();
+        controlStates = inputStatesManager.getGameControlStates();
         if(getControlActivation(GameControl.PAUSE)){
             if(timer.isPaused()){
                 timer.resume();
+                removeMenu(pauseMenu);
             }
             else{
                 timer.pause();
+                addMenu(pauseMenu);
+                setActiveMenu(pauseMenu);
             }
         }
         if(getControlActivation(GameControl.SLOWDOWN)){

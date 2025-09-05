@@ -15,14 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 
 final public class EditorDataManager {
-    final private Engine engine;
     private final HashMap<Integer, SceneVisual> customDisplays;
     private final HashMap<Integer, Trajectory> customTrajectories;
     private final HashMap<Integer, Entity> customEntities;
     private final ArrayList<LevelTimeline> customTimelines;
 
     public EditorDataManager(Engine engine){
-        this.engine = engine;
         this.customDisplays = new HashMap<>();
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();

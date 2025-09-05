@@ -1,9 +1,12 @@
 package engine.scene;
 
+import engine.entity.hitbox.Hitbox;
 import engine.graphics.*;
 import engine.scene.display.SceneVisual;
 import engine.scene.display.TextDisplay;
+import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
+import engine.types.Vec2D;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -11,8 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static engine.Engine.assetManager;
-import static engine.Engine.graphicsManager;
+import static engine.Engine.*;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.debugDisplayLayer;
 
@@ -38,7 +40,18 @@ abstract public class Scene {
         this.debugModeEnabled = debugModeEnabled;
     }
 
-    abstract public void handleInputs();
+    public void handleInputs(){
+        if(activeMenu == null){
+            return;
+        }
+        for (MenuItem menuItem: activeMenu.menuItems()){
+            Vec2D cursorPosition = inputStatesManager.getCursorPosition();
+            Hitbox clickHitbox = menuItem.getClickHitbox();
+            if(inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)){
+                menuItem.onClick();
+            }
+        }
+    }
 
     public void update(){
         if(!timer.isPaused()){
@@ -82,9 +95,7 @@ abstract public class Scene {
     }
 
     final public void addMenu(MenuScreen menuScreen){
-        menuScreen.menuItems().stream()
-                .flatMap(item -> item.getGraphics().stream())
-                .forEach(graphic -> graphicsManager.addGraphic(graphic));
+        menuScreen.menuItems().forEach(menuItem -> addVisual(menuItem.getVisual()));
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
         if(menuBackground != null){
             addVisual(menuBackground);
@@ -93,13 +104,19 @@ abstract public class Scene {
     }
 
     final public void removeMenu(MenuScreen menuScreen){
-        menuScreen.menuItems().stream()
-                .flatMap(item -> item.getGraphics().stream())
-                .forEach(Graphic::delete);
+        menuScreen.menuItems().forEach(menuItem -> deleteVisual(menuItem.getVisual()));
+        SceneVisual menuBackground = menuScreen.backgroundDisplay();
+        if(menuBackground != null){
+            deleteVisual(menuBackground);
+        }
         displayedMenus.remove(menuScreen);
         if(activeMenu == menuScreen){
             activeMenu = null;
         }
+    }
+
+    final protected void setActiveMenu(MenuScreen menuScreen){
+        this.activeMenu = menuScreen;
     }
 
     protected class SceneDebug {

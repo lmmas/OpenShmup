@@ -22,7 +22,7 @@ final public class GameConfig {
     public static boolean debugMode;
 
     public static class LevelUI {
-        public static int contentsLayer = 1024;
+        public static int contentsLayer = 1000;
 
         public static class Lives {
             public static String textureFilepath;
@@ -31,4 +31,6 @@ final public class GameConfig {
             public static Vec2D stride;
         }
     }
+
+    public static int pauseMenuLayer = 2000;
 }

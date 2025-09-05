@@ -105,6 +105,8 @@ final public class Engine {
     }
 
     public void gameInit(){
+        graphicsManager.clearLayers();
+        editorDataManager.getTimeline(0).resetTime();
         this.currentScene = new LevelScene(editorDataManager.getTimeline(0), GameConfig.debugMode);
     }
 
@@ -113,7 +115,7 @@ final public class Engine {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
             inLoopScript.run();
-            inputStatesManager.updateControlStates();
+            inputStatesManager.updateInputStates();
             currentScene.update();
             graphicsManager.drawGraphics();
             glfwSwapBuffers(glfwWindow);

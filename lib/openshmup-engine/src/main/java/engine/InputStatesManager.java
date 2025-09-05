@@ -1,6 +1,8 @@
 package engine;
 
 import engine.types.GameControl;
+import engine.types.IVec2D;
+import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +15,11 @@ final public class InputStatesManager {
     final private long window;
     final private HashMap<Integer, GameControl> controlsMap;
     final private ArrayList<Boolean> controlStatesList;
+    private boolean leftClickState = false;
+    final private double[] cursorPositionXBuffer;
+    final private double[] cursorPositionYBuffer;
+    final private Vec2D cursorPosition;
+
     public InputStatesManager(long window){
         this.window = window;
         this.controlsMap = new HashMap<>();
@@ -27,18 +34,35 @@ final public class InputStatesManager {
         controlsMap.put(GLFW_KEY_T, GameControl.SLOWDOWN);
         controlsMap.put(GLFW_KEY_F3, GameControl.TOGGLE_DEBUG);
         this.controlStatesList = new ArrayList<>(Collections.nCopies(controlsMap.size(), Boolean.FALSE));
+        this.cursorPositionXBuffer = new double[1];
+        this.cursorPositionYBuffer = new double[1];
+        this.cursorPosition = new Vec2D(0.0f, 0.0f);
     }
 
-    public void updateControlStates(){
+    public void updateInputStates(){
         for(Integer key: controlsMap.keySet()){
             GameControl control = controlsMap.get(key);
             controlStatesList.set(control.ordinal(), (glfwGetKey(window, key) == GLFW_PRESS));
         }
+
+        leftClickState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+
+        glfwGetCursorPos(window, cursorPositionXBuffer, cursorPositionYBuffer);
+        cursorPosition.x = (float) (cursorPositionXBuffer[0] / PlayerSettings.getWindowWidth());
+        cursorPosition.y = 1.0f - (float) (cursorPositionYBuffer[0] / PlayerSettings.getWindowHeight());
     }
 
-    public List<Boolean> getControlStates(){
+    public List<Boolean> getGameControlStates(){
         ArrayList<Boolean> controlStatesCopy = new ArrayList<>(controlStatesList.size());
         controlStatesCopy.addAll(controlStatesList);
         return controlStatesCopy;
+    }
+
+    public boolean getLeftClickState(){
+        return leftClickState;
+    }
+
+    public Vec2D getCursorPosition(){
+        return new Vec2D(cursorPosition);
     }
 }
