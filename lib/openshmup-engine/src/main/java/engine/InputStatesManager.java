@@ -1,7 +1,6 @@
 package engine;
 
 import engine.types.GameControl;
-import engine.types.IVec2D;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;

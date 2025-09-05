@@ -23,7 +23,7 @@ final public class PlayerShot implements ExtraComponent{
     }
     @Override
     public ExtraComponent copyIfNotReusable() {
-        return this;
+        return new PlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);
     }
 
     @Override
