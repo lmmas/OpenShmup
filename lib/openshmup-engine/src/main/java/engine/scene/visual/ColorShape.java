@@ -1,38 +1,32 @@
-package engine.scene.display;
+package engine.scene.visual;
 
 import engine.assets.Texture;
+import engine.graphics.ColorRectangle;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 
 import java.util.List;
 
-final public class EmptyVisual extends SceneVisual {
-    public static EmptyVisual instance = null;
+final public class ColorShape extends SceneVisual{
+    final private ColorRectangle colorRectangle;
 
-    private EmptyVisual() {
-
-    }
-
-    public static EmptyVisual getInstance(){
-        if(instance == null){
-            instance = new EmptyVisual();
-        }
-        return instance;
+    public ColorShape(ColorRectangle colorRectangle) {
+        this.colorRectangle = colorRectangle;
     }
 
     @Override
     public SceneVisual copy() {
-        return null;
+        return new ColorShape(colorRectangle.copy());
     }
 
     @Override
     public List<RenderInfo> getRenderInfos() {
-        return List.of();
+        return List.of(colorRectangle.getRenderInfo());
     }
 
     @Override
     public List<Graphic<?, ?>> getGraphics() {
-        return List.of();
+        return List.of(colorRectangle);
     }
 
     @Override
@@ -42,12 +36,12 @@ final public class EmptyVisual extends SceneVisual {
 
     @Override
     public void setPosition(float positionX, float positionY) {
-
+        colorRectangle.setPosition(positionX, positionY);
     }
 
     @Override
     public void setScale(float scaleX, float scaleY) {
-
+        colorRectangle.setScale(scaleX, scaleY);
     }
 
     @Override

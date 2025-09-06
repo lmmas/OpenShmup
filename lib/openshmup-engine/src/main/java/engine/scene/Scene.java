@@ -2,8 +2,8 @@ package engine.scene;
 
 import engine.entity.hitbox.Hitbox;
 import engine.graphics.*;
-import engine.scene.display.SceneVisual;
-import engine.scene.display.TextDisplay;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.TextDisplay;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
 import engine.types.Vec2D;

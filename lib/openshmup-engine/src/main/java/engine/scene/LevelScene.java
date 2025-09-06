@@ -13,13 +13,14 @@ import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.graphics.RenderType;
 import engine.assets.Texture;
-import engine.scene.display.ColorShape;
+import engine.scene.visual.ColorShape;
 import engine.scene.menu.MenuActions;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
-import engine.scene.display.SceneVisual;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.ScreenFilter;
 import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -52,10 +53,10 @@ final public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
-        ColorShape redRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.25f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
-        redRectangle.setPosition(0.5f, 0.5f);
-        this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, null, List.of(new MenuItem(
-                redRectangle,
+        ColorShape blueRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.25f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        blueRectangle.setPosition(0.5f, 0.5f);
+        this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, new ScreenFilter(GameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.5f), List.of(new MenuItem(
+                blueRectangle,
                 new SimpleRectangleHitbox(0.5f, 0.5f, 0.5f, 0.25f),
                 MenuActions.reloadGame
         )));

@@ -1,6 +1,6 @@
 package engine.scene.menu;
 
-import engine.scene.display.SceneVisual;
+import engine.scene.visual.SceneVisual;
 
 import java.util.List;
 

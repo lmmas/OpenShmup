@@ -46,11 +46,11 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     abstract public class Primitive{
         Renderer<G,P>.Batch currentBatch;
 
-        protected boolean shouldBeRemoved;
+        protected boolean shouldBeRemovedFlag;
 
         public Primitive(){
             this.currentBatch = null;
-            this.shouldBeRemoved = false;
+            this.shouldBeRemovedFlag = false;
         }
 
         public void setBatch(Renderer<G,P>.Batch newBatch){
@@ -64,15 +64,15 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         }
 
         public boolean getShouldBeRemoved() {
-            return shouldBeRemoved;
+            return shouldBeRemovedFlag;
         }
 
         public void remove(){
-            this.shouldBeRemoved = true;
+            this.shouldBeRemovedFlag = true;
         }
 
         public void hasBeenRemoved(){
-            this.shouldBeRemoved = false;
+            this.shouldBeRemovedFlag = false;
         }
     }
 }

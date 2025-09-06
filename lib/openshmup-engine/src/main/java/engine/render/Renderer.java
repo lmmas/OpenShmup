@@ -99,8 +99,9 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
         public void cleanupPrimitives(){
             int i = 0;
             while (i < primitives.size()){
-                if(primitives.get(i).getShouldBeRemoved()){
-                    primitives.get(i).hasBeenRemoved();
+                P primitive = primitives.get(i);
+                if(primitive.getShouldBeRemoved()){
+                    primitive.hasBeenRemoved();
                     removePrimitive(i);
                     dataHasChanged();
                 }

@@ -1,4 +1,4 @@
-package engine.scene.display;
+package engine.scene.visual;
 
 import engine.GameConfig;
 import engine.assets.Font;

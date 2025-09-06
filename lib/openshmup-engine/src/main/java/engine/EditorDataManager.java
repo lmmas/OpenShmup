@@ -6,7 +6,7 @@ import engine.entity.trajectory.Trajectory;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.LevelTimeline;
-import engine.scene.display.SceneVisual;
+import engine.scene.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 import json.EditorDataLoader;
 

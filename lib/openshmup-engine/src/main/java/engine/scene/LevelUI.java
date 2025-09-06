@@ -3,7 +3,7 @@ package engine.scene;
 import engine.GameConfig;
 import engine.entity.Ship;
 import engine.graphics.Image2D;
-import engine.scene.display.ImageDisplay;
+import engine.scene.visual.ImageDisplay;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;

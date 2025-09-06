@@ -1,5 +1,6 @@
-package engine.scene.display;
+package engine.scene.visual;
 
+import engine.GlobalVars;
 import engine.assets.Texture;
 import engine.graphics.ColorRectangle;
 import engine.graphics.Graphic;
@@ -7,16 +8,23 @@ import engine.render.RenderInfo;
 
 import java.util.List;
 
-final public class ColorShape extends SceneVisual{
-    final private ColorRectangle colorRectangle;
+import static engine.Engine.assetManager;
 
-    public ColorShape(ColorRectangle colorRectangle) {
-        this.colorRectangle = colorRectangle;
+final public class ScreenFilter extends SceneVisual{
+    private ColorRectangle colorRectangle;
+
+    public ScreenFilter(int layer, float r, float g, float b, float a){
+        this.colorRectangle = new ColorRectangle(layer, 1.0f, 1.0f, r, g, b, a, assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl"));
+        colorRectangle.setPosition(0.5f, 0.5f);
+    }
+
+    public ScreenFilter(ScreenFilter screenFilter){
+        this.colorRectangle = screenFilter.colorRectangle.copy();
     }
 
     @Override
     public SceneVisual copy() {
-        return new ColorShape(colorRectangle.copy());
+        return new ScreenFilter(this);
     }
 
     @Override
@@ -36,7 +44,7 @@ final public class ColorShape extends SceneVisual{
 
     @Override
     public void setPosition(float positionX, float positionY) {
-        colorRectangle.setPosition(positionX, positionY);
+
     }
 
     @Override

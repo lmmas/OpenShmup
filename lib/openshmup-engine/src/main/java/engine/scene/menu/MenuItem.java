@@ -1,7 +1,7 @@
 package engine.scene.menu;
 
 import engine.entity.hitbox.Hitbox;
-import engine.scene.display.SceneVisual;
+import engine.scene.visual.SceneVisual;
 
 
 public class MenuItem {

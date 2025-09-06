@@ -1,4 +1,4 @@
-package engine.scene.display;
+package engine.scene.visual;
 
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;

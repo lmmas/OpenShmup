@@ -1,51 +1,53 @@
-package engine.scene.display;
+package engine.scene.visual;
 
-import engine.graphics.Graphic;
-import engine.graphics.Image2D;
-import engine.render.RenderInfo;
 import engine.assets.Texture;
+import engine.graphics.Graphic;
+import engine.render.RenderInfo;
 
 import java.util.List;
 
-final public class ImageDisplay extends SceneVisual {
-    Image2D image;
+final public class EmptyVisual extends SceneVisual {
+    public static EmptyVisual instance = null;
 
-    public ImageDisplay(Image2D image){
-        this.image = image;
+    private EmptyVisual() {
+
     }
+
+    public static EmptyVisual getInstance(){
+        if(instance == null){
+            instance = new EmptyVisual();
+        }
+        return instance;
+    }
+
     @Override
     public SceneVisual copy() {
-        return new ImageDisplay(image.copy());
+        return null;
     }
 
     @Override
     public List<RenderInfo> getRenderInfos() {
-        return List.of(image.getRenderInfo());
+        return List.of();
     }
 
     @Override
     public List<Graphic<?, ?>> getGraphics() {
-        return List.of(image);
+        return List.of();
     }
 
     @Override
     public List<Texture> getTextures() {
-        return List.of(image.getTexture());
-    }
-
-    @Override
-    public boolean shouldBeRemoved() {
-        return false;
+        return List.of();
     }
 
     @Override
     public void setPosition(float positionX, float positionY) {
-        image.setPosition(positionX, positionY);
+
     }
 
     @Override
     public void setScale(float scaleX, float scaleY) {
-        image.setScale(scaleX, scaleY);
+
     }
 
     @Override
