@@ -41,6 +41,7 @@ final public class LevelScene extends Scene{
     private LevelTimeline timeline;
     final private LevelUI levelUI;
     final private MenuScreen pauseMenu;
+    final private MenuScreen gameOverScreen;
     final private LevelDebug levelDebug;
 
     public LevelScene(LevelTimeline timeline, boolean debugMode) {
@@ -63,6 +64,7 @@ final public class LevelScene extends Scene{
                 new SimpleRectangleHitbox(0.5f, 0.5f, 0.3f, 0.15f),
                 MenuActions.reloadGame
         )));
+        this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(debugMode);
         loadAssets();
         this.timer.start();
@@ -267,6 +269,10 @@ final public class LevelScene extends Scene{
                     if(shipEntity.isDead()){
                         shipEntity.deathEvent();
                         entitiesToRemove.add(entity);
+                        if(!shipEntity.isEvil()){
+                            addMenu(gameOverScreen);
+                            setActiveMenu(gameOverScreen);
+                        }
                     }
                 }
             }
