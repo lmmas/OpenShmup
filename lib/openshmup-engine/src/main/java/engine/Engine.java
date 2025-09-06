@@ -56,26 +56,27 @@ final public class Engine {
         glfwWindow = glfwCreateWindow(PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight(), "OpenShmup", NULL, NULL);
         assert glfwWindow != NULL:"Unable to create GLFW Window";
 
-        try(MemoryStack stack = stackPush()){
+        try(MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
             IntBuffer pHeight = stack.mallocInt(1);
 
             glfwGetWindowSize(glfwWindow, pWidth, pHeight);
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            assert vidmode != null: "glfwGetVideoMode failure";
-            glfwSetWindowPos(glfwWindow,(vidmode.width() - pWidth.get(0)) / 2,(vidmode.height() - pHeight.get(0)) / 2);
-
-            glfwMakeContextCurrent(glfwWindow);
-            glfwSwapInterval(1);
-            GL.createCapabilities();
-            glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
-            debugProc = GLUtil.setupDebugMessageCallback();
-            GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glfwShowWindow(glfwWindow);
+            assert vidmode != null : "glfwGetVideoMode failure";
+            glfwSetWindowPos(glfwWindow, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
         }
+
+        glfwMakeContextCurrent(glfwWindow);
+        glfwSwapInterval(1);
+        GL.createCapabilities();
+        glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
+        debugProc = GLUtil.setupDebugMessageCallback();
+        GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glfwShowWindow(glfwWindow);
+
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
         graphicsManager = new GraphicsManager();
         assetManager = new AssetManager();
