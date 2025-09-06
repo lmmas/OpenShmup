@@ -54,6 +54,7 @@ final public class TextDisplay extends SceneVisual {
         textLines.clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
+        this.setReloadGraphicsFlag(true);
         calculateLineWidths();
         updateTextPosition();
     }
@@ -79,7 +80,6 @@ final public class TextDisplay extends SceneVisual {
         else{
             TextCharacter newCharacter = new TextCharacter(newCodepoint, font);
             textLines.getLast().add(newCharacter);
-            graphicsManager.addGraphic(newCharacter.image);
         }
     }
 

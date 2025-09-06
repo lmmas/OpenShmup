@@ -3,22 +3,24 @@ package engine.scene.menu;
 import engine.entity.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
 
+import java.util.List;
+
 
 public class MenuItem {
-    private SceneVisual visual;
+    final private List<SceneVisual> visuals;
 
     private Hitbox clickHitbox;
 
     private Runnable onClick;
 
-    public MenuItem(SceneVisual visual, Hitbox clickHitbox, Runnable onClick){
-        this.visual = visual;
+    public MenuItem(List<SceneVisual> visuals, Hitbox clickHitbox, Runnable onClick){
         this.clickHitbox = clickHitbox;
         this.onClick = onClick;
+        this.visuals = visuals;
     }
 
-    public SceneVisual getVisual(){
-        return visual;
+    public List<SceneVisual> getVisuals(){
+        return visuals;
     }
 
     public Hitbox getClickHitbox(){

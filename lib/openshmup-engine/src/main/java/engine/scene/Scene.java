@@ -56,10 +56,14 @@ abstract public class Scene {
     public void update(){
         if(!timer.isPaused()){
             sceneTime = timer.getTimeSeconds();
-            for(SceneVisual display: sceneVisuals){
-                display.update(sceneTime);
-                if(display.shouldBeRemoved()){
-                    visualsToRemove.add(display);
+            for(SceneVisual visual: sceneVisuals){
+                visual.update(sceneTime);
+                if(visual.shouldBeRemoved()){
+                    visualsToRemove.add(visual);
+                }
+                if(visual.getReloadGraphicsFlag()){
+                    visual.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
+                    visual.setReloadGraphicsFlag(false);
                 }
             }
             for(var display: visualsToRemove){
@@ -73,6 +77,7 @@ abstract public class Scene {
 
 
     final public void addVisual(SceneVisual visual){
+        List<Graphic<?,?>> graphics = visual.getGraphics();
         visual.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
         sceneVisuals.add(visual);
         visual.initDisplay(this.sceneTime);
@@ -95,7 +100,8 @@ abstract public class Scene {
     }
 
     final public void addMenu(MenuScreen menuScreen){
-        menuScreen.menuItems().forEach(menuItem -> addVisual(menuItem.getVisual()));
+        menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+                .forEach(this::addVisual);
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
         if(menuBackground != null){
             addVisual(menuBackground);
@@ -104,7 +110,8 @@ abstract public class Scene {
     }
 
     final public void removeMenu(MenuScreen menuScreen){
-        menuScreen.menuItems().forEach(menuItem -> removeVisual(menuItem.getVisual()));
+        menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+                .forEach(this::removeVisual);
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
         if(menuBackground != null){
             removeVisual(menuBackground);

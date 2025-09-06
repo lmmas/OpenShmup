@@ -21,6 +21,7 @@ import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
+import engine.scene.visual.TextDisplay;
 import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -53,11 +54,13 @@ final public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
-        ColorShape blueRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.25f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        ColorShape blueRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        TextDisplay textDisplay = new TextDisplay(GameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30, "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
         blueRectangle.setPosition(0.5f, 0.5f);
+        textDisplay.setTextColor(0.0f, 0.0f, 0.0f, 1.0f);
         this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, new ScreenFilter(GameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.5f), List.of(new MenuItem(
-                blueRectangle,
-                new SimpleRectangleHitbox(0.5f, 0.5f, 0.5f, 0.25f),
+                List.of(blueRectangle, textDisplay),
+                new SimpleRectangleHitbox(0.5f, 0.5f, 0.3f, 0.15f),
                 MenuActions.reloadGame
         )));
         this.levelDebug = new LevelDebug(debugMode);
