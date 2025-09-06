@@ -67,7 +67,7 @@ final public class LevelTimeline {
                 allRenderInfos.addAll(editorDataManager.getRenderInfosOfEntity(entitySpawnInfo.id()));
             }
             if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
-                allRenderInfos.addAll(editorDataManager.getRenderInfosOfDisplay(sceneDisplaySpawnInfo.id()));
+                allRenderInfos.addAll(editorDataManager.getRenderInfosOfVisual(sceneDisplaySpawnInfo.id()));
             }
         }
         return allRenderInfos;

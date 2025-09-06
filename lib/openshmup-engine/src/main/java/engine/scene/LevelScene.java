@@ -272,6 +272,7 @@ final public class LevelScene extends Scene{
                         if(!shipEntity.isEvil()){
                             addMenu(gameOverScreen);
                             setActiveMenu(gameOverScreen);
+                            timer.pause();
                         }
                     }
                 }

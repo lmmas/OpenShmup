@@ -18,6 +18,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 final public class Engine {
     public static Engine engine;
     private long glfwWindow;
+    final private org.lwjgl.system.Callback debugProc;
     public static EditorDataManager editorDataManager;
     public static AssetManager assetManager;
     public static GraphicsManager graphicsManager;
@@ -32,11 +33,11 @@ final public class Engine {
         }
         new Engine(args[0], () -> {}, () -> {});
     }
-    public Engine(String gameFolder, Runnable initScript, Runnable inLoopScript) throws IOException {
+    public Engine(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
         engine = this;
         GlobalVars.Paths.detectRootFolder();
-        GlobalVars.Paths.setcustomGameFolder(gameFolder);
-        editorDataManager = new EditorDataManager(this);
+        GlobalVars.Paths.setcustomGameFolder(gameFolderName);
+        editorDataManager = new EditorDataManager(gameFolderName);
         editorDataManager.loadGameParameters();
         PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
 
@@ -55,14 +56,6 @@ final public class Engine {
         glfwWindow = glfwCreateWindow(PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight(), "OpenShmup", NULL, NULL);
         assert glfwWindow != NULL:"Unable to create GLFW Window";
 
-        glfwSetKeyCallback(glfwWindow, (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true);
-        });
-        glfwSetFramebufferSizeCallback(glfwWindow, (window, width, height) -> {
-            glViewport(0, 0, width, height);  // Adjust the viewport to the new window size
-        });
-
         try(MemoryStack stack = stackPush()){
             IntBuffer pWidth = stack.mallocInt(1);
             IntBuffer pHeight = stack.mallocInt(1);
@@ -76,7 +69,7 @@ final public class Engine {
             glfwSwapInterval(1);
             GL.createCapabilities();
             glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
-            org.lwjgl.system.Callback debugProc = GLUtil.setupDebugMessageCallback();
+            debugProc = GLUtil.setupDebugMessageCallback();
             GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -101,7 +94,7 @@ final public class Engine {
         glfwDestroyWindow(glfwWindow);
 
         glfwTerminate();
-        glfwSetErrorCallback(null).free();
+        debugProc.free();
     }
 
     public void gameInit(){

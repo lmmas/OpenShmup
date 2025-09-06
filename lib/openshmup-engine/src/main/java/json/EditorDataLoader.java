@@ -50,21 +50,22 @@ final public class EditorDataLoader {
         GameConfig.LevelUI.Lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
         GameConfig.LevelUI.Lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
     }
+
     public void loadCustomDisplays(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
-        List<SafeJsonNode> displayList = rootNode.checkAndGetObjectsFromArray();
-        for(SafeJsonNode displayNode: displayList){
-            int id = displayNode.checkAndGetInt("id");
-            int layer = displayNode.checkAndGetInt("layer");
-            String type = displayNode.checkAndGetString("type");
-            Vec2D size = convertToFloatVec( displayNode.checkAndGetIVec2D( "size"));
+        List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
+        for(SafeJsonNode visualNode: visualList){
+            int id = visualNode.checkAndGetInt("id");
+            int layer = visualNode.checkAndGetInt("layer");
+            String type = visualNode.checkAndGetString("type");
+            Vec2D size = convertToFloatVec( visualNode.checkAndGetIVec2D( "size"));
 
             if(type.equals("scrollingImage")){
 
-                String imagePath = GlobalVars.Paths.editorTextureFolder + displayNode.checkAndGetString("fileName");
-                boolean horizontalScrolling = displayNode.checkAndGetBoolean("horizontalScrolling");
+                String imagePath = GlobalVars.Paths.editorTextureFolder + visualNode.checkAndGetString("fileName");
+                boolean horizontalScrolling = visualNode.checkAndGetBoolean("horizontalScrolling");
 
-                int speed = displayNode.checkAndGetInt("speed");
+                int speed = visualNode.checkAndGetInt("speed");
                 float normalizedSpeed;
                 if(horizontalScrolling){
                     normalizedSpeed = (float) speed / GameConfig.getEditionWidth();
@@ -72,10 +73,10 @@ final public class EditorDataLoader {
                     normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
                 }
 
-                editorDataManager.addCustomDisplays(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                editorDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
-                SafeJsonNode animationInfoNode = displayNode.checkAndGetObject("animationInfo");
+                SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
 
                 String animationFilepath = GlobalVars.Paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
                 int frameCount = animationInfoNode.checkAndGetInt("frameCount");
@@ -83,8 +84,8 @@ final public class EditorDataLoader {
                 IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
                 IVec2D stride = animationInfoNode.checkAndGetIVec2D("stride");
 
-                float framePeriodSeconds = displayNode.checkAndGetFloat("framePeriodSeconds");
-                boolean looping = displayNode.checkAndGetBoolean("looping");
+                float framePeriodSeconds = visualNode.checkAndGetFloat("framePeriodSeconds");
+                boolean looping = visualNode.checkAndGetBoolean("looping");
 
                 Texture animationTexture = assetManager.getTexture(animationFilepath);
                 int animationTextureWidth = animationTexture.getWidth();
@@ -97,13 +98,14 @@ final public class EditorDataLoader {
                         (float) startingPosition.y / animationTextureHeight,
                         (float) stride.x / animationTextureWidth,
                         (float) stride.y / animationTextureHeight);
-                editorDataManager.addCustomDisplays(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
+                editorDataManager.addCustomVisual(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
             }
         }
     }
+
     public void loadCustomEntities(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
@@ -245,6 +247,7 @@ final public class EditorDataLoader {
             editorDataManager.addCustomEntity(id, customEntityBuilder.build());
         }
     }
+
     public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
@@ -272,6 +275,7 @@ final public class EditorDataLoader {
             editorDataManager.addTrajectory(id, newTrajectory);
         }
     }
+
     public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
@@ -310,6 +314,7 @@ final public class EditorDataLoader {
         }
         editorDataManager.addTimeline(newTimeline);
     }
+
     private Spawnable getSingleSpawnable(SafeJsonNode spawnableNode){
         String type = spawnableNode.checkAndGetString("type");
         if(type.equals("entity")){

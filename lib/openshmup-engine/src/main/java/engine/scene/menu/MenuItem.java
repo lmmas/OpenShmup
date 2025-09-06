@@ -6,7 +6,7 @@ import engine.scene.visual.SceneVisual;
 import java.util.List;
 
 
-public class MenuItem {
+final public class MenuItem {
     final private List<SceneVisual> visuals;
 
     private Hitbox clickHitbox;

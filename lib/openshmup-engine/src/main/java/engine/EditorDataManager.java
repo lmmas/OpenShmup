@@ -15,13 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 
 final public class EditorDataManager {
-    private final HashMap<Integer, SceneVisual> customDisplays;
+    final private String gameFolderName;
+    private final HashMap<Integer, SceneVisual> customVisuals;
     private final HashMap<Integer, Trajectory> customTrajectories;
     private final HashMap<Integer, Entity> customEntities;
     private final ArrayList<LevelTimeline> customTimelines;
 
-    public EditorDataManager(Engine engine){
-        this.customDisplays = new HashMap<>();
+    public EditorDataManager(String gameFolderName){
+        this.gameFolderName = gameFolderName;
+        this.customVisuals = new HashMap<>();
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();
         this.customTimelines = new ArrayList<>();
@@ -48,20 +50,20 @@ final public class EditorDataManager {
         }
     }
 
-    public void addCustomDisplays(int id, SceneVisual display){
-        customDisplays.put(id, display);
+    public void addCustomVisual(int id, SceneVisual visual){
+        customVisuals.put(id, visual);
     }
 
-    public List<RenderInfo> getRenderInfosOfDisplay(int id){
-        return customDisplays.get(id).getRenderInfos();
+    public List<RenderInfo> getRenderInfosOfVisual(int id){
+        return customVisuals.get(id).getRenderInfos();
     }
 
     public SceneVisual buildCustomDisplay(int id){
-        return customDisplays.get(id).copy();
+        return customVisuals.get(id).copy();
     }
 
     public List<Texture> getTexturesOfDisplay(int id){
-        return customDisplays.get(id).getTextures();
+        return customVisuals.get(id).getTextures();
     }
 
     public void addCustomEntity(int id, Entity entity){
