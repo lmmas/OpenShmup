@@ -63,7 +63,7 @@ abstract public class Scene {
                 }
             }
             for(var display: visualsToRemove){
-                deleteVisual(display);
+                removeVisual(display);
             }
             visualsToRemove.clear();
         }
@@ -78,11 +78,11 @@ abstract public class Scene {
         visual.initDisplay(this.sceneTime);
     }
 
-    final public void deleteVisual(SceneVisual visual){
+    final public void removeVisual(SceneVisual visual){
         sceneVisuals.remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
         for(var graphic: graphics){
-            graphic.delete();
+            graphic.remove();
         }
     }
 
@@ -104,10 +104,10 @@ abstract public class Scene {
     }
 
     final public void removeMenu(MenuScreen menuScreen){
-        menuScreen.menuItems().forEach(menuItem -> deleteVisual(menuItem.getVisual()));
+        menuScreen.menuItems().forEach(menuItem -> removeVisual(menuItem.getVisual()));
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
         if(menuBackground != null){
-            deleteVisual(menuBackground);
+            removeVisual(menuBackground);
         }
         displayedMenus.remove(menuScreen);
         if(activeMenu == menuScreen){
@@ -135,7 +135,7 @@ abstract public class Scene {
         }
 
         public void disable(){
-            Scene.this.deleteVisual(fpsDisplay);
+            Scene.this.removeVisual(fpsDisplay);
         }
 
         public void toggle(){

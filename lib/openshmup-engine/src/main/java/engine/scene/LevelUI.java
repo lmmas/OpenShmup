@@ -41,7 +41,7 @@ public class LevelUI {
                     playerLives.add(hpPointDisplay);
                 }
                 while(playerLives.size() > playerHP){
-                    scene.deleteVisual(playerLives.getLast());
+                    scene.removeVisual(playerLives.getLast());
                     playerLives.removeLast();
                 }
             }

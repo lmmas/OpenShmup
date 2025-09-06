@@ -34,8 +34,8 @@ public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.Color
     }
 
     @Override
-    public void delete() {
-        primitive.delete();
+    public void remove() {
+        primitive.remove();
     }
 
     public void setPosition(float positionX, float positionY){

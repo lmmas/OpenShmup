@@ -41,7 +41,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public P getPrimitive(int index);
 
-    abstract public void delete();
+    abstract public void remove();
 
     abstract public class Primitive{
         Renderer<G,P>.Batch currentBatch;
@@ -58,17 +58,21 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         }
 
         public void tellBatchDataChanged(){
-            if(currentBatch !=null){
+            if(currentBatch != null) {
                 currentBatch.dataHasChanged();
             }
         }
 
-        public boolean shouldBeRemoved() {
+        public boolean getShouldBeRemoved() {
             return shouldBeRemoved;
         }
 
-        public void delete(){
+        public void remove(){
             this.shouldBeRemoved = true;
+        }
+
+        public void hasBeenRemoved(){
+            this.shouldBeRemoved = false;
         }
     }
 }

@@ -21,6 +21,7 @@ final public class PlayerShot implements ExtraComponent{
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = firstShotTimeSeconds;
     }
+
     @Override
     public ExtraComponent copyIfNotReusable() {
         return new PlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);

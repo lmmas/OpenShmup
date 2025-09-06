@@ -52,11 +52,11 @@ final public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
-        ColorShape redRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        ColorShape redRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.5f, 0.25f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
         redRectangle.setPosition(0.5f, 0.5f);
         this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, null, List.of(new MenuItem(
                 redRectangle,
-                new SimpleRectangleHitbox(0.5f, 0.5f, 0.5f, 0.5f),
+                new SimpleRectangleHitbox(0.5f, 0.5f, 0.5f, 0.25f),
                 MenuActions.reloadGame
         )));
         this.levelDebug = new LevelDebug(debugMode);
@@ -192,7 +192,7 @@ final public class LevelScene extends Scene{
         for(var component: extraComponentsList){
             List<Graphic<?,?>> graphicsList = component.getGraphics();
             for(var graphic: graphicsList){
-                graphic.delete();
+                graphic.remove();
             }
         }
     }
@@ -275,7 +275,7 @@ final public class LevelScene extends Scene{
     }
 
     private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
-        extraComponent.getGraphics().forEach(Graphic::delete);
+        extraComponent.getGraphics().forEach(Graphic::remove);
         entity.getExtraComponents().remove(extraComponent);
     }
 

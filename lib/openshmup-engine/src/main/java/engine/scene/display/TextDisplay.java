@@ -48,7 +48,7 @@ final public class TextDisplay extends SceneVisual {
     private void updateText(){
         for(var line: textLines){
             for(TextCharacter character: line){
-                character.image.delete();
+                character.image.remove();
             }
         }
         textLines.clear();

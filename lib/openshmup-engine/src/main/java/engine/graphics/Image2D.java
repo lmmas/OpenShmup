@@ -88,8 +88,8 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     }
 
     @Override
-    public void delete() {
-        primitive.delete();
+    public void remove() {
+        primitive.remove();
     }
 
     public void setColorCoefs(float r, float g, float b, float a){

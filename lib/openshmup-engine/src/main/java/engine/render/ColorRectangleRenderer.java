@@ -90,6 +90,7 @@ public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectan
 
         @Override
         public void removePrimitive(int primitiveToRemoveIndex) {
+            assert primitiveToRemoveIndex < primitives.size(): "index out of bounds";
             primitives.remove(primitiveToRemoveIndex);
         }
     }
