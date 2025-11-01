@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static engine.Engine.assetManager;
+import static engine.Application.assetManager;
 
 final public class EditorDataLoader {
     final private ObjectMapper objectMapper;

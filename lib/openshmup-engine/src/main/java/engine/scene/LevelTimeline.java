@@ -108,4 +108,8 @@ final public class LevelTimeline {
     public void resetTime(){
         this.nextSpawnTime = spawnList.higherKey(-1.0f);
     }
+
+    public EditorDataManager getEditorDataManager() {
+        return editorDataManager;
+    }
 }

@@ -28,7 +28,7 @@ import engine.types.Vec2D;
 
 import java.util.*;
 
-import static engine.Engine.*;
+import static engine.Application.*;
 
 final public class LevelScene extends Scene{
     final private HashSet<Entity> goodEntities;
@@ -38,6 +38,7 @@ final public class LevelScene extends Scene{
     final private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
     private List<Boolean> controlStates;
     private List<Boolean> lastControlStates;
+    final private EditorDataManager editorDataManager;
     private LevelTimeline timeline;
     final private LevelUI levelUI;
     final private MenuScreen pauseMenu;
@@ -55,6 +56,7 @@ final public class LevelScene extends Scene{
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
         this.timeline = timeline;
+        this.editorDataManager = timeline.getEditorDataManager();
         ColorShape blueRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
         TextDisplay textDisplay = new TextDisplay(GameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30, "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
         blueRectangle.setPosition(0.5f, 0.5f);

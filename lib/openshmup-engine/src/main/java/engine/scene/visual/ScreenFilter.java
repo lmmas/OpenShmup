@@ -8,7 +8,7 @@ import engine.render.RenderInfo;
 
 import java.util.List;
 
-import static engine.Engine.assetManager;
+import static engine.Application.assetManager;
 
 final public class ScreenFilter extends SceneVisual{
     private ColorRectangle colorRectangle;

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static engine.Engine.*;
+import static engine.Application.*;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.debugDisplayLayer;
 

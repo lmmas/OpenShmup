@@ -14,7 +14,7 @@ public class GameLauncher {
                 .getParent();
         Path projectFolder = gameFolder.getParent().getParent();
         System.out.println("Detected game folder: " + gameFolder);
-        Path enginePath = projectFolder.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT-shaded.jar");
+        Path enginePath = projectFolder.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT.jar");
         System.out.println("Detected engine path: " + enginePath.toAbsolutePath());
         ProcessBuilder pb = new ProcessBuilder(
                 "java", "-jar", enginePath.toAbsolutePath().toString(), gameFolder.getFileName().toString()

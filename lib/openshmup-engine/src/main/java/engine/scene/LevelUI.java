@@ -8,7 +8,7 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 
-import static engine.Engine.assetManager;
+import static engine.Application.assetManager;
 
 public class LevelUI {
     final private LevelScene scene;

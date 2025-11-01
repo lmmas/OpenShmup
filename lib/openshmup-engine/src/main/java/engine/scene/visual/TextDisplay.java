@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static engine.Engine.graphicsManager;
-
 final public class TextDisplay extends SceneVisual {
     final public int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
