@@ -1,14 +1,8 @@
 package engine;
 
 import engine.scene.LevelScene;
-import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFWVidMode;
 
 import java.io.IOException;
-
-import static org.lwjgl.glfw.GLFW.*;
-
-import static org.lwjgl.opengl.GL33.*;
 
 final public class Engine extends Application {
     public static GameDataManager gameDataManager;
@@ -22,9 +16,9 @@ final public class Engine extends Application {
     }
 
     public Engine(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
-        super(gameFolderName, initScript, inLoopScript);
+        super(initScript, inLoopScript);
         gameDataManager = new GameDataManager(gameFolderName);
-        gameDataManager.loadGameParameters();
+        gameDataManager.loadGameConfig();
         gameDataManager.loadGameContents();
         playerSettings = new PlayerSettings();
 

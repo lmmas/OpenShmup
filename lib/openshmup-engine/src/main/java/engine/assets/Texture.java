@@ -2,13 +2,11 @@ package engine.assets;
 
 import org.lwjgl.BufferUtils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.*;
 
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
-import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 
 final public class Texture {
     private Integer textureID;

@@ -39,7 +39,7 @@ final public class GameDataLoader {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void loadGameParameters(String filepath) throws IllegalArgumentException {
+    public void loadGameConfig(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
 
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
@@ -49,7 +49,7 @@ final public class GameDataLoader {
 
         SafeJsonNode livesNode = levelUINode.checkAndGetObject( "lives");
 
-        gameConfig.levelUI.lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + livesNode.checkAndGetString( "fileName");
+        gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.editorTextureFolder + livesNode.checkAndGetString( "fileName");
         gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D( "size"));
         gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
         gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
@@ -66,7 +66,7 @@ final public class GameDataLoader {
 
             if(type.equals("scrollingImage")){
 
-                String imagePath = GlobalVars.Paths.editorTextureFolder + visualNode.checkAndGetString("fileName");
+                String imagePath = gameDataManager.paths.editorTextureFolder + visualNode.checkAndGetString("fileName");
                 boolean horizontalScrolling = visualNode.checkAndGetBoolean("horizontalScrolling");
 
                 int speed = visualNode.checkAndGetInt("speed");
@@ -82,7 +82,7 @@ final public class GameDataLoader {
             else if(type.equals("animation")) {
                 SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
 
-                String animationFilepath = GlobalVars.Paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
+                String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
                 int frameCount = animationInfoNode.checkAndGetInt("frameCount");
                 IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
                 IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
@@ -127,7 +127,7 @@ final public class GameDataLoader {
                 String hitboxType = hitboxNode.checkAndGetString("type");
                 if(hitboxType.equals("composite")){
                     String hitboxFileName = hitboxNode.checkAndGetString("fileName");
-                    Texture hitboxTexture = assetManager.getTexture(GlobalVars.Paths.editorTextureFolder+ hitboxFileName);
+                    Texture hitboxTexture = assetManager.getTexture(gameDataManager.paths.editorTextureFolder+ hitboxFileName);
                     customEntityBuilder = customEntityBuilder.addCompositeHitbox(hitboxTexture, false);
                 }
                 if(hitboxType.equals("simpleRectangle")){
@@ -185,7 +185,7 @@ final public class GameDataLoader {
             if(spriteNode.hasField("animationInfo")){
                 SafeJsonNode animationInfoNode = spriteNode.checkAndGetObject("animationInfo");
 
-                String animationFilepath = GlobalVars.Paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
+                String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
                 int frameCount = animationInfoNode.checkAndGetInt("frameCount");
                 IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
                 IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
@@ -207,7 +207,7 @@ final public class GameDataLoader {
                 customEntityBuilder = customEntityBuilder.createSprite(layer, animationTexture, animationInfo, framePeriodSeconds, looping, orientable);
             }
             else{
-                String texturePath = GlobalVars.Paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
+                String texturePath = gameDataManager.paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
 
 
                 customEntityBuilder = customEntityBuilder.createSprite(layer, assetManager.getTexture(texturePath), orientable);

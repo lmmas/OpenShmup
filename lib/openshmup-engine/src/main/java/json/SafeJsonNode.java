@@ -6,7 +6,6 @@ import engine.types.IVec2D;
 import engine.types.Vec2D;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

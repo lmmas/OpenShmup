@@ -4,7 +4,6 @@ import engine.types.IVec2D;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 final public class Window {

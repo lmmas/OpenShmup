@@ -1,6 +1,5 @@
 package engine.entity.trajectory;
 //DO NOT OPTIMIZE IMPORTS
-import static java.lang.Math.*;
 
 final public class TrajectoryFunctionUtils {
 

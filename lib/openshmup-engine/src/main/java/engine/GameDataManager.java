@@ -16,6 +16,7 @@ import java.util.List;
 
 final public class GameDataManager {
     final private String gameFolderName;
+    final public GamePaths paths;
     final public GameConfig config;
     final private HashMap<Integer, SceneVisual> customVisuals;
     final private HashMap<Integer, Trajectory> customTrajectories;
@@ -24,6 +25,7 @@ final public class GameDataManager {
 
     public GameDataManager(String gameFolderName){
         this.gameFolderName = gameFolderName;
+        this.paths = new GamePaths(gameFolderName);
         this.config = new GameConfig();
         this.customVisuals = new HashMap<>();
         this.customEntities = new HashMap<>();
@@ -31,10 +33,10 @@ final public class GameDataManager {
         this.customTimelines = new ArrayList<>();
     }
 
-    void loadGameParameters(){
+    void loadGameConfig(){
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            gameDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
+            gameDataLoader.loadGameConfig(paths.customGameConfigFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
@@ -43,10 +45,10 @@ final public class GameDataManager {
     void loadGameContents(){
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            gameDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile);
-            gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile);
-            gameDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile);
-            gameDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile);
+            gameDataLoader.loadCustomDisplays(paths.editorCustomDisplaysFile);
+            gameDataLoader.loadCustomTrajectories(paths.editorCustomTrajectoriesFile);
+            gameDataLoader.loadCustomEntities(paths.editorCustomEntitiesFile);
+            gameDataLoader.loadCustomTimeline(paths.editorCustomTimelineFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

@@ -11,7 +11,7 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.*;
 
 final public class InputStatesManager {
-    final private long window;
+    final private long glfwWindow;
     final private HashMap<Integer, GameControl> controlsMap;
     final private ArrayList<Boolean> controlStatesList;
     private boolean leftClickState = false;
@@ -19,8 +19,8 @@ final public class InputStatesManager {
     final private double[] cursorPositionYBuffer;
     final private Vec2D cursorPosition;
 
-    public InputStatesManager(long window){
-        this.window = window;
+    public InputStatesManager(long glfwWindow){
+        this.glfwWindow = glfwWindow;
         this.controlsMap = new HashMap<>();
         controlsMap.put(GLFW_KEY_LEFT, GameControl.MOVE_LEFT);
         controlsMap.put(GLFW_KEY_RIGHT, GameControl.MOVE_RIGHT);
@@ -41,12 +41,12 @@ final public class InputStatesManager {
     public void updateInputStates(){
         for(Integer key: controlsMap.keySet()){
             GameControl control = controlsMap.get(key);
-            controlStatesList.set(control.ordinal(), (glfwGetKey(window, key) == GLFW_PRESS));
+            controlStatesList.set(control.ordinal(), (glfwGetKey(glfwWindow, key) == GLFW_PRESS));
         }
 
-        leftClickState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+        leftClickState = glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
-        glfwGetCursorPos(window, cursorPositionXBuffer, cursorPositionYBuffer);
+        glfwGetCursorPos(glfwWindow, cursorPositionXBuffer, cursorPositionYBuffer);
         cursorPosition.x = (float) (cursorPositionXBuffer[0] / Application.window.getWidth());
         cursorPosition.y = 1.0f - (float) (cursorPositionYBuffer[0] / Application.window.getHeight());
     }

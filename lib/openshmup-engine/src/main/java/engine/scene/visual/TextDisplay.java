@@ -1,6 +1,5 @@
 package engine.scene.visual;
 
-import engine.GameConfig;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.assets.Texture;

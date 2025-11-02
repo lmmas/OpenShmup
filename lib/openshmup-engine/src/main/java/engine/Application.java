@@ -2,17 +2,15 @@ package engine;
 
 import debug.DebugMethods;
 import engine.scene.Scene;
-import engine.types.IVec2D;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.io.IOException;
-import java.nio.*;
+import java.net.URISyntaxException;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 abstract public class Application {
@@ -25,11 +23,10 @@ abstract public class Application {
     protected Callback debugProc;
     public static Scene currentScene;
 
-    public Application(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
+    public Application(Runnable initScript, Runnable inLoopScript) throws IOException {
         this.initScript = initScript;
         this.inLoopScript = inLoopScript;
-        GlobalVars.Paths.detectRootFolder();
-        GlobalVars.Paths.setcustomGameFolder(gameFolderName);
+        detectRootFolder();
 
         OpenGLInitialization();
         graphicsManager = new GraphicsManager();
@@ -37,7 +34,20 @@ abstract public class Application {
         inputStatesManager = new InputStatesManager(window.getGlfwWindow());
     }
 
-    protected void OpenGLInitialization(){
+    private void detectRootFolder(){
+        try {
+            String rootFolderAbsolutePath = java.nio.file.Paths.get(Application.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
+            GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
+            System.out.println(rootFolderAbsolutePath);
+            GlobalVars.Paths.placeholderTextureFile = rootFolderAbsolutePath + GlobalVars.Paths.Partial.missingTextureFile;
+            GlobalVars.Paths.debugFont = rootFolderAbsolutePath + GlobalVars.Paths.Partial.debugFont;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void OpenGLInitialization(){
         GLFWErrorCallback.createPrint(System.err).set();
         if (!GLFW.glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");

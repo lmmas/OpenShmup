@@ -1,7 +1,6 @@
 import engine.assets.Texture;
 import engine.entity.hitbox.CompositeHitbox;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TextCompositeHitbox {
