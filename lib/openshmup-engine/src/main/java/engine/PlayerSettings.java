@@ -1,28 +1,26 @@
 package engine;
 
 final public class PlayerSettings {
-    private static WindowMode windowMode;
-    private static int windowWidth;
+    private WindowMode windowMode;
+    private int windowWidth;
 
-    private static int windowHeight;
-    public static int getWindowWidth() {
+    private int windowHeight;
+    public int getWindowWidth() {
         return windowWidth;
     }
-    public static int getWindowHeight() {
+    public int getWindowHeight() {
         return windowHeight;
     }
 
-    public static float[] getResolution(){
-        return new float[] {windowWidth, windowHeight};
-    }
-
-    public static void setResolution(int width, int height){
+    public void setResolution(int width, int height){
         windowWidth = width;
         windowHeight = height;
     }
-    public static WindowMode getWindowMode() {
+
+    public WindowMode getWindowMode() {
         return windowMode;
     }
+
     public enum WindowMode{
         FULLSCREEN,
         WINDOWED

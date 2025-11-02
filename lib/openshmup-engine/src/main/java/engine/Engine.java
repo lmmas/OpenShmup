@@ -10,8 +10,9 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class Engine extends Application {
+final public class Engine extends Application {
     public static GameDataManager gameDataManager;
+    public static PlayerSettings playerSettings;
 
     public static void main(String[] args) throws IOException {
         if(args.length != 1){
@@ -25,17 +26,11 @@ public class Engine extends Application {
         gameDataManager = new GameDataManager(gameFolderName);
         gameDataManager.loadGameParameters();
         gameDataManager.loadGameContents();
-        GameConfig gameConfig = gameDataManager.config;
+        playerSettings = new PlayerSettings();
 
-        PlayerSettings.setResolution(gameConfig.getEditionWidth(), gameConfig.getEditionHeight());
-        windowResolution.x = gameConfig.getEditionWidth();
-        windowResolution.y = gameConfig.getEditionHeight();
-        glfwSetWindowSize(glfwWindow, PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight());
-        glViewport(0,0,PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight());
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        assert vidmode != null : "glfwGetVideoMode failure";
-        glfwSetWindowPos(glfwWindow, (vidmode.width() - windowResolution.x) / 2, (vidmode.height() - windowResolution.y) / 2);
-        glfwShowWindow(glfwWindow);
+        playerSettings.setResolution(gameDataManager.config.getEditionWidth(), gameDataManager.config.getEditionHeight());
+        window.setResolution(playerSettings.getWindowWidth(), playerSettings.getWindowHeight());
+        window.show();
 
         run();
     }

@@ -1,7 +1,6 @@
 package engine.render;
 
 import engine.Application;
-import engine.GameConfig;
 import engine.assets.Shader;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -79,7 +78,7 @@ public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectan
         @Override
         protected void draw() {
             shader.use();
-            shader.uploadUniform("u_WindowResolution", new int[]{Application.getWindowWidth(), Application.getWindowHeight()});
+            shader.uploadUniform("u_WindowResolution", new int[]{Application.window.getWidth(), Application.window.getHeight()});
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);

@@ -136,7 +136,7 @@ abstract public class Scene {
         }
 
         public void enable(){
-            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 0.05f, "", assetManager.getFont(debugFont));
+            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 0.02f, "", assetManager.getFont(debugFont));
             fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
             Scene.this.addVisual(fpsDisplay);
         }

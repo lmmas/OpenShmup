@@ -21,8 +21,7 @@ abstract public class Application {
     public static GraphicsManager graphicsManager;
     protected final Runnable initScript;
     protected final Runnable inLoopScript;
-    protected long glfwWindow;
-    final static protected IVec2D windowResolution = new IVec2D(1920, 1080);;
+    static public Window window;
     protected Callback debugProc;
     public static Scene currentScene;
 
@@ -35,7 +34,7 @@ abstract public class Application {
         OpenGLInitialization();
         graphicsManager = new GraphicsManager();
         assetManager = new AssetManager();
-        inputStatesManager = new InputStatesManager(glfwWindow);
+        inputStatesManager = new InputStatesManager(window.getGlfwWindow());
     }
 
     protected void OpenGLInitialization(){
@@ -51,8 +50,9 @@ abstract public class Application {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        glfwWindow = glfwCreateWindow(windowResolution.x,windowResolution.y, "OpenShmup", NULL, NULL);
+        long glfwWindow = glfwCreateWindow(1920, 1080, "OpenShmup", NULL, NULL);
         assert glfwWindow != NULL:"Unable to create GLFW Window";
+        window = new Window(glfwWindow);
 
         glfwMakeContextCurrent(glfwWindow);
         glfwSwapInterval(1);
@@ -68,35 +68,23 @@ abstract public class Application {
     }
 
     protected void loop(){
-        while (!glfwWindowShouldClose(glfwWindow)) {
+        while (!glfwWindowShouldClose(window.getGlfwWindow())) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
             inLoopScript.run();
             inputStatesManager.updateInputStates();
             currentScene.update();
             graphicsManager.drawGraphics();
-            glfwSwapBuffers(glfwWindow);
+            glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
         }
     }
 
     protected void terminate(){
-        Callbacks.glfwFreeCallbacks(glfwWindow);
-        glfwDestroyWindow(glfwWindow);
+        Callbacks.glfwFreeCallbacks(window.getGlfwWindow());
+        glfwDestroyWindow(window.getGlfwWindow());
 
         glfwTerminate();
         debugProc.free();
-    }
-
-    public long getWindow() {
-        return glfwWindow;
-    }
-
-    public static int getWindowWidth(){
-        return windowResolution.x;
-    }
-
-    public static int getWindowHeight(){
-        return windowResolution.y;
     }
 }
