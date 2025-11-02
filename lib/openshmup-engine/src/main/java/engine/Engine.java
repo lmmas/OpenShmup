@@ -40,6 +40,6 @@ final public class Engine extends Application {
     public static void gameInit(){
         graphicsManager.clearLayers();
         gameDataManager.getTimeline(0).resetTime();
-        currentScene = new LevelScene(gameDataManager.getTimeline(0), gameDataManager.config.debugMode);
+        currentScene = new LevelScene(gameDataManager.getTimeline(0));
     }
 }

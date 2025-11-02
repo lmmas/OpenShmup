@@ -7,16 +7,16 @@ import engine.render.RenderInfo;
 
 import java.util.List;
 
-final public class ColorShape extends SceneVisual{
+final public class ColorRectangleVisual extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
-    public ColorShape(ColorRectangle colorRectangle) {
+    public ColorRectangleVisual(ColorRectangle colorRectangle) {
         this.colorRectangle = colorRectangle;
     }
 
     @Override
     public SceneVisual copy() {
-        return new ColorShape(colorRectangle.copy());
+        return new ColorRectangleVisual(colorRectangle.copy());
     }
 
     @Override

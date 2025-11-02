@@ -20,8 +20,9 @@ abstract public class Application {
     protected final Runnable initScript;
     protected final Runnable inLoopScript;
     static public Window window;
-    protected Callback debugProc;
+    protected static Callback debugProc;
     public static Scene currentScene;
+    private static boolean programShouldTerminate = false;
 
     public Application(Runnable initScript, Runnable inLoopScript) throws IOException {
         this.initScript = initScript;
@@ -73,20 +74,23 @@ abstract public class Application {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     }
 
     protected void loop(){
-        while (!glfwWindowShouldClose(window.getGlfwWindow())) {
+        while (!programShouldTerminate) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
             inLoopScript.run();
             inputStatesManager.updateInputStates();
+            currentScene.handleInputs();
             currentScene.update();
             graphicsManager.drawGraphics();
             glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
+            if(glfwWindowShouldClose(window.getGlfwWindow())){
+                programShouldTerminate = true;
+            }
         }
     }
 
@@ -96,5 +100,9 @@ abstract public class Application {
 
         glfwTerminate();
         debugProc.free();
+    }
+
+    public static void setProgramShouldTerminate(){
+        programShouldTerminate = true;
     }
 }

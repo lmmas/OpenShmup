@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static engine.Application.window;
+
 final public class TextDisplay extends SceneVisual {
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
     private float textHeight;
+    private float textWidth;
     private String displayedString;
     private Font font;
     final private boolean dynamicText;
@@ -33,6 +36,7 @@ final public class TextDisplay extends SceneVisual {
         }
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
+        this.textWidth = textHeight * window.getHeight() / window.getWidth();
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;
@@ -84,13 +88,13 @@ final public class TextDisplay extends SceneVisual {
         int lineCount = normalizedLineWidthsList.size();
         for(int lineIndex = 0; lineIndex < lineCount; lineIndex++){
             ArrayList<TextCharacter> currentLine = textLines.get(lineIndex);
-            float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
+            float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textWidth;
             float characterBaselineX = position.x - currentLineWidth / 2;
             float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float)lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
             for(TextCharacter character: currentLine){
                 Vec2D characterPositionOffset = character.fontCharInfo.normalizedQuadPositionOffset();
                 character.setPosition(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight);
-                characterBaselineX += character.fontCharInfo.normalizedAdvance() * textHeight;
+                characterBaselineX += character.fontCharInfo.normalizedAdvance() * textWidth;
             }
         }
     }
@@ -163,7 +167,7 @@ final public class TextDisplay extends SceneVisual {
             this.codepoint = codepoint;
             this.fontCharInfo = font.getCharInfo(codepoint).orElseThrow();
             Vec2D charSize = fontCharInfo.normalizedQuadSize();
-            this.image = new Image2D(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textHeight, charSize.y * textHeight);
+            this.image = new Image2D(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textWidth, charSize.y * textHeight);
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
             image.setTextureSize(bitmapTextureSize.x, bitmapTextureSize.y);

@@ -13,7 +13,7 @@ import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.graphics.RenderType;
 import engine.assets.Texture;
-import engine.scene.visual.ColorShape;
+import engine.scene.visual.ColorRectangleVisual;
 import engine.scene.menu.MenuActions;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
@@ -46,8 +46,8 @@ final public class LevelScene extends Scene{
     final private MenuScreen gameOverScreen;
     final private LevelDebug levelDebug;
 
-    public LevelScene(LevelTimeline timeline, boolean debugMode) {
-        super(debugMode);
+    public LevelScene(LevelTimeline timeline) {
+        super();
         this.timeline = timeline;
         this.gameDataManager = timeline.getGameDataManager();
         this.gameConfig = gameDataManager.config;
@@ -59,7 +59,7 @@ final public class LevelScene extends Scene{
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
-        ColorShape blueRectangle = new ColorShape(new ColorRectangle(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        ColorRectangleVisual blueRectangle = new ColorRectangleVisual(new ColorRectangle(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
         TextDisplay textDisplay = new TextDisplay(gameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30.0f / gameConfig.getEditionHeight(), "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
         blueRectangle.setPosition(0.5f, 0.5f);
         textDisplay.setTextColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -69,7 +69,7 @@ final public class LevelScene extends Scene{
                 MenuActions.reloadGame
         )));
         this.gameOverScreen = pauseMenu;
-        this.levelDebug = new LevelDebug(debugMode);
+        this.levelDebug = new LevelDebug(false);
         loadAssets();
         this.timer.start();
     }
@@ -122,7 +122,6 @@ final public class LevelScene extends Scene{
 
     @Override
     public void update() {
-        handleInputs();
         if(timer.isPaused()){
             return;
         }

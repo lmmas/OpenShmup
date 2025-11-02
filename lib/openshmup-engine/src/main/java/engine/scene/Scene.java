@@ -30,14 +30,13 @@ abstract public class Scene {
     protected boolean debugModeEnabled = false;
     final protected SceneDebug sceneDebug;
 
-    public Scene(boolean debugModeEnabled) {
+    public Scene() {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
         this.sceneVisuals = new HashSet<>();
         this.visualsToRemove = new HashSet<>();
         this.displayedMenus = new ArrayList<>();
-        this.sceneDebug = new SceneDebug(debugModeEnabled);
-        this.debugModeEnabled = debugModeEnabled;
+        this.sceneDebug = new SceneDebug(false);
     }
 
     public void handleInputs(){
@@ -77,7 +76,6 @@ abstract public class Scene {
 
 
     final public void addVisual(SceneVisual visual){
-        List<Graphic<?,?>> graphics = visual.getGraphics();
         visual.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
         sceneVisuals.add(visual);
         visual.initDisplay(this.sceneTime);
