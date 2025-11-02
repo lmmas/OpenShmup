@@ -8,21 +8,23 @@ import engine.assets.Texture;
 import engine.scene.LevelTimeline;
 import engine.scene.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
-import json.EditorDataLoader;
+import json.GameDataLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-final public class EditorDataManager {
+final public class GameDataManager {
     final private String gameFolderName;
-    private final HashMap<Integer, SceneVisual> customVisuals;
-    private final HashMap<Integer, Trajectory> customTrajectories;
-    private final HashMap<Integer, Entity> customEntities;
-    private final ArrayList<LevelTimeline> customTimelines;
+    final public GameConfig config;
+    final private HashMap<Integer, SceneVisual> customVisuals;
+    final private HashMap<Integer, Trajectory> customTrajectories;
+    final private HashMap<Integer, Entity> customEntities;
+    final private ArrayList<LevelTimeline> customTimelines;
 
-    public EditorDataManager(String gameFolderName){
+    public GameDataManager(String gameFolderName){
         this.gameFolderName = gameFolderName;
+        this.config = new GameConfig();
         this.customVisuals = new HashMap<>();
         this.customEntities = new HashMap<>();
         this.customTrajectories = new HashMap<>();
@@ -30,21 +32,21 @@ final public class EditorDataManager {
     }
 
     void loadGameParameters(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader();
+        GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            editorDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
+            gameDataLoader.loadGameParameters(GlobalVars.Paths.customGameParametersFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
 
     void loadGameContents(){
-        EditorDataLoader editorDataLoader = new EditorDataLoader();
+        GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            editorDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile, this);
-            editorDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile, this);
-            editorDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile, this);
-            editorDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile, this);
+            gameDataLoader.loadCustomDisplays(GlobalVars.Paths.editorCustomDisplaysFile);
+            gameDataLoader.loadCustomTrajectories(GlobalVars.Paths.editorCustomTrajectoriesFile);
+            gameDataLoader.loadCustomEntities(GlobalVars.Paths.editorCustomEntitiesFile);
+            gameDataLoader.loadCustomTimeline(GlobalVars.Paths.editorCustomTimelineFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

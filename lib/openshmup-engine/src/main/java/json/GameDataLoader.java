@@ -29,9 +29,13 @@ import java.util.function.Function;
 
 import static engine.Application.assetManager;
 
-final public class EditorDataLoader {
+final public class GameDataLoader {
+    final private GameDataManager gameDataManager;
+    final private GameConfig gameConfig;
     final private ObjectMapper objectMapper;
-    public EditorDataLoader(){
+    public GameDataLoader(GameDataManager gameDataManager){
+        this.gameDataManager = gameDataManager;
+        this.gameConfig = gameDataManager.config;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -39,19 +43,19 @@ final public class EditorDataLoader {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
 
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
-        GameConfig.setEditionResolution(resolution.x, resolution.y);
+        gameConfig.setEditionResolution(resolution.x, resolution.y);
 
         SafeJsonNode levelUINode = rootNode.checkAndGetObject("levelUI");
 
         SafeJsonNode livesNode = levelUINode.checkAndGetObject( "lives");
 
-        GameConfig.LevelUI.Lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + livesNode.checkAndGetString( "fileName");
-        GameConfig.LevelUI.Lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D( "size"));
-        GameConfig.LevelUI.Lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
-        GameConfig.LevelUI.Lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
+        gameConfig.levelUI.lives.textureFilepath = GlobalVars.Paths.editorTextureFolder + livesNode.checkAndGetString( "fileName");
+        gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D( "size"));
+        gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
+        gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
     }
 
-    public void loadCustomDisplays(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
+    public void loadCustomDisplays(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode visualNode: visualList){
@@ -68,12 +72,12 @@ final public class EditorDataLoader {
                 int speed = visualNode.checkAndGetInt("speed");
                 float normalizedSpeed;
                 if(horizontalScrolling){
-                    normalizedSpeed = (float) speed / GameConfig.getEditionWidth();
+                    normalizedSpeed = (float) speed / gameConfig.getEditionWidth();
                 }else{
-                    normalizedSpeed = (float) speed / GameConfig.getEditionHeight();
+                    normalizedSpeed = (float) speed / gameConfig.getEditionHeight();
                 }
 
-                editorDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                gameDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
             else if(type.equals("animation")) {
                 SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
@@ -98,7 +102,7 @@ final public class EditorDataLoader {
                         (float) startingPosition.y / animationTextureHeight,
                         (float) stride.x / animationTextureWidth,
                         (float) stride.y / animationTextureHeight);
-                editorDataManager.addCustomVisual(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
+                gameDataManager.addCustomVisual(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
             else{
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
@@ -106,7 +110,7 @@ final public class EditorDataLoader {
         }
     }
 
-    public void loadCustomEntities(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
+    public void loadCustomEntities(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode entityNode: customEntities){
@@ -216,7 +220,7 @@ final public class EditorDataLoader {
                 Trajectory trajectory;
                 if(trajectoryNode.hasField("id")){
                     int trajectoryId = trajectoryNode.checkAndGetInt("id");
-                    trajectory = editorDataManager.getTrajectory(trajectoryId);
+                    trajectory = gameDataManager.getTrajectory(trajectoryId);
                 }
                 else{
                     String trajectoryType = trajectoryNode.checkAndGetString("type");
@@ -244,11 +248,11 @@ final public class EditorDataLoader {
                 }
                 customEntityBuilder = customEntityBuilder.setTrajectory(trajectory);
             }
-            editorDataManager.addCustomEntity(id, customEntityBuilder.build());
+            gameDataManager.addCustomEntity(id, customEntityBuilder.build());
         }
     }
 
-    public void loadCustomTrajectories(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
+    public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode trajectoryNode: elementList){
@@ -272,15 +276,15 @@ final public class EditorDataLoader {
             else{
                 throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
             }
-            editorDataManager.addTrajectory(id, newTrajectory);
+            gameDataManager.addTrajectory(id, newTrajectory);
         }
     }
 
-    public void loadCustomTimeline(String filepath, EditorDataManager editorDataManager) throws IllegalArgumentException {
+    public void loadCustomTimeline(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
         SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");
-        LevelTimeline newTimeline = new LevelTimeline(editorDataManager, duration);
+        LevelTimeline newTimeline = new LevelTimeline(gameDataManager, duration);
         List<SafeJsonNode> elementList = spawnsNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode childNode: elementList){
             SafeJsonNode spawnableNode = childNode.checkAndGetObjectOrArray("spawn");
@@ -312,7 +316,7 @@ final public class EditorDataLoader {
             }
 
         }
-        editorDataManager.addTimeline(newTimeline);
+        gameDataManager.addTimeline(newTimeline);
     }
 
     private Spawnable getSingleSpawnable(SafeJsonNode spawnableNode){
@@ -351,6 +355,6 @@ final public class EditorDataLoader {
     }
 
     private Vec2D convertToFloatVec(IVec2D pixelVec){
-        return new Vec2D((float) pixelVec.x / GameConfig.getEditionWidth(), (float) pixelVec.y / GameConfig.getEditionHeight());
+        return new Vec2D((float) pixelVec.x / gameConfig.getEditionWidth(), (float) pixelVec.y / gameConfig.getEditionHeight());
     }
 }

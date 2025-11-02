@@ -1,6 +1,6 @@
 package engine.scene;
 
-import engine.EditorDataManager;
+import engine.GameDataManager;
 import engine.render.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.spawnable.*;
@@ -8,12 +8,12 @@ import engine.scene.spawnable.*;
 import java.util.*;
 
 final public class LevelTimeline {
-    final private EditorDataManager editorDataManager;
+    final private GameDataManager gameDataManager;
     private final float levelDuration;
     private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
     private Float nextSpawnTime;
-    public LevelTimeline(EditorDataManager editorDataManager, float levelDuration){
-        this.editorDataManager = editorDataManager;
+    public LevelTimeline(GameDataManager gameDataManager, float levelDuration){
+        this.gameDataManager = gameDataManager;
         this.levelDuration= levelDuration;
         this.spawnList = new TreeMap<>();
         this.nextSpawnTime = null;
@@ -45,7 +45,7 @@ final public class LevelTimeline {
                                 allSpawnablesSet.add(currentSpawnable);
                             }
                             if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                                ArrayList<Spawnable> entitySpawnables = editorDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
+                                ArrayList<Spawnable> entitySpawnables = gameDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
                                 spawnablesToCheck.addAll(entitySpawnables);
                             }
                             if(currentSpawnable instanceof MultiSpawnable(ArrayList<Spawnable> spawnables)){
@@ -64,10 +64,10 @@ final public class LevelTimeline {
         HashSet<Spawnable> allSpawnablesSet = getAllSpawnables();
         for(var spawnable: allSpawnablesSet){
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                allRenderInfos.addAll(editorDataManager.getRenderInfosOfEntity(entitySpawnInfo.id()));
+                allRenderInfos.addAll(gameDataManager.getRenderInfosOfEntity(entitySpawnInfo.id()));
             }
             if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
-                allRenderInfos.addAll(editorDataManager.getRenderInfosOfVisual(sceneDisplaySpawnInfo.id()));
+                allRenderInfos.addAll(gameDataManager.getRenderInfosOfVisual(sceneDisplaySpawnInfo.id()));
             }
         }
         return allRenderInfos;
@@ -78,11 +78,11 @@ final public class LevelTimeline {
         HashSet<Spawnable> allSpawnables = getAllSpawnables();
         for(var spawnable: allSpawnables){
             if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
-                List<Texture> textures = editorDataManager.getTexturesOfDisplay(sceneDisplaySpawnInfo.id());
+                List<Texture> textures = gameDataManager.getTexturesOfDisplay(sceneDisplaySpawnInfo.id());
                 allTextures.addAll(textures);
             }
             if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
-                List<Texture> textures = editorDataManager.getTexturesOfEntity(entitySpawnInfo.id());
+                List<Texture> textures = gameDataManager.getTexturesOfEntity(entitySpawnInfo.id());
                 allTextures.addAll(textures);
             }
         }
@@ -109,7 +109,7 @@ final public class LevelTimeline {
         this.nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
-    public EditorDataManager getEditorDataManager() {
-        return editorDataManager;
+    public GameDataManager getGameDataManager() {
+        return gameDataManager;
     }
 }

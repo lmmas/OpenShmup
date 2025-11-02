@@ -38,7 +38,8 @@ final public class LevelScene extends Scene{
     final private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
     private List<Boolean> controlStates;
     private List<Boolean> lastControlStates;
-    final private EditorDataManager editorDataManager;
+    final private GameDataManager gameDataManager;
+    final private GameConfig gameConfig;
     private LevelTimeline timeline;
     final private LevelUI levelUI;
     final private MenuScreen pauseMenu;
@@ -47,6 +48,9 @@ final public class LevelScene extends Scene{
 
     public LevelScene(LevelTimeline timeline, boolean debugMode) {
         super(debugMode);
+        this.timeline = timeline;
+        this.gameDataManager = timeline.getGameDataManager();
+        this.gameConfig = gameDataManager.config;
         this.goodEntities = new HashSet<>();
         this.evilEntities = new HashSet<>();
         this.entitiesToSpawn = new HashSet<>();
@@ -55,13 +59,11 @@ final public class LevelScene extends Scene{
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
-        this.timeline = timeline;
-        this.editorDataManager = timeline.getEditorDataManager();
-        ColorShape blueRectangle = new ColorShape(new ColorRectangle(GameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
-        TextDisplay textDisplay = new TextDisplay(GameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30, "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
+        ColorShape blueRectangle = new ColorShape(new ColorRectangle(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
+        TextDisplay textDisplay = new TextDisplay(gameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30.0f / gameConfig.getEditionHeight(), "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
         blueRectangle.setPosition(0.5f, 0.5f);
         textDisplay.setTextColor(0.0f, 0.0f, 0.0f, 1.0f);
-        this.pauseMenu = new MenuScreen(GameConfig.pauseMenuLayer, new ScreenFilter(GameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.5f), List.of(new MenuItem(
+        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.5f), List.of(new MenuItem(
                 List.of(blueRectangle, textDisplay),
                 new SimpleRectangleHitbox(0.5f, 0.5f, 0.3f, 0.15f),
                 MenuActions.reloadGame
@@ -74,10 +76,10 @@ final public class LevelScene extends Scene{
 
     void loadAssets(){
         HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
-        timelineRenderInfos.add(new RenderInfo(GameConfig.LevelUI.contentsLayer, RenderType.STATIC_IMAGE));
+        timelineRenderInfos.add(new RenderInfo(gameConfig.levelUI.contentsLayer, RenderType.STATIC_IMAGE));
         graphicsManager.constructRenderers(timelineRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
-        allTextures.add(assetManager.getTexture(GameConfig.LevelUI.Lives.textureFilepath));
+        allTextures.add(assetManager.getTexture(gameConfig.levelUI.lives.textureFilepath));
         for(var texture: allTextures){
             if(!texture.isLoadedInGPU()){
                 texture.loadInGPU();
@@ -156,7 +158,7 @@ final public class LevelScene extends Scene{
 
     private void spawnDisplays(){
         for(var displaySpawn: displaysToSpawn){
-            SceneVisual newDisplay = editorDataManager.buildCustomDisplay(displaySpawn.id());
+            SceneVisual newDisplay = gameDataManager.buildCustomDisplay(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
             addVisual(newDisplay);
         }
@@ -207,9 +209,9 @@ final public class LevelScene extends Scene{
 
     private void spawnEntities(){
         for(var entitySpawn: entitiesToSpawn){
-            Entity newEntity = editorDataManager.buildCustomEntity(entitySpawn.id());
+            Entity newEntity = gameDataManager.buildCustomEntity(entitySpawn.id());
             if(entitySpawn.trajectoryId() != -1){
-                newEntity.setTrajectory(editorDataManager.getTrajectory(entitySpawn.trajectoryId()));
+                newEntity.setTrajectory(gameDataManager.getTrajectory(entitySpawn.trajectoryId()));
             }
             newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
@@ -290,6 +292,10 @@ final public class LevelScene extends Scene{
     private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
         extraComponent.getGraphics().forEach(Graphic::remove);
         entity.getExtraComponents().remove(extraComponent);
+    }
+
+    public GameDataManager getGameDataManager() {
+        return gameDataManager;
     }
 
     private class LevelDebug{

@@ -14,10 +14,12 @@ public class LevelUI {
     final private LevelScene scene;
     final private ArrayList<ImageDisplay> playerLives;
     private Ship playerShip;
+    final private GameConfig.LevelUI config;
     public LevelUI(LevelScene scene){
         this.scene = scene;
         this.playerLives = new ArrayList<>();
         this.playerShip = null;
+        this.config = scene.getGameDataManager().config.levelUI;
     }
 
     public void update(){
@@ -29,10 +31,10 @@ public class LevelUI {
             int playerHP = playerShip.getHP();
             if(playerLives.size() != playerHP){
                 while(playerLives.size() < playerHP){
-                    Vec2D size = GameConfig.LevelUI.Lives.size;
-                    Image2D hpPointImage = new Image2D(assetManager.getTexture(GameConfig.LevelUI.Lives.textureFilepath), GameConfig.LevelUI.contentsLayer, false, size.x, size.y);
-                    Vec2D position = GameConfig.LevelUI.Lives.position;
-                    Vec2D stride = GameConfig.LevelUI.Lives.stride;
+                    Vec2D size = config.lives.size;
+                    Image2D hpPointImage = new Image2D(assetManager.getTexture(config.lives.textureFilepath), config.contentsLayer, false, size.x, size.y);
+                    Vec2D position = config.lives.position;
+                    Vec2D stride = config.lives.stride;
                     float pointPositionX = position.x + stride.x * playerLives.size();
                     float pointPositionY = position.y + stride.y * playerLives.size();
                     hpPointImage.setPosition(pointPositionX, pointPositionY);

@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 final public class TextDisplay extends SceneVisual {
-    final public int lineBreakCodepoint = "\n".codePointAt(0);
+    final public static int lineBreakCodepoint = "\n".codePointAt(0);
     final private RenderInfo renderInfo;
     final private Vec2D position;
-    private float textHeightPixels;
+    private float textHeight;
     private String displayedString;
     private Font font;
     final private boolean dynamicText;
@@ -25,7 +25,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<ArrayList<TextCharacter>> textLines;
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeightPixels, String displayedString, Font font) {
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeight, String displayedString, Font font) {
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
@@ -33,7 +33,7 @@ final public class TextDisplay extends SceneVisual {
             this.renderInfo = new RenderInfo(layer, RenderType.STATIC_IMAGE);
         }
         this.position = new Vec2D(positionX, positionY);
-        this.textHeightPixels = textHeightPixels;
+        this.textHeight = textHeight;
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;
@@ -83,7 +83,6 @@ final public class TextDisplay extends SceneVisual {
 
     private void updateTextPosition(){
         int lineCount = normalizedLineWidthsList.size();
-        float textHeight = textHeightPixels / GameConfig.getEditionHeight();
         for(int lineIndex = 0; lineIndex < lineCount; lineIndex++){
             ArrayList<TextCharacter> currentLine = textLines.get(lineIndex);
             float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
@@ -115,7 +114,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeightPixels, displayedString, font);
+        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeight, displayedString, font);
     }
 
     @Override
@@ -165,7 +164,6 @@ final public class TextDisplay extends SceneVisual {
             this.codepoint = codepoint;
             this.fontCharInfo = font.getCharInfo(codepoint).orElseThrow();
             Vec2D charSize = fontCharInfo.normalizedQuadSize();
-            float textHeight = TextDisplay.this.textHeightPixels / GameConfig.getEditionHeight();
             this.image = new Image2D(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textHeight, charSize.y * textHeight);
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();

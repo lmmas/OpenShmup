@@ -22,14 +22,13 @@ abstract public class Application {
     protected final Runnable initScript;
     protected final Runnable inLoopScript;
     protected long glfwWindow;
-    final private IVec2D windowResolution;
+    final static protected IVec2D windowResolution = new IVec2D(1920, 1080);;
     protected Callback debugProc;
     public static Scene currentScene;
 
     public Application(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
         this.initScript = initScript;
         this.inLoopScript = inLoopScript;
-        this.windowResolution = new IVec2D(0, 0);
         GlobalVars.Paths.detectRootFolder();
         GlobalVars.Paths.setcustomGameFolder(gameFolderName);
 
@@ -52,18 +51,8 @@ abstract public class Application {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        glfwWindow = glfwCreateWindow(1920,1080, "OpenShmup", NULL, NULL);
+        glfwWindow = glfwCreateWindow(windowResolution.x,windowResolution.y, "OpenShmup", NULL, NULL);
         assert glfwWindow != NULL:"Unable to create GLFW Window";
-
-        try(MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1);
-            IntBuffer pHeight = stack.mallocInt(1);
-
-            glfwGetWindowSize(glfwWindow, pWidth, pHeight);
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            assert vidmode != null : "glfwGetVideoMode failure";
-            glfwSetWindowPos(glfwWindow, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
-        }
 
         glfwMakeContextCurrent(glfwWindow);
         glfwSwapInterval(1);
@@ -91,7 +80,23 @@ abstract public class Application {
         }
     }
 
+    protected void terminate(){
+        Callbacks.glfwFreeCallbacks(glfwWindow);
+        glfwDestroyWindow(glfwWindow);
+
+        glfwTerminate();
+        debugProc.free();
+    }
+
     public long getWindow() {
         return glfwWindow;
+    }
+
+    public static int getWindowWidth(){
+        return windowResolution.x;
+    }
+
+    public static int getWindowHeight(){
+        return windowResolution.y;
     }
 }

@@ -2,6 +2,7 @@ package engine;
 
 import engine.scene.LevelScene;
 import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFWVidMode;
 
 import java.io.IOException;
 
@@ -10,7 +11,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public class Engine extends Application {
-    public static EditorDataManager editorDataManager;
+    public static GameDataManager gameDataManager;
 
     public static void main(String[] args) throws IOException {
         if(args.length != 1){
@@ -21,14 +22,19 @@ public class Engine extends Application {
 
     public Engine(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
         super(gameFolderName, initScript, inLoopScript);
-        editorDataManager = new EditorDataManager(gameFolderName);
-        editorDataManager.loadGameParameters();
-        editorDataManager.loadGameContents();
+        gameDataManager = new GameDataManager(gameFolderName);
+        gameDataManager.loadGameParameters();
+        gameDataManager.loadGameContents();
+        GameConfig gameConfig = gameDataManager.config;
 
-        PlayerSettings.setResolution(GameConfig.getEditionWidth(), GameConfig.getEditionHeight());
+        PlayerSettings.setResolution(gameConfig.getEditionWidth(), gameConfig.getEditionHeight());
+        windowResolution.x = gameConfig.getEditionWidth();
+        windowResolution.y = gameConfig.getEditionHeight();
         glfwSetWindowSize(glfwWindow, PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight());
         glViewport(0,0,PlayerSettings.getWindowWidth(), PlayerSettings.getWindowHeight());
-        glfwSetWindowPos(glfwWindow, 500, 40);
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        assert vidmode != null : "glfwGetVideoMode failure";
+        glfwSetWindowPos(glfwWindow, (vidmode.width() - windowResolution.x) / 2, (vidmode.height() - windowResolution.y) / 2);
         glfwShowWindow(glfwWindow);
 
         run();
@@ -39,16 +45,12 @@ public class Engine extends Application {
         gameInit();
         loop();
 
-        Callbacks.glfwFreeCallbacks(glfwWindow);
-        glfwDestroyWindow(glfwWindow);
-
-        glfwTerminate();
-        debugProc.free();
+        terminate();
     }
 
     public static void gameInit(){
         graphicsManager.clearLayers();
-        editorDataManager.getTimeline(0).resetTime();
-        currentScene = new LevelScene(editorDataManager.getTimeline(0), GameConfig.debugMode);
+        gameDataManager.getTimeline(0).resetTime();
+        currentScene = new LevelScene(gameDataManager.getTimeline(0), gameDataManager.config.debugMode);
     }
 }
