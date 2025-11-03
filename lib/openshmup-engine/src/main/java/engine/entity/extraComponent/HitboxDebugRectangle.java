@@ -6,7 +6,6 @@ import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.ColorRectangle;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
-import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
@@ -15,16 +14,13 @@ import java.util.Collections;
 import java.util.List;
 
 final public class HitboxDebugRectangle implements ExtraComponent{
-    static private Shader hitboxShader;
-    static public void setHitboxShader(Shader hitboxShader){
-        HitboxDebugRectangle.hitboxShader = hitboxShader;
-    }
+    final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";
     private final SimpleRectangleHitbox simpleRectangleHitbox;
     private final ColorRectangle debugDisplay;
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, float r, float g, float b, float a){
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, r, g, b, a, hitboxShader);
+        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, r, g, b, a);
     }
 
     @Override

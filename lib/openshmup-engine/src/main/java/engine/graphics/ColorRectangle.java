@@ -4,12 +4,21 @@ import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.assets.Shader;
 
+import static engine.Application.assetManager;
+
 public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
+    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
     private final ColorRectanglePrimitive primitive;
+
     public ColorRectangle(int layer, float sizeX, float sizeY, float r, float g, float b, float a, Shader shader){
         super(layer, RenderType.COLOR_RECTANGLE, shader);
         this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, r, g, b, a);
     }
+
+    public ColorRectangle(int layer, float sizeX, float sizeY, float r, float g, float b, float a) {
+        this(layer, sizeX, sizeY, r, g, b, a, assetManager.getShader(defaultShader));
+    }
+
     @Override
     public ColorRectangle copy() {
         return new ColorRectangle(renderInfo.layer(), primitive.size.x, primitive.size.y, primitive.color.r, primitive.color.g, primitive.color.b, primitive.color.a, shader);

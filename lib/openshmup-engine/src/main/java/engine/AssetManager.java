@@ -3,11 +3,12 @@ package engine;
 import engine.assets.Font;
 import engine.assets.Shader;
 import engine.assets.Texture;
-import engine.entity.extraComponent.HitboxDebugRectangle;
-import engine.graphics.Image2D;
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import static engine.GlobalVars.Paths.debugFont;
+import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class AssetManager {
     final private HashMap<String, Shader> shaderMap;
@@ -17,15 +18,14 @@ final public class AssetManager {
         this.shaderMap = new HashMap<>();
         this.imageFileMap = new HashMap<>();
         this.fontFileMap = new HashMap<>();
-        Image2D.setDefaultShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl"));
-        HitboxDebugRectangle.setHitboxShader(getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl"));
-        Texture placeholderTexture = Texture.createFromImageFile(GlobalVars.Paths.placeholderTextureFile);
+
+        Texture placeholderTexture = Texture.createFromImageFile(rootFolderAbsolutePath + GlobalVars.Paths.placeholderTextureFile);
         imageFileMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
 
-        Font defaultFont = Font.createFromTTF(GlobalVars.Paths.debugFont);
-        fontFileMap.put(GlobalVars.Paths.debugFont, defaultFont);
+        Font defaultFont = Font.createFromTTF(rootFolderAbsolutePath + debugFont);
+        fontFileMap.put(debugFont, defaultFont);
         defaultFont.getBitmap().loadInGPU();
-        imageFileMap.put(GlobalVars.Paths.debugFont, defaultFont.getBitmap());
+        imageFileMap.put(debugFont, defaultFont.getBitmap());
     }
 
     public Texture getTexture(String filepath){
@@ -35,9 +35,9 @@ final public class AssetManager {
         else{
             Texture newTexture;
             try {
-                newTexture = Texture.createFromImageFile(filepath);
+                newTexture = Texture.createFromImageFile(rootFolderAbsolutePath + filepath);
             } catch (IOException e) {
-                newTexture = imageFileMap.get(GlobalVars.Paths.placeholderTextureFile);
+                newTexture = imageFileMap.get(rootFolderAbsolutePath + GlobalVars.Paths.placeholderTextureFile);
             }
             imageFileMap.put(filepath, newTexture);
             return newTexture;
@@ -49,7 +49,7 @@ final public class AssetManager {
             return shaderMap.get(filepath);
         }
         else{
-            Shader newShader = new Shader(filepath);
+            Shader newShader = new Shader(rootFolderAbsolutePath + filepath);
             shaderMap.put(filepath, newShader);
             newShader.compile();
             return newShader;
@@ -62,7 +62,7 @@ final public class AssetManager {
         }
         else{
             try {
-                Font newFont = Font.createFromTTF(filepath);
+                Font newFont = Font.createFromTTF(rootFolderAbsolutePath + filepath);
                 fontFileMap.put(filepath, newFont);
                 return newFont;
             } catch (IOException e) {

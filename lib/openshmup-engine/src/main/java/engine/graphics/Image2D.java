@@ -5,11 +5,11 @@ import engine.types.Vec2D;
 import engine.assets.Shader;
 import engine.assets.Texture;
 
+import static engine.Application.assetManager;
+
 public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
-    static private Shader defaultShader;
-    static public void setDefaultShader(Shader defaultShader){
-        Image2D.defaultShader = defaultShader;
-    }
+    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
+
     protected Texture texture;
     protected ImagePrimitive primitive;
     public Image2D(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY, Shader shader){
@@ -18,7 +18,7 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         this.primitive = new ImagePrimitive(sizeX, sizeY);
     }
     public Image2D(Texture texture, int layer,  boolean dynamic, float sizeX, float sizeY){
-        this(texture, layer, dynamic, sizeX, sizeY, defaultShader);
+        this(texture, layer, dynamic, sizeX, sizeY, assetManager.getShader(defaultShader));
     }
 
     public Image2D(Image2D image){

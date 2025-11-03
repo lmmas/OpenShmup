@@ -1,7 +1,5 @@
 package engine;
 
-import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
-
 final public class GamePaths {
     final public String customGameFolder;
     final public String customGameConfigFile;
@@ -12,7 +10,7 @@ final public class GamePaths {
     final public String editorCustomTimelineFile;
 
     public GamePaths(String gameFolderName){
-        customGameFolder = rootFolderAbsolutePath + GlobalVars.Paths.Partial.customGamesFolder + gameFolderName;
+        customGameFolder = GlobalVars.Paths.Partial.customGamesFolder + gameFolderName;
         customGameConfigFile = customGameFolder + GlobalVars.Paths.Partial.customGameConfigFile;
         editorTextureFolder = customGameFolder + GlobalVars.Paths.Partial.editorTextureFolder;
         editorCustomDisplaysFile = customGameFolder + GlobalVars.Paths.Partial.editorCustomDisplaysFile;

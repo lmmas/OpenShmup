@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import static engine.Application.assetManager;
+import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class GameDataLoader {
     final private GameDataManager gameDataManager;
@@ -40,7 +41,7 @@ final public class GameDataLoader {
     }
 
     public void loadGameConfig(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(rootFolderAbsolutePath + filepath, objectMapper);
 
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
         gameConfig.setEditionResolution(resolution.x, resolution.y);
@@ -56,7 +57,7 @@ final public class GameDataLoader {
     }
 
     public void loadCustomDisplays(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode visualNode: visualList){
             int id = visualNode.checkAndGetInt("id");
@@ -111,7 +112,7 @@ final public class GameDataLoader {
     }
 
     public void loadCustomEntities(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode entityNode: customEntities){
 
@@ -253,7 +254,7 @@ final public class GameDataLoader {
     }
 
     public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(filepath, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
         for(SafeJsonNode trajectoryNode: elementList){
             int id = trajectoryNode.checkAndGetInt("id");
@@ -281,7 +282,7 @@ final public class GameDataLoader {
     }
 
     public void loadCustomTimeline(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(filepath, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
         SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");
         LevelTimeline newTimeline = new LevelTimeline(gameDataManager, duration);

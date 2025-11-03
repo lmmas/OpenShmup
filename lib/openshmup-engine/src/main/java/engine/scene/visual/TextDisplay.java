@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static engine.Application.assetManager;
 import static engine.Application.window;
 
 final public class TextDisplay extends SceneVisual {
@@ -48,7 +49,7 @@ final public class TextDisplay extends SceneVisual {
     }
 
     public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style){
-        this(layer, dynamicText, positionX, positionY, displayedString, style.font(), style.textHeight());
+        this(layer, dynamicText, positionX, positionY, displayedString, assetManager.getFont(style.fontFilepath()), style.textHeight());
         this.setTextColor(style.textColor().r, style.textColor().g, style.textColor().b, style.textColor().a);
     }
 

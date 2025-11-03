@@ -40,8 +40,6 @@ abstract public class Application {
             String rootFolderAbsolutePath = java.nio.file.Paths.get(Application.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
             GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
             System.out.println(rootFolderAbsolutePath);
-            GlobalVars.Paths.placeholderTextureFile = rootFolderAbsolutePath + GlobalVars.Paths.Partial.missingTextureFile;
-            GlobalVars.Paths.debugFont = rootFolderAbsolutePath + GlobalVars.Paths.Partial.debugFont;
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -1,10 +1,9 @@
 package engine.scene.visual.style;
 
-import engine.assets.Font;
 import engine.types.RGBAValue;
 
 public record TextStyle(
-        Font font,
+        String fontFilepath,
         RGBAValue textColor,
         float textHeight
 ) {

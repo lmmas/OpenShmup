@@ -13,15 +13,12 @@ import engine.render.RenderInfo;
 import engine.graphics.RenderType;
 import engine.assets.Texture;
 import engine.scene.menu.item.ColorRectangleButton;
-import engine.scene.visual.ColorRectangleVisual;
 import engine.scene.menu.MenuActions;
-import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
-import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextStyle;
 import engine.types.GameControl;
 import engine.types.RGBAValue;
@@ -64,7 +61,7 @@ final public class LevelScene extends Scene{
 
         RGBAValue buttonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle buttonTextStyle = new TextStyle(assetManager.getFont(debugFont), buttonLabelColor, 25.0f / gameConfig.getEditionHeight());
+        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f / gameConfig.getEditionHeight());
         ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.5f, 0.5f, buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f), List.of(blueButton));
         this.gameOverScreen = pauseMenu;

@@ -10,7 +10,6 @@ import engine.types.RGBAValue;
 
 import java.util.List;
 
-import static engine.Application.assetManager;
 import static engine.Application.window;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.scene.menu.MenuActions.terminateProgram;
@@ -26,13 +25,13 @@ public class MainMenuScene extends Scene {
         addVisual(menuBackground);
 
         RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
-        TextStyle menuTitleTextStyle = new TextStyle(assetManager.getFont(debugFont), menuTitleTextColor, 50.0f / window.getHeight());
+        TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50.0f / window.getHeight());
         TextDisplay menuTitle = new TextDisplay(backgroundLayer + 1, false, 0.5f, 0.8f, "OpenShmup", menuTitleTextStyle);
         addVisual(menuTitle);
 
         RGBAValue menuButtonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
         RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle menuButtonLabelStyle = new TextStyle(assetManager.getFont(debugFont), menuButtonTextColor,17.0f / window.getHeight());
+        TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor,17.0f / window.getHeight());
         ColorRectangleButton button1 = new ColorRectangleButton(backgroundLayer + 1, 0.3f, 0.15f, 0.5f, 0.5f, menuButtonColor, "bouton qui fait rien", menuButtonLabelStyle, () -> {});
         ColorRectangleButton button2 = new ColorRectangleButton(backgroundLayer + 1, 0.3f, 0.15f, 0.5f, 0.25f, menuButtonColor, "Quitter", menuButtonLabelStyle, terminateProgram);
 
