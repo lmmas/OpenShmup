@@ -82,6 +82,7 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
 
         public void addPrimitive(P newPrimitive){
             assert primitives.size() < batchSize: "Can't add primitive data to the batch";
+            assert !primitives.contains(newPrimitive): "primitive already in batch";
             primitives.add(newPrimitive);
             newPrimitive.setBatch(this);
             dataHasChanged = true;

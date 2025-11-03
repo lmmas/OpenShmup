@@ -29,7 +29,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<ArrayList<TextCharacter>> textLines;
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, Font font, float textHeight) {
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, Font font, float textHeight, float r, float g, float b, float a) {
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
@@ -44,13 +44,12 @@ final public class TextDisplay extends SceneVisual {
         this.dynamicText = dynamicText;
         this.textLines = new ArrayList<>();
         this.normalizedLineWidthsList = new ArrayList<>();
-        this.textColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
+        this.textColor = new RGBAValue(r, g, b, a);
         updateText();
     }
 
     public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style){
-        this(layer, dynamicText, positionX, positionY, displayedString, assetManager.getFont(style.fontFilepath()), style.textHeight());
-        this.setTextColor(style.textColor().r, style.textColor().g, style.textColor().b, style.textColor().a);
+        this(layer, dynamicText, positionX, positionY, displayedString, assetManager.getFont(style.fontFilepath()), style.textHeight(), style.textColor().r, style.textColor().b, style.textColor().b, style.textColor().a);
     }
 
     private void updateText(){
@@ -62,7 +61,7 @@ final public class TextDisplay extends SceneVisual {
         textLines.clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
-        this.setReloadGraphicsFlag(true);
+        updateTextColor();
         calculateLineWidths();
         updateTextPosition();
     }
@@ -106,15 +105,7 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
-    public void setDisplayedString(String displayedString){
-        this.displayedString = displayedString;
-    }
-
-    public void setTextColor(float r, float g, float b, float a){
-        this.textColor.r = r;
-        this.textColor.g = g;
-        this.textColor.b = b;
-        this.textColor.a = a;
+    public void updateTextColor(){
         for(ArrayList<TextCharacter> line: textLines){
             for(TextCharacter character: line){
                 character.setColor(textColor.r, textColor.g, textColor.b, textColor.a);
@@ -122,9 +113,13 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
+    public void setDisplayedString(String displayedString){
+        this.displayedString = displayedString;
+    }
+
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, displayedString, font, textHeight);
+        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, displayedString, font, textHeight, textColor.r, textColor.g, textColor.b, textColor.a);
     }
 
     @Override
@@ -163,6 +158,7 @@ final public class TextDisplay extends SceneVisual {
     public void update(float currentTimeSeconds) {
         if(dynamicText){
             updateText();
+            this.setReloadGraphicsFlag(true);
         }
     }
 

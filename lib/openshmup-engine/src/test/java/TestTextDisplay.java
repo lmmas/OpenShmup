@@ -22,7 +22,7 @@ public class TestTextDisplay {
 
                 Font myFont = Font.createFromTTF("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf");
 
-                TextDisplay myTextDisplay = new TextDisplay(2, false, 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", myFont, 24.0f);
+                TextDisplay myTextDisplay = new TextDisplay(2, false, 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", myFont, 24.0f, 1.0f, 1.0f, 1.0f, 1.0f);
                 gameDataManager.addCustomVisual(2, myTextDisplay);
                 gameDataManager.getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(2, 0.5f, 0.5f));
             } catch (IOException e) {

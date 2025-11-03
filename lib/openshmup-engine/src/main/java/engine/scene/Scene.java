@@ -28,7 +28,6 @@ abstract public class Scene {
     final protected HashSet<SceneVisual> sceneVisuals;
     final protected HashSet<SceneVisual> visualsToRemove;
     final protected ArrayList<MenuScreen> displayedMenus;
-    protected MenuScreen activeMenu;
     protected boolean debugModeEnabled = false;
     final protected SceneDebug sceneDebug;
 
@@ -42,10 +41,10 @@ abstract public class Scene {
     }
 
     public void handleInputs(){
-        if(activeMenu == null){
+        if(displayedMenus.isEmpty()){
             return;
         }
-        for (MenuItem menuItem: activeMenu.menuItems()){
+        for (MenuItem menuItem: displayedMenus.getLast().menuItems()){
             Vec2D cursorPosition = inputStatesManager.getCursorPosition();
             Hitbox clickHitbox = menuItem.getClickHitbox();
             if(inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)){
@@ -117,13 +116,6 @@ abstract public class Scene {
             removeVisual(menuBackground);
         }
         displayedMenus.remove(menuScreen);
-        if(activeMenu == menuScreen){
-            activeMenu = null;
-        }
-    }
-
-    final protected void setActiveMenu(MenuScreen menuScreen){
-        this.activeMenu = menuScreen;
     }
 
     protected class SceneDebug {

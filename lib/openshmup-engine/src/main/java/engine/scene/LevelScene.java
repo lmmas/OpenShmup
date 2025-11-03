@@ -95,7 +95,6 @@ final public class LevelScene extends Scene{
             else{
                 timer.pause();
                 addMenu(pauseMenu);
-                setActiveMenu(pauseMenu);
             }
         }
         if(getControlActivation(GameControl.SLOWDOWN)){
@@ -270,7 +269,6 @@ final public class LevelScene extends Scene{
                         entitiesToRemove.add(entity);
                         if(!shipEntity.isEvil()){
                             addMenu(gameOverScreen);
-                            setActiveMenu(gameOverScreen);
                             timer.pause();
                         }
                     }

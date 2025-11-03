@@ -30,4 +30,8 @@ public class MenuItem {
     public void onClick() {
         onClick.run();
     }
+
+    public void setOnclick(Runnable onClick){
+        this.onClick = onClick;
+    }
 }

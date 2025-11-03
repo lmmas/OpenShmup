@@ -9,13 +9,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 final public class GraphicsManager {
+
     final private TreeMap<Integer, ArrayList<Renderer<?,?>>> layers;
+
     public GraphicsManager(){
         this.layers = new TreeMap<>();
         createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.STATIC_IMAGE);
         createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.DYNAMIC_IMAGE);
         createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.COLOR_RECTANGLE);
     }
+
     public void drawGraphics(){
         for(Map.Entry<Integer,ArrayList<Renderer<?,?>>> renderers: layers.entrySet()){
             for(Renderer<?,?> renderer : renderers.getValue()){
