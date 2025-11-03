@@ -6,6 +6,8 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
+import engine.scene.visual.style.TextStyle;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.math.RoundingMode;
@@ -126,6 +128,7 @@ abstract public class Scene {
 
     protected class SceneDebug {
         private TextDisplay fpsDisplay;
+        final private RGBAValue fpsDisplayTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
 
         public SceneDebug(boolean debugModeEnabled){
             if(debugModeEnabled){
@@ -134,8 +137,8 @@ abstract public class Scene {
         }
 
         public void enable(){
-            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, 0.02f, "", assetManager.getFont(debugFont));
-            fpsDisplay.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
+            TextStyle fpsDisplayTextStyle = new TextStyle(assetManager.getFont(debugFont), fpsDisplayTextColor, 0.02f);
+            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, "", fpsDisplayTextStyle);
             Scene.this.addVisual(fpsDisplay);
         }
 

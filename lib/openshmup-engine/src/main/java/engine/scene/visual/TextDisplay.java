@@ -5,6 +5,7 @@ import engine.assets.FontCharInfo;
 import engine.assets.Texture;
 import engine.graphics.*;
 import engine.render.RenderInfo;
+import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
@@ -27,7 +28,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<ArrayList<TextCharacter>> textLines;
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, float textHeight, String displayedString, Font font) {
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, Font font, float textHeight) {
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
@@ -44,6 +45,11 @@ final public class TextDisplay extends SceneVisual {
         this.normalizedLineWidthsList = new ArrayList<>();
         this.textColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
         updateText();
+    }
+
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style){
+        this(layer, dynamicText, positionX, positionY, displayedString, style.font(), style.textHeight());
+        this.setTextColor(style.textColor().r, style.textColor().g, style.textColor().b, style.textColor().a);
     }
 
     private void updateText(){
@@ -117,7 +123,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, textHeight, displayedString, font);
+        return new TextDisplay(renderInfo.layer(), dynamicText, position.x, position.y, displayedString, font, textHeight);
     }
 
     @Override

@@ -8,11 +8,11 @@ import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
-import engine.graphics.ColorRectangle;
 import engine.graphics.Graphic;
 import engine.render.RenderInfo;
 import engine.graphics.RenderType;
 import engine.assets.Texture;
+import engine.scene.menu.item.ColorRectangleButton;
 import engine.scene.visual.ColorRectangleVisual;
 import engine.scene.menu.MenuActions;
 import engine.scene.menu.MenuItem;
@@ -22,6 +22,7 @@ import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
+import engine.scene.visual.style.TextStyle;
 import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -29,6 +30,7 @@ import engine.types.Vec2D;
 import java.util.*;
 
 import static engine.Application.*;
+import static engine.GlobalVars.Paths.debugFont;
 
 final public class LevelScene extends Scene{
     final private HashSet<Entity> goodEntities;
@@ -59,15 +61,12 @@ final public class LevelScene extends Scene{
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.levelUI = new LevelUI(this);
-        ColorRectangleVisual blueRectangle = new ColorRectangleVisual(new ColorRectangle(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.7f, 0.9f, 1.0f, 1.0f,assetManager.getShader(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl")));
-        TextDisplay textDisplay = new TextDisplay(gameConfig.pauseMenuLayer + 2, false, 0.5f, 0.5f, 30.0f / gameConfig.getEditionHeight(), "Restart Game", assetManager.getFont(GlobalVars.Paths.rootFolderAbsolutePath + "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf"));
-        blueRectangle.setPosition(0.5f, 0.5f);
-        textDisplay.setTextColor(0.0f, 0.0f, 0.0f, 1.0f);
-        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.5f), List.of(new MenuItem(
-                List.of(blueRectangle, textDisplay),
-                new SimpleRectangleHitbox(0.5f, 0.5f, 0.3f, 0.15f),
-                MenuActions.reloadGame
-        )));
+
+        RGBAValue buttonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
+        RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
+        TextStyle buttonTextStyle = new TextStyle(assetManager.getFont(debugFont), buttonLabelColor, 25.0f / gameConfig.getEditionHeight());
+        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, 0.3f, 0.15f, 0.5f, 0.5f, buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f), List.of(blueButton));
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);
         loadAssets();
