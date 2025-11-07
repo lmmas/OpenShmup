@@ -1,12 +1,12 @@
-package engine.render;
+package engine.graphics.image;
 
 import engine.GlobalVars;
 import engine.assets.Shader;
 import engine.assets.Texture;
+import engine.graphics.Renderer;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.graphics.RenderType;
-import engine.graphics.Image2D;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -15,18 +15,18 @@ import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
+final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
 
-    protected Batch createBatchFromGraphic(Image2D graphic){
+    protected Batch createBatchFromGraphic(Image graphic){
         return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
-    public Image2DRenderer(RenderType type){
+    public ImageRenderer(RenderType type){
         super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, 68);
         assert type == RenderType.STATIC_IMAGE || type == RenderType.DYNAMIC_IMAGE: "incorrect render type for Image2D renderer";
         this.batchSize = 100;
     }
 
-    protected class ImageBatch extends Renderer<Image2D, Image2D.ImagePrimitive>.Batch {
+    protected class ImageBatch extends Renderer<Image, Image.ImagePrimitive>.Batch {
         protected ArrayList<Texture> textures;
         protected ArrayList<Integer> textureIndexes;
         final protected ByteBuffer dataBuffer;
@@ -68,7 +68,7 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
         }
 
         @Override
-        boolean canReceivePrimitiveFrom(Image2D graphic) {
+        protected boolean canReceivePrimitiveFrom(Image graphic) {
             if(primitives.size() + 1 > batchSize)
                 return false;
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
@@ -96,7 +96,7 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
         public void uploadData(){
             dataBuffer.clear();
             for(int i = 0; i < primitives.size() ; i++){
-                Image2D.ImagePrimitive image = primitives.get(i);
+                Image.ImagePrimitive image = primitives.get(i);
                 Vec2D imagePosition = image.getImagePosition();
                 Vec2D imageSize = image.getImageSize();
                 Vec2D texturePosition = image.getTexturePosition();
@@ -129,7 +129,7 @@ public class Image2DRenderer extends Renderer<Image2D, Image2D.ImagePrimitive> {
         }
 
         @Override
-        public void addPrimitive(Image2D.ImagePrimitive newPrimitive) {
+        public void addPrimitive(Image.ImagePrimitive newPrimitive) {
             assert primitives.size() == textureIndexes.size(): "mismatching list sizes between primitives and texture indices";
             super.addPrimitive(newPrimitive);
             int textureIndex = textures.indexOf(newPrimitive.getTexture());

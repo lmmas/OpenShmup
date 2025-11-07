@@ -1,10 +1,10 @@
-package engine.render;
+package engine.graphics.colorRectangle;
 
 import engine.Application;
 import engine.assets.Shader;
+import engine.graphics.Renderer;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.ColorRectangle;
 import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>{
+final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive> {
     final static private int vertexFloatCount = 8;
     public ColorRectangleRenderer(){
         super(RenderType.COLOR_RECTANGLE, GL_DYNAMIC_DRAW, vertexFloatCount * Float.BYTES);
@@ -32,7 +32,7 @@ public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectan
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
         @Override
-        boolean canReceivePrimitiveFrom(ColorRectangle graphic) {
+        protected boolean canReceivePrimitiveFrom(ColorRectangle graphic) {
             if(primitives.size() >= batchSize){
                 return false;
             }

@@ -1,7 +1,5 @@
 package engine.graphics;
-import engine.render.RenderInfo;
 import engine.assets.Shader;
-import engine.render.Renderer;
 import engine.types.Vec2D;
 
 
@@ -18,8 +16,6 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         this.renderInfo = new RenderInfo(graphic.renderInfo.layer(), graphic.renderInfo.renderType());
         this.shader = graphic.shader;
     }
-
-    abstract public G copy();
 
     public Shader getShader() {
         return shader;
@@ -44,23 +40,23 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
     abstract public void remove();
 
     abstract public class Primitive{
-        Renderer<G,P>.Batch currentBatch;
-
-        protected boolean shouldBeRemovedFlag;
+        protected boolean dataHasChangedFlag = true;
+        protected boolean shouldBeRemovedFlag = false;
 
         public Primitive(){
-            this.currentBatch = null;
             this.shouldBeRemovedFlag = false;
         }
 
-        public void setBatch(Renderer<G,P>.Batch newBatch){
-            this.currentBatch = newBatch;
+        public boolean getDataHasChangedFlag(){
+            return dataHasChangedFlag;
         }
 
-        public void tellBatchDataChanged(){
-            if(currentBatch != null) {
-                currentBatch.dataHasChanged();
-            }
+        public void dataHasChanged(){
+            this.dataHasChangedFlag = true;
+        }
+
+        public void resetDataHasChangedFlag(){
+            this.dataHasChangedFlag = false;
         }
 
         public boolean getShouldBeRemoved() {

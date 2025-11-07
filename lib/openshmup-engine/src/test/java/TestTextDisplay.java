@@ -1,7 +1,7 @@
 import engine.Engine;
 import engine.assets.Font;
 import engine.assets.Texture;
-import engine.graphics.Image2D;
+import engine.graphics.image.Image;
 import engine.scene.visual.ImageDisplay;
 import engine.scene.visual.TextDisplay;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -16,7 +16,7 @@ public class TestTextDisplay {
 
         Runnable testInit = () ->{
             try{
-                ImageDisplay testBackground = new ImageDisplay(new Image2D(Texture.createFromImageFile("lib/openshmup-engine/src/test/resources/textures/background_white.jpg"), 0, false, 0.5f, 0.5f));
+                ImageDisplay testBackground = new ImageDisplay(new Image(Texture.createFromImageFile("lib/openshmup-engine/src/test/resources/textures/background_white.jpg"), 0, false, 0.5f, 0.5f));
                 gameDataManager.addCustomVisual(1, testBackground);
                 gameDataManager.getTimeline(0).addSpawnable(0.0f, new SceneDisplaySpawnInfo(1, 0.25f, 0.25f));
 

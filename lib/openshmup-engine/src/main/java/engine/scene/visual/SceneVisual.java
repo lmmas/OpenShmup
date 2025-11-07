@@ -1,7 +1,7 @@
 package engine.scene.visual;
 
 import engine.graphics.Graphic;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 
 import java.util.List;

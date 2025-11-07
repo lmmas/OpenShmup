@@ -1,15 +1,14 @@
 package engine.scene.visual;
 
-import engine.graphics.AnimationInfo;
 import engine.graphics.Graphic;
-import engine.graphics.Image2D;
-import engine.render.RenderInfo;
+import engine.graphics.image.Image;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 
 import java.util.*;
 
 final public class Animation extends SceneVisual {
-    final private Image2D image;
+    final private Image image;
     final private AnimationInfo info;
     final private boolean looping;
     private final float framePeriodSeconds;
@@ -21,14 +20,14 @@ final public class Animation extends SceneVisual {
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new Image2D(animationTexture, layer, true, sizeX, sizeY);
+        this.image = new Image(animationTexture, layer, true, sizeX, sizeY);
         this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;
     }
 
     public Animation(Animation animation){
-        this.image = animation.image.copy();
+        this.image = new Image(animation.image);
         this.info = animation.info;
         this.looping = animation.looping;
         this.framePeriodSeconds = animation.framePeriodSeconds;

@@ -1,7 +1,10 @@
 package engine;
 
 import engine.graphics.*;
-import engine.render.*;
+import engine.graphics.colorRectangle.ColorRectangle;
+import engine.graphics.colorRectangle.ColorRectangleRenderer;
+import engine.graphics.image.Image;
+import engine.graphics.image.ImageRenderer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,8 +49,8 @@ final public class GraphicsManager {
         assert newGraphic.getRenderInfo().renderType() == renderer.getType(): "wrong renderer for graphic";
         switch (renderer.getType()){
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
-                Image2DRenderer ImageRenderer = (Image2DRenderer) renderer;
-                Image2D image = (Image2D) newGraphic;
+                ImageRenderer ImageRenderer = (ImageRenderer) renderer;
+                Image image = (Image) newGraphic;
                 ImageRenderer.addGraphic(image);
             }
             case COLOR_RECTANGLE -> {
@@ -65,7 +68,7 @@ final public class GraphicsManager {
         ArrayList<Renderer<?,?>> rendererList = layers.get(layer);
         switch (renderType) {
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
-                Image2DRenderer newRenderer = new Image2DRenderer(renderType);
+                ImageRenderer newRenderer = new ImageRenderer(renderType);
                 rendererList.add(newRenderer);
             }
             case COLOR_RECTANGLE -> {

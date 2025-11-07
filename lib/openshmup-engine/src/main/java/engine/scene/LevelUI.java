@@ -2,7 +2,7 @@ package engine.scene;
 
 import engine.GameConfig;
 import engine.entity.Ship;
-import engine.graphics.Image2D;
+import engine.graphics.image.Image;
 import engine.scene.visual.ImageDisplay;
 import engine.types.Vec2D;
 
@@ -32,7 +32,7 @@ public class LevelUI {
             if(playerLives.size() != playerHP){
                 while(playerLives.size() < playerHP){
                     Vec2D size = config.lives.size;
-                    Image2D hpPointImage = new Image2D(assetManager.getTexture(config.lives.textureFilepath), config.contentsLayer, false, size.x, size.y);
+                    Image hpPointImage = new Image(assetManager.getTexture(config.lives.textureFilepath), config.contentsLayer, false, size.x, size.y);
                     Vec2D position = config.lives.position;
                     Vec2D stride = config.lives.stride;
                     float pointPositionX = position.x + stride.x * playerLives.size();

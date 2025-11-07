@@ -3,7 +3,7 @@ package engine.entity.extraComponent;
 import engine.types.Vec2D;
 import engine.entity.Entity;
 import engine.graphics.Graphic;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.types.GameControl;
 import engine.scene.LevelScene;

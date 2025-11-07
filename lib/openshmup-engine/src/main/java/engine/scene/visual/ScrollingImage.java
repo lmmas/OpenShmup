@@ -1,17 +1,17 @@
 package engine.scene.visual;
 
 import engine.graphics.Graphic;
-import engine.graphics.Image2D;
-import engine.render.RenderInfo;
+import engine.graphics.image.Image;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.types.Vec2D;
 
 import java.util.List;
 
 final public class ScrollingImage extends SceneVisual {
-    private final Image2D image1;
+    private final Image image1;
     final private Vec2D position1;
-    private final Image2D image2;
+    private final Image image2;
     final private Vec2D position2;
     final private Vec2D size;
     boolean horizontalScrolling;
@@ -20,8 +20,8 @@ final public class ScrollingImage extends SceneVisual {
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.size = new Vec2D(sizeX, sizeY);
-        this.image1 = new Image2D(texture, layer, true, sizeX, sizeY);
-        this.image2 = new Image2D(texture, layer, true, sizeX, sizeY);
+        this.image1 = new Image(texture, layer, true, sizeX, sizeY);
+        this.image2 = new Image(texture, layer, true, sizeX, sizeY);
         this.position1 = new Vec2D(0.5f, 0.5f);
         this.position2 = new Vec2D(0.0f, 0.0f);
         this.speed = speed;
@@ -33,10 +33,10 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     public ScrollingImage(ScrollingImage scrollingImage){
-        this.image1 = scrollingImage.image1.copy();
+        this.image1 = new Image(scrollingImage.image1);
         this.position1 = new Vec2D(scrollingImage.position1);
         this.position2 = new Vec2D(scrollingImage.position2);
-        this.image2 = scrollingImage.image2.copy();
+        this.image2 = new Image(scrollingImage.image2);
         this.size = new Vec2D(scrollingImage.size);
         this.horizontalScrolling = scrollingImage.horizontalScrolling;
         this.speed = scrollingImage.speed;

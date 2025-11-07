@@ -1,5 +1,7 @@
-package engine.graphics;
+package engine.graphics.image;
 
+import engine.graphics.Graphic;
+import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.assets.Shader;
@@ -7,21 +9,22 @@ import engine.assets.Texture;
 
 import static engine.Application.assetManager;
 
-public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
+final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
 
-    protected Texture texture;
-    protected ImagePrimitive primitive;
-    public Image2D(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY, Shader shader){
+    private Texture texture;
+    private ImagePrimitive primitive;
+
+    public Image(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY, Shader shader){
         super(layer, dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
         this.texture = texture;
         this.primitive = new ImagePrimitive(sizeX, sizeY);
     }
-    public Image2D(Texture texture, int layer,  boolean dynamic, float sizeX, float sizeY){
+    public Image(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY){
         this(texture, layer, dynamic, sizeX, sizeY, assetManager.getShader(defaultShader));
     }
 
-    public Image2D(Image2D image){
+    public Image(Image image){
         super(image);
         this.texture = image.texture;
         this.primitive = new ImagePrimitive(image.primitive);
@@ -30,24 +33,24 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
     public void setPosition(float imagePositionX, float imagePositionY){
         primitive.imagePosition.x = imagePositionX;
         primitive.imagePosition.y = imagePositionY;
-        primitive.tellBatchDataChanged();
+        primitive.dataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY){
         primitive.imageSize.x = scaleX;
         primitive.imageSize.y = scaleY;
-        primitive.tellBatchDataChanged();
+        primitive.dataHasChanged();
     }
 
     public void setTexturePosition(float texturePositionX, float texturePositionY){
         primitive.texturePosition.x = texturePositionX;
         primitive.texturePosition.y = texturePositionY;
-        primitive.tellBatchDataChanged();
+        primitive.dataHasChanged();
     }
     public void setTextureSize(float textureSizeX, float textureSizeY){
         primitive.textureSize.x = textureSizeX;
         primitive.textureSize.y = textureSizeY;
-        primitive.tellBatchDataChanged();
+        primitive.dataHasChanged();
     }
 
     public void setPrimitiveData(float imagePositionX, float imagePositionY, float imageSizeX,  float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY){
@@ -59,16 +62,11 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         primitive.texturePosition.y = texturePositionY;
         primitive.textureSize.x = textureSizeX;
         primitive.textureSize.y = textureSizeY;
-        primitive.tellBatchDataChanged();
+        primitive.dataHasChanged();
     }
 
     public Texture getTexture() {
         return texture;
-    }
-
-    @Override
-    public Image2D copy() {
-        return new Image2D(this);
     }
 
     public Vec2D getPosition(){
@@ -99,7 +97,7 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         primitive.textureColorCoefs.a = a;
     }
 
-    public class ImagePrimitive extends Graphic<Image2D, ImagePrimitive>.Primitive{
+    public class ImagePrimitive extends Graphic<Image, ImagePrimitive>.Primitive{
 
         private final Vec2D imagePosition;
 
@@ -148,7 +146,7 @@ public class Image2D extends Graphic<Image2D, Image2D.ImagePrimitive> {
         }
 
         public Texture getTexture(){
-            return Image2D.this.texture;
+            return Image.this.texture;
         }
 
         public RGBAValue getTextureColorCoefs(){

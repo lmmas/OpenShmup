@@ -1,9 +1,7 @@
-package engine.render;
+package engine.graphics;
 
 import engine.assets.Shader;
-import engine.graphics.RenderType;
 import engine.scene.Scene;
-import engine.graphics.Graphic;
 
 import java.util.ArrayList;
 
@@ -84,10 +82,9 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
             assert primitives.size() < batchSize: "Can't add primitive data to the batch";
             assert !primitives.contains(newPrimitive): "primitive already in batch";
             primitives.add(newPrimitive);
-            newPrimitive.setBatch(this);
             dataHasChanged = true;
         }
-        abstract boolean canReceivePrimitiveFrom(G graphic);
+        abstract protected boolean canReceivePrimitiveFrom(G graphic);
         abstract protected void setupVertexAttributes();
         abstract protected void uploadData();
         abstract protected void draw();
@@ -116,9 +113,12 @@ public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Pr
             this.cleanupPrimitives();
             this.setupVertexAttributes();
             this.shader.use();
-            if(this.dataHasChanged){
-                this.uploadData();
-                this.dataHasChanged = false;
+            for(var primitive: primitives){
+                if(primitive.getDataHasChangedFlag()){
+                    this.uploadData();
+                    primitives.forEach(P::resetDataHasChangedFlag);
+                    break;
+                }
             }
             this.draw();
         }

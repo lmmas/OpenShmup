@@ -2,7 +2,7 @@ package engine.scene.visual;
 
 import engine.assets.Texture;
 import engine.graphics.Graphic;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ final public class EmptyVisual extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return null;
+        return getInstance();
     }
 
     @Override

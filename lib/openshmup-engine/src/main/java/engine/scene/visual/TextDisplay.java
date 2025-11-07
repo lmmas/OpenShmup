@@ -4,7 +4,8 @@ import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.assets.Texture;
 import engine.graphics.*;
-import engine.render.RenderInfo;
+import engine.graphics.image.Image;
+import engine.graphics.RenderInfo;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -165,12 +166,12 @@ final public class TextDisplay extends SceneVisual {
     final public class TextCharacter{
         final private int codepoint;
         private FontCharInfo fontCharInfo;
-        private Image2D image;
+        private Image image;
         public TextCharacter(int codepoint, Font font){
             this.codepoint = codepoint;
             this.fontCharInfo = font.getCharInfo(codepoint).orElseThrow();
             Vec2D charSize = fontCharInfo.normalizedQuadSize();
-            this.image = new Image2D(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textWidth, charSize.y * textHeight);
+            this.image = new Image(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText, charSize.x * textWidth, charSize.y * textHeight);
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
             image.setTextureSize(bitmapTextureSize.x, bitmapTextureSize.y);
@@ -189,7 +190,7 @@ final public class TextDisplay extends SceneVisual {
             image.setColorCoefs(r,g,b,a);
         }
 
-        public Image2D getImage(){
+        public Image getImage(){
             return image;
         }
     }

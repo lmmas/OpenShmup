@@ -1,21 +1,22 @@
 package engine.scene.visual;
 
 import engine.graphics.Graphic;
-import engine.graphics.Image2D;
-import engine.render.RenderInfo;
+import engine.graphics.image.Image;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 
 import java.util.List;
 
 final public class ImageDisplay extends SceneVisual {
-    Image2D image;
+    Image image;
 
-    public ImageDisplay(Image2D image){
-        this.image = image;
+    public ImageDisplay(Image image){
+        this.image = new Image(image);
     }
+
     @Override
     public SceneVisual copy() {
-        return new ImageDisplay(image.copy());
+        return new ImageDisplay(image);
     }
 
     @Override

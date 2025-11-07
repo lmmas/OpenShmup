@@ -1,7 +1,7 @@
 package engine.scene;
 
 import engine.GameDataManager;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.spawnable.*;
 

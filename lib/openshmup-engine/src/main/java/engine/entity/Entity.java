@@ -9,10 +9,10 @@ import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
-import engine.graphics.Image2D;
+import engine.graphics.image.Image;
 import engine.scene.LevelScene;
 import engine.scene.visual.Animation;
-import engine.graphics.AnimationInfo;
+import engine.scene.visual.AnimationInfo;
 import engine.scene.visual.ImageDisplay;
 import engine.scene.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
@@ -222,7 +222,7 @@ abstract public class Entity {
             if (orientable) {
 
             } else {
-                this.sprite = new ImageDisplay(new Image2D(texture, layer, true, size.x, size.y));
+                this.sprite = new ImageDisplay(new Image(texture, layer, true, size.x, size.y));
             }
             return this;
         }

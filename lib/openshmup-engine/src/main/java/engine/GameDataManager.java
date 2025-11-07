@@ -3,7 +3,7 @@ package engine;
 import engine.entity.Entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.LevelTimeline;
 import engine.scene.visual.SceneVisual;

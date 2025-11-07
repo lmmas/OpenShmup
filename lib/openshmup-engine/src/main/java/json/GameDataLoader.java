@@ -10,7 +10,7 @@ import engine.scene.visual.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;
 import engine.entity.trajectory.FixedTrajectory;
-import engine.graphics.AnimationInfo;
+import engine.scene.visual.AnimationInfo;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;

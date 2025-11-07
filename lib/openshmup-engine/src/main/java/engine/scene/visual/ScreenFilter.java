@@ -1,22 +1,26 @@
 package engine.scene.visual;
 
 import engine.assets.Texture;
-import engine.graphics.ColorRectangle;
+import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.Graphic;
-import engine.render.RenderInfo;
+import engine.graphics.RenderInfo;
+import engine.types.RGBAValue;
 
 import java.util.List;
 
 final public class ScreenFilter extends SceneVisual{
-    private ColorRectangle colorRectangle;
+    final private ColorRectangle colorRectangle;
 
     public ScreenFilter(int layer, float r, float g, float b, float a){
-        this.colorRectangle = new ColorRectangle(layer, 1.0f, 1.0f, r, g, b, a);
-        colorRectangle.setPosition(0.5f, 0.5f);
+        this.colorRectangle = new ColorRectangle(layer, 0.5f, 0.5f, 1.0f, 1.0f, r, g, b, a);
+    }
+
+    public ScreenFilter(int layer, RGBAValue color){
+        this(layer, color.r, color.g, color.b, color.a);
     }
 
     public ScreenFilter(ScreenFilter screenFilter){
-        this.colorRectangle = screenFilter.colorRectangle.copy();
+        this.colorRectangle = new ColorRectangle(screenFilter.colorRectangle);
     }
 
     @Override
