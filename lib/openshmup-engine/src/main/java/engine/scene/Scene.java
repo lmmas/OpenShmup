@@ -2,11 +2,11 @@ package engine.scene;
 
 import engine.entity.hitbox.Hitbox;
 import engine.graphics.*;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.TextDisplay;
+import engine.visual.SceneVisual;
+import engine.visual.TextDisplay;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 

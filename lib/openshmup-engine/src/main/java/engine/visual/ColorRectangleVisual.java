@@ -1,31 +1,32 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.assets.Texture;
 import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.Graphic;
 import engine.graphics.RenderInfo;
 import engine.types.RGBAValue;
+import engine.types.Vec2D;
 
 import java.util.List;
 
-final public class ScreenFilter extends SceneVisual{
+final public class ColorRectangleVisual extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
-    public ScreenFilter(int layer, float r, float g, float b, float a){
-        this.colorRectangle = new ColorRectangle(layer, 0.5f, 0.5f, 1.0f, 1.0f, r, g, b, a);
+    public ColorRectangleVisual(ColorRectangle colorRectangle) {
+        this.colorRectangle = colorRectangle;
     }
 
-    public ScreenFilter(int layer, RGBAValue color){
-        this(layer, color.r, color.g, color.b, color.a);
+    public ColorRectangleVisual(int layer, float positionX, float positionY, float sizeX, float sizeY, float r, float g, float b, float a) {
+        this(new ColorRectangle(layer, positionX, positionY, sizeX, sizeY, r, g, b, a));
     }
 
-    public ScreenFilter(ScreenFilter screenFilter){
-        this.colorRectangle = new ColorRectangle(screenFilter.colorRectangle);
+    public ColorRectangleVisual(int layer, Vec2D position, Vec2D size, RGBAValue color){
+        this(layer, position.x, position.y, size.x, size.y, color.r, color.g, color.b, color.a);
     }
 
     @Override
     public SceneVisual copy() {
-        return new ScreenFilter(this);
+        return new ColorRectangleVisual(new ColorRectangle(colorRectangle));
     }
 
     @Override
@@ -45,7 +46,7 @@ final public class ScreenFilter extends SceneVisual{
 
     @Override
     public void setPosition(float positionX, float positionY) {
-
+        colorRectangle.setPosition(positionX, positionY);
     }
 
     @Override

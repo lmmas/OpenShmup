@@ -1,7 +1,7 @@
 package engine.scene.menu;
 
 import engine.entity.hitbox.Hitbox;
-import engine.scene.visual.SceneVisual;
+import engine.visual.SceneVisual;
 
 import java.util.List;
 

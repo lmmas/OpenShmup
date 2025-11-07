@@ -1,4 +1,6 @@
-package engine;
+package engine.gameData;
+
+import engine.GlobalVars;
 
 final public class GamePaths {
     final public String customGameFolder;

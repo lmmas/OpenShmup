@@ -3,10 +3,12 @@ package engine;
 import engine.entity.Entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
+import engine.gameData.GameConfig;
+import engine.gameData.GamePaths;
 import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.LevelTimeline;
-import engine.scene.visual.SceneVisual;
+import engine.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 import json.GameDataLoader;
 
@@ -33,7 +35,7 @@ final public class GameDataManager {
         this.customTimelines = new ArrayList<>();
     }
 
-    void loadGameConfig(){
+    public void loadGameConfig(){
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
             gameDataLoader.loadGameConfig(paths.customGameConfigFile);
@@ -42,7 +44,7 @@ final public class GameDataManager {
         }
     }
 
-    void loadGameContents(){
+    public void loadGameContents(){
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
             gameDataLoader.loadCustomDisplays(paths.editorCustomDisplaysFile);

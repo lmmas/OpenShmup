@@ -11,10 +11,10 @@ import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.image.Image;
 import engine.scene.LevelScene;
-import engine.scene.visual.Animation;
-import engine.scene.visual.AnimationInfo;
-import engine.scene.visual.ImageDisplay;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Animation;
+import engine.visual.AnimationInfo;
+import engine.visual.ImageDisplay;
+import engine.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 

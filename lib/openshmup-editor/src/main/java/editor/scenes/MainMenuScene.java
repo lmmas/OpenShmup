@@ -3,10 +3,10 @@ package editor.scenes;
 import engine.scene.Scene;
 import engine.scene.menu.MenuScreen;
 import engine.scene.menu.item.ColorRectangleButton;
-import engine.scene.visual.ColorRectangleVisual;
-import engine.scene.visual.ScreenFilter;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.ColorRectangleVisual;
+import engine.visual.ScreenFilter;
+import engine.visual.TextDisplay;
+import engine.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 

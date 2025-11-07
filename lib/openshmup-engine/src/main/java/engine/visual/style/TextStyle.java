@@ -1,4 +1,4 @@
-package engine.scene.visual.style;
+package engine.visual.style;
 
 import engine.types.RGBAValue;
 

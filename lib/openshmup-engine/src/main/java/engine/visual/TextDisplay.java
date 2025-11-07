@@ -1,4 +1,4 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
@@ -6,7 +6,7 @@ import engine.assets.Texture;
 import engine.graphics.*;
 import engine.graphics.image.Image;
 import engine.graphics.RenderInfo;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 

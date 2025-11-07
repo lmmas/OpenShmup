@@ -1,4 +1,4 @@
-package engine;
+package engine.gameData;
 
 import engine.types.Vec2D;
 

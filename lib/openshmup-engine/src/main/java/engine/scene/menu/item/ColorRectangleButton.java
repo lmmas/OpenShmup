@@ -2,9 +2,9 @@ package engine.scene.menu.item;
 
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.scene.menu.MenuItem;
-import engine.scene.visual.ColorRectangleVisual;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.ColorRectangleVisual;
+import engine.visual.TextDisplay;
+import engine.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 

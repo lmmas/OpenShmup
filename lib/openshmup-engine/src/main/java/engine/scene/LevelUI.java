@@ -1,9 +1,9 @@
 package engine.scene;
 
-import engine.GameConfig;
+import engine.gameData.GameConfig;
 import engine.entity.Ship;
 import engine.graphics.image.Image;
-import engine.scene.visual.ImageDisplay;
+import engine.visual.ImageDisplay;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;

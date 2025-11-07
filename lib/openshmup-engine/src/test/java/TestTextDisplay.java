@@ -2,8 +2,8 @@ import engine.Engine;
 import engine.assets.Font;
 import engine.assets.Texture;
 import engine.graphics.image.Image;
-import engine.scene.visual.ImageDisplay;
-import engine.scene.visual.TextDisplay;
+import engine.visual.ImageDisplay;
+import engine.visual.TextDisplay;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 
 import java.io.IOException;

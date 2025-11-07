@@ -3,7 +3,7 @@ package engine.entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.trajectory.Trajectory;
-import engine.scene.visual.SceneVisual;
+import engine.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
 
 import java.util.ArrayList;
