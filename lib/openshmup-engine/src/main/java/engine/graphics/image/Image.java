@@ -13,15 +13,47 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
 
     private Texture texture;
-    private ImagePrimitive primitive;
+    final private ImagePrimitive primitive;
 
-    public Image(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY, Shader shader){
+    public Image(Texture texture, int layer, boolean dynamic,
+                 float imageSizeX, float imageSizeY,
+                 float imagePositionX, float imagePositionY,
+                 float textureSizeX, float textureSizeY,
+                 float texturePositionX, float texturePositionY,
+                 float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
+                 float addedColorR, float addedColorG, float addedColorB, float addedColorA,
+                 Shader shader) {
+
         super(layer, dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
         this.texture = texture;
-        this.primitive = new ImagePrimitive(sizeX, sizeY);
+        this.primitive = new ImagePrimitive(
+                imageSizeX, imageSizeY,
+                imagePositionX, imagePositionY,
+                textureSizeX, textureSizeY,
+                texturePositionX, texturePositionY,
+                textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA,
+                addedColorR, addedColorG, addedColorB, addedColorA);
     }
-    public Image(Texture texture, int layer, boolean dynamic, float sizeX, float sizeY){
-        this(texture, layer, dynamic, sizeX, sizeY, assetManager.getShader(defaultShader));
+
+    public Image(
+            Texture texture, int layer, boolean dynamic,
+            float imageSizeX, float imageSizeY,
+            float imagePositionX, float imagePositionY,
+            float textureSizeX, float textureSizeY,
+            float texturePositionX, float texturePositionY,
+            float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
+            float addedColorR, float addedColorG, float addedColorB, float addedColorA
+    ) {
+        this(
+                texture, layer, dynamic,
+                imageSizeX, imageSizeY,
+                imagePositionX, imagePositionY,
+                textureSizeX, textureSizeY,
+                texturePositionX, texturePositionY,
+                textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA,
+                addedColorR, addedColorG, addedColorB, addedColorA,
+                assetManager.getShader(defaultShader)
+        );
     }
 
     public Image(Image image){
@@ -99,25 +131,32 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
 
     public class ImagePrimitive extends Graphic<Image, ImagePrimitive>.Primitive{
 
-        private final Vec2D imagePosition;
-
         private final Vec2D imageSize;
 
-        private final Vec2D texturePosition;
+        private final Vec2D imagePosition;
 
         private final Vec2D textureSize;
+
+        private final Vec2D texturePosition;
 
         private final RGBAValue textureColorCoefs;
 
         private final RGBAValue addedColor;
 
-        public ImagePrimitive(float sizeX, float sizeY){
-            this.imagePosition = new Vec2D(0.0f, 0.0f);
-            this.imageSize = new Vec2D(sizeX, sizeY);
-            this.texturePosition = new Vec2D(0.0f, 0.0f);
-            this.textureSize = new Vec2D(1.0f, 1.0f);
-            this.textureColorCoefs = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
-            this.addedColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
+        public ImagePrimitive(
+                float imageSizeX, float imageSizeY,
+                float imagePositionX, float imagePositionY,
+                float textureSizeX, float textureSizeY,
+                float texturePositionX, float texturePositionY,
+                float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
+                float addedColorR, float addedColorG, float addedColorB, float addedColorA
+        ){
+            this.imageSize = new Vec2D(imageSizeX, imageSizeY);
+            this.imagePosition = new Vec2D(imagePositionX, imagePositionY);
+            this.textureSize = new Vec2D(textureSizeX, textureSizeY);
+            this.texturePosition = new Vec2D(texturePositionX, texturePositionY);
+            this.textureColorCoefs = new RGBAValue(textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA);
+            this.addedColor = new RGBAValue(addedColorR, addedColorG, addedColorB, addedColorA);
         }
 
         public ImagePrimitive(ImagePrimitive imagePrimitive){

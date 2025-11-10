@@ -32,15 +32,13 @@ public class LevelUI {
             if(playerLives.size() != playerHP){
                 while(playerLives.size() < playerHP){
                     Vec2D size = config.lives.size;
-                    Image hpPointImage = new Image(assetManager.getTexture(config.lives.textureFilepath), config.contentsLayer, false, size.x, size.y);
                     Vec2D position = config.lives.position;
                     Vec2D stride = config.lives.stride;
                     float pointPositionX = position.x + stride.x * playerLives.size();
                     float pointPositionY = position.y + stride.y * playerLives.size();
-                    hpPointImage.setPosition(pointPositionX, pointPositionY);
-                    ImageDisplay hpPointDisplay = new ImageDisplay(hpPointImage);
-                    scene.addVisual(new ImageDisplay(hpPointImage));
+                    ImageDisplay hpPointDisplay = new ImageDisplay(config.contentsLayer, assetManager.getTexture(config.lives.textureFilepath), size.x, size.y, pointPositionX, pointPositionY);
                     playerLives.add(hpPointDisplay);
+                    scene.addVisual(hpPointDisplay);
                 }
                 while(playerLives.size() > playerHP){
                     scene.removeVisual(playerLives.getLast());

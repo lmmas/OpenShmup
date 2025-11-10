@@ -11,9 +11,9 @@ import engine.types.Vec2D;
 import java.util.List;
 
 public class ColorRectangleButton extends MenuItem {
-    public ColorRectangleButton(int layer,Vec2D position, Vec2D size, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
+    public ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
         super(List.of(
-                new ColorRectangleVisual(layer, position, size, color),
+                new ColorRectangleVisual(layer, size, position, color),
                 new TextDisplay(layer + 1, false, position.x, position.y, label, textStyle)),
                 new SimpleRectangleHitbox(position.x, position.y, size.x, size.y),
                 onClick);

@@ -20,16 +20,26 @@ final public class ScrollingImage extends SceneVisual {
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         this.size = new Vec2D(sizeX, sizeY);
-        this.image1 = new Image(texture, layer, true, sizeX, sizeY);
-        this.image2 = new Image(texture, layer, true, sizeX, sizeY);
         this.position1 = new Vec2D(0.5f, 0.5f);
         this.position2 = new Vec2D(0.0f, 0.0f);
+        this.image1 = new Image(texture, layer, true,
+                sizeX, sizeY,
+                position1.x, position1.y,
+                1.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f);
+        this.image2 = new Image(texture, layer, true,
+                sizeX, sizeY,
+                position2.x, position2.y,
+                1.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
-        image1.setScale(sizeX, sizeY);
-        image2.setScale(sizeX, sizeY);
         lastUpdateTimeSeconds = 0.0f;
-        setPosition(0.5f, 0.5f);
+        this.setPosition(0.5f, 0.5f);
     }
 
     public ScrollingImage(ScrollingImage scrollingImage){

@@ -12,19 +12,18 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
     private final ColorRectanglePrimitive primitive;
 
-    public ColorRectangle(int layer, float positionX, float positionY, float sizeX, float sizeY, float r, float g, float b, float a, Shader shader){
+    public ColorRectangle(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader){
         super(layer, RenderType.COLOR_RECTANGLE, shader);
-        this.primitive = new ColorRectanglePrimitive(positionX, positionY, sizeX, sizeY, r, g, b, a);
+        this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, positionX, positionY, r, g, b, a);
     }
 
-    public ColorRectangle(int layer, float positionX, float positionY, float sizeX, float sizeY, float r, float g, float b, float a) {
-        this(layer, positionX, positionY, sizeX, sizeY, r, g, b, a, assetManager.getShader(defaultShader));
+    public ColorRectangle(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
+        this(layer, sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
     }
 
     public ColorRectangle(ColorRectangle colorRectangle){
         this(colorRectangle.renderInfo.layer(),
-                colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
-                colorRectangle.primitive.size.x, colorRectangle.primitive.size.y,
+                colorRectangle.primitive.size.x, colorRectangle.primitive.size.y, colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
                 colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.b,
                 colorRectangle.shader
                 );
@@ -67,9 +66,9 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
 
     public class ColorRectanglePrimitive extends Graphic<ColorRectangle, ColorRectanglePrimitive>.Primitive{
 
-        private final Vec2D position;
-
         private final Vec2D size;
+
+        private final Vec2D position;
 
         private final RGBAValue color;
 
@@ -85,9 +84,9 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
             return new RGBAValue(color);
         }
 
-        public ColorRectanglePrimitive(float positionX, float positionY, float sizeX, float sizeY, float r, float g, float b, float a){
-            this.position = new Vec2D(positionX, positionY);
+        public ColorRectanglePrimitive(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a){
             this.size = new Vec2D(sizeX, sizeY);
+            this.position = new Vec2D(positionX, positionY);
             this.color = new RGBAValue(r,g,b,a);
         }
     }

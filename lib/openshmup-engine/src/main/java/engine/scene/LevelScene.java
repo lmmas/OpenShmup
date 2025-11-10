@@ -64,7 +64,7 @@ final public class LevelScene extends Scene{
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f / gameConfig.getEditionHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
-        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, new Vec2D(0.5f, 0.5f), buttonSize, buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f), List.of(blueButton));
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);

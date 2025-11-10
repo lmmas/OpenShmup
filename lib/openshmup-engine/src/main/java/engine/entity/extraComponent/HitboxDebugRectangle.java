@@ -23,7 +23,7 @@ final public class HitboxDebugRectangle implements ExtraComponent{
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color){
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
+        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
     }
 
     @Override

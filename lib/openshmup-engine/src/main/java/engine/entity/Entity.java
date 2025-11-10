@@ -220,9 +220,9 @@ abstract public class Entity {
 
         public Builder createSprite(int layer, Texture texture, boolean orientable){
             if (orientable) {
-
+                assert false: "orientable sprites not implemented yet";
             } else {
-                this.sprite = new ImageDisplay(new Image(texture, layer, true, size.x, size.y));
+                this.sprite = new ImageDisplay(layer, texture, size, startingPosition);
             }
             return this;
         }

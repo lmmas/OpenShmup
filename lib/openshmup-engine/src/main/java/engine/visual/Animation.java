@@ -20,8 +20,13 @@ final public class Animation extends SceneVisual {
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new Image(animationTexture, layer, true, sizeX, sizeY);
-        this.image.setTextureSize(info.frameSizeX(), info.frameSizeY());
+        this.image = new Image(animationTexture, layer, true,
+                sizeX, sizeY,
+                0.0f, 0.0f,
+                info.frameSizeX(), info.frameSizeY(),
+                0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f);
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;
     }

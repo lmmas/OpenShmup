@@ -12,7 +12,7 @@ final public class ScreenFilter extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
     public ScreenFilter(int layer, float r, float g, float b, float a){
-        this.colorRectangle = new ColorRectangle(layer, 0.5f, 0.5f, 1.0f, 1.0f, r, g, b, a);
+        this.colorRectangle = new ColorRectangle(layer, 1.0f, 1.0f, 0.5f, 0.5f, r, g, b, a);
     }
 
     public ScreenFilter(int layer, RGBAValue color){

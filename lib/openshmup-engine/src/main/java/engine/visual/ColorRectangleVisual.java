@@ -16,12 +16,12 @@ final public class ColorRectangleVisual extends SceneVisual{
         this.colorRectangle = colorRectangle;
     }
 
-    public ColorRectangleVisual(int layer, float positionX, float positionY, float sizeX, float sizeY, float r, float g, float b, float a) {
-        this(new ColorRectangle(layer, positionX, positionY, sizeX, sizeY, r, g, b, a));
+    public ColorRectangleVisual(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
+        this(new ColorRectangle(layer, sizeX, sizeY, positionX, positionY, r, g, b, a));
     }
 
-    public ColorRectangleVisual(int layer, Vec2D position, Vec2D size, RGBAValue color){
-        this(layer, position.x, position.y, size.x, size.y, color.r, color.g, color.b, color.a);
+    public ColorRectangleVisual(int layer, Vec2D size, Vec2D position, RGBAValue color){
+        this(layer, size.x, size.y, position.x, position.y, color.r, color.g, color.b, color.a);
     }
 
     @Override

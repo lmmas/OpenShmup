@@ -24,7 +24,7 @@ final public class MainMenuScene extends Scene {
 
     public MainMenuScene() {
         RGBAValue menuBackgroundColor = new RGBAValue(0.0f, 0.1f, 0.3f, 1.0f);
-        ColorRectangleVisual menuBackground = new ColorRectangleVisual(backgroundLayer, 0.5f, 0.5f, 1.0f, 1.0f, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
+        ColorRectangleVisual menuBackground = new ColorRectangleVisual(backgroundLayer, 1.0f, 1.0f, 0.5f, 0.5f, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
         addVisual(menuBackground);
 
         RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
@@ -36,12 +36,12 @@ final public class MainMenuScene extends Scene {
         RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor,17.0f / window.getHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
-        ColorRectangleButton button1 = new ColorRectangleButton(backgroundLayer + 1, new Vec2D(0.5f, 0.5f), buttonSize, menuButtonColor, "Open popup menu", menuButtonLabelStyle, null);
-        ColorRectangleButton button2 = new ColorRectangleButton(backgroundLayer + 1, new Vec2D(0.5f, 0.25f), buttonSize, menuButtonColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        ColorRectangleButton button1 = new ColorRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), menuButtonColor, "Open popup menu", menuButtonLabelStyle, null);
+        ColorRectangleButton button2 = new ColorRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.25f), menuButtonColor, "Quit", menuButtonLabelStyle, terminateProgram);
 
         mainMenu = new MenuScreen(backgroundLayer, null, List.of(button1, button2));
 
-        ColorRectangleButton button3 = new ColorRectangleButton(backgroundLayer + 3, new Vec2D(0.5f, 0.35f), buttonSize, menuButtonColor, "yes", menuButtonLabelStyle, null);
+        ColorRectangleButton button3 = new ColorRectangleButton(backgroundLayer + 3, buttonSize, new Vec2D(0.5f, 0.35f), menuButtonColor, "yes", menuButtonLabelStyle, null);
         popupMenu = new MenuScreen(backgroundLayer + 2, new ScreenFilter(backgroundLayer + 2, 0.0f, 0.0f, 0.0f, 0.5f), List.of(button3));
 
         button1.setOnclick(() -> addMenu(popupMenu));
