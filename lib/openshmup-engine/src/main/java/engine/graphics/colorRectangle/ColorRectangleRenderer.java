@@ -41,13 +41,13 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
 
         @Override
         protected void setupVertexAttributes() {
-            int positionLength = 2;
             int quadSizeLength = 2;
+            int positionLength = 2;
             int colorLength = 4;
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
-            glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
-            glVertexAttribPointer(2, colorLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
+            glVertexAttribPointer(0, quadSizeLength, GL_FLOAT, false, vboStrideBytes, 0);
+            glVertexAttribPointer(1, positionLength, GL_FLOAT, false, vboStrideBytes, quadSizeLength * Float.BYTES);
+            glVertexAttribPointer(2, colorLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength) * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
@@ -59,10 +59,11 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
                 Vec2D size = rectangle.getSize();
                 RGBAValue color = rectangle.getColor();
 
-                dataBuffer.put(position.x);
-                dataBuffer.put(position.y);
+
                 dataBuffer.put(size.x);
                 dataBuffer.put(size.y);
+                dataBuffer.put(position.x);
+                dataBuffer.put(position.y);
                 dataBuffer.put(color.r);
                 dataBuffer.put(color.g);
                 dataBuffer.put(color.b);

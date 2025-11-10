@@ -75,21 +75,21 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
         }
 
         public void setupVertexAttributes(){
-            int positionLength = 2;
             int quadSizeLength = 2;
-            int texturePositionLength = 2;
+            int positionLength = 2;
             int textureSizeLength = 2;
+            int texturePositionLength = 2;
             int textureIndexLength = 1;
             int colorCoefsLength = 4;
             int addedColorLength = 4;
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glVertexAttribPointer(0, positionLength, GL_FLOAT, false, vboStrideBytes, 0);
-            glVertexAttribPointer(1, quadSizeLength, GL_FLOAT, false, vboStrideBytes, positionLength * Float.BYTES);
-            glVertexAttribPointer(2, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength) * Float.BYTES);
-            glVertexAttribPointer(3, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength) * Float.BYTES);
-            glVertexAttribIPointer(4, textureIndexLength, GL_INT, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES);
-            glVertexAttribPointer(5, colorCoefsLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
-            glVertexAttribPointer(6, addedColorLength, GL_FLOAT, false, vboStrideBytes, (positionLength + quadSizeLength + texturePositionLength + textureSizeLength + colorCoefsLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
+            glVertexAttribPointer(0, quadSizeLength, GL_FLOAT, false, vboStrideBytes, 0);
+            glVertexAttribPointer(1, positionLength, GL_FLOAT, false, vboStrideBytes, quadSizeLength * Float.BYTES);
+            glVertexAttribPointer(2, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength) * Float.BYTES);
+            glVertexAttribPointer(3, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength) * Float.BYTES);
+            glVertexAttribIPointer(4, textureIndexLength, GL_INT, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength) * Float.BYTES);
+            glVertexAttribPointer(5, colorCoefsLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
+            glVertexAttribPointer(6, addedColorLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength + colorCoefsLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
@@ -103,14 +103,15 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
                 Vec2D textureSize = image.getTextureSize();
                 RGBAValue colorCoefs = image.getTextureColorCoefs();
                 RGBAValue addedColor = image.getAddedColor();
-                dataBuffer.putFloat(imagePosition.x);
-                dataBuffer.putFloat(imagePosition.y);
+
                 dataBuffer.putFloat(imageSize.x);
                 dataBuffer.putFloat(imageSize.y);
-                dataBuffer.putFloat(texturePosition.x);
-                dataBuffer.putFloat(texturePosition.y);
+                dataBuffer.putFloat(imagePosition.x);
+                dataBuffer.putFloat(imagePosition.y);
                 dataBuffer.putFloat(textureSize.x);
                 dataBuffer.putFloat(textureSize.y);
+                dataBuffer.putFloat(texturePosition.x);
+                dataBuffer.putFloat(texturePosition.y);
                 dataBuffer.putInt(textureIndexes.get(i));
                 dataBuffer.putFloat(colorCoefs.r);
                 dataBuffer.putFloat(colorCoefs.g);
