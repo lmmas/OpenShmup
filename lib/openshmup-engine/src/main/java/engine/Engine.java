@@ -1,5 +1,6 @@
 package engine;
 
+import engine.gameData.GameDataManager;
 import engine.scene.LevelScene;
 
 import java.io.IOException;

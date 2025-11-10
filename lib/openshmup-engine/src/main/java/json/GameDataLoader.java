@@ -7,6 +7,7 @@ import engine.entity.Entity;
 import engine.entity.EntityType;
 import engine.entity.trajectory.PlayerControlledTrajectory;
 import engine.gameData.GameConfig;
+import engine.gameData.GameDataManager;
 import engine.visual.Animation;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.entity.trajectory.Trajectory;

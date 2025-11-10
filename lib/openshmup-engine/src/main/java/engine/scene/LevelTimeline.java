@@ -1,6 +1,6 @@
 package engine.scene;
 
-import engine.GameDataManager;
+import engine.gameData.GameDataManager;
 import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.spawnable.*;

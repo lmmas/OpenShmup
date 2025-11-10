@@ -1,6 +1,5 @@
 package engine.scene;
 
-import engine.*;
 import engine.entity.*;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.HitboxDebugRectangle;
@@ -9,6 +8,7 @@ import engine.entity.hitbox.EmptyHitbox;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GameConfig;
+import engine.gameData.GameDataManager;
 import engine.graphics.Graphic;
 import engine.graphics.RenderInfo;
 import engine.graphics.RenderType;

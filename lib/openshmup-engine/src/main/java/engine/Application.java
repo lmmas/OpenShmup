@@ -1,6 +1,8 @@
 package engine;
 
 import debug.DebugMethods;
+import engine.assets.AssetManager;
+import engine.graphics.GraphicsManager;
 import engine.scene.Scene;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;

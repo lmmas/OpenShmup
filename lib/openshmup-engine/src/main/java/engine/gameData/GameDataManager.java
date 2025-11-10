@@ -1,10 +1,8 @@
-package engine;
+package engine.gameData;
 
 import engine.entity.Entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
-import engine.gameData.GameConfig;
-import engine.gameData.GamePaths;
 import engine.graphics.RenderInfo;
 import engine.assets.Texture;
 import engine.scene.LevelTimeline;

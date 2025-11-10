@@ -1,6 +1,6 @@
-package engine;
+package engine.graphics;
 
-import engine.graphics.*;
+import engine.GlobalVars;
 import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.colorRectangle.ColorRectangleRenderer;
 import engine.graphics.image.Image;

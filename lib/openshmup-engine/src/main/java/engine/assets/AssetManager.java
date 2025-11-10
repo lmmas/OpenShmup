@@ -1,8 +1,6 @@
-package engine;
+package engine.assets;
 
-import engine.assets.Font;
-import engine.assets.Shader;
-import engine.assets.Texture;
+import engine.GlobalVars;
 
 import java.io.IOException;
 import java.util.HashMap;
