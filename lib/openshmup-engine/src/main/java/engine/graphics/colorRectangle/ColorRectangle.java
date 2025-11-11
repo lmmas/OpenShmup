@@ -23,8 +23,9 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
 
     public ColorRectangle(ColorRectangle colorRectangle){
         this(
-                colorRectangle.primitive.size.x, colorRectangle.primitive.size.y, colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
-                colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.b,
+                colorRectangle.primitive.size.x, colorRectangle.primitive.size.y,
+                colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
+                colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.a,
                 colorRectangle.shader
         );
     }

@@ -3,6 +3,8 @@ package engine.graphics;
 import engine.GlobalVars;
 import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.colorRectangle.ColorRectangleRenderer;
+import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
+import engine.graphics.colorRoundedRectangle.ColorRoundedRectangleRenderer;
 import engine.graphics.image.Image;
 import engine.graphics.image.ImageRenderer;
 
@@ -15,7 +17,11 @@ final public class GraphicsManager {
 
     public GraphicsManager(){
         this.layers = new ArrayList<>();
-        this.debugLayer = new ArrayList<Renderer<?,?>>(Arrays.asList(new ColorRectangleRenderer(), new ImageRenderer(RenderType.DYNAMIC_IMAGE), new ImageRenderer(RenderType.STATIC_IMAGE)));
+        this.debugLayer = new ArrayList<Renderer<?,?>>(Arrays.asList(
+                new ColorRectangleRenderer(),
+                new ImageRenderer(RenderType.DYNAMIC_IMAGE),
+                new ImageRenderer(RenderType.STATIC_IMAGE),
+                new ColorRoundedRectangleRenderer()));
     }
 
     public void drawGraphics(){
@@ -51,14 +57,19 @@ final public class GraphicsManager {
         assert newGraphic.getRenderType() == renderer.getType(): "wrong renderer for graphic";
         switch (renderer.getType()){
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
-                ImageRenderer ImageRenderer = (ImageRenderer) renderer;
+                ImageRenderer imageRenderer = (ImageRenderer) renderer;
                 Image image = (Image) newGraphic;
-                ImageRenderer.addGraphic(image);
+                imageRenderer.addGraphic(image);
             }
             case COLOR_RECTANGLE -> {
                 ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
                 ColorRectangle colorRectangle = (ColorRectangle) newGraphic;
                 colorRectangleRenderer.addGraphic(colorRectangle);
+            }
+            case COLOR_ROUNDED_RECTANGLE -> {
+                ColorRoundedRectangleRenderer colorRoundedRectangleRenderer = (ColorRoundedRectangleRenderer) renderer;
+                ColorRoundedRectangle colorRoundedRectangle = (ColorRoundedRectangle) newGraphic;
+                colorRoundedRectangleRenderer.addGraphic(colorRoundedRectangle);
             }
         }
     }
