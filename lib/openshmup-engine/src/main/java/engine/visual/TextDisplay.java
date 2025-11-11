@@ -131,6 +131,11 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
+    public int getMaxGraphicalSubLayer() {
+        return 0;
+    }
+
+    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
     }

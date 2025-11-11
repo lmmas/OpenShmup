@@ -18,6 +18,7 @@ abstract public class SceneVisual {
     abstract public SceneVisual copy();
     abstract public List<Graphic<?, ?>> getGraphics();
     abstract public List<Integer> getGraphicalSubLayers();
+    abstract public int getMaxGraphicalSubLayer();
     abstract public List<Texture> getTextures();
 
     final public boolean shouldBeRemoved(){

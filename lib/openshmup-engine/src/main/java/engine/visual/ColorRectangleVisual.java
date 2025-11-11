@@ -36,6 +36,11 @@ final public class ColorRectangleVisual extends SceneVisual{
     }
 
     @Override
+    public int getMaxGraphicalSubLayer() {
+        return 0;
+    }
+
+    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return List.of(colorRectangle);
     }

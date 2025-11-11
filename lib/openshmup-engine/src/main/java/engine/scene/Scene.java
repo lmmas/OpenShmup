@@ -90,7 +90,7 @@ abstract public class Scene {
 
         //determining how many graphical layers need to be inserted
         int graphicalLayersToInsertCount = 0;
-        int visualMaxGraphicalSubLayer = visual.getGraphicalSubLayers().stream().mapToInt(i -> i).max().orElse(0);
+        int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
         if(!visualLayers.containsKey(sceneLayerIndex)){
             visualLayers.put(sceneLayerIndex, new ArrayList<>());
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
@@ -129,8 +129,7 @@ abstract public class Scene {
                 break;
             }
             layerSum += visualLayers.get(layerIndex).stream()
-                    .flatMap(visual -> visual.getGraphicalSubLayers().stream())
-                    .mapToInt(i -> i).max().orElse(0) + 1;
+                    .mapToInt(SceneVisual::getMaxGraphicalSubLayer).max().orElse(0) + 1;
         }
         return layerSum;
     }
