@@ -10,7 +10,7 @@ final public class EmptyVisual extends SceneVisual {
     public static EmptyVisual instance = null;
 
     private EmptyVisual() {
-
+        super(0);
     }
 
     public static EmptyVisual getInstance(){
@@ -26,7 +26,7 @@ final public class EmptyVisual extends SceneVisual {
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
+    public List<Integer> getGraphicalSubLayers() {
         return List.of();
     }
 

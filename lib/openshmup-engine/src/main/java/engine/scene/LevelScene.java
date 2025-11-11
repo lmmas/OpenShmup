@@ -73,9 +73,9 @@ final public class LevelScene extends Scene{
     }
 
     void loadAssets(){
-        HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
-        timelineRenderInfos.add(new RenderInfo(gameConfig.levelUI.contentsLayer, RenderType.STATIC_IMAGE));
-        graphicsManager.constructRenderers(timelineRenderInfos);
+        //HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
+        //timelineRenderInfos.add(new RenderInfo(gameConfig.levelUI.contentsLayer, RenderType.STATIC_IMAGE));
+        //graphicsManager.constructRenderers(timelineRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(assetManager.getTexture(gameConfig.levelUI.lives.textureFilepath));
         for(var texture: allTextures){
@@ -169,10 +169,7 @@ final public class LevelScene extends Scene{
         addVisual(entity.getSprite());
 
         for(ExtraComponent component: entity.getExtraComponents()){
-            List<Graphic<?,?>> graphicsList = component.getGraphics();
-            for(var graphic: graphicsList){
-                graphicsManager.addGraphic(graphic);
-            }
+            component.init();
         }
         if(debugModeEnabled){
             LevelDebug.addHitboxDebugDisplay(entity);
@@ -196,10 +193,7 @@ final public class LevelScene extends Scene{
         entity.getSprite().setShouldBeRemoved();
         List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
         for(var component: extraComponentsList){
-            List<Graphic<?,?>> graphicsList = component.getGraphics();
-            for(var graphic: graphicsList){
-                graphic.remove();
-            }
+            component.onRemove();
         }
     }
 
@@ -280,12 +274,12 @@ final public class LevelScene extends Scene{
     }
 
     private static void addComponent(Entity entity, ExtraComponent component){
-        component.getGraphics().forEach(graphic -> graphicsManager.addGraphic(graphic));
+        component.init();
         entity.addExtraComponent(component);
     }
 
     private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
-        extraComponent.getGraphics().forEach(Graphic::remove);
+        extraComponent.onRemove();
         entity.getExtraComponents().remove(extraComponent);
     }
 

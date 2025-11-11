@@ -9,24 +9,39 @@ import java.util.List;
 abstract public class SceneVisual {
     private boolean visualShouldBeRemovedFlag = false;
     private boolean reloadGraphicsFlag = false;
+    protected int sceneLayer;
+
+    public SceneVisual(int layer){
+        this.sceneLayer = layer;
+    }
 
     abstract public SceneVisual copy();
-    abstract public List<RenderInfo> getRenderInfos();
     abstract public List<Graphic<?, ?>> getGraphics();
+    abstract public List<Integer> getGraphicalSubLayers();
     abstract public List<Texture> getTextures();
-    public boolean shouldBeRemoved(){
+
+    final public boolean shouldBeRemoved(){
         return visualShouldBeRemovedFlag;
     }
-    public void setShouldBeRemoved(){
+
+    final public void setShouldBeRemoved(){
         visualShouldBeRemovedFlag = true;
     }
 
-    public boolean getReloadGraphicsFlag(){
+    final public boolean getReloadGraphicsFlag(){
         return reloadGraphicsFlag;
     }
 
-    public void setReloadGraphicsFlag(boolean reloadGraphics){
+    final public void setReloadGraphicsFlag(boolean reloadGraphics){
         this.reloadGraphicsFlag = reloadGraphics;
+    }
+
+    public int getSceneLayer() {
+        return sceneLayer;
+    }
+
+    public void setSceneLayer(int sceneLayer) {
+        this.sceneLayer = sceneLayer;
     }
 
     abstract public void setPosition(float positionX, float positionY);

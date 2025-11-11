@@ -16,11 +16,12 @@ final public class Animation extends SceneVisual {
     private float timeOfLastFrame;
 
     public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
+        super(layer);
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
-        this.image = new Image(animationTexture, layer, true,
+        this.image = new Image(animationTexture, true,
                 sizeX, sizeY,
                 0.0f, 0.0f,
                 info.frameSizeX(), info.frameSizeY(),
@@ -32,6 +33,7 @@ final public class Animation extends SceneVisual {
     }
 
     public Animation(Animation animation){
+        super(animation.sceneLayer);
         this.image = new Image(animation.image);
         this.info = animation.info;
         this.looping = animation.looping;
@@ -51,8 +53,8 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(image.getRenderInfo());
+    public List<Integer> getGraphicalSubLayers() {
+        return List.of(0);
     }
 
     @Override

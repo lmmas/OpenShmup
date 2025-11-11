@@ -12,12 +12,13 @@ import java.util.List;
 final public class ColorRectangleVisual extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
-    public ColorRectangleVisual(ColorRectangle colorRectangle) {
+    public ColorRectangleVisual(int layer, ColorRectangle colorRectangle) {
+        super(layer);
         this.colorRectangle = colorRectangle;
     }
 
     public ColorRectangleVisual(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
-        this(new ColorRectangle(layer, sizeX, sizeY, positionX, positionY, r, g, b, a));
+        this(layer, new ColorRectangle(sizeX, sizeY, positionX, positionY, r, g, b, a));
     }
 
     public ColorRectangleVisual(int layer, Vec2D size, Vec2D position, RGBAValue color){
@@ -26,12 +27,12 @@ final public class ColorRectangleVisual extends SceneVisual{
 
     @Override
     public SceneVisual copy() {
-        return new ColorRectangleVisual(new ColorRectangle(colorRectangle));
+        return new ColorRectangleVisual(this.sceneLayer, new ColorRectangle(colorRectangle));
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(colorRectangle.getRenderInfo());
+    public List<Integer> getGraphicalSubLayers() {
+        return List.of(0);
     }
 
     @Override

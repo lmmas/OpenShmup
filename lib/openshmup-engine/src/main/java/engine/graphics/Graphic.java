@@ -4,16 +4,16 @@ import engine.types.Vec2D;
 
 
 public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
+    final protected RenderType renderType;
     final protected Shader shader;
-    final protected RenderInfo renderInfo;
 
-    public Graphic(int layer, RenderType type, Shader shader){
-        this.renderInfo = new RenderInfo(layer, type);
+    public Graphic(RenderType type, Shader shader){
+        this.renderType = type;
         this.shader = shader;
     }
 
     public Graphic(Graphic<?,?> graphic){
-        this.renderInfo = new RenderInfo(graphic.renderInfo.layer(), graphic.renderInfo.renderType());
+        this.renderType = graphic.renderType;
         this.shader = graphic.shader;
     }
 
@@ -21,8 +21,8 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         return shader;
     }
 
-    public RenderInfo getRenderInfo(){
-        return renderInfo;
+    public RenderType getRenderType(){
+        return renderType;
     }
 
     abstract public Vec2D getPosition();

@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static engine.Application.assetManager;
+import static engine.Application.graphicsManager;
 
 final public class HitboxDebugRectangle implements ExtraComponent{
     final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";
@@ -23,7 +24,7 @@ final public class HitboxDebugRectangle implements ExtraComponent{
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color){
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangle(GlobalVars.debugDisplayLayer, simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
+        this.debugDisplay = new ColorRectangle(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
     }
 
     @Override
@@ -37,18 +38,13 @@ final public class HitboxDebugRectangle implements ExtraComponent{
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(debugDisplay.getRenderInfo());
+    public void init() {
+        graphicsManager.addDebugGraphic(debugDisplay);
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
-        return List.of(debugDisplay);
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return Collections.emptyList();
+    public void onRemove() {
+        this.debugDisplay.remove();
     }
 
     @Override

@@ -12,21 +12,21 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
     private final ColorRectanglePrimitive primitive;
 
-    public ColorRectangle(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader){
-        super(layer, RenderType.COLOR_RECTANGLE, shader);
+    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader){
+        super(RenderType.COLOR_RECTANGLE, shader);
         this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, positionX, positionY, r, g, b, a);
     }
 
-    public ColorRectangle(int layer, float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
-        this(layer, sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
+    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
+        this(sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
     }
 
     public ColorRectangle(ColorRectangle colorRectangle){
-        this(colorRectangle.renderInfo.layer(),
+        this(
                 colorRectangle.primitive.size.x, colorRectangle.primitive.size.y, colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
                 colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.b,
                 colorRectangle.shader
-                );
+        );
     }
 
     @Override

@@ -11,12 +11,20 @@ import java.util.List;
 final public class ImageDisplay extends SceneVisual {
     Image image;
 
-    public ImageDisplay(Image image){
+    public ImageDisplay(int layer, Image image){
+        super(layer);
         this.image = new Image(image);
     }
 
     public ImageDisplay(int layer, Texture texture, float sizeX, float sizeY, float positionX, float positionY){
-        this.image = new Image(texture, layer, false, sizeX, sizeY, positionX, positionY, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        super(layer);
+        this.image = new Image(texture, false,
+                sizeX, sizeY,
+                positionX, positionY,
+                1.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f);
     }
 
     public ImageDisplay(int layer, Texture texture, Vec2D size, Vec2D position){
@@ -25,12 +33,12 @@ final public class ImageDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new ImageDisplay(image);
+        return new ImageDisplay(this.sceneLayer, image);
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(image.getRenderInfo());
+    public List<Integer> getGraphicalSubLayers() {
+        return List.of(0);
     }
 
     @Override
@@ -41,11 +49,6 @@ final public class ImageDisplay extends SceneVisual {
     @Override
     public List<Texture> getTextures() {
         return List.of(image.getTexture());
-    }
-
-    @Override
-    public boolean shouldBeRemoved() {
-        return false;
     }
 
     @Override

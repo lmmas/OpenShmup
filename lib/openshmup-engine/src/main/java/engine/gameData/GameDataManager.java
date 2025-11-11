@@ -58,10 +58,6 @@ final public class GameDataManager {
         customVisuals.put(id, visual);
     }
 
-    public List<RenderInfo> getRenderInfosOfVisual(int id){
-        return customVisuals.get(id).getRenderInfos();
-    }
-
     public SceneVisual buildCustomDisplay(int id){
         return customVisuals.get(id).copy();
     }
@@ -86,11 +82,6 @@ final public class GameDataManager {
         }
         spawnablesList.add(entity.getDeathSpawn());
         return spawnablesList;
-    }
-
-    public List<RenderInfo> getRenderInfosOfEntity(int id){
-        Entity entity = customEntities.get(id);
-        return entity.getSprite().getRenderInfos();
     }
 
     public List<Texture> getTexturesOfEntity(int id){

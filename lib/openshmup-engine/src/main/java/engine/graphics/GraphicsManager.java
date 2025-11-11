@@ -6,47 +6,49 @@ import engine.graphics.colorRectangle.ColorRectangleRenderer;
 import engine.graphics.image.Image;
 import engine.graphics.image.ImageRenderer;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 final public class GraphicsManager {
 
-    final private TreeMap<Integer, ArrayList<Renderer<?,?>>> layers;
+    final private ArrayList<ArrayList<Renderer<?,?>>> layers;
+    final private ArrayList<Renderer<?,?>> debugLayer;
 
     public GraphicsManager(){
-        this.layers = new TreeMap<>();
-        createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.STATIC_IMAGE);
-        createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.DYNAMIC_IMAGE);
-        createNewRenderer(GlobalVars.debugDisplayLayer, RenderType.COLOR_RECTANGLE);
+        this.layers = new ArrayList<>();
+        this.debugLayer = new ArrayList<Renderer<?,?>>(Arrays.asList(new ColorRectangleRenderer(), new ImageRenderer(RenderType.DYNAMIC_IMAGE), new ImageRenderer(RenderType.STATIC_IMAGE)));
     }
 
     public void drawGraphics(){
-        for(Map.Entry<Integer,ArrayList<Renderer<?,?>>> renderers: layers.entrySet()){
-            for(Renderer<?,?> renderer : renderers.getValue()){
-                renderer.draw();
-            }
-        }
+        layers.stream().flatMap(List::stream).forEach(Renderer::draw);
+        debugLayer.forEach(Renderer::draw);
     }
 
-    public void addGraphic(Graphic<?,?> newGraphic){
-        RenderInfo renderInfo = newGraphic.getRenderInfo();
-        ArrayList<Renderer<?,?>> renderers = layers.get(renderInfo.layer());
-        if (renderers != null) {
-            for (Renderer<?, ?> renderer : renderers) {
-                if (renderer.getType() == renderInfo.renderType()) {
-                    addGraphicToMatchingRenderer(newGraphic, renderer);
-                    return;
-                }
+    public void addGraphic(Graphic<?,?> newGraphic, int layer){
+        RenderType type = newGraphic.getRenderType();
+        ArrayList<Renderer<?,?>> renderers = layers.get(layer);
+        assert renderers != null: "renderer list not found";
+        for (Renderer<?, ?> renderer : renderers) {
+            if (renderer.getType() == type) {
+                addGraphicToMatchingRenderer(newGraphic, renderer);
+                return;
             }
         }
-        createNewRenderer(renderInfo.layer(), renderInfo.renderType());
-        addGraphicToMatchingRenderer(newGraphic, layers.get(renderInfo.layer()).getLast());
+        createNewRenderer(layer, type);
+        addGraphicToMatchingRenderer(newGraphic, layers.get(layer).getLast());
+    }
+
+    public void addDebugGraphic(Graphic<?,?> newGraphic){
+        RenderType type = newGraphic.getRenderType();
+        for (Renderer<?, ?> renderer : debugLayer) {
+            if (renderer.getType() == type) {
+                addGraphicToMatchingRenderer(newGraphic, renderer);
+                return;
+            }
+        }
     }
 
     private void addGraphicToMatchingRenderer(Graphic<?,?> newGraphic, Renderer<?,?> renderer){
-        assert newGraphic.getRenderInfo().renderType() == renderer.getType(): "wrong renderer for graphic";
+        assert newGraphic.getRenderType() == renderer.getType(): "wrong renderer for graphic";
         switch (renderer.getType()){
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
                 ImageRenderer ImageRenderer = (ImageRenderer) renderer;
@@ -61,10 +63,12 @@ final public class GraphicsManager {
         }
     }
 
+    public void insertNewLayer(int layer){
+        layers.add(layer, new ArrayList<>());
+    }
+
     private void createNewRenderer(int layer, RenderType renderType){
-        if(!layers.containsKey(layer)){
-            layers.put(layer, new ArrayList<>());
-        }
+        assert layer < layers.size(): "layer out of range";
         ArrayList<Renderer<?,?>> rendererList = layers.get(layer);
         switch (renderType) {
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
@@ -77,8 +81,10 @@ final public class GraphicsManager {
             }
         }
     }
+/*
 
     public void constructRenderers(HashSet<RenderInfo> allRenderInfos) {
+
         for(var renderInfo: allRenderInfos){
             if(!layers.containsKey(renderInfo.layer())){
                 createNewRenderer(renderInfo.layer(), renderInfo.renderType());
@@ -97,7 +103,9 @@ final public class GraphicsManager {
                 }
             }
         }
+
     }
+*/
 
     public void clearLayers(){
         layers.clear();

@@ -12,8 +12,7 @@ import java.util.List;
 public interface ExtraComponent {
     ExtraComponent copyIfNotReusable();
     Spawnable getSpawnable();
-    List<RenderInfo> getRenderInfos();
-    List<Graphic<?,?>> getGraphics();
-    List<Texture> getTextures();
+    void init();
+    void onRemove();
     void update(Entity entity, LevelScene scene);
 }

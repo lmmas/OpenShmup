@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL33.*;
 
 public abstract class Renderer<G extends Graphic<G,P>, P extends Graphic<G,P>.Primitive>{
-    protected Scene scene;
     protected int vaoID;
     protected RenderType type;
     final protected int drawingType;

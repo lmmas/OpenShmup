@@ -11,6 +11,7 @@ import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a) {
+        super(layer);
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
@@ -124,8 +126,8 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(renderInfo);
+    public List<Integer> getGraphicalSubLayers() {
+        return Collections.nCopies(textLines.stream().mapToInt(ArrayList::size).sum(),0);
     }
 
     @Override
@@ -173,7 +175,7 @@ final public class TextDisplay extends SceneVisual {
             Vec2D charSize = fontCharInfo.normalizedQuadSize();
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
-            this.image = new Image(font.getBitmap(), TextDisplay.this.renderInfo.layer(), TextDisplay.this.dynamicText,
+            this.image = new Image(font.getBitmap(), TextDisplay.this.dynamicText,
                     charSize.x * textWidth, charSize.y * textHeight,
                     0.0f, 0.0f,
                     bitmapTextureSize.x, bitmapTextureSize.y,

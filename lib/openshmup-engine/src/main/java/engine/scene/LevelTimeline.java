@@ -59,7 +59,7 @@ final public class LevelTimeline {
         return allSpawnablesSet;
     }
 
-    public HashSet<RenderInfo> getAllRenderInfos(){
+    /*public HashSet<RenderInfo> getAllRenderInfos(){
         HashSet<RenderInfo> allRenderInfos = new HashSet<>();
         HashSet<Spawnable> allSpawnablesSet = getAllSpawnables();
         for(var spawnable: allSpawnablesSet){
@@ -71,7 +71,7 @@ final public class LevelTimeline {
             }
         }
         return allRenderInfos;
-    }
+    }*/
 
     public HashSet<Texture> getAllTextures(){
         HashSet<Texture> allTextures = new HashSet<>();

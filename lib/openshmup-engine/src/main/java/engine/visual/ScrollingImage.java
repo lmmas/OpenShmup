@@ -19,17 +19,18 @@ final public class ScrollingImage extends SceneVisual {
     private float lastUpdateTimeSeconds;
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+        super(layer);
         this.size = new Vec2D(sizeX, sizeY);
         this.position1 = new Vec2D(0.5f, 0.5f);
         this.position2 = new Vec2D(0.0f, 0.0f);
-        this.image1 = new Image(texture, layer, true,
+        this.image1 = new Image(texture, true,
                 sizeX, sizeY,
                 position1.x, position1.y,
                 1.0f, 1.0f,
                 0.0f, 0.0f,
                 1.0f, 1.0f, 1.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 0.0f);
-        this.image2 = new Image(texture, layer, true,
+        this.image2 = new Image(texture, true,
                 sizeX, sizeY,
                 position2.x, position2.y,
                 1.0f, 1.0f,
@@ -43,6 +44,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     public ScrollingImage(ScrollingImage scrollingImage){
+        super(scrollingImage.sceneLayer);
         this.image1 = new Image(scrollingImage.image1);
         this.position1 = new Vec2D(scrollingImage.position1);
         this.position2 = new Vec2D(scrollingImage.position2);
@@ -58,8 +60,8 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return List.of(image1.getRenderInfo());
+    public List<Integer> getGraphicalSubLayers() {
+        return List.of(0, 0);
     }
 
     @Override

@@ -15,7 +15,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     private Texture texture;
     final private ImagePrimitive primitive;
 
-    public Image(Texture texture, int layer, boolean dynamic,
+    public Image(Texture texture, boolean dynamic,
                  float imageSizeX, float imageSizeY,
                  float imagePositionX, float imagePositionY,
                  float textureSizeX, float textureSizeY,
@@ -24,7 +24,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
                  float addedColorR, float addedColorG, float addedColorB, float addedColorA,
                  Shader shader) {
 
-        super(layer, dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
+        super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
         this.texture = texture;
         this.primitive = new ImagePrimitive(
                 imageSizeX, imageSizeY,
@@ -36,7 +36,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     }
 
     public Image(
-            Texture texture, int layer, boolean dynamic,
+            Texture texture, boolean dynamic,
             float imageSizeX, float imageSizeY,
             float imagePositionX, float imagePositionY,
             float textureSizeX, float textureSizeY,
@@ -45,7 +45,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
             float addedColorR, float addedColorG, float addedColorB, float addedColorA
     ) {
         this(
-                texture, layer, dynamic,
+                texture, dynamic,
                 imageSizeX, imageSizeY,
                 imagePositionX, imagePositionY,
                 textureSizeX, textureSizeY,

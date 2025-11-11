@@ -33,18 +33,13 @@ final public class PlayerShot implements ExtraComponent{
     }
 
     @Override
-    public List<RenderInfo> getRenderInfos() {
-        return Collections.emptyList();
+    public void init() {
+
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
-        return Collections.emptyList();
-    }
+    public void onRemove() {
 
-    @Override
-    public List<Texture> getTextures() {
-        return Collections.emptyList();
     }
 
     @Override
