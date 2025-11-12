@@ -1,6 +1,5 @@
 package engine.graphics.colorRoundedRectangle;
 
-import engine.Application;
 import engine.assets.Shader;
 import engine.graphics.Renderer;
 import engine.types.RGBAValue;
@@ -14,10 +13,12 @@ import static org.lwjgl.opengl.GL33.*;
 
 final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive> {
     final static private int vertexFloatCount = 9;
+
     public ColorRoundedRectangleRenderer(){
-        super(RenderType.COLOR_ROUNDED_RECTANGLE, GL_DYNAMIC_DRAW, vertexFloatCount * Float.BYTES);
+        super(RenderType.COLOR_ROUNDED_RECTANGLE, GL_STATIC_DRAW, vertexFloatCount * Float.BYTES);
         this.batchSize = 100;
     }
+
     @Override
     protected Batch createBatchFromGraphic(ColorRoundedRectangle graphic) {
         return new ColorRoundedRectangleBatch(graphic.getShader());

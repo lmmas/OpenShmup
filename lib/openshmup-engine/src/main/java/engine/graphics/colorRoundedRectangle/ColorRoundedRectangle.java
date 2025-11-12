@@ -10,6 +10,7 @@ import static engine.Application.assetManager;
 
 final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl";
+
     private final ColorRoundedRectanglePrimitive primitive;
 
     public ColorRoundedRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a, Shader shader){

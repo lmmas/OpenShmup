@@ -7,6 +7,8 @@ import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
 import engine.graphics.colorRoundedRectangle.ColorRoundedRectangleRenderer;
 import engine.graphics.image.Image;
 import engine.graphics.image.ImageRenderer;
+import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
+import engine.graphics.roundedRectangleBorder.RoundedRectangleBorderRenderer;
 
 import java.util.*;
 
@@ -21,7 +23,8 @@ final public class GraphicsManager {
                 new ColorRectangleRenderer(),
                 new ImageRenderer(RenderType.DYNAMIC_IMAGE),
                 new ImageRenderer(RenderType.STATIC_IMAGE),
-                new ColorRoundedRectangleRenderer()));
+                new ColorRoundedRectangleRenderer(),
+                new RoundedRectangleBorderRenderer()));
     }
 
     public void drawGraphics(){
@@ -70,6 +73,11 @@ final public class GraphicsManager {
                 ColorRoundedRectangleRenderer colorRoundedRectangleRenderer = (ColorRoundedRectangleRenderer) renderer;
                 ColorRoundedRectangle colorRoundedRectangle = (ColorRoundedRectangle) newGraphic;
                 colorRoundedRectangleRenderer.addGraphic(colorRoundedRectangle);
+            }
+            case ROUNDED_RECTANGLE_BORDER -> {
+                RoundedRectangleBorderRenderer roundedRectangleBorderRenderer = (RoundedRectangleBorderRenderer) renderer;
+                RoundedRectangleBorder roundedRectangleBorder = (RoundedRectangleBorder) newGraphic;
+                roundedRectangleBorderRenderer.addGraphic(roundedRectangleBorder);
             }
         }
     }

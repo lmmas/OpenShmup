@@ -1,15 +1,9 @@
 import engine.Engine;
-import engine.assets.Font;
-import engine.assets.Texture;
-import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
-import engine.scene.spawnable.SceneDisplaySpawnInfo;
-import engine.visual.ImageDisplay;
-import engine.visual.TextDisplay;
+import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
 
 import java.io.IOException;
 
 import static engine.Application.graphicsManager;
-import static engine.Engine.gameDataManager;
 
 public class TestGraphic {
     public static void main(String[] args) throws IOException {
@@ -17,9 +11,14 @@ public class TestGraphic {
 
 
         Runnable testInit = () ->{
-            ColorRoundedRectangle testRectangle = new ColorRoundedRectangle(0.7f, 0.5f, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f);
+
+            /*ColorRoundedRectangle testRectangle = new ColorRoundedRectangle(0.7f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f);
             graphicsManager.insertNewLayer(0);
-            graphicsManager.addDebugGraphic(testRectangle);
+            graphicsManager.addDebugGraphic(testRectangle);*/
+
+            RoundedRectangleBorder testBorder = new RoundedRectangleBorder(0.7f, 0.5f, 0.5f, 0.5f, 0.1f, 0.02f, 1.0f, 1.0f, 1.0f, 1.0f);
+            graphicsManager.insertNewLayer(0);
+            graphicsManager.addDebugGraphic(testBorder);
         };
 
         Engine myEngine = new Engine(folderName, testInit, () -> {});
