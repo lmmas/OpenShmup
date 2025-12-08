@@ -32,7 +32,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a) {
-        super(layer);
+        super(layer, new ArrayList<>());
         if(dynamicText){
             this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
         }
@@ -62,6 +62,7 @@ final public class TextDisplay extends SceneVisual {
             }
         }
         textLines.clear();
+        graphicalSubLayers.clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
         updateTextColor();
@@ -90,6 +91,7 @@ final public class TextDisplay extends SceneVisual {
         else{
             TextCharacter newCharacter = new TextCharacter(newCodepoint, font);
             textLines.getLast().add(newCharacter);
+            graphicalSubLayers.add(0);
         }
     }
 
@@ -126,23 +128,8 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
-    public List<Integer> getGraphicalSubLayers() {
-        return Collections.nCopies(textLines.stream().mapToInt(ArrayList::size).sum(),0);
-    }
-
-    @Override
-    public int getMaxGraphicalSubLayer() {
-        return 0;
-    }
-
-    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return List.of(font.getBitmap());
     }
 
     @Override
@@ -154,11 +141,6 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public void setScale(float scaleX, float scaleY) {
-
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
 
     }
 

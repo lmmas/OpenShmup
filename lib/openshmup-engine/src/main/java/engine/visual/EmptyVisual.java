@@ -10,7 +10,7 @@ final public class EmptyVisual extends SceneVisual {
     public static EmptyVisual instance = null;
 
     private EmptyVisual() {
-        super(0);
+        super(0, List.of());
     }
 
     public static EmptyVisual getInstance(){
@@ -26,42 +26,7 @@ final public class EmptyVisual extends SceneVisual {
     }
 
     @Override
-    public List<Integer> getGraphicalSubLayers() {
-        return List.of();
-    }
-
-    @Override
-    public int getMaxGraphicalSubLayer() {
-        return 0;
-    }
-
-    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return List.of();
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return List.of();
-    }
-
-    @Override
-    public void setPosition(float positionX, float positionY) {
-
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
-
-    }
-
-    @Override
-    public void update(float currentTimeSeconds) {
-
     }
 }

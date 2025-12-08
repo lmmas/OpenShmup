@@ -11,6 +11,7 @@ import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.graphics.image.Image;
 import engine.scene.LevelScene;
+import engine.scene.spawnable.EmptySpawnable;
 import engine.visual.Animation;
 import engine.visual.AnimationInfo;
 import engine.visual.ImageDisplay;
@@ -159,7 +160,7 @@ abstract public class Entity {
     }
 
     public void deathEvent(){
-        if(deathSpawn != null){
+        if(deathSpawn != null && !(deathSpawn instanceof EmptySpawnable)){
             deathSpawn.copyWithOffset(position.x, position.y).spawn(scene);
         }
     }

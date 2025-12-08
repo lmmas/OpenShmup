@@ -12,7 +12,7 @@ final public class ScreenFilter extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
     public ScreenFilter(int layer, float r, float g, float b, float a){
-        super(layer);
+        super(layer, List.of(0));
         this.colorRectangle = new ColorRectangle(1.0f, 1.0f, 0.5f, 0.5f, r, g, b, a);
     }
 
@@ -21,7 +21,7 @@ final public class ScreenFilter extends SceneVisual{
     }
 
     public ScreenFilter(ScreenFilter screenFilter){
-        super(screenFilter.sceneLayer);
+        super(screenFilter.sceneLayer, List.of(0));
         this.colorRectangle = new ColorRectangle(screenFilter.colorRectangle);
     }
 
@@ -31,23 +31,8 @@ final public class ScreenFilter extends SceneVisual{
     }
 
     @Override
-    public List<Integer> getGraphicalSubLayers() {
-        return List.of(0);
-    }
-
-    @Override
-    public int getMaxGraphicalSubLayer() {
-        return 0;
-    }
-
-    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return List.of(colorRectangle);
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return List.of();
     }
 
     @Override
@@ -57,16 +42,6 @@ final public class ScreenFilter extends SceneVisual{
 
     @Override
     public void setScale(float scaleX, float scaleY) {
-        colorRectangle.setScale(scaleX, scaleY);
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
-
-    }
-
-    @Override
-    public void update(float currentTimeSeconds) {
 
     }
 }

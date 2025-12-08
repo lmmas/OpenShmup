@@ -13,7 +13,7 @@ final public class ColorRectangleVisual extends SceneVisual{
     final private ColorRectangle colorRectangle;
 
     public ColorRectangleVisual(int layer, ColorRectangle colorRectangle) {
-        super(layer);
+        super(layer, List.of(0));
         this.colorRectangle = colorRectangle;
     }
 
@@ -31,42 +31,7 @@ final public class ColorRectangleVisual extends SceneVisual{
     }
 
     @Override
-    public List<Integer> getGraphicalSubLayers() {
-        return List.of(0);
-    }
-
-    @Override
-    public int getMaxGraphicalSubLayer() {
-        return 0;
-    }
-
-    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return List.of(colorRectangle);
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return List.of();
-    }
-
-    @Override
-    public void setPosition(float positionX, float positionY) {
-        colorRectangle.setPosition(positionX, positionY);
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        colorRectangle.setScale(scaleX, scaleY);
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
-
-    }
-
-    @Override
-    public void update(float currentTimeSeconds) {
-
     }
 }

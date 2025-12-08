@@ -12,12 +12,12 @@ final public class ImageDisplay extends SceneVisual {
     Image image;
 
     public ImageDisplay(int layer, Image image){
-        super(layer);
+        super(layer, List.of(0));
         this.image = new Image(image);
     }
 
     public ImageDisplay(int layer, Texture texture, float sizeX, float sizeY, float positionX, float positionY){
-        super(layer);
+        super(layer, List.of(0));
         this.image = new Image(texture, false,
                 sizeX, sizeY,
                 positionX, positionY,
@@ -37,42 +37,7 @@ final public class ImageDisplay extends SceneVisual {
     }
 
     @Override
-    public List<Integer> getGraphicalSubLayers() {
-        return List.of(0);
-    }
-
-    @Override
-    public int getMaxGraphicalSubLayer() {
-        return 0;
-    }
-
-    @Override
     public List<Graphic<?, ?>> getGraphics() {
         return List.of(image);
-    }
-
-    @Override
-    public List<Texture> getTextures() {
-        return List.of(image.getTexture());
-    }
-
-    @Override
-    public void setPosition(float positionX, float positionY) {
-        image.setPosition(positionX, positionY);
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        image.setScale(scaleX, scaleY);
-    }
-
-    @Override
-    public void initDisplay(float startingTimeSeconds) {
-
-    }
-
-    @Override
-    public void update(float currentTimeSeconds) {
-
     }
 }
