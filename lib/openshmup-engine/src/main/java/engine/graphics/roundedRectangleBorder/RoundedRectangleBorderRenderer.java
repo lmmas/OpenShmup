@@ -1,11 +1,10 @@
 package engine.graphics.roundedRectangleBorder;
 
 import engine.assets.Shader;
+import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -15,7 +14,7 @@ import static org.lwjgl.opengl.GL33.*;
 final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive> {
     final static private int vertexFloatCount = 9;
 
-    public RoundedRectangleBorderRenderer(){
+    public RoundedRectangleBorderRenderer() {
         super(RenderType.ROUNDED_RECTANGLE_BORDER, GL_STATIC_DRAW, vertexFloatCount * Float.BYTES);
         this.batchSize = 100;
     }
@@ -25,9 +24,10 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         return new RoundedRectangleBorderBatch(graphic.getShader());
     }
 
-    public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive>.Batch{
+    public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive>.Batch {
         final private FloatBuffer dataBuffer;
-        public RoundedRectangleBorderBatch(Shader shader){
+
+        public RoundedRectangleBorderBatch(Shader shader) {
             super(shader);
             this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexFloatCount * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
@@ -37,7 +37,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
 
         @Override
         protected boolean canReceivePrimitiveFrom(RoundedRectangleBorder graphic) {
-            if(primitives.size() >= batchSize){
+            if (primitives.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -106,7 +106,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
 
         @Override
         public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size(): "index out of bounds";
+            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
             primitives.remove(primitiveToRemoveIndex);
         }
     }

@@ -1,8 +1,6 @@
 package engine.visual;
 
-import engine.assets.Texture;
 import engine.graphics.Graphic;
-import engine.graphics.RenderInfo;
 
 import java.util.List;
 
@@ -13,8 +11,8 @@ final public class EmptyVisual extends SceneVisual {
         super(0, List.of());
     }
 
-    public static EmptyVisual getInstance(){
-        if(instance == null){
+    public static EmptyVisual getInstance() {
+        if (instance == null) {
             instance = new EmptyVisual();
         }
         return instance;

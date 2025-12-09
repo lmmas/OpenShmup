@@ -1,25 +1,25 @@
 package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.*;
+import engine.GlobalVars;
 import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
+import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.PlayerControlledTrajectory;
+import engine.entity.trajectory.Trajectory;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
-import engine.visual.Animation;
-import engine.scene.spawnable.EntitySpawnInfo;
-import engine.entity.trajectory.Trajectory;
-import engine.entity.trajectory.FixedTrajectory;
-import engine.visual.AnimationInfo;
 import engine.scene.LevelTimeline;
+import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.spawnable.Spawnable;
-import engine.visual.ScrollingImage;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import engine.visual.Animation;
+import engine.visual.AnimationInfo;
+import engine.visual.ScrollingImage;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
 import pl.joegreen.lambdaFromString.LambdaFactoryConfiguration;
@@ -36,7 +36,8 @@ final public class GameDataLoader {
     final private GameDataManager gameDataManager;
     final private GameConfig gameConfig;
     final private ObjectMapper objectMapper;
-    public GameDataLoader(GameDataManager gameDataManager){
+
+    public GameDataLoader(GameDataManager gameDataManager) {
         this.gameDataManager = gameDataManager;
         this.gameConfig = gameDataManager.config;
         this.objectMapper = new ObjectMapper();
@@ -50,39 +51,40 @@ final public class GameDataLoader {
 
         SafeJsonNode levelUINode = rootNode.checkAndGetObject("levelUI");
 
-        SafeJsonNode livesNode = levelUINode.checkAndGetObject( "lives");
+        SafeJsonNode livesNode = levelUINode.checkAndGetObject("lives");
 
-        gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.editorTextureFolder + livesNode.checkAndGetString( "fileName");
-        gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D( "size"));
-        gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D( "position"));
-        gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D( "stride"));
+        gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.editorTextureFolder + livesNode.checkAndGetString("fileName");
+        gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D("size"));
+        gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D("position"));
+        gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D("stride"));
     }
 
     public void loadCustomDisplays(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
-        for(SafeJsonNode visualNode: visualList){
+        for (SafeJsonNode visualNode : visualList) {
             int id = visualNode.checkAndGetInt("id");
             int layer = visualNode.checkAndGetInt("layer");
             String type = visualNode.checkAndGetString("type");
-            Vec2D size = convertToFloatVec( visualNode.checkAndGetIVec2D( "size"));
+            Vec2D size = convertToFloatVec(visualNode.checkAndGetIVec2D("size"));
 
-            if(type.equals("scrollingImage")){
+            if (type.equals("scrollingImage")) {
 
                 String imagePath = gameDataManager.paths.editorTextureFolder + visualNode.checkAndGetString("fileName");
                 boolean horizontalScrolling = visualNode.checkAndGetBoolean("horizontalScrolling");
 
                 int speed = visualNode.checkAndGetInt("speed");
                 float normalizedSpeed;
-                if(horizontalScrolling){
+                if (horizontalScrolling) {
                     normalizedSpeed = (float) speed / gameConfig.getEditionWidth();
-                }else{
+                }
+                else {
                     normalizedSpeed = (float) speed / gameConfig.getEditionHeight();
                 }
 
                 gameDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
             }
-            else if(type.equals("animation")) {
+            else if (type.equals("animation")) {
                 SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
 
                 String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
@@ -99,15 +101,15 @@ final public class GameDataLoader {
                 int animationTextureHeight = animationTexture.getHeight();
 
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount,
-                        (float) frameSize.x / animationTextureWidth,
-                        (float) frameSize.y / animationTextureHeight,
-                        (float) startingPosition.x / animationTextureWidth,
-                        (float) startingPosition.y / animationTextureHeight,
-                        (float) stride.x / animationTextureWidth,
-                        (float) stride.y / animationTextureHeight);
+                    (float) frameSize.x / animationTextureWidth,
+                    (float) frameSize.y / animationTextureHeight,
+                    (float) startingPosition.x / animationTextureWidth,
+                    (float) startingPosition.y / animationTextureHeight,
+                    (float) stride.x / animationTextureWidth,
+                    (float) stride.y / animationTextureHeight);
                 gameDataManager.addCustomVisual(id, new Animation(layer, assetManager.getTexture(animationFilepath), animationInfo, framePeriodSeconds, looping, size.x, size.y));
             }
-            else{
+            else {
                 throw new IllegalArgumentException("Invalid JSON format: '" + filepath + "'");
             }
         }
@@ -116,7 +118,7 @@ final public class GameDataLoader {
     public void loadCustomEntities(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
-        for(SafeJsonNode entityNode: customEntities){
+        for (SafeJsonNode entityNode : customEntities) {
 
             int id = entityNode.checkAndGetInt("id");
             EntityType type = EntityType.fromString(entityNode.checkAndGetString("type"));
@@ -125,41 +127,41 @@ final public class GameDataLoader {
             Vec2D size = convertToFloatVec(entityNode.checkAndGetIVec2D("size"));
 
             Entity.Builder customEntityBuilder = new Entity.Builder().setId(id).setType(type).setSize(size.x, size.y).setEvil(evil);
-            if(entityNode.hasField("hitbox")){
+            if (entityNode.hasField("hitbox")) {
                 SafeJsonNode hitboxNode = entityNode.checkAndGetObject("hitbox");
                 String hitboxType = hitboxNode.checkAndGetString("type");
-                if(hitboxType.equals("composite")){
+                if (hitboxType.equals("composite")) {
                     String hitboxFileName = hitboxNode.checkAndGetString("fileName");
-                    Texture hitboxTexture = assetManager.getTexture(gameDataManager.paths.editorTextureFolder+ hitboxFileName);
+                    Texture hitboxTexture = assetManager.getTexture(gameDataManager.paths.editorTextureFolder + hitboxFileName);
                     customEntityBuilder = customEntityBuilder.addCompositeHitbox(hitboxTexture, false);
                 }
-                if(hitboxType.equals("simpleRectangle")){
+                if (hitboxType.equals("simpleRectangle")) {
                     customEntityBuilder = customEntityBuilder.addRectangleHitbox(false);
                 }
             }
-            if(entityNode.hasField("deathSpawn")){
+            if (entityNode.hasField("deathSpawn")) {
                 SafeJsonNode deathSpawnNode = entityNode.checkAndGetObjectOrArray("deathSpawn");
                 Spawnable deathSpawn;
-                if(deathSpawnNode.isArray()){
+                if (deathSpawnNode.isArray()) {
                     ArrayList<Spawnable> spawnables = new ArrayList<>();
                     List<SafeJsonNode> elementsList = deathSpawnNode.checkAndGetObjectsFromArray();
-                    for(var deathSpawnElement: elementsList){
+                    for (var deathSpawnElement : elementsList) {
                         spawnables.add(getSingleSpawnable(deathSpawnElement));
                     }
                     deathSpawn = new MultiSpawnable(spawnables);
                 }
-                else{
+                else {
                     deathSpawn = getSingleSpawnable(deathSpawnNode);
                 }
                 customEntityBuilder = customEntityBuilder.setDeathSpawn(deathSpawn);
             }
 
-            if(type == EntityType.SHIP && entityNode.hasField("hp")){
+            if (type == EntityType.SHIP && entityNode.hasField("hp")) {
                 int hp = entityNode.checkAndGetInt("hp");
                 customEntityBuilder = customEntityBuilder.setHitPoints(hp);
             }
 
-            if (entityNode.hasField("shot")){
+            if (entityNode.hasField("shot")) {
                 SafeJsonNode shotNode = entityNode.checkAndGetObject("shot");
 
                 float shotPeriod = shotNode.checkAndGetFloat("shotPeriod");
@@ -167,10 +169,10 @@ final public class GameDataLoader {
 
                 SafeJsonNode spawnableNode = shotNode.checkAndGetObjectOrArray("spawn");
                 Spawnable shot;
-                if(spawnableNode.isArray()){
+                if (spawnableNode.isArray()) {
                     ArrayList<Spawnable> spawnables = new ArrayList<>();
                     List<SafeJsonNode> elementsList = spawnableNode.checkAndGetObjectsFromArray();
-                    for(var spawnElement: elementsList){
+                    for (var spawnElement : elementsList) {
                         spawnables.add(getSingleSpawnable(spawnElement));
                     }
                     shot = new MultiSpawnable(spawnables);
@@ -185,7 +187,7 @@ final public class GameDataLoader {
             int layer = spriteNode.checkAndGetInt("layer");
             boolean orientable = spriteNode.checkAndGetBoolean("orientable");
 
-            if(spriteNode.hasField("animationInfo")){
+            if (spriteNode.hasField("animationInfo")) {
                 SafeJsonNode animationInfoNode = spriteNode.checkAndGetObject("animationInfo");
 
                 String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
@@ -200,37 +202,37 @@ final public class GameDataLoader {
                 int animationTextureWidth = animationTexture.getWidth();
                 int animationTextureHeight = animationTexture.getHeight();
                 AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount,
-                        (float) frameSize.x / animationTextureWidth,
-                        (float) frameSize.y / animationTextureHeight,
-                        (float) startingPosition.x / animationTextureWidth,
-                        (float) startingPosition.y / animationTextureHeight,
-                        (float) stride.x / animationTextureWidth,
-                        (float) stride.y / animationTextureHeight);
+                    (float) frameSize.x / animationTextureWidth,
+                    (float) frameSize.y / animationTextureHeight,
+                    (float) startingPosition.x / animationTextureWidth,
+                    (float) startingPosition.y / animationTextureHeight,
+                    (float) stride.x / animationTextureWidth,
+                    (float) stride.y / animationTextureHeight);
 
                 customEntityBuilder = customEntityBuilder.createSprite(layer, animationTexture, animationInfo, framePeriodSeconds, looping, orientable);
             }
-            else{
+            else {
                 String texturePath = gameDataManager.paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
 
 
                 customEntityBuilder = customEntityBuilder.createSprite(layer, assetManager.getTexture(texturePath), orientable);
             }
-            if(id == 0){
+            if (id == 0) {
                 customEntityBuilder = customEntityBuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
             }
-            if(entityNode.hasField("defaultTrajectory")){
+            if (entityNode.hasField("defaultTrajectory")) {
                 SafeJsonNode trajectoryNode = entityNode.checkAndGetObject("defaultTrajectory");
                 Trajectory trajectory;
-                if(trajectoryNode.hasField("id")){
+                if (trajectoryNode.hasField("id")) {
                     int trajectoryId = trajectoryNode.checkAndGetInt("id");
                     trajectory = gameDataManager.getTrajectory(trajectoryId);
                 }
-                else{
+                else {
                     String trajectoryType = trajectoryNode.checkAndGetString("type");
-                    if(trajectoryType.equals("fixed")){
+                    if (trajectoryType.equals("fixed")) {
                         String functionXString = trajectoryNode.checkAndGetString("functionX");
                         String functionYString = trajectoryNode.checkAndGetString("functionY");
-                        if(trajectoryNode.hasField("relative")){
+                        if (trajectoryNode.hasField("relative")) {
                             boolean relative = trajectoryNode.checkAndGetBoolean("relative");
                             try {
                                 trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString), relative);
@@ -238,14 +240,15 @@ final public class GameDataLoader {
                                 throw new IllegalArgumentException(e);
                             }
                         }
-                        else{
+                        else {
                             try {
                                 trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString));
                             } catch (LambdaCreationException e) {
                                 throw new IllegalArgumentException(e);
                             }
                         }
-                    }else{
+                    }
+                    else {
                         throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
                     }
                 }
@@ -258,12 +261,12 @@ final public class GameDataLoader {
     public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
-        for(SafeJsonNode trajectoryNode: elementList){
+        for (SafeJsonNode trajectoryNode : elementList) {
             int id = trajectoryNode.checkAndGetInt("id");
             String type = trajectoryNode.checkAndGetString("type");
 
             Trajectory newTrajectory;
-            if(type.equals( "fixed")) {
+            if (type.equals("fixed")) {
                 String functionXString = trajectoryNode.checkAndGetString("functionX");
                 String functionYString = trajectoryNode.checkAndGetString("functionY");
                 Function<Float, Float> trajectoryFunctionX;
@@ -276,7 +279,7 @@ final public class GameDataLoader {
                 }
                 newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
             }
-            else{
+            else {
                 throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
             }
             gameDataManager.addTrajectory(id, newTrajectory);
@@ -289,32 +292,34 @@ final public class GameDataLoader {
         SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");
         LevelTimeline newTimeline = new LevelTimeline(gameDataManager, duration);
         List<SafeJsonNode> elementList = spawnsNode.checkAndGetObjectsFromArray();
-        for(SafeJsonNode childNode: elementList){
+        for (SafeJsonNode childNode : elementList) {
             SafeJsonNode spawnableNode = childNode.checkAndGetObjectOrArray("spawn");
             Spawnable newSpawnable;
-            if(spawnableNode.isArray()){
+            if (spawnableNode.isArray()) {
                 ArrayList<Spawnable> spawnables = new ArrayList<>();
                 List<SafeJsonNode> nodeList = spawnableNode.checkAndGetObjectsFromArray();
-                for(var spawnElement: nodeList){
+                for (var spawnElement : nodeList) {
                     spawnables.add(getSingleSpawnable(spawnElement));
                 }
                 newSpawnable = new MultiSpawnable(spawnables);
             }
-            else{
+            else {
                 newSpawnable = getSingleSpawnable(spawnableNode);
             }
             String type = childNode.checkAndGetString("type");
-            if(type.equals("single")){
+            if (type.equals("single")) {
                 float time = childNode.checkAndGetFloat("time");
                 newTimeline.addSpawnable(time, newSpawnable);
-            } else if (type.equals("interval")) {
+            }
+            else if (type.equals("interval")) {
                 float startTime = childNode.checkAndGetFloat("startTime");
                 float endTime = childNode.checkAndGetFloat("endTime");
                 float interval = childNode.checkAndGetFloat("interval");
-                for(float i = startTime; i <= endTime; i+=interval){
+                for (float i = startTime; i <= endTime; i += interval) {
                     newTimeline.addSpawnable(i, newSpawnable);
                 }
-            }else{
+            }
+            else {
                 throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
             }
 
@@ -322,42 +327,46 @@ final public class GameDataLoader {
         gameDataManager.addTimeline(newTimeline);
     }
 
-    private Spawnable getSingleSpawnable(SafeJsonNode spawnableNode){
+    private Spawnable getSingleSpawnable(SafeJsonNode spawnableNode) {
         String type = spawnableNode.checkAndGetString("type");
-        if(type.equals("entity")){
+        if (type.equals("entity")) {
             int id = spawnableNode.checkAndGetInt("id");
 
             Vec2D startingPositionVec = convertToFloatVec(spawnableNode.checkAndGetIVec2D("startingPosition"));
             EntitySpawnInfo spawnInfo;
-            if(spawnableNode.hasField("trajectory")){
+            if (spawnableNode.hasField("trajectory")) {
                 int trajectoryId = spawnableNode.checkAndGetInt("trajectory");
                 spawnInfo = new EntitySpawnInfo(id, startingPositionVec.x, startingPositionVec.y, trajectoryId);
-            }else{
+            }
+            else {
                 spawnInfo = new EntitySpawnInfo(id, startingPositionVec.x, startingPositionVec.y, -1);
             }
             return spawnInfo;
 
-        }else if(type.equals("display")) {
+        }
+        else if (type.equals("display")) {
             int id = spawnableNode.checkAndGetInt("id");
             Vec2D positionVec = convertToFloatVec(spawnableNode.checkAndGetIVec2D("position"));
             return new SceneDisplaySpawnInfo(id, positionVec.x, positionVec.y);
         }
-        else{
+        else {
             throw new IllegalArgumentException("Invalid JSON format: " + spawnableNode.getPath() + ": spwnable type can only be \"display\" or \"entity\"");
         }
     }
+
     private Function<Float, Float> convertToFunction(String expr) throws LambdaCreationException {
-        if(expr.contains("{") || expr.contains("Systems") || expr.contains("Threads")){
+        if (expr.contains("{") || expr.contains("Systems") || expr.contains("Threads")) {
             throw new IllegalArgumentException("Illegal character in trajectory function");
         }
         LambdaFactory lambdaFactory = LambdaFactory.get(
-                LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.TrajectoryFunctionUtils.MathFloatOverloads.*; import static engine.entity.trajectory.TrajectoryFunctionUtils.*")
+            LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.TrajectoryFunctionUtils.MathFloatOverloads.*; import static engine.entity.trajectory.TrajectoryFunctionUtils.*")
         );
         return lambdaFactory.createLambda(
-                "t -> (float)(" + expr + ")", new TypeReference<Function<Float, Float>>(){});
+            "t -> (float)(" + expr + ")", new TypeReference<Function<Float, Float>>() {
+            });
     }
 
-    private Vec2D convertToFloatVec(IVec2D pixelVec){
+    private Vec2D convertToFloatVec(IVec2D pixelVec) {
         return new Vec2D((float) pixelVec.x / gameConfig.getEditionWidth(), (float) pixelVec.y / gameConfig.getEditionHeight());
     }
 }

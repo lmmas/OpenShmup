@@ -7,10 +7,12 @@ import java.io.IOException;
 
 final public class Editor extends Application {
     public static void main(String[] args) throws IOException {
-        if(args.length != 0){
+        if (args.length != 0) {
             throw new IllegalArgumentException("invalid editor arguments");
         }
-        new Editor(() -> {}, () -> {});
+        new Editor(() -> {
+        }, () -> {
+        });
     }
 
     public Editor(Runnable initScript, Runnable inLoopScript) throws IOException {

@@ -1,10 +1,10 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.types.GameControl;
 import engine.scene.LevelScene;
+import engine.types.GameControl;
 
-final public class PlayerControlledTrajectory implements Trajectory{
+final public class PlayerControlledTrajectory implements Trajectory {
     private LevelScene scene;
     private float speed;
     private float lastUpdateTimeSeconds;
@@ -22,27 +22,27 @@ final public class PlayerControlledTrajectory implements Trajectory{
         float positionY = entity.getPosition().y;
         float deltaTimeSeconds = currentTime - lastUpdateTimeSeconds;
         if (scene.getControlState(GameControl.MOVE_LEFT)) {
-            positionX-=speed * deltaTimeSeconds;
+            positionX -= speed * deltaTimeSeconds;
         }
         if (scene.getControlState(GameControl.MOVE_RIGHT)) {
-            positionX+=speed * deltaTimeSeconds;
+            positionX += speed * deltaTimeSeconds;
         }
         if (scene.getControlState(GameControl.MOVE_UP)) {
-            positionY+=speed * deltaTimeSeconds;
+            positionY += speed * deltaTimeSeconds;
         }
         if (scene.getControlState(GameControl.MOVE_DOWN)) {
-            positionY-=speed * deltaTimeSeconds;
+            positionY -= speed * deltaTimeSeconds;
         }
-        if(positionX < 0.0f){
+        if (positionX < 0.0f) {
             positionX = 0.0f;
         }
-        if(positionX > 1.0f){
+        if (positionX > 1.0f) {
             positionX = 1.0f;
         }
-        if(positionY < 0.0f){
+        if (positionY < 0.0f) {
             positionY = 0.0f;
         }
-        if(positionY > 1.0f){
+        if (positionY > 1.0f) {
             positionY = 1.0f;
         }
         entity.setPosition(positionX, positionY);

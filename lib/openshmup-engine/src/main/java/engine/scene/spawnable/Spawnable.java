@@ -4,9 +4,12 @@ import engine.scene.LevelScene;
 
 public interface Spawnable {
     void spawn(LevelScene scene);
+
     Spawnable copy();
+
     Spawnable copyWithOffset(float offsetX, float offsetY);
-    static Spawnable DEFAULT_EMPTY(){
+
+    static Spawnable DEFAULT_EMPTY() {
         return EmptySpawnable.getInstance();
     }
 }

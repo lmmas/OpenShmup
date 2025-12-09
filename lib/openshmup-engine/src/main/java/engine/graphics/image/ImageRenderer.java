@@ -3,10 +3,10 @@ package engine.graphics.image;
 import engine.GlobalVars;
 import engine.assets.Shader;
 import engine.assets.Texture;
+import engine.graphics.RenderType;
 import engine.graphics.Renderer;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -17,12 +17,13 @@ import static org.lwjgl.opengl.GL33.*;
 
 final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
 
-    protected Batch createBatchFromGraphic(Image graphic){
+    protected Batch createBatchFromGraphic(Image graphic) {
         return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
-    public ImageRenderer(RenderType type){
+
+    public ImageRenderer(RenderType type) {
         super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, 68);
-        assert type == RenderType.STATIC_IMAGE || type == RenderType.DYNAMIC_IMAGE: "incorrect render type for Image2D renderer";
+        assert type == RenderType.STATIC_IMAGE || type == RenderType.DYNAMIC_IMAGE : "incorrect render type for Image2D renderer";
         this.batchSize = 100;
     }
 
@@ -32,7 +33,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
         final protected ByteBuffer dataBuffer;
         protected static final int vertexAttributeCount = 17;
 
-        public ImageBatch(Shader shader, Texture texture){
+        public ImageBatch(Shader shader, Texture texture) {
             super(shader);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
             this.textureIndexes = new ArrayList<>();
@@ -43,14 +44,14 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        public void draw(){
+        public void draw() {
             shader.use();
-            for(int i = 0; i < textures.size(); i++){
+            for (int i = 0; i < textures.size(); i++) {
                 textures.get(i).bind(i);
             }
             int[] array = new int[32];
-            Arrays.setAll(array, i->i);
-            shader.uploadUniformIntArray("TEX_SAMPLER" , array);
+            Arrays.setAll(array, i -> i);
+            shader.uploadUniformIntArray("TEX_SAMPLER", array);
             shader.validate();
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
@@ -69,12 +70,12 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
 
         @Override
         protected boolean canReceivePrimitiveFrom(Image graphic) {
-            if(primitives.size() + 1 > batchSize)
+            if (primitives.size() + 1 > batchSize)
                 return false;
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
         }
 
-        public void setupVertexAttributes(){
+        public void setupVertexAttributes() {
             int quadSizeLength = 2;
             int positionLength = 2;
             int textureSizeLength = 2;
@@ -93,9 +94,9 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        public void uploadData(){
+        public void uploadData() {
             dataBuffer.clear();
-            for(int i = 0; i < primitives.size() ; i++){
+            for (int i = 0; i < primitives.size(); i++) {
                 Image.ImagePrimitive image = primitives.get(i);
                 Vec2D imagePosition = image.getImagePosition();
                 Vec2D imageSize = image.getImageSize();
@@ -131,14 +132,14 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
 
         @Override
         public void addPrimitive(Image.ImagePrimitive newPrimitive) {
-            assert primitives.size() == textureIndexes.size(): "mismatching list sizes between primitives and texture indices";
+            assert primitives.size() == textureIndexes.size() : "mismatching list sizes between primitives and texture indices";
             super.addPrimitive(newPrimitive);
             int textureIndex = textures.indexOf(newPrimitive.getTexture());
-            assert textures.size() < GlobalVars.MAX_TEXTURE_SLOTS || textureIndex != -1: "invalid primitive texture";
-            if(textureIndex != -1){
+            assert textures.size() < GlobalVars.MAX_TEXTURE_SLOTS || textureIndex != -1 : "invalid primitive texture";
+            if (textureIndex != -1) {
                 textureIndexes.add(textureIndex);
             }
-            else{
+            else {
                 textures.add(newPrimitive.getTexture());
                 textureIndexes.add(textures.size() - 1);
             }
@@ -146,8 +147,8 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
 
         @Override
         public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitives.size() == textureIndexes.size(): "mismatching list sizes between primitives and texture indices";
-            assert primitiveToRemoveIndex < primitives.size(): "index out of bounds";
+            assert primitives.size() == textureIndexes.size() : "mismatching list sizes between primitives and texture indices";
+            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
             primitives.remove(primitiveToRemoveIndex);
             textureIndexes.remove(primitiveToRemoveIndex);
         }

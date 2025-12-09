@@ -5,8 +5,10 @@ import engine.scene.LevelScene;
 
 public interface Trajectory {
     void update(Entity entity, LevelScene scene);
+
     Trajectory copyIfNotReusable();
-    static Trajectory DEFAULT_EMPTY(){
+
+    static Trajectory DEFAULT_EMPTY() {
         return EmptyTrajectory.getInstance();
     }
 }

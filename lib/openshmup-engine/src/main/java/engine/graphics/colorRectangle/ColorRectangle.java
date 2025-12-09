@@ -1,10 +1,10 @@
 package engine.graphics.colorRectangle;
 
+import engine.assets.Shader;
 import engine.graphics.Graphic;
 import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.assets.Shader;
 
 import static engine.Application.assetManager;
 
@@ -12,7 +12,7 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
     private final ColorRectanglePrimitive primitive;
 
-    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader){
+    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader) {
         super(RenderType.COLOR_RECTANGLE, shader);
         this.primitive = new ColorRectanglePrimitive(sizeX, sizeY, positionX, positionY, r, g, b, a);
     }
@@ -21,12 +21,12 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
         this(sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
     }
 
-    public ColorRectangle(ColorRectangle colorRectangle){
+    public ColorRectangle(ColorRectangle colorRectangle) {
         this(
-                colorRectangle.primitive.size.x, colorRectangle.primitive.size.y,
-                colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
-                colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.a,
-                colorRectangle.shader
+            colorRectangle.primitive.size.x, colorRectangle.primitive.size.y,
+            colorRectangle.primitive.position.x, colorRectangle.primitive.position.y,
+            colorRectangle.primitive.color.r, colorRectangle.primitive.color.g, colorRectangle.primitive.color.b, colorRectangle.primitive.color.a,
+            colorRectangle.shader
         );
     }
 
@@ -40,11 +40,11 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
         return primitive;
     }
 
-    public Vec2D getPosition(){
+    public Vec2D getPosition() {
         return new Vec2D(primitive.position);
     }
 
-    public Vec2D getScale(){
+    public Vec2D getScale() {
         return new Vec2D(primitive.size);
     }
 
@@ -53,19 +53,19 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
         primitive.remove();
     }
 
-    public void setPosition(float positionX, float positionY){
+    public void setPosition(float positionX, float positionY) {
         primitive.position.x = positionX;
         primitive.position.y = positionY;
         primitive.dataHasChanged();
     }
 
-    public void setScale(float scaleX, float scaleY){
+    public void setScale(float scaleX, float scaleY) {
         primitive.size.x = scaleX;
         primitive.size.y = scaleY;
         primitive.dataHasChanged();
     }
 
-    public class ColorRectanglePrimitive extends Graphic<ColorRectangle, ColorRectanglePrimitive>.Primitive{
+    public class ColorRectanglePrimitive extends Graphic<ColorRectangle, ColorRectanglePrimitive>.Primitive {
 
         private final Vec2D size;
 
@@ -85,10 +85,10 @@ final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle
             return new RGBAValue(color);
         }
 
-        public ColorRectanglePrimitive(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a){
+        public ColorRectanglePrimitive(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
             this.size = new Vec2D(sizeX, sizeY);
             this.position = new Vec2D(positionX, positionY);
-            this.color = new RGBAValue(r,g,b,a);
+            this.color = new RGBAValue(r, g, b, a);
         }
     }
 }

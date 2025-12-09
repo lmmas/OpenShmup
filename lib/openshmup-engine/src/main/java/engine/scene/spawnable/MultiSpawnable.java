@@ -5,11 +5,11 @@ import engine.scene.LevelScene;
 import java.util.ArrayList;
 
 public record MultiSpawnable(
-        ArrayList<Spawnable> spawnables
-) implements Spawnable{
+    ArrayList<Spawnable> spawnables
+) implements Spawnable {
     @Override
     public void spawn(LevelScene scene) {
-        for(var spawnable: spawnables){
+        for (var spawnable : spawnables) {
             spawnable.spawn(scene);
         }
     }

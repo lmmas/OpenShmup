@@ -12,6 +12,7 @@ final public class AssetManager {
     final private HashMap<String, Shader> shaderMap;
     final private HashMap<String, Texture> imageFileMap;
     final private HashMap<String, Font> fontFileMap;
+
     public AssetManager() throws IOException {
         this.shaderMap = new HashMap<>();
         this.imageFileMap = new HashMap<>();
@@ -26,11 +27,11 @@ final public class AssetManager {
         imageFileMap.put(debugFont, defaultFont.getBitmap());
     }
 
-    public Texture getTexture(String filepath){
-        if(imageFileMap.containsKey(filepath)){
+    public Texture getTexture(String filepath) {
+        if (imageFileMap.containsKey(filepath)) {
             return imageFileMap.get(filepath);
         }
-        else{
+        else {
             Texture newTexture;
             try {
                 newTexture = Texture.createFromImageFile(rootFolderAbsolutePath + filepath);
@@ -42,11 +43,11 @@ final public class AssetManager {
         }
     }
 
-    public Shader getShader(String filepath){
-        if (shaderMap.containsKey(filepath)){
+    public Shader getShader(String filepath) {
+        if (shaderMap.containsKey(filepath)) {
             return shaderMap.get(filepath);
         }
-        else{
+        else {
             Shader newShader = new Shader(rootFolderAbsolutePath + filepath);
             shaderMap.put(filepath, newShader);
             newShader.compile();
@@ -54,11 +55,11 @@ final public class AssetManager {
         }
     }
 
-    public Font getFont(String filepath){
-        if(fontFileMap.containsKey(filepath)){
+    public Font getFont(String filepath) {
+        if (fontFileMap.containsKey(filepath)) {
             return fontFileMap.get(filepath);
         }
-        else{
+        else {
             try {
                 Font newFont = Font.createFromTTF(rootFolderAbsolutePath + filepath);
                 fontFileMap.put(filepath, newFont);

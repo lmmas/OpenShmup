@@ -1,28 +1,21 @@
 package engine.entity.extraComponent;
 
-import engine.GlobalVars;
 import engine.entity.Entity;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.colorRectangle.ColorRectangle;
-import engine.graphics.Graphic;
-import engine.graphics.RenderInfo;
-import engine.assets.Texture;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 import engine.types.RGBAValue;
 
-import java.util.Collections;
-import java.util.List;
-
 import static engine.Application.assetManager;
 import static engine.Application.graphicsManager;
 
-final public class HitboxDebugRectangle implements ExtraComponent{
+final public class HitboxDebugRectangle implements ExtraComponent {
     final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";
     private final SimpleRectangleHitbox simpleRectangleHitbox;
     private final ColorRectangle debugDisplay;
 
-    public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color){
+    public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
         this.simpleRectangleHitbox = simpleRectangleHitbox;
         this.debugDisplay = new ColorRectangle(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
     }

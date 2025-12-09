@@ -3,8 +3,8 @@ package engine.entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.trajectory.Trajectory;
-import engine.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
+import engine.visual.SceneVisual;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ final public class Projectile extends Entity {
     @Override
     public Entity copy() {
         ArrayList<ExtraComponent> newExtracomponents = new ArrayList<>(extraComponents.size());
-        for(ExtraComponent component: extraComponents){
+        for (ExtraComponent component : extraComponents) {
             newExtracomponents.add(component.copyIfNotReusable());
         }
-        return new Projectile(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x , size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), deathSpawn.copy(), newExtracomponents);
+        return new Projectile(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), deathSpawn.copy(), newExtracomponents);
     }
 }

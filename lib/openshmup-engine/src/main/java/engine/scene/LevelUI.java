@@ -1,10 +1,9 @@
 package engine.scene;
 
-import engine.gameData.GameConfig;
 import engine.entity.Ship;
-import engine.graphics.image.Image;
-import engine.visual.ImageDisplay;
+import engine.gameData.GameConfig;
 import engine.types.Vec2D;
+import engine.visual.ImageDisplay;
 
 import java.util.ArrayList;
 
@@ -15,22 +14,23 @@ public class LevelUI {
     final private ArrayList<ImageDisplay> playerLives;
     private Ship playerShip;
     final private GameConfig.LevelUI config;
-    public LevelUI(LevelScene scene){
+
+    public LevelUI(LevelScene scene) {
         this.scene = scene;
         this.playerLives = new ArrayList<>();
         this.playerShip = null;
         this.config = scene.getGameDataManager().config.levelUI;
     }
 
-    public void update(){
+    public void update() {
         updatePlayerLives();
     }
 
-    private void updatePlayerLives(){
-        if(playerShip != null){
+    private void updatePlayerLives() {
+        if (playerShip != null) {
             int playerHP = playerShip.getHP();
-            if(playerLives.size() != playerHP){
-                while(playerLives.size() < playerHP){
+            if (playerLives.size() != playerHP) {
+                while (playerLives.size() < playerHP) {
                     Vec2D size = config.lives.size;
                     Vec2D position = config.lives.position;
                     Vec2D stride = config.lives.stride;
@@ -40,7 +40,7 @@ public class LevelUI {
                     playerLives.add(hpPointDisplay);
                     scene.addVisual(hpPointDisplay);
                 }
-                while(playerLives.size() > playerHP){
+                while (playerLives.size() > playerHP) {
                     scene.removeVisual(playerLives.getLast());
                     playerLives.removeLast();
                 }
@@ -48,7 +48,7 @@ public class LevelUI {
         }
     }
 
-    public void setPlayerShip(Ship playerShip){
+    public void setPlayerShip(Ship playerShip) {
         this.playerShip = playerShip;
     }
 }

@@ -5,7 +5,7 @@ public enum EntityType {
     PROJECTILE,
     ITEM;
 
-    public static EntityType fromString(String input){
+    public static EntityType fromString(String input) {
         return switch (input) {
             case "ship" -> SHIP;
             case "projectile" -> PROJECTILE;

@@ -19,7 +19,7 @@ final public class InputStatesManager {
     final private double[] cursorPositionYBuffer;
     final private Vec2D cursorPosition;
 
-    public InputStatesManager(long glfwWindow){
+    public InputStatesManager(long glfwWindow) {
         this.glfwWindow = glfwWindow;
         this.controlsMap = new HashMap<>();
         controlsMap.put(GLFW_KEY_LEFT, GameControl.MOVE_LEFT);
@@ -38,8 +38,8 @@ final public class InputStatesManager {
         this.cursorPosition = new Vec2D(0.0f, 0.0f);
     }
 
-    public void updateInputStates(){
-        for(Integer key: controlsMap.keySet()){
+    public void updateInputStates() {
+        for (Integer key : controlsMap.keySet()) {
             GameControl control = controlsMap.get(key);
             controlStatesList.set(control.ordinal(), (glfwGetKey(glfwWindow, key) == GLFW_PRESS));
         }
@@ -51,17 +51,17 @@ final public class InputStatesManager {
         cursorPosition.y = 1.0f - (float) (cursorPositionYBuffer[0] / Application.window.getHeight());
     }
 
-    public List<Boolean> getGameControlStates(){
+    public List<Boolean> getGameControlStates() {
         ArrayList<Boolean> controlStatesCopy = new ArrayList<>(controlStatesList.size());
         controlStatesCopy.addAll(controlStatesList);
         return controlStatesCopy;
     }
 
-    public boolean getLeftClickState(){
+    public boolean getLeftClickState() {
         return leftClickState;
     }
 
-    public Vec2D getCursorPosition(){
+    public Vec2D getCursorPosition() {
         return new Vec2D(cursorPosition);
     }
 }

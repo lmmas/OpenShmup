@@ -9,15 +9,14 @@ import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
-import engine.graphics.image.Image;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.EmptySpawnable;
+import engine.scene.spawnable.Spawnable;
+import engine.types.Vec2D;
 import engine.visual.Animation;
 import engine.visual.AnimationInfo;
 import engine.visual.ImageDisplay;
 import engine.visual.SceneVisual;
-import engine.scene.spawnable.Spawnable;
-import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -64,22 +63,22 @@ abstract public class Entity {
 
     abstract public Entity copy();
 
-    public EntityType getType(){
+    public EntityType getType() {
         return this.type;
     }
 
-    public void setSize(float sizeX, float sizeY){
+    public void setSize(float sizeX, float sizeY) {
         this.size.x = sizeX;
         this.size.y = sizeY;
         sprite.setScale(sizeX, sizeY);
         hitbox.setSize(sizeX, sizeY);
     }
 
-    public Vec2D getPosition(){
+    public Vec2D getPosition() {
         return new Vec2D(position);
     }
 
-    public void setPosition(float positionX, float positionY){
+    public void setPosition(float positionX, float positionY) {
         position.x = positionX;
         position.y = positionY;
         sprite.setPosition(positionX, positionY);
@@ -90,7 +89,7 @@ abstract public class Entity {
         return new Vec2D(trajectoryReferencePosition);
     }
 
-    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY){
+    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY) {
         trajectoryReferencePosition.x = startingPositionX;
         trajectoryReferencePosition.y = startingPositionY;
     }
@@ -116,7 +115,7 @@ abstract public class Entity {
         return evil;
     }
 
-    public boolean isInvincible(){
+    public boolean isInvincible() {
         return invincible;
     }
 
@@ -128,7 +127,7 @@ abstract public class Entity {
         return sprite;
     }
 
-    public Hitbox getHitbox(){
+    public Hitbox getHitbox() {
         return hitbox;
     }
 
@@ -140,7 +139,7 @@ abstract public class Entity {
         return extraComponents;
     }
 
-    public void addExtraComponent(ExtraComponent extraComponent){
+    public void addExtraComponent(ExtraComponent extraComponent) {
         extraComponents.add(extraComponent);
     }
 
@@ -151,21 +150,21 @@ abstract public class Entity {
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
-    public void update(float currentTimeSeconds){
+    public void update(float currentTimeSeconds) {
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this, scene);
-        for(ExtraComponent extraComponent: extraComponents){
+        for (ExtraComponent extraComponent : extraComponents) {
             extraComponent.update(this, scene);
         }
     }
 
-    public void deathEvent(){
-        if(deathSpawn != null && !(deathSpawn instanceof EmptySpawnable)){
+    public void deathEvent() {
+        if (deathSpawn != null && !(deathSpawn instanceof EmptySpawnable)) {
             deathSpawn.copyWithOffset(position.x, position.y).spawn(scene);
         }
     }
 
-    public static class Builder{
+    public static class Builder {
         private int id = -1;
         private EntityType type = EntityType.PROJECTILE;
         private int hitPoints = 1;
@@ -179,17 +178,17 @@ abstract public class Entity {
         private Spawnable deathSpawn = Spawnable.DEFAULT_EMPTY();
         private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
 
-        public Builder setType(EntityType type){
+        public Builder setType(EntityType type) {
             this.type = type;
             return this;
         }
 
-        public Builder setHitPoints(int hp){
+        public Builder setHitPoints(int hp) {
             this.hitPoints = hp;
             return this;
         }
 
-        public Builder setStartingPosition(float startPosX, float startPosY){
+        public Builder setStartingPosition(float startPosX, float startPosY) {
             this.startingPosition.x = startPosX;
             this.startingPosition.y = startPosY;
             return this;
@@ -201,71 +200,77 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder setOrientation(float orientationRadians){
+        public Builder setOrientation(float orientationRadians) {
             this.orientationRadians = orientationRadians;
             return this;
         }
 
-        public Builder setId(int id){
+        public Builder setId(int id) {
             this.id = id;
-            if(this.id == 0){
+            if (this.id == 0) {
                 this.evil = false;
             }
             return this;
         }
 
-        public Builder setEvil(boolean evil){
+        public Builder setEvil(boolean evil) {
             this.evil = evil;
             return this;
         }
 
-        public Builder createSprite(int layer, Texture texture, boolean orientable){
+        public Builder createSprite(int layer, Texture texture, boolean orientable) {
             if (orientable) {
-                assert false: "orientable sprites not implemented yet";
-            } else {
+                assert false : "orientable sprites not implemented yet";
+            }
+            else {
                 this.sprite = new ImageDisplay(layer, texture, size, startingPosition);
             }
             return this;
         }
 
-        public Builder createSprite(int layer, Texture spriteTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable){
+        public Builder createSprite(int layer, Texture spriteTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable) {
             if (orientable) {
 
-            } else {
+            }
+            else {
                 this.sprite = new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y);
             }
             return this;
         }
-        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY){
+
+        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY) {
             this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
             return this;
         }
-        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY, boolean relative){
+
+        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY, boolean relative) {
             this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY, relative);
             return this;
         }
-        public Builder setTrajectory(Trajectory trajectory){
+
+        public Builder setTrajectory(Trajectory trajectory) {
             this.trajectory = trajectory;
             return this;
         }
-        public Builder setDeathSpawn(Spawnable deathSpawn){
+
+        public Builder setDeathSpawn(Spawnable deathSpawn) {
             this.deathSpawn = deathSpawn;
             return this;
         }
 
-        public Builder addCompositeHitbox(Texture hitboxTexture, boolean orientable){
-            assert size.x != 0.0f && size.y != 0.0f:"Invalid hitbox size";
-            if(orientable){
+        public Builder addCompositeHitbox(Texture hitboxTexture, boolean orientable) {
+            assert size.x != 0.0f && size.y != 0.0f : "Invalid hitbox size";
+            if (orientable) {
 
             }
-            else{
+            else {
                 hitbox = new CompositeHitbox(hitboxTexture, size.x, size.y);
             }
             return this;
         }
 
-        public Builder addRectangleHitbox(boolean orientable){
-            if(orientable){
+        public Builder addRectangleHitbox(boolean orientable) {
+            if (orientable) {
 
             }
             else {
@@ -274,28 +279,28 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds){
-            assert this.id != -1: "incorrect building steps order: must define the id first";
-            if(this.id == 0){
-                extraComponents.add( new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
+        public Builder createShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
+            assert this.id != -1 : "incorrect building steps order: must define the id first";
+            if (this.id == 0) {
+                extraComponents.add(new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
             }
-            else{
-                extraComponents.add( new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
+            else {
+                extraComponents.add(new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
             }
             return this;
         }
 
-        public Builder addExtraComponent(ExtraComponent extraComponent){
+        public Builder addExtraComponent(ExtraComponent extraComponent) {
             extraComponents.add(extraComponent);
             return this;
         }
 
-        public Entity build(){
-            assert (sprite != null): "Entity construction error: null fields";
-            if(type != EntityType.SHIP){
+        public Entity build() {
+            assert (sprite != null) : "Entity construction error: null fields";
+            if (type != EntityType.SHIP) {
                 return new Projectile(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
             }
-            else{
+            else {
                 return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hitPoints);
             }
         }

@@ -1,11 +1,10 @@
 package engine.visual;
 
+import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
-import engine.graphics.RenderInfo;
-import engine.assets.Texture;
 
-import java.util.*;
+import java.util.List;
 
 final public class Animation extends SceneVisual {
     final private Image image;
@@ -22,17 +21,17 @@ final public class Animation extends SceneVisual {
         this.looping = looping;
         this.frameIndex = 0;
         this.image = new Image(animationTexture, true,
-                sizeX, sizeY,
-                0.0f, 0.0f,
-                info.frameSizeX(), info.frameSizeY(),
-                0.0f, 0.0f,
-                1.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 0.0f, 0.0f);
+            sizeX, sizeY,
+            0.0f, 0.0f,
+            info.frameSizeX(), info.frameSizeY(),
+            0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 0.0f);
         updateTexturePosition();
         this.timeOfLastFrame = 0.0f;
     }
 
-    public Animation(Animation animation){
+    public Animation(Animation animation) {
         super(animation.sceneLayer, List.of(0));
         this.image = new Image(animation.image);
         this.info = animation.info;
@@ -41,7 +40,8 @@ final public class Animation extends SceneVisual {
         this.frameIndex = animation.frameIndex;
         this.timeOfLastFrame = animation.timeOfLastFrame;
     }
-    private void updateTexturePosition(){
+
+    private void updateTexturePosition() {
         float texturePositionX = frameIndex * info.strideX() + info.startPosX();
         float texturePositionY = frameIndex * info.strideY() + info.startPosY();
         image.setTexturePosition(texturePositionX, texturePositionY);
@@ -64,13 +64,13 @@ final public class Animation extends SceneVisual {
 
     @Override
     public void update(float currentTimeSeconds) {
-        if(currentTimeSeconds >= timeOfLastFrame + framePeriodSeconds){
+        if (currentTimeSeconds >= timeOfLastFrame + framePeriodSeconds) {
             frameIndex++;
-            if(frameIndex >= info.frameCount()){
-                if(looping){
+            if (frameIndex >= info.frameCount()) {
+                if (looping) {
                     frameIndex = 0;
                 }
-                else{
+                else {
                     this.setShouldBeRemoved();
                     return;
                 }

@@ -1,9 +1,8 @@
 package engine.visual;
 
+import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
-import engine.graphics.RenderInfo;
-import engine.assets.Texture;
 import engine.types.Vec2D;
 
 import java.util.List;
@@ -24,26 +23,26 @@ final public class ScrollingImage extends SceneVisual {
         this.position1 = new Vec2D(0.5f, 0.5f);
         this.position2 = new Vec2D(0.0f, 0.0f);
         this.image1 = new Image(texture, true,
-                sizeX, sizeY,
-                position1.x, position1.y,
-                1.0f, 1.0f,
-                0.0f, 0.0f,
-                1.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 0.0f, 0.0f);
+            sizeX, sizeY,
+            position1.x, position1.y,
+            1.0f, 1.0f,
+            0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 0.0f);
         this.image2 = new Image(texture, true,
-                sizeX, sizeY,
-                position2.x, position2.y,
-                1.0f, 1.0f,
-                0.0f, 0.0f,
-                1.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 0.0f, 0.0f);
+            sizeX, sizeY,
+            position2.x, position2.y,
+            1.0f, 1.0f,
+            0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 0.0f);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
         lastUpdateTimeSeconds = 0.0f;
         this.setPosition(0.5f, 0.5f);
     }
 
-    public ScrollingImage(ScrollingImage scrollingImage){
+    public ScrollingImage(ScrollingImage scrollingImage) {
         super(scrollingImage.sceneLayer, List.of(0, 0));
         this.image1 = new Image(scrollingImage.image1);
         this.position1 = new Vec2D(scrollingImage.position1);
@@ -54,6 +53,7 @@ final public class ScrollingImage extends SceneVisual {
         this.speed = scrollingImage.speed;
         this.lastUpdateTimeSeconds = scrollingImage.lastUpdateTimeSeconds;
     }
+
     @Override
     public SceneVisual copy() {
         return new ScrollingImage(this);
@@ -68,11 +68,11 @@ final public class ScrollingImage extends SceneVisual {
     public void setPosition(float positionX, float positionY) {
         position1.x = positionX;
         position1.y = positionY;
-        if(horizontalScrolling){
+        if (horizontalScrolling) {
             this.position2.x = this.position1.x - Math.signum(speed) * size.x;
             this.position2.y = position1.y;
         }
-        else{
+        else {
             this.position2.x = position1.x;
             this.position2.y = position1.y - Math.signum(speed) * size.y;
         }
@@ -94,37 +94,37 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public void update(float currentTimeSeconds){
+    public void update(float currentTimeSeconds) {
         float deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
-        if(horizontalScrolling){
+        if (horizontalScrolling) {
             position1.x += speed * deltaTime;
-            position2.x+= speed * deltaTime;
-            if(position1.x > 0.5f + size.x){
+            position2.x += speed * deltaTime;
+            if (position1.x > 0.5f + size.x) {
                 position1.x -= 2 * size.x;
             }
-            if(position1.x < 0.5f - size.x){
+            if (position1.x < 0.5f - size.x) {
                 position1.x += 2 * size.x;
             }
-            if(position2.x > 0.5f + size.x){
+            if (position2.x > 0.5f + size.x) {
                 position2.x -= 2 * size.x;
             }
-            if(position2.x < 0.5f - size.x){
+            if (position2.x < 0.5f - size.x) {
                 position2.x += 2 * size.x;
             }
         }
-        else{
+        else {
             position1.y += speed * deltaTime;
             position2.y += speed * deltaTime;
-            if(position1.y > 0.5f + size.y){
+            if (position1.y > 0.5f + size.y) {
                 position1.y -= 2 * size.y;
             }
-            if(position1.y < 0.5f - size.y){
+            if (position1.y < 0.5f - size.y) {
                 position1.y += 2 * size.y;
             }
-            if(position2.y > 0.5f + size.y){
+            if (position2.y > 0.5f + size.y) {
                 position2.y -= 2 * size.y;
             }
-            if(position2.y < 0.5f - size.y){
+            if (position2.y < 0.5f - size.y) {
                 position2.y += 2 * size.y;
             }
         }

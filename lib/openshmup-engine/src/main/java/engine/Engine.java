@@ -10,10 +10,12 @@ final public class Engine extends Application {
     public static PlayerSettings playerSettings;
 
     public static void main(String[] args) throws IOException {
-        if(args.length != 1){
+        if (args.length != 1) {
             throw new IllegalArgumentException("invalid engine arguments");
         }
-        new Engine(args[0], () -> {}, () -> {});
+        new Engine(args[0], () -> {
+        }, () -> {
+        });
     }
 
     public Engine(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
@@ -30,7 +32,7 @@ final public class Engine extends Application {
         run();
     }
 
-    private void run(){
+    private void run() {
         initScript.run();
         gameInit();
         loop();
@@ -38,7 +40,7 @@ final public class Engine extends Application {
         terminate();
     }
 
-    public static void gameInit(){
+    public static void gameInit() {
         graphicsManager.clearLayers();
         gameDataManager.getTimeline(0).resetTime();
         currentScene = new LevelScene(gameDataManager.getTimeline(0));

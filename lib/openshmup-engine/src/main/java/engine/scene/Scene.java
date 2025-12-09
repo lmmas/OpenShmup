@@ -1,14 +1,14 @@
 package engine.scene;
 
 import engine.entity.hitbox.Hitbox;
-import engine.graphics.*;
-import engine.visual.SceneVisual;
-import engine.visual.TextDisplay;
+import engine.graphics.Graphic;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
-import engine.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
+import engine.visual.SceneVisual;
+import engine.visual.TextDisplay;
+import engine.visual.style.TextStyle;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -17,7 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
-import static engine.Application.*;
+import static engine.Application.graphicsManager;
+import static engine.Application.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.debugDisplayLayer;
 
@@ -41,23 +42,23 @@ abstract public class Scene {
         this.sceneDebug = new SceneDebug(false);
     }
 
-    public void handleInputs(){
-        if(displayedMenus.isEmpty()){
+    public void handleInputs() {
+        if (displayedMenus.isEmpty()) {
             return;
         }
-        for (MenuItem menuItem: displayedMenus.getLast().menuItems()){
+        for (MenuItem menuItem : displayedMenus.getLast().menuItems()) {
             Vec2D cursorPosition = inputStatesManager.getCursorPosition();
             Hitbox clickHitbox = menuItem.getClickHitbox();
-            if(inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)){
+            if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
                 menuItem.onClick();
             }
         }
     }
 
-    public void update(){
-        if(!timer.isPaused()){
+    public void update() {
+        if (!timer.isPaused()) {
             sceneTime = timer.getTimeSeconds();
-            for (var visualLayer: visualLayers.values()) {
+            for (var visualLayer : visualLayers.values()) {
                 for (SceneVisual visual : visualLayer) {
                     visual.update(sceneTime);
                     if (visual.shouldBeRemoved()) {
@@ -67,7 +68,7 @@ abstract public class Scene {
                         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayer());
                         var graphicalLayers = visual.getGraphicalSubLayers();
                         var graphics = visual.getGraphics();
-                        for(int i = 0; i < graphicalLayers.size(); i++){
+                        for (int i = 0; i < graphicalLayers.size(); i++) {
                             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
                         }
 
@@ -75,7 +76,7 @@ abstract public class Scene {
                     }
                 }
             }
-            for(var display: visualsToRemove){
+            for (var display : visualsToRemove) {
                 removeVisual(display);
             }
             visualsToRemove.clear();
@@ -85,36 +86,37 @@ abstract public class Scene {
     }
 
 
-    final public void addVisual(SceneVisual visual){
+    final public void addVisual(SceneVisual visual) {
+        int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
         int sceneLayerIndex = visual.getSceneLayer();
+        int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
 
         //determining how many graphical layers need to be inserted
         int graphicalLayersToInsertCount = 0;
-        int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
-        if(!visualLayers.containsKey(sceneLayerIndex)){
+        int sceneLayerMaxGraphicalSubLayer = -1; // -1 corresponds to no sublayer present, it's different from 0 which means 1 sublayer (of index 0)
+        if (!visualLayers.containsKey(sceneLayerIndex)) {
             visualLayers.put(sceneLayerIndex, new ArrayList<>());
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
-        else{
+        else {
             var sceneLayer = visualLayers.get(sceneLayerIndex);
-            int sceneLayerMaxGraphicalSubLayer = sceneLayer.stream()
-                    .flatMap(sceneVisual -> sceneVisual.getGraphicalSubLayers().stream())
-                    .mapToInt(i -> i).max().orElse(0);
-            if(visualMaxGraphicalSubLayer > sceneLayerMaxGraphicalSubLayer){
+            sceneLayerMaxGraphicalSubLayer = sceneLayer.stream()
+                .flatMap(sceneVisual -> sceneVisual.getGraphicalSubLayers().stream())
+                .mapToInt(n -> n).max().orElse(0);
+            if (visualMaxGraphicalSubLayer > sceneLayerMaxGraphicalSubLayer) {
                 graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerMaxGraphicalSubLayer;
             }
         }
 
         //inserting the graphical layers
-        int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
-        for(int i = 0; i < graphicalLayersToInsertCount; i++){
-            graphicsManager.insertNewLayer(sceneLayerGraphicalIndex);
+        for (int i = 0; i < graphicalLayersToInsertCount; i++) {
+            graphicsManager.insertNewLayer(sceneLayerGraphicalIndex + sceneLayerMaxGraphicalSubLayer + 1);
         }
 
         //adding the graphics to the renderers
         var graphicalLayers = visual.getGraphicalSubLayers();
         var graphics = visual.getGraphics();
-        for(int i = 0; i < graphicalLayers.size(); i++){
+        for (int i = 0; i < graphicalLayers.size(); i++) {
             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
         }
 
@@ -122,23 +124,25 @@ abstract public class Scene {
         visual.initDisplay(this.sceneTime);
     }
 
-    private int getSceneLayerGraphicalIndex(int sceneLayerIndex){
+    private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
         int layerSum = 0;
-        for(var layerIndex: visualLayers.keySet()){
-            if(layerIndex >= sceneLayerIndex){
+        for (var layerIndex : visualLayers.keySet()) {
+            if (layerIndex >= sceneLayerIndex) {
                 break;
             }
-            layerSum += visualLayers.get(layerIndex).stream()
+            if (!visualLayers.get(layerIndex).isEmpty()) {
+                layerSum += visualLayers.get(layerIndex).stream()
                     .mapToInt(SceneVisual::getMaxGraphicalSubLayer).max().orElse(0) + 1;
+            }
         }
         return layerSum;
     }
 
-    final public void removeVisual(SceneVisual visual){
+    final public void removeVisual(SceneVisual visual) {
         int sceneLayerIndex = visual.getSceneLayer();
         visualLayers.get(sceneLayerIndex).remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
-        for(var graphic: graphics){
+        for (var graphic : graphics) {
             graphic.remove();
         }
     }
@@ -147,25 +151,25 @@ abstract public class Scene {
         return sceneTime;
     }
 
-    final public void setSpeed(float speed){
+    final public void setSpeed(float speed) {
         timer.setSpeed(speed);
     }
 
-    final public void addMenu(MenuScreen menuScreen){
+    final public void addMenu(MenuScreen menuScreen) {
         menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-                .forEach(this::addVisual);
+            .forEach(this::addVisual);
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
-        if(menuBackground != null){
+        if (menuBackground != null) {
             addVisual(menuBackground);
         }
         displayedMenus.add(menuScreen);
     }
 
-    final public void removeMenu(MenuScreen menuScreen){
+    final public void removeMenu(MenuScreen menuScreen) {
         menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-                .forEach(this::removeVisual);
+            .forEach(this::removeVisual);
         SceneVisual menuBackground = menuScreen.backgroundDisplay();
-        if(menuBackground != null){
+        if (menuBackground != null) {
             removeVisual(menuBackground);
         }
         displayedMenus.remove(menuScreen);
@@ -175,33 +179,33 @@ abstract public class Scene {
         private TextDisplay fpsDisplay;
         final private RGBAValue fpsDisplayTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
 
-        public SceneDebug(boolean debugModeEnabled){
-            if(debugModeEnabled){
+        public SceneDebug(boolean debugModeEnabled) {
+            if (debugModeEnabled) {
                 this.enable();
             }
         }
 
-        public void enable(){
+        public void enable() {
             TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 0.02f);
             this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, "", fpsDisplayTextStyle);
             Scene.this.addVisual(fpsDisplay);
         }
 
-        public void disable(){
+        public void disable() {
             Scene.this.removeVisual(fpsDisplay);
         }
 
-        public void toggle(){
-            if(debugModeEnabled){
+        public void toggle() {
+            if (debugModeEnabled) {
                 this.disable();
             }
-            else{
+            else {
                 this.enable();
             }
         }
 
-        public void update(){
-            if(debugModeEnabled){
+        public void update() {
+            if (debugModeEnabled) {
                 DecimalFormat df = new DecimalFormat("#");
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
                 float fpsVal = 1 / (sceneTime - lastDrawTime);

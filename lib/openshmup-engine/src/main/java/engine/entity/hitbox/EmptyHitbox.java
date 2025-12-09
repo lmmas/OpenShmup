@@ -2,14 +2,15 @@ package engine.entity.hitbox;
 
 import engine.types.Vec2D;
 
-final public class EmptyHitbox implements Hitbox{
+final public class EmptyHitbox implements Hitbox {
     private static EmptyHitbox instance = null;
-    private EmptyHitbox(){
+
+    private EmptyHitbox() {
 
     }
 
     public static EmptyHitbox getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new EmptyHitbox();
         }
         return instance;

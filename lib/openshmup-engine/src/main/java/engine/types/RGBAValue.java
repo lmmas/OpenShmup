@@ -5,6 +5,7 @@ final public class RGBAValue {
     public float g;
     public float b;
     public float a;
+
     public RGBAValue(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;
@@ -12,7 +13,7 @@ final public class RGBAValue {
         this.a = a;
     }
 
-    public RGBAValue(RGBAValue rgba){
+    public RGBAValue(RGBAValue rgba) {
         this.r = rgba.r;
         this.g = rgba.g;
         this.b = rgba.b;

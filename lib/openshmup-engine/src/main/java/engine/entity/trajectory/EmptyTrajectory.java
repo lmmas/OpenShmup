@@ -5,15 +5,18 @@ import engine.scene.LevelScene;
 
 final public class EmptyTrajectory implements Trajectory {
     private static EmptyTrajectory instance = null;
-    private EmptyTrajectory(){
+
+    private EmptyTrajectory() {
 
     }
-    public static EmptyTrajectory getInstance(){
-        if(instance == null){
+
+    public static EmptyTrajectory getInstance() {
+        if (instance == null) {
             instance = new EmptyTrajectory();
         }
         return instance;
     }
+
     @Override
     public Trajectory copyIfNotReusable() {
         return this;

@@ -1,27 +1,30 @@
 package engine.scene;
 
-import engine.gameData.GameDataManager;
-import engine.graphics.RenderInfo;
 import engine.assets.Texture;
+import engine.gameData.GameDataManager;
 import engine.scene.spawnable.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.TreeMap;
 
 final public class LevelTimeline {
     final private GameDataManager gameDataManager;
     private final float levelDuration;
     private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
     private Float nextSpawnTime;
-    public LevelTimeline(GameDataManager gameDataManager, float levelDuration){
+
+    public LevelTimeline(GameDataManager gameDataManager, float levelDuration) {
         this.gameDataManager = gameDataManager;
-        this.levelDuration= levelDuration;
+        this.levelDuration = levelDuration;
         this.spawnList = new TreeMap<>();
         this.nextSpawnTime = null;
     }
 
-    public void updateSpawning(LevelScene scene){
+    public void updateSpawning(LevelScene scene) {
         float currentTime = scene.getSceneTimeSeconds();
-        while(nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration){
+        while (nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration) {
             ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
             for (Spawnable spawnable : spawnables) {
                 spawnable.spawn(scene);
@@ -30,25 +33,25 @@ final public class LevelTimeline {
         }
     }
 
-    private HashSet<Spawnable> getAllSpawnables(){
+    private HashSet<Spawnable> getAllSpawnables() {
         HashSet<Spawnable> allSpawnablesSet = new HashSet<>(spawnList.size());
-        for(ArrayList<Spawnable> spawnEntry: spawnList.values()){
-            for(Spawnable spawnable: spawnEntry){
-                if(!(spawnable instanceof EmptySpawnable)){
+        for (ArrayList<Spawnable> spawnEntry : spawnList.values()) {
+            for (Spawnable spawnable : spawnEntry) {
+                if (!(spawnable instanceof EmptySpawnable)) {
                     HashSet<Spawnable> spawnablesToCheck = new HashSet<>();
                     spawnablesToCheck.add(spawnable);
-                    while(!spawnablesToCheck.isEmpty()){
+                    while (!spawnablesToCheck.isEmpty()) {
                         Spawnable currentSpawnable = spawnablesToCheck.iterator().next();
                         spawnablesToCheck.remove(currentSpawnable);
-                        if(!allSpawnablesSet.contains(currentSpawnable)){
-                            if(!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)){
+                        if (!allSpawnablesSet.contains(currentSpawnable)) {
+                            if (!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)) {
                                 allSpawnablesSet.add(currentSpawnable);
                             }
-                            if(currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo){
+                            if (currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo) {
                                 ArrayList<Spawnable> entitySpawnables = gameDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
                                 spawnablesToCheck.addAll(entitySpawnables);
                             }
-                            if(currentSpawnable instanceof MultiSpawnable(ArrayList<Spawnable> spawnables)){
+                            if (currentSpawnable instanceof MultiSpawnable(ArrayList<Spawnable> spawnables)) {
                                 spawnablesToCheck.addAll(spawnables);
                             }
                         }
@@ -73,15 +76,15 @@ final public class LevelTimeline {
         return allRenderInfos;
     }*/
 
-    public HashSet<Texture> getAllTextures(){
+    public HashSet<Texture> getAllTextures() {
         HashSet<Texture> allTextures = new HashSet<>();
         HashSet<Spawnable> allSpawnables = getAllSpawnables();
-        for(var spawnable: allSpawnables){
-            if(spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo){
+        for (var spawnable : allSpawnables) {
+            if (spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo) {
                 List<Texture> textures = gameDataManager.getTexturesOfDisplay(sceneDisplaySpawnInfo.id());
                 allTextures.addAll(textures);
             }
-            if(spawnable instanceof EntitySpawnInfo entitySpawnInfo){
+            if (spawnable instanceof EntitySpawnInfo entitySpawnInfo) {
                 List<Texture> textures = gameDataManager.getTexturesOfEntity(entitySpawnInfo.id());
                 allTextures.addAll(textures);
             }
@@ -89,23 +92,23 @@ final public class LevelTimeline {
         return allTextures;
     }
 
-    public void addSpawnable(float time, Spawnable spawnable){
+    public void addSpawnable(float time, Spawnable spawnable) {
         this.spawnList.computeIfAbsent(time, k -> new ArrayList<Spawnable>());
         this.spawnList.get(time).add(spawnable);
         nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
-    public void addEntity(float time, int id, float startingPositionX, float startingPositionY, int trajectoryId){
+    public void addEntity(float time, int id, float startingPositionX, float startingPositionY, int trajectoryId) {
         EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, trajectoryId);
         addSpawnable(time, entitySpawnInfo);
     }
 
-    public void addEntity(float time, int id, float startingPositionX, float startingPositionY){
+    public void addEntity(float time, int id, float startingPositionX, float startingPositionY) {
         EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
         addSpawnable(time, entitySpawnInfo);
     }
 
-    public void resetTime(){
+    public void resetTime() {
         this.nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 

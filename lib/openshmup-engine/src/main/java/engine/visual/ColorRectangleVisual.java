@@ -1,15 +1,13 @@
 package engine.visual;
 
-import engine.assets.Texture;
-import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.Graphic;
-import engine.graphics.RenderInfo;
+import engine.graphics.colorRectangle.ColorRectangle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.List;
 
-final public class ColorRectangleVisual extends SceneVisual{
+final public class ColorRectangleVisual extends SceneVisual {
     final private ColorRectangle colorRectangle;
 
     public ColorRectangleVisual(int layer, ColorRectangle colorRectangle) {
@@ -21,7 +19,7 @@ final public class ColorRectangleVisual extends SceneVisual{
         this(layer, new ColorRectangle(sizeX, sizeY, positionX, positionY, r, g, b, a));
     }
 
-    public ColorRectangleVisual(int layer, Vec2D size, Vec2D position, RGBAValue color){
+    public ColorRectangleVisual(int layer, Vec2D size, Vec2D position, RGBAValue color) {
         this(layer, size.x, size.y, position.x, position.y, color.r, color.g, color.b, color.a);
     }
 

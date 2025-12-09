@@ -5,7 +5,7 @@ final public class GlobalVars {
     public static float playerSpeed = 0.7f;
     final public static int debugDisplayLayer = 2048;
 
-    final public static class Paths{
+    final public static class Paths {
         static public String rootFolderAbsolutePath;
         static public String placeholderTextureFile = "/lib/openshmup-engine/src/main/resources/textures/missingTexture.png";
         final static public String debugFont = "/lib/openshmup-engine/src/main/resources/fonts/RobotoMono-Regular.ttf";

@@ -2,7 +2,7 @@ package engine.entity.hitbox;
 
 import engine.types.Vec2D;
 
-final public class SimpleRectangleHitbox implements Hitbox{
+final public class SimpleRectangleHitbox implements Hitbox {
     final public Vec2D position;
     final public Vec2D size;
     public float leftBound;
@@ -27,14 +27,14 @@ final public class SimpleRectangleHitbox implements Hitbox{
     }
 
     @Override
-    public void setPosition(float positionX, float positionY){
+    public void setPosition(float positionX, float positionY) {
         this.position.x = positionX;
         this.position.y = positionY;
         updateBounds();
     }
 
     @Override
-    public void setSize(float sizeX, float sizeY){
+    public void setSize(float sizeX, float sizeY) {
         this.size.x = sizeX;
         this.size.y = sizeY;
         updateBounds();
@@ -45,7 +45,7 @@ final public class SimpleRectangleHitbox implements Hitbox{
 
     }
 
-    private void updateBounds(){
+    private void updateBounds() {
         this.leftBound = position.x - (size.x / 2);
         this.rightBound = position.x + (size.x / 2);
         this.upBound = position.y + (size.y / 2);

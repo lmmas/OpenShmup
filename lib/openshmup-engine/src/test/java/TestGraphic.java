@@ -1,4 +1,5 @@
 import engine.Engine;
+import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
 
 import java.io.IOException;
@@ -12,9 +13,9 @@ public class TestGraphic {
 
         Runnable testInit = () ->{
 
-            /*ColorRoundedRectangle testRectangle = new ColorRoundedRectangle(0.7f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f);
+            ColorRoundedRectangle testRectangle = new ColorRoundedRectangle(0.7f, 0.5f, 0.5f, 0.5f, 0.1f, 0.0f, 0.0f, 1.0f, 1.0f);
             graphicsManager.insertNewLayer(0);
-            graphicsManager.addDebugGraphic(testRectangle);*/
+            graphicsManager.addDebugGraphic(testRectangle);
 
             RoundedRectangleBorder testBorder = new RoundedRectangleBorder(0.7f, 0.5f, 0.5f, 0.5f, 0.1f, 0.02f, 1.0f, 1.0f, 1.0f, 1.0f);
             graphicsManager.insertNewLayer(0);

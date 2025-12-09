@@ -2,10 +2,10 @@ package engine.graphics.colorRectangle;
 
 import engine.Application;
 import engine.assets.Shader;
+import engine.graphics.RenderType;
 import engine.graphics.Renderer;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -14,27 +14,31 @@ import static org.lwjgl.opengl.GL33.*;
 
 final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive> {
     final static private int vertexFloatCount = 8;
-    public ColorRectangleRenderer(){
+
+    public ColorRectangleRenderer() {
         super(RenderType.COLOR_RECTANGLE, GL_STREAM_DRAW, vertexFloatCount * Float.BYTES);
         this.batchSize = 100;
     }
+
     @Override
     protected Batch createBatchFromGraphic(ColorRectangle graphic) {
         return new ColorRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>.Batch{
+    public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>.Batch {
         final private FloatBuffer dataBuffer;
-        public ColorRectangleBatch(Shader shader){
+
+        public ColorRectangleBatch(Shader shader) {
             super(shader);
             this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexFloatCount * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
+
         @Override
         protected boolean canReceivePrimitiveFrom(ColorRectangle graphic) {
-            if(primitives.size() >= batchSize){
+            if (primitives.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -92,7 +96,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
 
         @Override
         public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size(): "index out of bounds";
+            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
             primitives.remove(primitiveToRemoveIndex);
         }
     }

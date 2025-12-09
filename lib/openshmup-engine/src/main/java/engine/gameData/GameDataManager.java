@@ -1,13 +1,12 @@
 package engine.gameData;
 
+import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.trajectory.Trajectory;
-import engine.graphics.RenderInfo;
-import engine.assets.Texture;
 import engine.scene.LevelTimeline;
-import engine.visual.SceneVisual;
 import engine.scene.spawnable.Spawnable;
+import engine.visual.SceneVisual;
 import json.GameDataLoader;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ final public class GameDataManager {
     final private HashMap<Integer, Entity> customEntities;
     final private ArrayList<LevelTimeline> customTimelines;
 
-    public GameDataManager(String gameFolderName){
+    public GameDataManager(String gameFolderName) {
         this.gameFolderName = gameFolderName;
         this.paths = new GamePaths(gameFolderName);
         this.config = new GameConfig();
@@ -33,7 +32,7 @@ final public class GameDataManager {
         this.customTimelines = new ArrayList<>();
     }
 
-    public void loadGameConfig(){
+    public void loadGameConfig() {
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
             gameDataLoader.loadGameConfig(paths.customGameConfigFile);
@@ -42,7 +41,7 @@ final public class GameDataManager {
         }
     }
 
-    public void loadGameContents(){
+    public void loadGameContents() {
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
             gameDataLoader.loadCustomDisplays(paths.editorCustomDisplaysFile);
@@ -54,54 +53,54 @@ final public class GameDataManager {
         }
     }
 
-    public void addCustomVisual(int id, SceneVisual visual){
+    public void addCustomVisual(int id, SceneVisual visual) {
         customVisuals.put(id, visual);
     }
 
-    public SceneVisual buildCustomDisplay(int id){
+    public SceneVisual buildCustomDisplay(int id) {
         return customVisuals.get(id).copy();
     }
 
-    public List<Texture> getTexturesOfDisplay(int id){
+    public List<Texture> getTexturesOfDisplay(int id) {
         return customVisuals.get(id).getTextures();
     }
 
-    public void addCustomEntity(int id, Entity entity){
+    public void addCustomEntity(int id, Entity entity) {
         customEntities.put(id, entity);
     }
 
-    public Entity buildCustomEntity(int id){
+    public Entity buildCustomEntity(int id) {
         return customEntities.get(id).copy();
     }
 
-    public ArrayList<Spawnable> getSpawnablesOfEntity(int id){
+    public ArrayList<Spawnable> getSpawnablesOfEntity(int id) {
         Entity entity = customEntities.get(id);
         ArrayList<Spawnable> spawnablesList = new ArrayList<>();
-        for (ExtraComponent component: entity.getExtraComponents()){
+        for (ExtraComponent component : entity.getExtraComponents()) {
             spawnablesList.add(component.getSpawnable());
         }
         spawnablesList.add(entity.getDeathSpawn());
         return spawnablesList;
     }
 
-    public List<Texture> getTexturesOfEntity(int id){
+    public List<Texture> getTexturesOfEntity(int id) {
         return customEntities.get(id).getSprite().getTextures();
     }
 
-    public void addTrajectory(int id, Trajectory trajectory){
+    public void addTrajectory(int id, Trajectory trajectory) {
         customTrajectories.put(id, trajectory);
     }
 
-    public Trajectory getTrajectory(int id){
+    public Trajectory getTrajectory(int id) {
         Trajectory trajectory = customTrajectories.get(id);
         return trajectory.copyIfNotReusable();
     }
 
-    public void addTimeline(LevelTimeline timeline){
+    public void addTimeline(LevelTimeline timeline) {
         customTimelines.add(timeline);
     }
 
-    public LevelTimeline getTimeline(int index){
+    public LevelTimeline getTimeline(int index) {
         return customTimelines.get(index);
     }
 }

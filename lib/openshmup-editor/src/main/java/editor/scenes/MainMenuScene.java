@@ -3,12 +3,13 @@ package editor.scenes;
 import engine.scene.Scene;
 import engine.scene.menu.MenuScreen;
 import engine.scene.menu.item.ColorRectangleButton;
+import engine.scene.menu.item.RoundedRectangleButton;
+import engine.types.RGBAValue;
+import engine.types.Vec2D;
 import engine.visual.ColorRectangleVisual;
 import engine.visual.ScreenFilter;
 import engine.visual.TextDisplay;
 import engine.visual.style.TextStyle;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
 
 import java.util.List;
 
@@ -33,11 +34,15 @@ final public class MainMenuScene extends Scene {
         addVisual(menuTitle);
 
         RGBAValue menuButtonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
+        RGBAValue menuButtonBorderColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+        float roundingRadius = 0.2f;
+        float borderWidth = 0.0f;
         RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor,17.0f / window.getHeight());
+        TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor, 17.0f / window.getHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
-        ColorRectangleButton button1 = new ColorRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), menuButtonColor, "Open popup menu", menuButtonLabelStyle, null);
-        ColorRectangleButton button2 = new ColorRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.25f), menuButtonColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Open popup menu", menuButtonLabelStyle, null);
+        RoundedRectangleButton button2 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.25f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+
 
         mainMenu = new MenuScreen(backgroundLayer, null, List.of(button1, button2));
 

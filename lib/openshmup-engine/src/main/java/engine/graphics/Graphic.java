@@ -1,18 +1,19 @@
 package engine.graphics;
+
 import engine.assets.Shader;
 import engine.types.Vec2D;
 
 
-public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Primitive>{
+public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G, P>.Primitive> {
     final protected RenderType renderType;
     final protected Shader shader;
 
-    public Graphic(RenderType type, Shader shader){
+    public Graphic(RenderType type, Shader shader) {
         this.renderType = type;
         this.shader = shader;
     }
 
-    public Graphic(Graphic<?,?> graphic){
+    public Graphic(Graphic<?, ?> graphic) {
         this.renderType = graphic.renderType;
         this.shader = graphic.shader;
     }
@@ -21,7 +22,7 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
         return shader;
     }
 
-    public RenderType getRenderType(){
+    public RenderType getRenderType() {
         return renderType;
     }
 
@@ -39,23 +40,23 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
 
     abstract public void remove();
 
-    abstract public class Primitive{
+    abstract public class Primitive {
         protected boolean dataHasChangedFlag = true;
         protected boolean shouldBeRemovedFlag = false;
 
-        public Primitive(){
+        public Primitive() {
             this.shouldBeRemovedFlag = false;
         }
 
-        public boolean getDataHasChangedFlag(){
+        public boolean getDataHasChangedFlag() {
             return dataHasChangedFlag;
         }
 
-        public void dataHasChanged(){
+        public void dataHasChanged() {
             this.dataHasChangedFlag = true;
         }
 
-        public void resetDataHasChangedFlag(){
+        public void resetDataHasChangedFlag() {
             this.dataHasChangedFlag = false;
         }
 
@@ -63,11 +64,11 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G,P>.Pr
             return shouldBeRemovedFlag;
         }
 
-        public void remove(){
+        public void remove() {
             this.shouldBeRemovedFlag = true;
         }
 
-        public void hasBeenRemoved(){
+        public void hasBeenRemoved() {
             this.shouldBeRemovedFlag = false;
         }
     }

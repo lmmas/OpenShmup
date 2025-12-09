@@ -1,21 +1,16 @@
 package engine.entity.extraComponent;
 
-import engine.types.Vec2D;
 import engine.entity.Entity;
-import engine.graphics.Graphic;
-import engine.graphics.RenderInfo;
-import engine.assets.Texture;
-import engine.types.GameControl;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
+import engine.types.GameControl;
+import engine.types.Vec2D;
 
-import java.util.Collections;
-import java.util.List;
-
-final public class PlayerShot implements ExtraComponent{
+final public class PlayerShot implements ExtraComponent {
     private final Spawnable spawnable;
     private final float shotPeriodSeconds;
     private float nextShotTimeSeconds;
+
     public PlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
         this.spawnable = spawnable;
         this.shotPeriodSeconds = shotPeriodSeconds;
@@ -45,7 +40,7 @@ final public class PlayerShot implements ExtraComponent{
     @Override
     public void update(Entity entity, LevelScene scene) {
         float currentTime = entity.getLifetimeSeconds();
-        if(scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds){
+        if (scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
             spawnable.copyWithOffset(position.x, position.y).spawn(scene);
             nextShotTimeSeconds = currentTime + shotPeriodSeconds;

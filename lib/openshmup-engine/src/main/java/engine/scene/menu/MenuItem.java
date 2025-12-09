@@ -13,17 +13,17 @@ public class MenuItem {
 
     private Runnable onClick;
 
-    public MenuItem(List<SceneVisual> visuals, Hitbox clickHitbox, Runnable onClick){
+    public MenuItem(List<SceneVisual> visuals, Hitbox clickHitbox, Runnable onClick) {
         this.clickHitbox = clickHitbox;
         this.onClick = onClick;
         this.visuals = visuals;
     }
 
-    public List<SceneVisual> getVisuals(){
+    public List<SceneVisual> getVisuals() {
         return visuals;
     }
 
-    public Hitbox getClickHitbox(){
+    public Hitbox getClickHitbox() {
         return clickHitbox;
     }
 
@@ -31,7 +31,7 @@ public class MenuItem {
         onClick.run();
     }
 
-    public void setOnclick(Runnable onClick){
+    public void setOnclick(Runnable onClick) {
         this.onClick = onClick;
     }
 }

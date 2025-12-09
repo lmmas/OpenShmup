@@ -8,7 +8,8 @@ final public class SceneTimer {
     private float lastSceneTime;
     private long lastReadTimeMillis;
     private float speed;
-    public SceneTimer(){
+
+    public SceneTimer() {
         this.referenceTimeMillis = 0;
         this.alreadyStarted = false;
         this.pausedTime = 0;
@@ -17,16 +18,17 @@ final public class SceneTimer {
         this.lastReadTimeMillis = 0;
         this.speed = 1.0f;
     }
-    public void start(){
-        if(!alreadyStarted){
+
+    public void start() {
+        if (!alreadyStarted) {
             referenceTimeMillis = System.nanoTime();
             lastReadTimeMillis = referenceTimeMillis;
             alreadyStarted = true;
         }
     }
 
-    public void pause(){
-        if(alreadyStarted){
+    public void pause() {
+        if (alreadyStarted) {
             pausedTime = System.nanoTime();
             isPaused = true;
         }
@@ -36,8 +38,8 @@ final public class SceneTimer {
         return isPaused;
     }
 
-    public void resume(){
-        if(alreadyStarted && isPaused){
+    public void resume() {
+        if (alreadyStarted && isPaused) {
             long pauseIntervalMillis = System.nanoTime() - pausedTime;
             referenceTimeMillis += pauseIntervalMillis;
             lastReadTimeMillis += pauseIntervalMillis;
@@ -45,7 +47,7 @@ final public class SceneTimer {
         }
     }
 
-    public void reset(){
+    public void reset() {
         alreadyStarted = false;
     }
 
@@ -53,11 +55,11 @@ final public class SceneTimer {
         this.speed = speed;
     }
 
-    public float getTimeSeconds(){
-        if(alreadyStarted){
-            if(!isPaused){
+    public float getTimeSeconds() {
+        if (alreadyStarted) {
+            if (!isPaused) {
                 long currentTimeMillis = System.nanoTime();
-                float sceneTime = lastSceneTime + (float)(currentTimeMillis - lastReadTimeMillis) * speed / 1000000000.0f;
+                float sceneTime = lastSceneTime + (float) (currentTimeMillis - lastReadTimeMillis) * speed / 1000000000.0f;
                 lastReadTimeMillis = currentTimeMillis;
                 lastSceneTime = sceneTime;
                 return sceneTime;

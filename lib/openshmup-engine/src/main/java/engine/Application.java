@@ -4,16 +4,19 @@ import debug.DebugMethods;
 import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
 import engine.scene.Scene;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.system.Callback;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 abstract public class Application {
     public static AssetManager assetManager;
@@ -37,7 +40,7 @@ abstract public class Application {
         inputStatesManager = new InputStatesManager(window.getGlfwWindow());
     }
 
-    private void detectRootFolder(){
+    private void detectRootFolder() {
         try {
             String rootFolderAbsolutePath = java.nio.file.Paths.get(Application.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
             GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
@@ -48,7 +51,7 @@ abstract public class Application {
 
     }
 
-    private void OpenGLInitialization(){
+    private void OpenGLInitialization() {
         GLFWErrorCallback.createPrint(System.err).set();
         if (!GLFW.glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -62,7 +65,7 @@ abstract public class Application {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         long glfwWindow = glfwCreateWindow(1920, 1080, "OpenShmup", NULL, NULL);
-        assert glfwWindow != NULL:"Unable to create GLFW Window";
+        assert glfwWindow != NULL : "Unable to create GLFW Window";
         window = new Window(glfwWindow);
 
         glfwMakeContextCurrent(glfwWindow);
@@ -77,7 +80,7 @@ abstract public class Application {
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     }
 
-    protected void loop(){
+    protected void loop() {
         while (!programShouldTerminate) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
@@ -88,13 +91,13 @@ abstract public class Application {
             graphicsManager.drawGraphics();
             glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
-            if(glfwWindowShouldClose(window.getGlfwWindow())){
+            if (glfwWindowShouldClose(window.getGlfwWindow())) {
                 programShouldTerminate = true;
             }
         }
     }
 
-    protected void terminate(){
+    protected void terminate() {
         Callbacks.glfwFreeCallbacks(window.getGlfwWindow());
         glfwDestroyWindow(window.getGlfwWindow());
 
@@ -102,7 +105,7 @@ abstract public class Application {
         debugProc.free();
     }
 
-    public static void setProgramShouldTerminate(){
+    public static void setProgramShouldTerminate() {
         programShouldTerminate = true;
     }
 }

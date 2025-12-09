@@ -1,10 +1,10 @@
 package engine.graphics.colorRoundedRectangle;
 
 import engine.assets.Shader;
+import engine.graphics.RenderType;
 import engine.graphics.Renderer;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.graphics.RenderType;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL33.*;
 final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive> {
     final static private int vertexFloatCount = 9;
 
-    public ColorRoundedRectangleRenderer(){
+    public ColorRoundedRectangleRenderer() {
         super(RenderType.COLOR_ROUNDED_RECTANGLE, GL_STATIC_DRAW, vertexFloatCount * Float.BYTES);
         this.batchSize = 100;
     }
@@ -24,18 +24,20 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         return new ColorRoundedRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive>.Batch{
+    public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive>.Batch {
         final private FloatBuffer dataBuffer;
-        public ColorRoundedRectangleBatch(Shader shader){
+
+        public ColorRoundedRectangleBatch(Shader shader) {
             super(shader);
             this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexFloatCount * Float.BYTES);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
+
         @Override
         protected boolean canReceivePrimitiveFrom(ColorRoundedRectangle graphic) {
-            if(primitives.size() >= batchSize){
+            if (primitives.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -98,7 +100,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
 
         @Override
         public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size(): "index out of bounds";
+            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
             primitives.remove(primitiveToRemoveIndex);
         }
     }

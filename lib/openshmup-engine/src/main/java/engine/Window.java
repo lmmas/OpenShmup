@@ -10,21 +10,21 @@ final public class Window {
     final private IVec2D resolution = new IVec2D(1920, 1080);
     private long glfwWindow;
 
-    public Window(long glfwWindow){
+    public Window(long glfwWindow) {
         this.glfwWindow = glfwWindow;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return resolution.x;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return resolution.y;
     }
 
-    public void setResolution(int width, int height){
+    public void setResolution(int width, int height) {
         glfwSetWindowSize(glfwWindow, width, height);
-        glViewport(0,0,width, height);
+        glViewport(0, 0, width, height);
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         assert vidmode != null : "glfwGetVideoMode failure";
         resolution.x = width;
@@ -36,7 +36,7 @@ final public class Window {
         return glfwWindow;
     }
 
-    public void show(){
+    public void show() {
         glfwShowWindow(glfwWindow);
     }
 

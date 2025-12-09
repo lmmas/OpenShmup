@@ -1,14 +1,14 @@
 package engine.scene.spawnable;
 
-import engine.types.Vec2D;
 import engine.scene.LevelScene;
+import engine.types.Vec2D;
 
 public record SceneDisplaySpawnInfo(
-        int id,
-        Vec2D position
+    int id,
+    Vec2D position
 ) implements Spawnable {
 
-    public SceneDisplaySpawnInfo(int id, float positionX, float positionY){
+    public SceneDisplaySpawnInfo(int id, float positionX, float positionY) {
         this(id, new Vec2D(positionX, positionY));
     }
 
