@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive> {
-    final static private int vertexFloatCount = 9;
+    final static private int vertexFloatCount = 10;
 
     public RoundedRectangleBorderRenderer() {
         super(RenderType.ROUNDED_RECTANGLE_BORDER, GL_STATIC_DRAW, vertexFloatCount * Float.BYTES);

@@ -2,7 +2,6 @@ package editor.scenes;
 
 import engine.scene.Scene;
 import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.ColorRectangleButton;
 import engine.scene.menu.item.RoundedRectangleButton;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -36,7 +35,7 @@ final public class MainMenuScene extends Scene {
         RGBAValue menuButtonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
         RGBAValue menuButtonBorderColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
         float roundingRadius = 0.2f;
-        float borderWidth = 0.0f;
+        float borderWidth = 0.02f;
         RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor, 17.0f / window.getHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
@@ -46,7 +45,7 @@ final public class MainMenuScene extends Scene {
 
         mainMenu = new MenuScreen(backgroundLayer, null, List.of(button1, button2));
 
-        ColorRectangleButton button3 = new ColorRectangleButton(backgroundLayer + 3, buttonSize, new Vec2D(0.5f, 0.35f), menuButtonColor, "yes", menuButtonLabelStyle, null);
+        RoundedRectangleButton button3 = new RoundedRectangleButton(backgroundLayer + 3, buttonSize, new Vec2D(0.5f, 0.35f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "yes", menuButtonLabelStyle, null);
         popupMenu = new MenuScreen(backgroundLayer + 2, new ScreenFilter(backgroundLayer + 2, 0.0f, 0.0f, 0.0f, 0.5f), List.of(button3));
 
         button1.setOnclick(() -> addMenu(popupMenu));
