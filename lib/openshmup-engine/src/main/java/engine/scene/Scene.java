@@ -31,6 +31,8 @@ abstract public class Scene {
     final protected HashSet<SceneVisual> visualsToRemove;
     final protected ArrayList<MenuScreen> displayedMenus;
     protected boolean debugModeEnabled = false;
+    protected boolean leftClickPressedOnItem = false;
+    protected MenuItem leftClickPressedItem = null;
     final protected SceneDebug sceneDebug;
 
     public Scene() {
@@ -46,11 +48,23 @@ abstract public class Scene {
         if (displayedMenus.isEmpty()) {
             return;
         }
-        for (MenuItem menuItem : displayedMenus.getLast().menuItems()) {
-            Vec2D cursorPosition = inputStatesManager.getCursorPosition();
-            Hitbox clickHitbox = menuItem.getClickHitbox();
-            if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
-                menuItem.onClick();
+        Vec2D cursorPosition = inputStatesManager.getCursorPosition();
+        if (leftClickPressedOnItem) {
+            if (!inputStatesManager.getLeftClickState()) {
+                if (leftClickPressedItem.getClickHitbox().containsPoint(cursorPosition)) {
+                    leftClickPressedItem.onClick();
+                }
+                leftClickPressedItem = null;
+                leftClickPressedOnItem = false;
+            }
+        }
+        else {
+            for (MenuItem menuItem : displayedMenus.getLast().menuItems()) {
+                Hitbox clickHitbox = menuItem.getClickHitbox();
+                if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
+                    leftClickPressedOnItem = true;
+                    leftClickPressedItem = menuItem;
+                }
             }
         }
     }
