@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static engine.Application.assetManager;
+import static engine.Engine.assetManager;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class GameDataLoader {
@@ -47,7 +47,7 @@ final public class GameDataLoader {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(rootFolderAbsolutePath + filepath, objectMapper);
 
         IVec2D resolution = rootNode.checkAndGetIVec2D("resolution");
-        gameConfig.setEditionResolution(resolution.x, resolution.y);
+        gameConfig.setNativeResolution(resolution.x, resolution.y);
 
         SafeJsonNode levelUINode = rootNode.checkAndGetObject("levelUI");
 
@@ -76,10 +76,10 @@ final public class GameDataLoader {
                 int speed = visualNode.checkAndGetInt("speed");
                 float normalizedSpeed;
                 if (horizontalScrolling) {
-                    normalizedSpeed = (float) speed / gameConfig.getEditionWidth();
+                    normalizedSpeed = (float) speed / gameConfig.getNativeWidth();
                 }
                 else {
-                    normalizedSpeed = (float) speed / gameConfig.getEditionHeight();
+                    normalizedSpeed = (float) speed / gameConfig.getNativeHeight();
                 }
 
                 gameDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
@@ -367,6 +367,6 @@ final public class GameDataLoader {
     }
 
     private Vec2D convertToFloatVec(IVec2D pixelVec) {
-        return new Vec2D((float) pixelVec.x / gameConfig.getEditionWidth(), (float) pixelVec.y / gameConfig.getEditionHeight());
+        return new Vec2D((float) pixelVec.x / gameConfig.getNativeWidth(), (float) pixelVec.y / gameConfig.getNativeHeight());
     }
 }

@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>engine.Application</mainClass>
+                            <mainClass>engine.Engine</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -48,7 +48,7 @@
                 <configuration>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>engine.Application</mainClass>
+                            <mainClass>engine.Engine</mainClass>
                         </transformer>
                     </transformers>
                     <filters>

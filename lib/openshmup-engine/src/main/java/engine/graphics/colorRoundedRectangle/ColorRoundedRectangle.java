@@ -6,7 +6,7 @@ import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
-import static engine.Application.assetManager;
+import static engine.Engine.assetManager;
 
 final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl";

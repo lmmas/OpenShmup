@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static engine.Application.assetManager;
-import static engine.Application.window;
+import static engine.Engine.assetManager;
+import static engine.Engine.window;
 
 final public class TextDisplay extends SceneVisual {
     final public static int lineBreakCodepoint = "\n".codePointAt(0);

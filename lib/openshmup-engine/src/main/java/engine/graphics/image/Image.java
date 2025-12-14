@@ -7,7 +7,7 @@ import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
-import static engine.Application.assetManager;
+import static engine.Engine.assetManager;
 
 final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";

@@ -17,13 +17,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
-import static engine.Application.graphicsManager;
-import static engine.Application.inputStatesManager;
+import static engine.Engine.graphicsManager;
+import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.debugDisplayLayer;
 
 
-abstract public class Scene {
+public class Scene {
     protected float sceneTime;
     final protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;

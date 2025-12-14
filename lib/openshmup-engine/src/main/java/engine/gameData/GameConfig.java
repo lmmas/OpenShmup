@@ -1,22 +1,26 @@
 package engine.gameData;
 
+import engine.types.IVec2D;
 import engine.types.Vec2D;
 
 final public class GameConfig {
-    private int editionWidth;
-    private int editionHeight;
+    final private IVec2D nativeResolution = new IVec2D(0, 0);
 
-    public int getEditionWidth() {
-        return editionWidth;
+    public IVec2D getNativeResolution() {
+        return new IVec2D(nativeResolution);
     }
 
-    public int getEditionHeight() {
-        return editionHeight;
+    public int getNativeWidth() {
+        return nativeResolution.x;
     }
 
-    public void setEditionResolution(int editionWidth, int editionHeight) {
-        this.editionWidth = editionWidth;
-        this.editionHeight = editionHeight;
+    public int getNativeHeight() {
+        return nativeResolution.y;
+    }
+
+    public void setNativeResolution(int nativeWidth, int nativeHeight) {
+        this.nativeResolution.x = nativeWidth;
+        this.nativeResolution.y = nativeHeight;
     }
 
     public boolean debugMode;

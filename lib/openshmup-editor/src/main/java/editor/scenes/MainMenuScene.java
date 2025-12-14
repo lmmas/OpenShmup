@@ -12,7 +12,7 @@ import engine.visual.style.TextStyle;
 
 import java.util.List;
 
-import static engine.Application.window;
+import static engine.Engine.window;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.scene.menu.MenuActions.terminateProgram;
 

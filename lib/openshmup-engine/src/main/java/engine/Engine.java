@@ -1,48 +1,119 @@
 package engine;
 
-import engine.gameData.GameDataManager;
-import engine.scene.LevelScene;
+import debug.DebugMethods;
+import engine.assets.AssetManager;
+import engine.graphics.GraphicsManager;
+import engine.scene.Scene;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.system.Callback;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
-final public class Engine extends Application {
-    public static GameDataManager gameDataManager;
-    public static PlayerSettings playerSettings;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            throw new IllegalArgumentException("invalid engine arguments");
+public class Engine {
+    public static AssetManager assetManager;
+    public static InputStatesManager inputStatesManager;
+    public static GraphicsManager graphicsManager;
+    private static Runnable inLoopScript;
+    static public Window window;
+    protected static Callback debugProc;
+    public static Scene currentScene;
+    private static boolean programShouldTerminate = false;
+
+    public Engine(Runnable inLoopScript) throws IOException {
+        Engine.inLoopScript = inLoopScript;
+        detectRootFolder();
+
+        OpenGLInitialization();
+        graphicsManager = new GraphicsManager();
+        assetManager = new AssetManager();
+        inputStatesManager = new InputStatesManager(window.getGlfwWindow());
+    }
+
+    private void detectRootFolder() {
+        try {
+            String rootFolderAbsolutePath = java.nio.file.Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
+            GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
+            System.out.println(rootFolderAbsolutePath);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
-        new Engine(args[0], () -> {
-        }, () -> {
-        });
+
     }
 
-    public Engine(String gameFolderName, Runnable initScript, Runnable inLoopScript) throws IOException {
-        super(initScript, inLoopScript);
-        gameDataManager = new GameDataManager(gameFolderName);
-        gameDataManager.loadGameConfig();
-        gameDataManager.loadGameContents();
-        playerSettings = new PlayerSettings();
+    private void OpenGLInitialization() {
+        GLFWErrorCallback.createPrint(System.err).set();
+        if (!GLFW.glfwInit()) {
+            throw new IllegalStateException("Unable to initialize GLFW");
+        }
 
-        playerSettings.setResolution(gameDataManager.config.getEditionWidth(), gameDataManager.config.getEditionHeight());
-        window.setResolution(playerSettings.getWindowWidth(), playerSettings.getWindowHeight());
-        window.show();
+        glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        run();
+        long glfwWindow = glfwCreateWindow(1920, 1080, "OpenShmup", NULL, NULL);
+        assert glfwWindow != NULL : "Unable to create GLFW Window";
+        window = new Window(glfwWindow);
+
+        glfwMakeContextCurrent(glfwWindow);
+        glfwSwapInterval(1);
+        GL.createCapabilities();
+        debugProc = GLUtil.setupDebugMessageCallback();
+        GlobalVars.MAX_TEXTURE_SLOTS = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     }
 
-    private void run() {
-        initScript.run();
-        gameInit();
+    public static void setProgramShouldTerminate() {
+        programShouldTerminate = true;
+    }
+
+    protected void loop() {
+        while (!programShouldTerminate) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            DebugMethods.checkForOpenGLErrors();
+            inLoopScript.run();
+            inputStatesManager.updateInputStates();
+            if (currentScene != null) {
+                currentScene.handleInputs();
+                currentScene.update();
+            }
+            graphicsManager.drawGraphics();
+            glfwSwapBuffers(window.getGlfwWindow());
+            glfwPollEvents();
+            if (glfwWindowShouldClose(window.getGlfwWindow())) {
+                programShouldTerminate = true;
+            }
+        }
+    }
+
+    protected void terminate() {
+        Callbacks.glfwFreeCallbacks(window.getGlfwWindow());
+        glfwDestroyWindow(window.getGlfwWindow());
+        glfwTerminate();
+        debugProc.free();
+    }
+
+    public void run() {
         loop();
-
         terminate();
     }
 
-    public static void gameInit() {
-        graphicsManager.clearLayers();
-        gameDataManager.getTimeline(0).resetTime();
-        currentScene = new LevelScene(gameDataManager.getTimeline(0));
+    public static void setCurrentScene(Scene scene) {
+        currentScene = scene;
     }
 }

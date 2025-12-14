@@ -7,8 +7,8 @@ import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 import engine.types.RGBAValue;
 
-import static engine.Application.assetManager;
-import static engine.Application.graphicsManager;
+import static engine.Engine.assetManager;
+import static engine.Engine.graphicsManager;
 
 final public class HitboxDebugRectangle implements ExtraComponent {
     final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";

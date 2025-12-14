@@ -1,6 +1,6 @@
 package engine.graphics.colorRectangle;
 
-import engine.Application;
+import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
@@ -84,7 +84,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         @Override
         protected void draw() {
             shader.use();
-            shader.uploadUniform("u_WindowResolution", new int[]{Application.window.getWidth(), Application.window.getHeight()});
+            shader.uploadUniform("u_WindowResolution", new int[]{Engine.window.getWidth(), Engine.window.getHeight()});
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);

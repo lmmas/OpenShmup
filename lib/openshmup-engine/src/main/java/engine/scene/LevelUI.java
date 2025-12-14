@@ -7,7 +7,7 @@ import engine.visual.ImageDisplay;
 
 import java.util.ArrayList;
 
-import static engine.Application.assetManager;
+import static engine.Engine.assetManager;
 
 public class LevelUI {
     final private LevelScene scene;

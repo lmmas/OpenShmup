@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static engine.Application.assetManager;
-import static engine.Application.inputStatesManager;
+import static engine.Engine.assetManager;
+import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 
 final public class LevelScene extends Scene {
@@ -65,7 +65,7 @@ final public class LevelScene extends Scene {
 
         RGBAValue buttonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f / gameConfig.getEditionHeight());
+        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f / gameConfig.getNativeHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
         ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f), List.of(blueButton));
