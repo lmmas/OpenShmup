@@ -1,5 +1,6 @@
 package engine.visual;
 
+import engine.Engine;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.graphics.Graphic;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static engine.Engine.assetManager;
-import static engine.Engine.window;
 
 final public class TextDisplay extends SceneVisual {
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
@@ -40,7 +40,7 @@ final public class TextDisplay extends SceneVisual {
         }
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
-        this.textWidth = textHeight * window.getHeight() / window.getWidth();
+        this.textWidth = textHeight * Engine.getNativeHeight() / Engine.getNativeWidth();
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;

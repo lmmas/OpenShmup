@@ -137,26 +137,31 @@ final public class Shader {
         }
     }
 
+    public void uploadUniform(String uniformName, float x) {
+        int uniformLocation = glGetUniformLocation(shaderProgramID, uniformName);
+        glUniform1f(uniformLocation, x);
+    }
+
     public void uploadUniform(String uniformName, int i) {
         int uniformLocation = glGetUniformLocation(shaderProgramID, uniformName);
         use();
         glUniform1i(uniformLocation, i);
     }
 
-    public void uploadUniform(int uniformLocation, int[] vector) {
-        assert vector.length <= 4 : "Invalid vector dimension: " + vector.length;
+    public void uploadUniform(int uniformLocation, int[] array) {
+        assert array.length <= 4 : "Invalid array dimension: " + array.length;
         use();
-        switch (vector.length) {
+        switch (array.length) {
             case 2:
-                glUniform2i(uniformLocation, vector[0], vector[1]);
+                glUniform2i(uniformLocation, array[0], array[1]);
                 break;
 
             case 3:
-                glUniform3i(uniformLocation, vector[0], vector[1], vector[2]);
+                glUniform3i(uniformLocation, array[0], array[1], array[2]);
                 break;
 
             case 4:
-                glUniform4i(uniformLocation, vector[0], vector[1], vector[2], vector[3]);
+                glUniform4i(uniformLocation, array[0], array[1], array[2], array[3]);
                 break;
         }
     }

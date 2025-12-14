@@ -13,19 +13,18 @@ final public class Game extends Engine {
         if (args.length != 1) {
             throw new IllegalArgumentException("invalid engine arguments");
         }
-        new Game(args[0], () -> {
-        }).run();
+        new Game(args[0]).run();
     }
 
-    public Game(String gameFolderName, Runnable inLoopScript) throws IOException {
-        super(inLoopScript);
+    public Game(String gameFolderName) throws IOException {
+        super();
         gameDataManager = new GameDataManager(gameFolderName);
         gameDataManager.loadGameConfig();
         gameDataManager.loadGameContents();
         playerSettings = new PlayerSettings();
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
-        window.setResolution(playerSettings.getWindowWidth(), playerSettings.getWindowHeight());
+        Engine.setNativeResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
         window.show();
     }
 

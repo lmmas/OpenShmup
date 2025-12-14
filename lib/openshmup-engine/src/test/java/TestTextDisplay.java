@@ -10,8 +10,7 @@ import static engine.Engine.window;
 public class TestTextDisplay {
     public static void main(String[] args) throws IOException {
 
-        Engine myEngine = new Engine(() -> {
-        });
+        Engine myEngine = new Engine();
 
         Scene testScene = new Scene();
         Engine.setCurrentScene(testScene);
@@ -19,7 +18,7 @@ public class TestTextDisplay {
 
             Font myFont = Font.createFromTTF("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf");
             myFont.getBitmap().loadInGPU();
-            TextDisplay myTextDisplay = new TextDisplay(2, myFont, false, 24.0f / window.getHeight(), 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", 1.0f, 1.0f, 1.0f, 1.0f);
+            TextDisplay myTextDisplay = new TextDisplay(2, myFont, false, 24.0f / Engine.getNativeHeight(), 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", 1.0f, 1.0f, 1.0f, 1.0f);
             testScene.addVisual(myTextDisplay);
 
         } catch (IOException e) {

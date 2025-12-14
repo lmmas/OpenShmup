@@ -1,5 +1,6 @@
 package engine.graphics.colorRoundedRectangle;
 
+import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
@@ -66,7 +67,6 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
                 float roundingRadius = rectangle.getRoundingRadius();
                 RGBAValue color = rectangle.getColor();
 
-
                 dataBuffer.put(size.x);
                 dataBuffer.put(size.y);
                 dataBuffer.put(position.x);
@@ -87,6 +87,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         @Override
         protected void draw() {
             shader.use();
+            shader.uploadUniform("u_NativeAspectRatio", (float) Engine.getNativeWidth() / Engine.getNativeHeight());
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);

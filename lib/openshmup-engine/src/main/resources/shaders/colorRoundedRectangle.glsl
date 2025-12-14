@@ -33,6 +33,8 @@ in VS_OUT{
     float v_RoundingRadius;
 }v_in[];
 
+uniform float u_NativeAspectRatio;
+
 flat out vec4 v_Color;
 flat out float v_RoundingRadius;
 flat out float v_QuadRelativeHeight;
@@ -41,7 +43,7 @@ out vec2 v_PositionInQuad;
 void build_quad(vec4 position, vec2 quadSize, float roundingRadius, vec4 color){
     float quadRelativeHeight;
     if(quadSize[0] != 0){
-        quadRelativeHeight = quadSize[1] / quadSize[0];
+        quadRelativeHeight = quadSize[1] / quadSize[0] / u_NativeAspectRatio;
     }
     else{
         quadRelativeHeight = 0.0f;

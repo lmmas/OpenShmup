@@ -4,6 +4,7 @@ import debug.DebugMethods;
 import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
 import engine.scene.Scene;
+import engine.types.IVec2D;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -24,12 +25,14 @@ public class Engine {
     public static GraphicsManager graphicsManager;
     private static Runnable inLoopScript;
     static public Window window;
+    static private IVec2D nativeResolution;
     protected static Callback debugProc;
     public static Scene currentScene;
     private static boolean programShouldTerminate = false;
 
-    public Engine(Runnable inLoopScript) throws IOException {
-        Engine.inLoopScript = inLoopScript;
+    public Engine() throws IOException {
+        Engine.inLoopScript = null;
+        nativeResolution = new IVec2D(1920, 1080);
         detectRootFolder();
 
         OpenGLInitialization();
@@ -86,7 +89,9 @@ public class Engine {
         while (!programShouldTerminate) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
-            inLoopScript.run();
+            if (inLoopScript != null) {
+                inLoopScript.run();
+            }
             inputStatesManager.updateInputStates();
             if (currentScene != null) {
                 currentScene.handleInputs();
@@ -113,7 +118,25 @@ public class Engine {
         terminate();
     }
 
+    public static void setInLoopScript(Runnable script) {
+        inLoopScript = script;
+    }
+
     public static void setCurrentScene(Scene scene) {
         currentScene = scene;
+    }
+
+    public static int getNativeWidth() {
+        return nativeResolution.x;
+    }
+
+    public static int getNativeHeight() {
+        return nativeResolution.y;
+    }
+
+    public static void setNativeResolution(int width, int height) {
+        nativeResolution.x = width;
+        nativeResolution.y = height;
+        window.setResolution(width, height);
     }
 }

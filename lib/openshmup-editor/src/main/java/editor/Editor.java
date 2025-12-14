@@ -10,13 +10,12 @@ final public class Editor extends Engine {
         if (args.length != 0) {
             throw new IllegalArgumentException("invalid editor arguments");
         }
-        new Editor(() -> {
-        }).run();
+        new Editor().run();
     }
 
-    public Editor(Runnable inLoopScript) throws IOException {
-        super(inLoopScript);
-        window.setResolution(1920, 1080);
+    public Editor() throws IOException {
+        super();
+        setNativeResolution(1920, 1080);
         currentScene = new MainMenuScene();
         window.show();
     }

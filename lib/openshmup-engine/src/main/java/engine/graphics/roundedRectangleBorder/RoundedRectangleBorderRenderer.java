@@ -1,5 +1,6 @@
 package engine.graphics.roundedRectangleBorder;
 
+import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
@@ -91,6 +92,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         @Override
         protected void draw() {
             shader.use();
+            shader.uploadUniform("u_NativeAspectRatio", (float) Engine.getNativeWidth() / Engine.getNativeHeight());
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
