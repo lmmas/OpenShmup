@@ -107,24 +107,24 @@ public class Scene {
 
         //determining how many graphical layers need to be inserted
         int graphicalLayersToInsertCount = 0;
-        int sceneLayerMaxGraphicalSubLayer = -1; // -1 corresponds to no sublayer present, it's different from 0 which means 1 sublayer (of index 0)
+        int sceneLayerGraphicalSubLayerCount = 0;
         if (!visualLayers.containsKey(sceneLayerIndex)) {
             visualLayers.put(sceneLayerIndex, new ArrayList<>());
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
         else {
             var sceneLayer = visualLayers.get(sceneLayerIndex);
-            sceneLayerMaxGraphicalSubLayer = sceneLayer.stream()
+            sceneLayerGraphicalSubLayerCount = sceneLayer.stream()
                 .flatMap(sceneVisual -> sceneVisual.getGraphicalSubLayers().stream())
-                .mapToInt(n -> n).max().orElse(0);
-            if (visualMaxGraphicalSubLayer > sceneLayerMaxGraphicalSubLayer) {
-                graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerMaxGraphicalSubLayer;
+                .mapToInt(n -> n).max().orElse(0) + 1;
+            if (visualMaxGraphicalSubLayer >= sceneLayerGraphicalSubLayerCount) {
+                graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerGraphicalSubLayerCount + 1;
             }
         }
 
         //inserting the graphical layers
         for (int i = 0; i < graphicalLayersToInsertCount; i++) {
-            graphicsManager.insertNewLayer(sceneLayerGraphicalIndex + sceneLayerMaxGraphicalSubLayer + 1);
+            graphicsManager.insertNewLayer(sceneLayerGraphicalIndex + sceneLayerGraphicalSubLayerCount);
         }
 
         //adding the graphics to the renderers

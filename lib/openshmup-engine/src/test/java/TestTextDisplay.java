@@ -11,6 +11,7 @@ public class TestTextDisplay {
     public static void main(String[] args) throws IOException {
 
         Engine myEngine = new Engine();
+        Engine.setNativeResolution(540, 1080);
 
         Scene testScene = new Scene();
         Engine.setCurrentScene(testScene);

@@ -69,7 +69,6 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
     public abstract class Batch {
         protected int vboID;
         protected ArrayList<P> primitives = new ArrayList<>(batchSize);
-        protected boolean dataHasChanged = true;
         protected Shader shader;
 
         protected Batch(Shader shader) {
@@ -85,7 +84,7 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
             assert primitives.size() < batchSize : "Can't add primitive data to the batch";
             assert !primitives.contains(newPrimitive) : "primitive already in batch";
             primitives.add(newPrimitive);
-            dataHasChanged = true;
+            newPrimitive.dataHasChanged();
         }
 
         abstract protected boolean canReceivePrimitiveFrom(G graphic);
@@ -97,7 +96,6 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
         abstract protected void draw();
 
         public void dataHasChanged() {
-            dataHasChanged = true;
         }
 
         abstract public void removePrimitive(int primitiveToRemoveIndex);
