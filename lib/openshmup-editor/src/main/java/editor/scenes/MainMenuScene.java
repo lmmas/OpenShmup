@@ -45,8 +45,8 @@ final public class MainMenuScene extends Scene {
 
         mainMenu = new MenuScreen(backgroundLayer, null, List.of(button1, button2));
 
-        RoundedRectangleButton button3 = new RoundedRectangleButton(backgroundLayer + 3, buttonSize, new Vec2D(0.5f, 0.35f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "yes", menuButtonLabelStyle, null);
-        popupMenu = new MenuScreen(backgroundLayer + 2, new ScreenFilter(backgroundLayer + 2, 0.0f, 0.0f, 0.0f, 0.5f), List.of(button3));
+        RoundedRectangleButton button3 = new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(0.5f, 0.35f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "yes", menuButtonLabelStyle, null);
+        popupMenu = new MenuScreen(backgroundLayer + 3, new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f), List.of(button3));
 
         button1.setOnclick(() -> addMenu(popupMenu));
 

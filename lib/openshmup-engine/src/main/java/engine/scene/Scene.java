@@ -27,7 +27,7 @@ public class Scene {
     protected float sceneTime;
     final protected SceneTimer timer;
     protected float lastDrawTime = 0.0f;
-    final protected TreeMap<Integer, ArrayList<SceneVisual>> visualLayers;
+    final protected TreeMap<Integer, SceneLayer> layers;
     final protected HashSet<SceneVisual> visualsToRemove;
     final protected ArrayList<MenuScreen> displayedMenus;
     protected boolean debugModeEnabled = false;
@@ -38,7 +38,7 @@ public class Scene {
     public Scene() {
         this.sceneTime = 0.0f;
         this.timer = new SceneTimer();
-        this.visualLayers = new TreeMap<>();
+        this.layers = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
         this.displayedMenus = new ArrayList<>();
         this.sceneDebug = new SceneDebug(false);
@@ -72,8 +72,8 @@ public class Scene {
     public void update() {
         if (!timer.isPaused()) {
             sceneTime = timer.getTimeSeconds();
-            for (var visualLayer : visualLayers.values()) {
-                for (SceneVisual visual : visualLayer) {
+            for (SceneLayer layer : layers.values()) {
+                for (SceneVisual visual : layer.getVisuals()) {
                     visual.update(sceneTime);
                     if (visual.shouldBeRemoved()) {
                         visualsToRemove.add(visual);
@@ -108,15 +108,13 @@ public class Scene {
         //determining how many graphical layers need to be inserted
         int graphicalLayersToInsertCount = 0;
         int sceneLayerGraphicalSubLayerCount = 0;
-        if (!visualLayers.containsKey(sceneLayerIndex)) {
-            visualLayers.put(sceneLayerIndex, new ArrayList<>());
+        if (!layers.containsKey(sceneLayerIndex)) {
+            layers.put(sceneLayerIndex, new SceneLayer());
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
         else {
-            var sceneLayer = visualLayers.get(sceneLayerIndex);
-            sceneLayerGraphicalSubLayerCount = sceneLayer.stream()
-                .flatMap(sceneVisual -> sceneVisual.getGraphicalSubLayers().stream())
-                .mapToInt(n -> n).max().orElse(0) + 1;
+            var sceneLayer = layers.get(sceneLayerIndex);
+            sceneLayerGraphicalSubLayerCount = sceneLayer.getGraphicalSubLayerCount();
             if (visualMaxGraphicalSubLayer >= sceneLayerGraphicalSubLayerCount) {
                 graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerGraphicalSubLayerCount + 1;
             }
@@ -134,27 +132,24 @@ public class Scene {
             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
         }
 
-        visualLayers.get(sceneLayerIndex).add(visual);
+        layers.get(sceneLayerIndex).addVisual(visual);
         visual.initDisplay(this.sceneTime);
     }
 
     private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
         int layerSum = 0;
-        for (var layerIndex : visualLayers.keySet()) {
+        for (var layerIndex : layers.keySet()) {
             if (layerIndex >= sceneLayerIndex) {
                 break;
             }
-            if (!visualLayers.get(layerIndex).isEmpty()) {
-                layerSum += visualLayers.get(layerIndex).stream()
-                    .mapToInt(SceneVisual::getMaxGraphicalSubLayer).max().orElse(0) + 1;
-            }
+            layerSum += layers.get(layerIndex).getGraphicalSubLayerCount();
         }
         return layerSum;
     }
 
     final public void removeVisual(SceneVisual visual) {
         int sceneLayerIndex = visual.getSceneLayer();
-        visualLayers.get(sceneLayerIndex).remove(visual);
+        layers.get(sceneLayerIndex).getVisuals().remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
         for (var graphic : graphics) {
             graphic.remove();
