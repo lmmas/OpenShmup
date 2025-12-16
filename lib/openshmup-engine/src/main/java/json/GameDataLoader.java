@@ -54,13 +54,13 @@ final public class GameDataLoader {
 
         SafeJsonNode livesNode = levelUINode.checkAndGetObject("lives");
 
-        gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.editorTextureFolder + livesNode.checkAndGetString("fileName");
+        gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.gameTextureFolder + livesNode.checkAndGetString("fileName");
         gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D("size"));
         gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D("position"));
         gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D("stride"));
     }
 
-    public void loadCustomDisplays(String filepath) throws IllegalArgumentException {
+    public void loadGameDisplays(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
         for (SafeJsonNode visualNode : visualList) {
@@ -71,7 +71,7 @@ final public class GameDataLoader {
 
             if (type.equals("scrollingImage")) {
 
-                String imagePath = gameDataManager.paths.editorTextureFolder + visualNode.checkAndGetString("fileName");
+                String imagePath = gameDataManager.paths.gameTextureFolder + visualNode.checkAndGetString("fileName");
                 boolean horizontalScrolling = visualNode.checkAndGetBoolean("horizontalScrolling");
 
                 int speed = visualNode.checkAndGetInt("speed");
@@ -88,7 +88,7 @@ final public class GameDataLoader {
             else if (type.equals("animation")) {
                 SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
 
-                String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
+                String animationFilepath = gameDataManager.paths.gameTextureFolder + animationInfoNode.checkAndGetString("fileName");
                 int frameCount = animationInfoNode.checkAndGetInt("frameCount");
                 IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
                 IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
@@ -116,7 +116,7 @@ final public class GameDataLoader {
         }
     }
 
-    public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
+    public void loadGameTrajectories(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
         for (SafeJsonNode trajectoryNode : elementList) {
@@ -144,7 +144,7 @@ final public class GameDataLoader {
         }
     }
 
-    public void loadCustomEntities(String filepath) throws IllegalArgumentException {
+    public void loadGameEntities(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
         for (SafeJsonNode entityNode : customEntities) {
@@ -161,7 +161,7 @@ final public class GameDataLoader {
                 String hitboxType = hitboxNode.checkAndGetString("type");
                 if (hitboxType.equals("composite")) {
                     String hitboxFileName = hitboxNode.checkAndGetString("fileName");
-                    Texture hitboxTexture = assetManager.getTexture(gameDataManager.paths.editorTextureFolder + hitboxFileName);
+                    Texture hitboxTexture = assetManager.getTexture(gameDataManager.paths.gameTextureFolder + hitboxFileName);
                     customEntityBuilder = customEntityBuilder.addCompositeHitbox(hitboxTexture, false);
                 }
                 if (hitboxType.equals("simpleRectangle")) {
@@ -258,7 +258,7 @@ final public class GameDataLoader {
         }
     }
 
-    public void loadCustomTimeline(String filepath) throws IllegalArgumentException {
+    public void loadGameTimeline(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
         SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");

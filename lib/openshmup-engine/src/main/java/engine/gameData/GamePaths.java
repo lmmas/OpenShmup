@@ -3,22 +3,22 @@ package engine.gameData;
 import engine.GlobalVars;
 
 final public class GamePaths {
-    final public String customGameFolder;
-    final public String customGameConfigFile;
-    final public String editorTextureFolder;
-    final public String editorCustomDisplaysFile;
-    final public String editorCustomTrajectoriesFile;
-    final public String editorCustomEntitiesFile;
-    final public String editorCustomTimelineFile;
+    final public String gameFolder;
+    final public String gameConfigFile;
+    final public String gameTextureFolder;
+    final public String gameVisualsFile;
+    final public String gameTrajectoriesFile;
+    final public String gameEntitiesFile;
+    final public String gameTimelineFile;
 
     public GamePaths(String gameFolderName) {
-        customGameFolder = GlobalVars.Paths.Partial.customGamesFolder + gameFolderName;
-        customGameConfigFile = customGameFolder + GlobalVars.Paths.Partial.customGameConfigFile;
-        editorTextureFolder = customGameFolder + GlobalVars.Paths.Partial.editorTextureFolder;
-        editorCustomDisplaysFile = customGameFolder + GlobalVars.Paths.Partial.editorCustomDisplaysFile;
-        editorCustomTrajectoriesFile = customGameFolder + GlobalVars.Paths.Partial.editorCustomTrajectoriesFile;
-        editorCustomEntitiesFile = customGameFolder + GlobalVars.Paths.Partial.editorCustomEntitiesFile;
-        editorCustomTimelineFile = customGameFolder + GlobalVars.Paths.Partial.editorCustomTimelineFile;
+        gameFolder = GlobalVars.Paths.Partial.customGamesFolder + gameFolderName;
+        gameConfigFile = gameFolder + GlobalVars.Paths.Partial.gameConfigFile;
+        gameTextureFolder = gameFolder + GlobalVars.Paths.Partial.gameTextureFolder;
+        gameVisualsFile = gameFolder + GlobalVars.Paths.Partial.gameVisualsFile;
+        gameTrajectoriesFile = gameFolder + GlobalVars.Paths.Partial.gameTrajectoriesFile;
+        gameEntitiesFile = gameFolder + GlobalVars.Paths.Partial.gameEntitiesFile;
+        gameTimelineFile = gameFolder + GlobalVars.Paths.Partial.gameTimelineFile;
     }
 
 

@@ -12,12 +12,12 @@ final public class GlobalVars {
 
         final public static class Partial {
             final static public String customGamesFolder = "/Games/";
-            final static public String customGameConfigFile = "/json/config.json";
-            final static public String editorTextureFolder = "/textures/";
-            final static public String editorCustomDisplaysFile = "/json/displays.json";
-            final static public String editorCustomTrajectoriesFile = "/json/trajectories.json";
-            final static public String editorCustomEntitiesFile = "/json/entities.json";
-            final static public String editorCustomTimelineFile = "/json/timeline1.json";
+            final static public String gameConfigFile = "/json/config.json";
+            final static public String gameTextureFolder = "/textures/";
+            final static public String gameVisualsFile = "/json/visuals.json";
+            final static public String gameTrajectoriesFile = "/json/trajectories.json";
+            final static public String gameEntitiesFile = "/json/entities.json";
+            final static public String gameTimelineFile = "/json/timeline1.json";
             final static public String missingTextureFile = "/lib/openshmup-engine/src/main/resources/textures/missingTexture.png";
         }
     }

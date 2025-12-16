@@ -35,7 +35,7 @@ final public class GameDataManager {
     public void loadGameConfig() {
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            gameDataLoader.loadGameConfig(paths.customGameConfigFile);
+            gameDataLoader.loadGameConfig(paths.gameConfigFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
@@ -44,10 +44,10 @@ final public class GameDataManager {
     public void loadGameContents() {
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            gameDataLoader.loadCustomDisplays(paths.editorCustomDisplaysFile);
-            gameDataLoader.loadCustomTrajectories(paths.editorCustomTrajectoriesFile);
-            gameDataLoader.loadCustomEntities(paths.editorCustomEntitiesFile);
-            gameDataLoader.loadCustomTimeline(paths.editorCustomTimelineFile);
+            gameDataLoader.loadGameDisplays(paths.gameVisualsFile);
+            gameDataLoader.loadGameTrajectories(paths.gameTrajectoriesFile);
+            gameDataLoader.loadGameEntities(paths.gameEntitiesFile);
+            gameDataLoader.loadGameTimeline(paths.gameTimelineFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
