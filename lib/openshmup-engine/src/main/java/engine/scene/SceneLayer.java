@@ -17,17 +17,12 @@ public class SceneLayer {
         return graphicalSubLayerCount;
     }
 
+    public void setGraphicalSubLayerCount(int graphicalSubLayerCount) {
+        this.graphicalSubLayerCount = graphicalSubLayerCount;
+    }
+
     public ArrayList<SceneVisual> getVisuals() {
         return visuals;
     }
-
-    public void addVisual(SceneVisual newVisual) {
-        visuals.add(newVisual);
-        int newVisualMaxGraphicalSubLayer = newVisual.getMaxGraphicalSubLayer();
-        if (newVisualMaxGraphicalSubLayer >= graphicalSubLayerCount) {
-            graphicalSubLayerCount = newVisualMaxGraphicalSubLayer + 1;
-        }
-    }
-
 
 }

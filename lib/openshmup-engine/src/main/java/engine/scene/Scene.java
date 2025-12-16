@@ -79,7 +79,7 @@ public class Scene {
                         visualsToRemove.add(visual);
                     }
                     if (visual.getReloadGraphicsFlag()) {
-                        int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayer());
+                        int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayerIndex());
                         var graphicalLayers = visual.getGraphicalSubLayers();
                         var graphics = visual.getGraphics();
                         for (int i = 0; i < graphicalLayers.size(); i++) {
@@ -102,7 +102,8 @@ public class Scene {
 
     final public void addVisual(SceneVisual visual) {
         int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
-        int sceneLayerIndex = visual.getSceneLayer();
+        int sceneLayerIndex = visual.getSceneLayerIndex();
+        SceneLayer sceneLayer = layers.get(sceneLayerIndex);
         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
 
         //determining how many graphical layers need to be inserted
@@ -110,10 +111,10 @@ public class Scene {
         int sceneLayerGraphicalSubLayerCount = 0;
         if (!layers.containsKey(sceneLayerIndex)) {
             layers.put(sceneLayerIndex, new SceneLayer());
+            sceneLayer = layers.get(sceneLayerIndex);
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
         else {
-            var sceneLayer = layers.get(sceneLayerIndex);
             sceneLayerGraphicalSubLayerCount = sceneLayer.getGraphicalSubLayerCount();
             if (visualMaxGraphicalSubLayer >= sceneLayerGraphicalSubLayerCount) {
                 graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerGraphicalSubLayerCount + 1;
@@ -132,7 +133,10 @@ public class Scene {
             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
         }
 
-        layers.get(sceneLayerIndex).addVisual(visual);
+        sceneLayer.getVisuals().add(visual);
+        if (visualMaxGraphicalSubLayer >= sceneLayer.getGraphicalSubLayerCount()) {
+            sceneLayer.setGraphicalSubLayerCount(visualMaxGraphicalSubLayer + 1);
+        }
         visual.initDisplay(this.sceneTime);
     }
 
@@ -148,7 +152,7 @@ public class Scene {
     }
 
     final public void removeVisual(SceneVisual visual) {
-        int sceneLayerIndex = visual.getSceneLayer();
+        int sceneLayerIndex = visual.getSceneLayerIndex();
         layers.get(sceneLayerIndex).getVisuals().remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
         for (var graphic : graphics) {

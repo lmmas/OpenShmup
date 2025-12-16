@@ -59,7 +59,7 @@ abstract public class SceneVisual {
         this.reloadGraphicsFlag = reloadGraphics;
     }
 
-    public int getSceneLayer() {
+    public int getSceneLayerIndex() {
         return sceneLayer;
     }
 
