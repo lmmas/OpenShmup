@@ -13,9 +13,6 @@ import engine.scene.LevelScene;
 import engine.scene.spawnable.EmptySpawnable;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
-import engine.visual.Animation;
-import engine.visual.AnimationInfo;
-import engine.visual.ImageDisplay;
 import engine.visual.SceneVisual;
 
 import java.util.ArrayList;
@@ -218,23 +215,8 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder createSprite(int layer, Texture texture, boolean orientable) {
-            if (orientable) {
-                assert false : "orientable sprites not implemented yet";
-            }
-            else {
-                this.sprite = new ImageDisplay(layer, texture, size, startingPosition);
-            }
-            return this;
-        }
-
-        public Builder createSprite(int layer, Texture spriteTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, boolean orientable) {
-            if (orientable) {
-
-            }
-            else {
-                this.sprite = new Animation(layer, spriteTexture, info, framePeriodSeconds, looping, size.x, size.y);
-            }
+        public Builder setSprite(SceneVisual sprite) {
+            this.sprite = sprite;
             return this;
         }
 

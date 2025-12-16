@@ -57,7 +57,7 @@ final public class GameDataManager {
         customVisuals.put(id, visual);
     }
 
-    public SceneVisual buildCustomDisplay(int id) {
+    public SceneVisual getGameVisual(int id) {
         return customVisuals.get(id).copy();
     }
 

@@ -157,7 +157,7 @@ final public class LevelScene extends Scene {
 
     private void spawnDisplays() {
         for (var displaySpawn : displaysToSpawn) {
-            SceneVisual newDisplay = gameDataManager.buildCustomDisplay(displaySpawn.id());
+            SceneVisual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
             addVisual(newDisplay);
         }

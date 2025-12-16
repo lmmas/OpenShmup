@@ -19,6 +19,7 @@ import engine.types.IVec2D;
 import engine.types.Vec2D;
 import engine.visual.Animation;
 import engine.visual.AnimationInfo;
+import engine.visual.SceneVisual;
 import engine.visual.ScrollingImage;
 import pl.joegreen.lambdaFromString.LambdaCreationException;
 import pl.joegreen.lambdaFromString.LambdaFactory;
@@ -115,6 +116,34 @@ final public class GameDataLoader {
         }
     }
 
+    public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
+        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
+        List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
+        for (SafeJsonNode trajectoryNode : elementList) {
+            int id = trajectoryNode.checkAndGetInt("id");
+            String type = trajectoryNode.checkAndGetString("type");
+
+            Trajectory newTrajectory;
+            if (type.equals("fixed")) {
+                String functionXString = trajectoryNode.checkAndGetString("functionX");
+                String functionYString = trajectoryNode.checkAndGetString("functionY");
+                Function<Float, Float> trajectoryFunctionX;
+                Function<Float, Float> trajectoryFunctionY;
+                try {
+                    trajectoryFunctionX = convertToFunction(functionXString);
+                    trajectoryFunctionY = convertToFunction(functionYString);
+                } catch (LambdaCreationException e) {
+                    throw new IllegalArgumentException(e);
+                }
+                newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
+            }
+            else {
+                throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
+            }
+            gameDataManager.addTrajectory(id, newTrajectory);
+        }
+    }
+
     public void loadCustomEntities(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
@@ -183,40 +212,11 @@ final public class GameDataLoader {
                 customEntityBuilder = customEntityBuilder.createShot(shot, shotPeriod, firstShotTime);
             }
 
-            SafeJsonNode spriteNode = entityNode.checkAndGetObject("sprite");
-            int layer = spriteNode.checkAndGetInt("layer");
-            boolean orientable = spriteNode.checkAndGetBoolean("orientable");
+            int spriteVisualId = entityNode.checkAndGetInt("spriteVisualId");
 
-            if (spriteNode.hasField("animationInfo")) {
-                SafeJsonNode animationInfoNode = spriteNode.checkAndGetObject("animationInfo");
+            SceneVisual sprite = gameDataManager.getGameVisual(spriteVisualId);
+            customEntityBuilder = customEntityBuilder.setSprite(sprite);
 
-                String animationFilepath = gameDataManager.paths.editorTextureFolder + animationInfoNode.checkAndGetString("fileName");
-                int frameCount = animationInfoNode.checkAndGetInt("frameCount");
-                IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
-                IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
-                IVec2D stride = animationInfoNode.checkAndGetIVec2D("stride");
-
-                float framePeriodSeconds = spriteNode.checkAndGetFloat("framePeriodSeconds");
-                boolean looping = spriteNode.checkAndGetBoolean("looping");
-                Texture animationTexture = assetManager.getTexture(animationFilepath);
-                int animationTextureWidth = animationTexture.getWidth();
-                int animationTextureHeight = animationTexture.getHeight();
-                AnimationInfo animationInfo = new AnimationInfo(animationFilepath, frameCount,
-                    (float) frameSize.x / animationTextureWidth,
-                    (float) frameSize.y / animationTextureHeight,
-                    (float) startingPosition.x / animationTextureWidth,
-                    (float) startingPosition.y / animationTextureHeight,
-                    (float) stride.x / animationTextureWidth,
-                    (float) stride.y / animationTextureHeight);
-
-                customEntityBuilder = customEntityBuilder.createSprite(layer, animationTexture, animationInfo, framePeriodSeconds, looping, orientable);
-            }
-            else {
-                String texturePath = gameDataManager.paths.editorTextureFolder + spriteNode.checkAndGetString("fileName");
-
-
-                customEntityBuilder = customEntityBuilder.createSprite(layer, assetManager.getTexture(texturePath), orientable);
-            }
             if (id == 0) {
                 customEntityBuilder = customEntityBuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
             }
@@ -255,34 +255,6 @@ final public class GameDataLoader {
                 customEntityBuilder = customEntityBuilder.setTrajectory(trajectory);
             }
             gameDataManager.addCustomEntity(id, customEntityBuilder.build());
-        }
-    }
-
-    public void loadCustomTrajectories(String filepath) throws IllegalArgumentException {
-        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
-        List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
-        for (SafeJsonNode trajectoryNode : elementList) {
-            int id = trajectoryNode.checkAndGetInt("id");
-            String type = trajectoryNode.checkAndGetString("type");
-
-            Trajectory newTrajectory;
-            if (type.equals("fixed")) {
-                String functionXString = trajectoryNode.checkAndGetString("functionX");
-                String functionYString = trajectoryNode.checkAndGetString("functionY");
-                Function<Float, Float> trajectoryFunctionX;
-                Function<Float, Float> trajectoryFunctionY;
-                try {
-                    trajectoryFunctionX = convertToFunction(functionXString);
-                    trajectoryFunctionY = convertToFunction(functionYString);
-                } catch (LambdaCreationException e) {
-                    throw new IllegalArgumentException(e);
-                }
-                newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
-            }
-            else {
-                throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
-            }
-            gameDataManager.addTrajectory(id, newTrajectory);
         }
     }
 
