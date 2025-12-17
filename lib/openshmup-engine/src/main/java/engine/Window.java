@@ -29,7 +29,7 @@ final public class Window {
         assert vidmode != null : "glfwGetVideoMode failure";
         resolution.x = width;
         resolution.y = height;
-        glfwSetWindowPos(glfwWindow, (vidmode.width() - resolution.x) / 2, (vidmode.height() - resolution.y) / 2);
+        glfwSetWindowPos(glfwWindow, (vidmode.width() - resolution.x) / 2, (vidmode.height() - resolution.y) / 2 - 25);
     }
 
     public long getGlfwWindow() {

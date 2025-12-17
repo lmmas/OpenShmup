@@ -2,55 +2,55 @@
     {
         "id": 1,
         "type": "fixed",
-        "functionX": "0.0f",
-        "functionY": "-0.4f * t"
+        "functionX": "0.0",
+        "functionY": "-0.4 * t"
     },
     {
         "id": 2,
         "type": "fixed",
-        "functionX": "0.5f * t",
-        "functionY": "0.0f + 0.03f * sin(20*t)"
+        "functionX": "0.5 * t",
+        "functionY": "0.0 + 0.03 * sin(20*t)"
     },
     {
         "id": 3,
         "type": "fixed",
-        "functionX": "0.5f * t",
-        "functionY": "-0.3f * t + 0.03f * sin(20*t)"
+        "functionX": "0.5 * t",
+        "functionY": "-0.3 * t + 0.03 * sin(20*t)"
     },
     {
         "id": 4,
         "type": "fixed",
-        "functionX": "0.5f * t",
-        "functionY": "0.3f * t + 0.03f * sin(20*t)"
+        "functionX": "0.5 * t",
+        "functionY": "0.3 * t + 0.03 * sin(20*t)"
     },
     {
         "id": 10,
         "type": "fixed",
-        "functionX": "0.15f * cos(t)",
-        "functionY": "0.15f * sin(t)"
+        "functionX": "0.15 * cos(t)",
+        "functionY": "0.15 * sin(t)"
     },
     {
         "id": 11,
         "type": "fixed",
         "functionX": "0",
-        "functionY": "0.3f * sin(2*t)"
+        "functionY": "0.3 * sin(2*t)"
     },
     {
         "id": 12,
         "type": "fixed",
-        "functionX": "0.1f * cos(2 * t)",
-        "functionY": "-0.2f * t"
+        "functionX": "0.1 * cos(2 * t)",
+        "functionY": "-0.2 * t"
     },
     {
         "id": 13,
         "type": "fixed",
-        "functionX": "0.0f",
-        "functionY": "0.0f"
+        "functionX": "0.0",
+        "functionY": "0.0"
     },
     {
         "id": 14,
         "type": "fixed",
-        "functionX": "0.0015f",
-        "functionY": "0.0f"
+        "functionX": "0.0015",
+        "functionY": "0.0"
     }
 ]

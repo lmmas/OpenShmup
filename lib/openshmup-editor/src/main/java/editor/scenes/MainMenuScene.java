@@ -1,5 +1,6 @@
 package editor.scenes;
 
+import editor.Editor;
 import engine.Engine;
 import engine.scene.Scene;
 import engine.scene.menu.MenuScreen;
@@ -11,6 +12,7 @@ import engine.visual.ScreenFilter;
 import engine.visual.TextDisplay;
 import engine.visual.style.TextStyle;
 
+import java.io.IOException;
 import java.util.List;
 
 import static engine.GlobalVars.Paths.debugFont;
@@ -39,18 +41,31 @@ final public class MainMenuScene extends Scene {
         RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle menuButtonLabelStyle = new TextStyle(debugFont, menuButtonTextColor, 17.0f / Engine.getNativeHeight());
         Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
-        RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Open popup menu", menuButtonLabelStyle, null);
+        RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, null);
         RoundedRectangleButton button2 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(0.5f, 0.25f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
 
 
         mainMenu = new MenuScreen(backgroundLayer, null, List.of(button1, button2));
 
-        RoundedRectangleButton button3 = new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(0.5f, 0.35f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "yes", menuButtonLabelStyle, null);
-        popupMenu = new MenuScreen(backgroundLayer + 3, new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f), List.of(button3));
+        Vec2D closeButtonSize = new Vec2D(0.06f, 0.05f);
+        RoundedRectangleButton closeButton = new RoundedRectangleButton(backgroundLayer + 4, closeButtonSize, new Vec2D(0.9f, 0.9f), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, null);
+        popupMenu = new MenuScreen(backgroundLayer + 3, new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f), List.of(closeButton));
 
-        button1.setOnclick(() -> addMenu(popupMenu));
+        button1.setOnclick(() -> {
+                try {
+                    Editor.loadGames();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
+                    var game = Editor.getLoadedGames().get(i);
+                    popupMenu.menuItems().add(new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(0.5f, 0.8f - (buttonSize.y + 0.02f) * i), roundingRadius, borderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, null));
+                }
+                addMenu(popupMenu);
+            }
+        );
 
-        button3.setOnclick(() -> removeMenu(popupMenu));
+        closeButton.setOnclick(() -> removeMenu(popupMenu));
 
 
         addMenu(mainMenu);

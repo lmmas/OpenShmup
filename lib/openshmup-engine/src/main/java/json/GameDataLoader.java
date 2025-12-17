@@ -21,10 +21,8 @@ import engine.visual.Animation;
 import engine.visual.AnimationInfo;
 import engine.visual.SceneVisual;
 import engine.visual.ScrollingImage;
-import pl.joegreen.lambdaFromString.LambdaCreationException;
-import pl.joegreen.lambdaFromString.LambdaFactory;
-import pl.joegreen.lambdaFromString.LambdaFactoryConfiguration;
-import pl.joegreen.lambdaFromString.TypeReference;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,12 +127,8 @@ final public class GameDataLoader {
                 String functionYString = trajectoryNode.checkAndGetString("functionY");
                 Function<Float, Float> trajectoryFunctionX;
                 Function<Float, Float> trajectoryFunctionY;
-                try {
-                    trajectoryFunctionX = convertToFunction(functionXString);
-                    trajectoryFunctionY = convertToFunction(functionYString);
-                } catch (LambdaCreationException e) {
-                    throw new IllegalArgumentException(e);
-                }
+                trajectoryFunctionX = convertToFunction(functionXString);
+                trajectoryFunctionY = convertToFunction(functionYString);
                 newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
             }
             else {
@@ -234,18 +228,10 @@ final public class GameDataLoader {
                         String functionYString = trajectoryNode.checkAndGetString("functionY");
                         if (trajectoryNode.hasField("relative")) {
                             boolean relative = trajectoryNode.checkAndGetBoolean("relative");
-                            try {
-                                trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString), relative);
-                            } catch (LambdaCreationException e) {
-                                throw new IllegalArgumentException(e);
-                            }
+                            trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString), relative);
                         }
                         else {
-                            try {
-                                trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString));
-                            } catch (LambdaCreationException e) {
-                                throw new IllegalArgumentException(e);
-                            }
+                            trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString));
                         }
                     }
                     else {
@@ -326,16 +312,14 @@ final public class GameDataLoader {
         }
     }
 
-    private Function<Float, Float> convertToFunction(String expr) throws LambdaCreationException {
-        if (expr.contains("{") || expr.contains("Systems") || expr.contains("Threads")) {
-            throw new IllegalArgumentException("Illegal character in trajectory function");
-        }
-        LambdaFactory lambdaFactory = LambdaFactory.get(
-            LambdaFactoryConfiguration.get().withImports("static engine.entity.trajectory.TrajectoryFunctionUtils.MathFloatOverloads.*; import static engine.entity.trajectory.TrajectoryFunctionUtils.*")
-        );
-        return lambdaFactory.createLambda(
-            "t -> (float)(" + expr + ")", new TypeReference<Function<Float, Float>>() {
-            });
+    private Function<Float, Float> convertToFunction(String expressionString) {
+        return t -> {
+            Expression expr = new ExpressionBuilder(expressionString)
+                .variable("t")
+                .build()
+                .setVariable("t", t);
+            return (float) expr.evaluate();
+        };
     }
 
     private Vec2D convertToFloatVec(IVec2D pixelVec) {

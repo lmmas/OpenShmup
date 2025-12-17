@@ -23,6 +23,7 @@ final public class CompositeHitbox implements Hitbox {
         ByteBuffer image = texture.getImageBuffer();
         byte[] bytes = new byte[image.capacity()];
         image.get(bytes);
+        image.flip();
         boolean[][] rectanglePositions = new boolean[imageHeight][imageWidth];
         int detectionMargin = 3;
         for (int i = 0; i < imageHeight; i++) {

@@ -5,19 +5,7 @@
         "type": "ship",
         "hp": 5,
         "size": [100, 100],
-        "sprite": {
-            "layer": 2,
-            "orientable": false,
-            "animationInfo": {
-                "fileName": "Spaceships.png",
-                "frameCount": 1,
-                "frameSize": [64, 64],
-                "startingPosition": [128,64],
-                "stride": [0, 0]
-            },
-            "framePeriodSeconds": 0.25,
-            "looping": true
-        },
+        "spriteVisualId": 3,
         "hitbox": {
             "type": "simpleRectangle"
         },
@@ -56,19 +44,7 @@
         "type": "projectile",
         "evil": false,
         "size": [10, 10],
-        "sprite": {
-            "layer": 2,
-            "orientable": false,
-            "animationInfo": {
-                "fileName": "laser-bolts-blue.png",
-                "frameCount": 1,
-                "frameSize": [5, 5],
-                "startingPosition": [6,20],
-                "stride": [14, 0]
-            },
-            "framePeriodSeconds": 0.25,
-            "looping": true
-        },
+        "spriteVisualId": 4,
         "hitbox": {
             "type": "simpleRectangle"
         }
@@ -79,19 +55,7 @@
         "hp": 5,
         "evil": true,
         "size": [50, 50],
-        "sprite": {
-            "layer": 4,
-            "orientable": false,
-            "animationInfo": {
-                "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
-                "frameCount": 6,
-                "frameSize": [16, 16],
-                "startingPosition": [1,451],
-                "stride": [18, 0]
-            },
-            "framePeriodSeconds": 0.2,
-            "looping": true
-        },
+        "spriteVisualId": 5,
         "hitbox": {
             "type": "simpleRectangle"
         },
@@ -116,19 +80,7 @@
         "type": "projectile",
         "evil": true,
         "size": [10, 10],
-        "sprite": {
-            "layer": 3,
-            "orientable": false,
-            "animationInfo": {
-                "fileName": "laser-bolts.png",
-                "frameCount": 2,
-                "frameSize": [5, 5],
-                "startingPosition": [6,20],
-                "stride": [14, 0]
-            },
-            "framePeriodSeconds": 0.25,
-            "looping": true
-        },
+        "spriteVisualId": 6,
         "hitbox": {
             "type": "simpleRectangle"
         }

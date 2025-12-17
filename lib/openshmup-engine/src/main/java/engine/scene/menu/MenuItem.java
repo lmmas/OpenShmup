@@ -28,7 +28,9 @@ public class MenuItem {
     }
 
     public void onClick() {
-        onClick.run();
+        if (onClick != null) {
+            onClick.run();
+        }
     }
 
     public void setOnclick(Runnable onClick) {

@@ -103,4 +103,8 @@ final public class GameDataManager {
     public LevelTimeline getTimeline(int index) {
         return customTimelines.get(index);
     }
+
+    public String getGameName() {
+        return gameFolderName;
+    }
 }
