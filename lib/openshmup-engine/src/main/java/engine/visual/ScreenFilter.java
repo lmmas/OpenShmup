@@ -1,5 +1,6 @@
 package engine.visual;
 
+import engine.Engine;
 import engine.graphics.Graphic;
 import engine.graphics.colorRectangle.ColorRectangle;
 import engine.types.RGBAValue;
@@ -11,7 +12,7 @@ final public class ScreenFilter extends SceneVisual {
 
     public ScreenFilter(int layer, float r, float g, float b, float a) {
         super(layer, List.of(0));
-        this.colorRectangle = new ColorRectangle(1.0f, 1.0f, 0.5f, 0.5f, r, g, b, a);
+        this.colorRectangle = new ColorRectangle(Engine.getNativeWidth(), Engine.getNativeHeight(), (float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2, r, g, b, a);
     }
 
     public ScreenFilter(int layer, RGBAValue color) {

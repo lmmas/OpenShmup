@@ -17,19 +17,19 @@ final public class GameDataManager {
     final private String gameFolderName;
     final public GamePaths paths;
     final public GameConfig config;
-    final private HashMap<Integer, SceneVisual> customVisuals;
-    final private HashMap<Integer, Trajectory> customTrajectories;
-    final private HashMap<Integer, Entity> customEntities;
-    final private ArrayList<LevelTimeline> customTimelines;
+    final private HashMap<Integer, SceneVisual> visuals;
+    final private HashMap<Integer, Trajectory> trajectories;
+    final private HashMap<Integer, Entity> entities;
+    final private ArrayList<LevelTimeline> timelines;
 
     public GameDataManager(String gameFolderName) {
         this.gameFolderName = gameFolderName;
         this.paths = new GamePaths(gameFolderName);
         this.config = new GameConfig();
-        this.customVisuals = new HashMap<>();
-        this.customEntities = new HashMap<>();
-        this.customTrajectories = new HashMap<>();
-        this.customTimelines = new ArrayList<>();
+        this.visuals = new HashMap<>();
+        this.entities = new HashMap<>();
+        this.trajectories = new HashMap<>();
+        this.timelines = new ArrayList<>();
     }
 
     public void loadGameConfig() {
@@ -54,27 +54,27 @@ final public class GameDataManager {
     }
 
     public void addCustomVisual(int id, SceneVisual visual) {
-        customVisuals.put(id, visual);
+        visuals.put(id, visual);
     }
 
     public SceneVisual getGameVisual(int id) {
-        return customVisuals.get(id).copy();
+        return visuals.get(id).copy();
     }
 
     public List<Texture> getTexturesOfDisplay(int id) {
-        return customVisuals.get(id).getTextures();
+        return visuals.get(id).getTextures();
     }
 
     public void addCustomEntity(int id, Entity entity) {
-        customEntities.put(id, entity);
+        entities.put(id, entity);
     }
 
     public Entity buildCustomEntity(int id) {
-        return customEntities.get(id).copy();
+        return entities.get(id).copy();
     }
 
     public ArrayList<Spawnable> getSpawnablesOfEntity(int id) {
-        Entity entity = customEntities.get(id);
+        Entity entity = entities.get(id);
         ArrayList<Spawnable> spawnablesList = new ArrayList<>();
         for (ExtraComponent component : entity.getExtraComponents()) {
             spawnablesList.add(component.getSpawnable());
@@ -84,27 +84,43 @@ final public class GameDataManager {
     }
 
     public List<Texture> getTexturesOfEntity(int id) {
-        return customEntities.get(id).getSprite().getTextures();
+        return entities.get(id).getSprite().getTextures();
     }
 
     public void addTrajectory(int id, Trajectory trajectory) {
-        customTrajectories.put(id, trajectory);
+        trajectories.put(id, trajectory);
     }
 
     public Trajectory getTrajectory(int id) {
-        Trajectory trajectory = customTrajectories.get(id);
+        Trajectory trajectory = trajectories.get(id);
         return trajectory.copyIfNotReusable();
     }
 
     public void addTimeline(LevelTimeline timeline) {
-        customTimelines.add(timeline);
+        timelines.add(timeline);
     }
 
     public LevelTimeline getTimeline(int index) {
-        return customTimelines.get(index);
+        return timelines.get(index);
     }
 
     public String getGameName() {
         return gameFolderName;
+    }
+
+    public HashMap<Integer, SceneVisual> getVisuals() {
+        return visuals;
+    }
+
+    public HashMap<Integer, Trajectory> getTrajectories() {
+        return trajectories;
+    }
+
+    public HashMap<Integer, Entity> getEntities() {
+        return entities;
+    }
+
+    public ArrayList<LevelTimeline> getTimelines() {
+        return timelines;
     }
 }

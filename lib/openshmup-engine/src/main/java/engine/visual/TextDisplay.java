@@ -1,6 +1,5 @@
 package engine.visual;
 
-import engine.Engine;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.graphics.Graphic;
@@ -40,7 +39,7 @@ final public class TextDisplay extends SceneVisual {
         }
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
-        this.textWidth = textHeight * Engine.getNativeHeight() / Engine.getNativeWidth();
+        this.textWidth = textHeight;
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;

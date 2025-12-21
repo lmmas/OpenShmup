@@ -171,20 +171,14 @@ public class Scene {
     final public void addMenu(MenuScreen menuScreen) {
         menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(this::addVisual);
-        SceneVisual menuBackground = menuScreen.backgroundDisplay();
-        if (menuBackground != null) {
-            addVisual(menuBackground);
-        }
+        menuScreen.otherVisuals().forEach(this::addVisual);
         displayedMenus.add(menuScreen);
     }
 
     final public void removeMenu(MenuScreen menuScreen) {
         menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(this::removeVisual);
-        SceneVisual menuBackground = menuScreen.backgroundDisplay();
-        if (menuBackground != null) {
-            removeVisual(menuBackground);
-        }
+        menuScreen.otherVisuals().forEach(this::removeVisual);
         displayedMenus.remove(menuScreen);
     }
 

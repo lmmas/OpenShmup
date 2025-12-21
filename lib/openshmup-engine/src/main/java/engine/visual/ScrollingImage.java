@@ -1,5 +1,6 @@
 package engine.visual;
 
+import engine.Engine;
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
@@ -20,7 +21,7 @@ final public class ScrollingImage extends SceneVisual {
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         super(layer, List.of(0, 0));
         this.size = new Vec2D(sizeX, sizeY);
-        this.position1 = new Vec2D(0.5f, 0.5f);
+        this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
         this.position2 = new Vec2D(0.0f, 0.0f);
         this.image1 = new Image(texture, true,
             sizeX, sizeY,
@@ -39,7 +40,7 @@ final public class ScrollingImage extends SceneVisual {
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
         lastUpdateTimeSeconds = 0.0f;
-        this.setPosition(0.5f, 0.5f);
+        this.setPosition((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
     }
 
     public ScrollingImage(ScrollingImage scrollingImage) {
@@ -99,32 +100,34 @@ final public class ScrollingImage extends SceneVisual {
         if (horizontalScrolling) {
             position1.x += speed * deltaTime;
             position2.x += speed * deltaTime;
-            if (position1.x > 0.5f + size.x) {
+            float screenWidth = (float) Engine.getNativeWidth();
+            if (position1.x > screenWidth / 2 + size.x) {
                 position1.x -= 2 * size.x;
             }
-            if (position1.x < 0.5f - size.x) {
+            if (position1.x < screenWidth / 2 - size.x) {
                 position1.x += 2 * size.x;
             }
-            if (position2.x > 0.5f + size.x) {
+            if (position2.x > screenWidth / 2 + size.x) {
                 position2.x -= 2 * size.x;
             }
-            if (position2.x < 0.5f - size.x) {
+            if (position2.x < screenWidth / 2 - size.x) {
                 position2.x += 2 * size.x;
             }
         }
         else {
+            float screenHeight = (float) Engine.getNativeHeight();
             position1.y += speed * deltaTime;
             position2.y += speed * deltaTime;
-            if (position1.y > 0.5f + size.y) {
+            if (position1.y > screenHeight / 2 + size.y) {
                 position1.y -= 2 * size.y;
             }
-            if (position1.y < 0.5f - size.y) {
+            if (position1.y < screenHeight / 2 - size.y) {
                 position1.y += 2 * size.y;
             }
-            if (position2.y > 0.5f + size.y) {
+            if (position2.y > screenHeight / 2 + size.y) {
                 position2.y -= 2 * size.y;
             }
-            if (position2.y < 0.5f - size.y) {
+            if (position2.y < screenHeight / 2 - size.y) {
                 position2.y += 2 * size.y;
             }
         }

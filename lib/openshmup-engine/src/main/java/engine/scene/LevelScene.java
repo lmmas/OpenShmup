@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.Engine;
 import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
@@ -65,10 +66,10 @@ final public class LevelScene extends Scene {
 
         RGBAValue buttonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f / gameConfig.getNativeHeight());
-        Vec2D buttonSize = new Vec2D(0.3f, 0.15f);
-        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(0.5f, 0.5f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
-        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f), List.of(blueButton));
+        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
+        Vec2D buttonSize = new Vec2D(300, 150);
+        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, List.of(blueButton), List.of(new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f)));
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);
         loadAssets();
@@ -229,9 +230,10 @@ final public class LevelScene extends Scene {
     }
 
     public void removeFarAwayEntities(HashSet<Entity> entityList) {
+        Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         for (Entity entity : entityList) {
             Vec2D position = entity.getPosition();
-            if (position.x < -0.5f || position.x > 1.5f || position.y < -0.5f || position.y > 2.0f) {
+            if (position.x < -0.5f * resolution.x || position.x > 1.5f * resolution.x || position.y < -0.5f * resolution.y || position.y > 2.0f * resolution.y) {
                 entitiesToRemove.add(entity);
             }
         }

@@ -1,5 +1,6 @@
 package engine.graphics.image;
 
+import engine.Engine;
 import engine.GlobalVars;
 import engine.assets.Shader;
 import engine.assets.Texture;
@@ -105,10 +106,10 @@ final public class ImageRenderer extends Renderer<Image, Image.ImagePrimitive> {
                 RGBAValue colorCoefs = image.getTextureColorCoefs();
                 RGBAValue addedColor = image.getAddedColor();
 
-                dataBuffer.putFloat(imageSize.x);
-                dataBuffer.putFloat(imageSize.y);
-                dataBuffer.putFloat(imagePosition.x);
-                dataBuffer.putFloat(imagePosition.y);
+                dataBuffer.putFloat(imageSize.x / Engine.getNativeWidth());
+                dataBuffer.putFloat(imageSize.y / Engine.getNativeHeight());
+                dataBuffer.putFloat(imagePosition.x / Engine.getNativeWidth());
+                dataBuffer.putFloat(imagePosition.y / Engine.getNativeHeight());
                 dataBuffer.putFloat(textureSize.x);
                 dataBuffer.putFloat(textureSize.y);
                 dataBuffer.putFloat(texturePosition.x);

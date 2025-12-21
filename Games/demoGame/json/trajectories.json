@@ -3,43 +3,43 @@
         "id": 1,
         "type": "fixed",
         "functionX": "0.0",
-        "functionY": "-0.4 * t"
+        "functionY": "-400 * t"
     },
     {
         "id": 2,
         "type": "fixed",
         "functionX": "0.0",
-        "functionY": "1.0 * t"
+        "functionY": "1000 * t"
     },
     {
         "id": 3,
         "type": "fixed",
-        "functionX": "-0.3 * t",
-        "functionY": "1.0 * t"
+        "functionX": "-300 * t",
+        "functionY": "1000 * t"
     },
     {
         "id": 4,
         "type": "fixed",
-        "functionX": "0.3 * t",
-        "functionY": "1.0 * t"
+        "functionX": "300 * t",
+        "functionY": "1000 * t"
     },
     {
         "id": 10,
         "type": "fixed",
-        "functionX": "0.15 * cos(t)",
-        "functionY": "0.15 * sin(t)"
+        "functionX": "150 * cos(t)",
+        "functionY": "150 * sin(t)"
     },
     {
         "id": 11,
         "type": "fixed",
         "functionX": "0",
-        "functionY": "0.3 * sin(2*t)"
+        "functionY": "300 * sin(2*t)"
     },
     {
         "id": 12,
         "type": "fixed",
-        "functionX": "0.1 * cos(2 * t)",
-        "functionY": "-0.2 * t"
+        "functionX": "100 * cos(2 * t)",
+        "functionY": "-200 * t"
     },
     {
         "id": 13,
@@ -50,7 +50,7 @@
     {
         "id": 14,
         "type": "fixed",
-        "functionX": "0.0015",
+        "functionX": "1.5",
         "functionY": "0.0"
     }
 ]

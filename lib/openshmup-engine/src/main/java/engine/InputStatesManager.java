@@ -47,8 +47,8 @@ final public class InputStatesManager {
         leftClickState = glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
         glfwGetCursorPos(glfwWindow, cursorPositionXBuffer, cursorPositionYBuffer);
-        cursorPosition.x = (float) (cursorPositionXBuffer[0] / Engine.window.getWidth());
-        cursorPosition.y = 1.0f - (float) (cursorPositionYBuffer[0] / Engine.window.getHeight());
+        cursorPosition.x = (float) (cursorPositionXBuffer[0] / Engine.window.getWidth() * Engine.getNativeWidth());
+        cursorPosition.y = (1.0f - (float) (cursorPositionYBuffer[0] / Engine.window.getHeight())) * Engine.getNativeHeight();
     }
 
     public List<Boolean> getGameControlStates() {

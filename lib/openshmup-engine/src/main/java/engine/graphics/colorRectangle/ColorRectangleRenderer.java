@@ -65,10 +65,10 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
                 RGBAValue color = rectangle.getColor();
 
 
-                dataBuffer.put(size.x);
-                dataBuffer.put(size.y);
-                dataBuffer.put(position.x);
-                dataBuffer.put(position.y);
+                dataBuffer.put(size.x / Engine.getNativeWidth());
+                dataBuffer.put(size.y / Engine.getNativeHeight());
+                dataBuffer.put(position.x / Engine.getNativeWidth());
+                dataBuffer.put(position.y / Engine.getNativeHeight());
                 dataBuffer.put(color.r);
                 dataBuffer.put(color.g);
                 dataBuffer.put(color.b);

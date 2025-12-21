@@ -67,10 +67,10 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
                 float roundingRadius = rectangle.getRoundingRadius();
                 RGBAValue color = rectangle.getColor();
 
-                dataBuffer.put(size.x);
-                dataBuffer.put(size.y);
-                dataBuffer.put(position.x);
-                dataBuffer.put(position.y);
+                dataBuffer.put(size.x / Engine.getNativeWidth());
+                dataBuffer.put(size.y / Engine.getNativeHeight());
+                dataBuffer.put(position.x / Engine.getNativeWidth());
+                dataBuffer.put(position.y / Engine.getNativeHeight());
                 dataBuffer.put(roundingRadius);
                 dataBuffer.put(color.r);
                 dataBuffer.put(color.g);

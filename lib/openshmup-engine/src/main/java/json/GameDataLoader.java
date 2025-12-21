@@ -53,9 +53,9 @@ final public class GameDataLoader {
         SafeJsonNode livesNode = levelUINode.checkAndGetObject("lives");
 
         gameConfig.levelUI.lives.textureFilepath = gameDataManager.paths.gameTextureFolder + livesNode.checkAndGetString("fileName");
-        gameConfig.levelUI.lives.size = convertToFloatVec(livesNode.checkAndGetIVec2D("size"));
-        gameConfig.levelUI.lives.position = convertToFloatVec(livesNode.checkAndGetIVec2D("position"));
-        gameConfig.levelUI.lives.stride = convertToFloatVec(livesNode.checkAndGetIVec2D("stride"));
+        gameConfig.levelUI.lives.size = livesNode.checkAndGetVec2D("size");
+        gameConfig.levelUI.lives.position = livesNode.checkAndGetVec2D("position");
+        gameConfig.levelUI.lives.stride = livesNode.checkAndGetVec2D("stride");
     }
 
     public void loadGameDisplays(String filepath) throws IllegalArgumentException {
@@ -65,23 +65,16 @@ final public class GameDataLoader {
             int id = visualNode.checkAndGetInt("id");
             int layer = visualNode.checkAndGetInt("layer");
             String type = visualNode.checkAndGetString("type");
-            Vec2D size = convertToFloatVec(visualNode.checkAndGetIVec2D("size"));
+            Vec2D size = visualNode.checkAndGetVec2D("size");
 
             if (type.equals("scrollingImage")) {
 
                 String imagePath = gameDataManager.paths.gameTextureFolder + visualNode.checkAndGetString("fileName");
                 boolean horizontalScrolling = visualNode.checkAndGetBoolean("horizontalScrolling");
 
-                int speed = visualNode.checkAndGetInt("speed");
-                float normalizedSpeed;
-                if (horizontalScrolling) {
-                    normalizedSpeed = (float) speed / gameConfig.getNativeWidth();
-                }
-                else {
-                    normalizedSpeed = (float) speed / gameConfig.getNativeHeight();
-                }
+                float speed = visualNode.checkAndGetFloat("speed");
 
-                gameDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, normalizedSpeed, horizontalScrolling));
+                gameDataManager.addCustomVisual(id, new ScrollingImage(assetManager.getTexture(imagePath), layer, size.x, size.y, speed, horizontalScrolling));
             }
             else if (type.equals("animation")) {
                 SafeJsonNode animationInfoNode = visualNode.checkAndGetObject("animationInfo");
@@ -147,7 +140,7 @@ final public class GameDataLoader {
             EntityType type = EntityType.fromString(entityNode.checkAndGetString("type"));
             boolean evil = entityNode.checkAndGetBoolean("evil");
 
-            Vec2D size = convertToFloatVec(entityNode.checkAndGetIVec2D("size"));
+            Vec2D size = entityNode.checkAndGetVec2D("size");
 
             Entity.Builder customEntityBuilder = new Entity.Builder().setId(id).setType(type).setSize(size.x, size.y).setEvil(evil);
             if (entityNode.hasField("hitbox")) {
@@ -290,7 +283,7 @@ final public class GameDataLoader {
         if (type.equals("entity")) {
             int id = spawnableNode.checkAndGetInt("id");
 
-            Vec2D startingPositionVec = convertToFloatVec(spawnableNode.checkAndGetIVec2D("startingPosition"));
+            Vec2D startingPositionVec = spawnableNode.checkAndGetVec2D("startingPosition");
             EntitySpawnInfo spawnInfo;
             if (spawnableNode.hasField("trajectory")) {
                 int trajectoryId = spawnableNode.checkAndGetInt("trajectory");
@@ -304,7 +297,7 @@ final public class GameDataLoader {
         }
         else if (type.equals("display")) {
             int id = spawnableNode.checkAndGetInt("id");
-            Vec2D positionVec = convertToFloatVec(spawnableNode.checkAndGetIVec2D("position"));
+            Vec2D positionVec = spawnableNode.checkAndGetVec2D("position");
             return new SceneDisplaySpawnInfo(id, positionVec.x, positionVec.y);
         }
         else {

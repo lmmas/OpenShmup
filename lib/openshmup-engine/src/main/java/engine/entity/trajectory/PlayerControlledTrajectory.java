@@ -1,8 +1,10 @@
 package engine.entity.trajectory;
 
+import engine.Engine;
 import engine.entity.Entity;
 import engine.scene.LevelScene;
 import engine.types.GameControl;
+import engine.types.Vec2D;
 
 final public class PlayerControlledTrajectory implements Trajectory {
     private LevelScene scene;
@@ -33,17 +35,18 @@ final public class PlayerControlledTrajectory implements Trajectory {
         if (scene.getControlState(GameControl.MOVE_DOWN)) {
             positionY -= speed * deltaTimeSeconds;
         }
+        Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         if (positionX < 0.0f) {
             positionX = 0.0f;
         }
-        if (positionX > 1.0f) {
-            positionX = 1.0f;
+        if (positionX > resolution.x) {
+            positionX = resolution.x;
         }
         if (positionY < 0.0f) {
             positionY = 0.0f;
         }
-        if (positionY > 1.0f) {
-            positionY = 1.0f;
+        if (positionY > resolution.y) {
+            positionY = resolution.y;
         }
         entity.setPosition(positionX, positionY);
         lastUpdateTimeSeconds = currentTime;
