@@ -31,6 +31,11 @@ public class EditGameScene extends Scene {
             editMenu.menuItems().add(new RoundedRectangleButton(1, new Vec2D(400f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, entry.getKey().toString(), menuButtonLabelStyle, null));
             visualListIndex++;
         }
+    }
+
+    @Override
+    public void start() {
         addMenu(editMenu);
+        super.start();
     }
 }

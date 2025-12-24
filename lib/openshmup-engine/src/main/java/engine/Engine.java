@@ -122,8 +122,10 @@ public class Engine {
         inLoopScript = script;
     }
 
-    public static void setCurrentScene(Scene scene) {
+    public static void switchCurrentScene(Scene scene) {
+        graphicsManager.clearLayers();
         currentScene = scene;
+        currentScene.start();
     }
 
     public static int getNativeWidth() {

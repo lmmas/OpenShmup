@@ -14,7 +14,7 @@ public class TestTextDisplay {
         Engine.setNativeResolution(540, 1080);
 
         Scene testScene = new Scene();
-        Engine.setCurrentScene(testScene);
+        Engine.switchCurrentScene(testScene);
         try {
 
             Font myFont = Font.createFromTTF("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf");

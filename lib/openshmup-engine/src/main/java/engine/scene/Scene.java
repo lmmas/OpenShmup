@@ -44,6 +44,10 @@ public class Scene {
         this.sceneDebug = new SceneDebug(false);
     }
 
+    public void start() {
+        this.timer.start();
+    }
+
     public void handleInputs() {
         if (displayedMenus.isEmpty()) {
             return;

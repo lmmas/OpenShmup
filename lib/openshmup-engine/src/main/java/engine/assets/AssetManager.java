@@ -36,7 +36,7 @@ final public class AssetManager {
             try {
                 newTexture = Texture.createFromImageFile(rootFolderAbsolutePath + filepath);
             } catch (IOException e) {
-                newTexture = imageFileMap.get(rootFolderAbsolutePath + GlobalVars.Paths.placeholderTextureFile);
+                newTexture = imageFileMap.get(GlobalVars.Paths.placeholderTextureFile);
             }
             imageFileMap.put(filepath, newTexture);
             return newTexture;

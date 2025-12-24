@@ -24,17 +24,17 @@ final public class MainMenuScene extends Scene {
 
     final private MenuScreen mainMenu;
     final private MenuScreen popupMenu;
+    final private ColorRectangleVisual menuBackground;
+    final private TextDisplay menuTitle;
 
     public MainMenuScene() {
         RGBAValue menuBackgroundColor = new RGBAValue(0.0f, 0.1f, 0.3f, 1.0f);
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
-        ColorRectangleVisual menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
-        addVisual(menuBackground);
+        menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
 
         RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
         TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50);
-        TextDisplay menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle);
-        addVisual(menuTitle);
+        menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle);
 
         RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, null);
         RoundedRectangleButton button2 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
@@ -55,8 +55,7 @@ final public class MainMenuScene extends Scene {
                 for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
                     var game = Editor.getLoadedGames().get(i);
                     popupMenu.menuItems().add(new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, () -> {
-                        Engine.graphicsManager.clearLayers();
-                        Engine.setCurrentScene(new EditGameScene(game));
+                        Engine.switchCurrentScene(new EditGameScene(game));
                     }));
                 }
                 addMenu(popupMenu);
@@ -64,8 +63,13 @@ final public class MainMenuScene extends Scene {
         );
 
         closeButton.setOnclick(() -> removeMenu(popupMenu));
+    }
 
-
+    @Override
+    public void start() {
+        addVisual(menuBackground);
+        addVisual(menuTitle);
         addMenu(mainMenu);
+        super.start();
     }
 }

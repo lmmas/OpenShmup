@@ -26,7 +26,7 @@ final public class Editor extends Engine {
     public Editor() throws IOException {
         super();
         setNativeResolution(1920, 1080);
-        currentScene = new MainMenuScene();
+        switchCurrentScene(new MainMenuScene());
         window.show();
     }
 

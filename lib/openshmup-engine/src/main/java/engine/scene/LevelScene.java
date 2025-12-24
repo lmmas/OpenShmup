@@ -72,8 +72,12 @@ final public class LevelScene extends Scene {
         this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, List.of(blueButton), List.of(new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f)));
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);
+    }
+
+    @Override
+    public void start() {
         loadAssets();
-        this.timer.start();
+        super.start();
     }
 
     void loadAssets() {
@@ -244,7 +248,7 @@ final public class LevelScene extends Scene {
             return;
         }
         Hitbox entityHitbox = entity.getHitbox();
-        if (entityHitbox == EmptyHitbox.getInstance()) {
+        if (entityHitbox == Hitbox.DEFAULT_EMPTY()) {
             return;
         }
         if (entity.getType() == EntityType.PROJECTILE) {

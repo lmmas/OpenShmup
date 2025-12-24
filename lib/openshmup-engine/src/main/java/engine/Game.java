@@ -38,6 +38,6 @@ final public class Game extends Engine {
     public static void gameInit() {
         graphicsManager.clearLayers();
         gameDataManager.getTimeline(0).resetTime();
-        currentScene = new LevelScene(gameDataManager.getTimeline(0));
+        switchCurrentScene(new LevelScene(gameDataManager.getTimeline(0)));
     }
 }
