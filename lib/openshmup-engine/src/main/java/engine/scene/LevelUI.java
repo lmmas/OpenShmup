@@ -49,6 +49,7 @@ public class LevelUI {
     }
 
     public void setPlayerShip(Ship playerShip) {
+        assert this.playerShip == null : "player ship is already set to entity " + this.playerShip;
         this.playerShip = playerShip;
     }
 }

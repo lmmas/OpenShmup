@@ -2,7 +2,6 @@ package engine;
 
 final public class GlobalVars {
     public static int MAX_TEXTURE_SLOTS;
-    public static float playerSpeed = 700f;
     final public static int debugDisplayLayer = 2048;
 
     final public static class Paths {

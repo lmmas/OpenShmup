@@ -44,7 +44,7 @@ final public class GameDataManager {
     public void loadGameContents() {
         GameDataLoader gameDataLoader = new GameDataLoader(this);
         try {
-            gameDataLoader.loadGameDisplays(paths.gameVisualsFile);
+            gameDataLoader.loadGameVisuals(paths.gameVisualsFile);
             gameDataLoader.loadGameTrajectories(paths.gameTrajectoriesFile);
             gameDataLoader.loadGameEntities(paths.gameEntitiesFile);
             gameDataLoader.loadGameTimeline(paths.gameTimelineFile);

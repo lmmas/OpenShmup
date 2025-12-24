@@ -214,7 +214,7 @@ final public class LevelScene extends Scene {
             newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
             addEntity(newEntity);
-            if (entitySpawn.id() == 0) {
+            if (entitySpawn.id() == gameDataManager.config.playerEntityId) {
                 levelUI.setPlayerShip((Ship) newEntity);
             }
         }

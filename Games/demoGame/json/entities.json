@@ -10,6 +10,7 @@
             "type": "composite",
             "fileName": "shipHitbox.png"
         },
+        "defaultTrajectoryId": 0,
         "shot":{
             "shotPeriod": 0.1,
             "firstShotTime": 0.5,

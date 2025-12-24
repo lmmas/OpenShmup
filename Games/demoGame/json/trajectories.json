@@ -1,5 +1,10 @@
 [
     {
+        "id": 0,
+        "type": "player",
+        "playerMovementSpeed": 700
+    },
+    {
         "id": 1,
         "type": "fixed",
         "functionX": "0.0",
@@ -24,12 +29,6 @@
         "functionY": "1000 * t"
     },
     {
-        "id": 10,
-        "type": "fixed",
-        "functionX": "150 * cos(t)",
-        "functionY": "150 * sin(t)"
-    },
-    {
         "id": 11,
         "type": "fixed",
         "functionX": "0",
@@ -40,17 +39,5 @@
         "type": "fixed",
         "functionX": "100 * cos(2 * t)",
         "functionY": "-200 * t"
-    },
-    {
-        "id": 13,
-        "type": "fixed",
-        "functionX": "0.0",
-        "functionY": "0.0"
-    },
-    {
-        "id": 14,
-        "type": "fixed",
-        "functionX": "1.5",
-        "functionY": "0.0"
     }
 ]

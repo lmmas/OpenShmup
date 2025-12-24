@@ -9,6 +9,7 @@
         "hitbox": {
             "type": "simpleRectangle"
         },
+        "defaultTrajectoryId": 0,
         "shot":{
             "shotPeriod": 0.05,
             "firstShotTime": 0.1,

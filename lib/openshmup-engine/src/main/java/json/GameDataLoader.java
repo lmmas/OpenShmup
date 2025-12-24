@@ -1,7 +1,6 @@
 package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.GlobalVars;
 import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
@@ -58,7 +57,7 @@ final public class GameDataLoader {
         gameConfig.levelUI.lives.stride = livesNode.checkAndGetVec2D("stride");
     }
 
-    public void loadGameDisplays(String filepath) throws IllegalArgumentException {
+    public void loadGameVisuals(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
         for (SafeJsonNode visualNode : visualList) {
@@ -118,11 +117,13 @@ final public class GameDataLoader {
             if (type.equals("fixed")) {
                 String functionXString = trajectoryNode.checkAndGetString("functionX");
                 String functionYString = trajectoryNode.checkAndGetString("functionY");
-                Function<Float, Float> trajectoryFunctionX;
-                Function<Float, Float> trajectoryFunctionY;
-                trajectoryFunctionX = convertToFunction(functionXString);
-                trajectoryFunctionY = convertToFunction(functionYString);
+                Function<Float, Float> trajectoryFunctionX = convertToFunction(functionXString);
+                Function<Float, Float> trajectoryFunctionY = convertToFunction(functionYString);
                 newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
+            }
+            else if (type.equals("player")) {
+                float playerMovementSpeed = trajectoryNode.checkAndGetFloat("playerMovementSpeed");
+                newTrajectory = new PlayerControlledTrajectory(playerMovementSpeed);
             }
             else {
                 throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
@@ -204,33 +205,9 @@ final public class GameDataLoader {
             SceneVisual sprite = gameDataManager.getGameVisual(spriteVisualId);
             customEntityBuilder = customEntityBuilder.setSprite(sprite);
 
-            if (id == 0) {
-                customEntityBuilder = customEntityBuilder.setTrajectory(new PlayerControlledTrajectory(GlobalVars.playerSpeed));
-            }
-            if (entityNode.hasField("defaultTrajectory")) {
-                SafeJsonNode trajectoryNode = entityNode.checkAndGetObject("defaultTrajectory");
-                Trajectory trajectory;
-                if (trajectoryNode.hasField("id")) {
-                    int trajectoryId = trajectoryNode.checkAndGetInt("id");
-                    trajectory = gameDataManager.getTrajectory(trajectoryId);
-                }
-                else {
-                    String trajectoryType = trajectoryNode.checkAndGetString("type");
-                    if (trajectoryType.equals("fixed")) {
-                        String functionXString = trajectoryNode.checkAndGetString("functionX");
-                        String functionYString = trajectoryNode.checkAndGetString("functionY");
-                        if (trajectoryNode.hasField("relative")) {
-                            boolean relative = trajectoryNode.checkAndGetBoolean("relative");
-                            trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString), relative);
-                        }
-                        else {
-                            trajectory = new FixedTrajectory(convertToFunction(functionXString), convertToFunction(functionYString));
-                        }
-                    }
-                    else {
-                        throw new IllegalArgumentException("Invalid JSON format: \"" + filepath + "\"");
-                    }
-                }
+            if (entityNode.hasField("defaultTrajectoryId")) {
+                int defaultTrajectoryId = entityNode.checkAndGetInt("defaultTrajectoryId");
+                Trajectory trajectory = gameDataManager.getTrajectory(defaultTrajectoryId);
                 customEntityBuilder = customEntityBuilder.setTrajectory(trajectory);
             }
             gameDataManager.addCustomEntity(id, customEntityBuilder.build());
@@ -313,9 +290,5 @@ final public class GameDataLoader {
                 .setVariable("t", t);
             return (float) expr.evaluate();
         };
-    }
-
-    private Vec2D convertToFloatVec(IVec2D pixelVec) {
-        return new Vec2D((float) pixelVec.x / gameConfig.getNativeWidth(), (float) pixelVec.y / gameConfig.getNativeHeight());
     }
 }

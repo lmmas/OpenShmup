@@ -23,7 +23,7 @@ final public class GameConfig {
         this.nativeResolution.y = nativeHeight;
     }
 
-    public boolean debugMode;
+    public int playerEntityId = 0;
 
     public static class LevelUI {
         public int contentsLayer = 1000;
