@@ -12,7 +12,7 @@ final public class Animation extends SceneVisual {
     final private boolean looping;
     private final float framePeriodSeconds;
     private int frameIndex;
-    private float timeOfLastFrame;
+    private double timeOfLastFrame;
 
     public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
         super(layer, List.of(0));
@@ -28,7 +28,7 @@ final public class Animation extends SceneVisual {
             1.0f, 1.0f, 1.0f, 1.0f,
             0.0f, 0.0f, 0.0f, 0.0f);
         updateTexturePosition();
-        this.timeOfLastFrame = 0.0f;
+        this.timeOfLastFrame = 0.0d;
     }
 
     public Animation(Animation animation) {
@@ -58,12 +58,12 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public void initDisplay(float startingTimeSeconds) {
+    public void initDisplay(double startingTimeSeconds) {
         this.timeOfLastFrame = startingTimeSeconds;
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
+    public void update(double currentTimeSeconds) {
         if (currentTimeSeconds >= timeOfLastFrame + framePeriodSeconds) {
             frameIndex++;
             if (frameIndex >= info.frameCount()) {

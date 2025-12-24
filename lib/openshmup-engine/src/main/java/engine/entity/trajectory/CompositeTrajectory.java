@@ -28,7 +28,7 @@ final public class CompositeTrajectory implements Trajectory {
     @Override
     public void update(Entity entity, LevelScene scene) {
         if (trajectoryIndex < bounds.length) {
-            float currentTime = entity.getLifetimeSeconds();
+            double currentTime = entity.getLifetimeSeconds();
             if (currentTime >= bounds[trajectoryIndex]) {
                 trajectoryIndex++;
                 Vec2D currentPosition = entity.getPosition();

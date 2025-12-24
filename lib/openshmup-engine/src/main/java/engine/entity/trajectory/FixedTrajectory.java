@@ -8,17 +8,17 @@ import java.util.function.Function;
 
 final public class FixedTrajectory implements Trajectory {
 
-    final private Function<Float, Float> trajectoryFunctionX;
-    final private Function<Float, Float> trajectoryFunctionY;
+    final private Function<Double, Float> trajectoryFunctionX;
+    final private Function<Double, Float> trajectoryFunctionY;
     final private boolean relativeTrajectory;
 
-    public FixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY, boolean relativeTrajectory) {
+    public FixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY, boolean relativeTrajectory) {
         this.trajectoryFunctionX = trajectoryFunctionX;
         this.trajectoryFunctionY = trajectoryFunctionY;
         this.relativeTrajectory = relativeTrajectory;
     }
 
-    public FixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY) {
+    public FixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY) {
         this(trajectoryFunctionX, trajectoryFunctionY, true);
     }
 

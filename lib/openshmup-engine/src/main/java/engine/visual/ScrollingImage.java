@@ -16,7 +16,7 @@ final public class ScrollingImage extends SceneVisual {
     final private Vec2D size;
     boolean horizontalScrolling;
     private float speed;
-    private float lastUpdateTimeSeconds;
+    private double lastUpdateTimeSeconds;
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
         super(layer, List.of(0, 0));
@@ -90,16 +90,16 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public void initDisplay(float startingTimeSeconds) {
+    public void initDisplay(double startingTimeSeconds) {
         this.lastUpdateTimeSeconds = startingTimeSeconds;
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
-        float deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
+    public void update(double currentTimeSeconds) {
+        double deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
         if (horizontalScrolling) {
-            position1.x += speed * deltaTime;
-            position2.x += speed * deltaTime;
+            position1.x += (float) (speed * deltaTime);
+            position2.x += (float) (speed * deltaTime);
             float screenWidth = (float) Engine.getNativeWidth();
             if (position1.x > screenWidth / 2 + size.x) {
                 position1.x -= 2 * size.x;

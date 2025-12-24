@@ -27,8 +27,8 @@ abstract public class Entity {
     final protected Vec2D size;
     protected float orientationRadians;
     protected boolean invincible;
-    protected float startingTimeSeconds;
-    protected float lifetimeSeconds;
+    protected double startingTimeSeconds;
+    protected double lifetimeSeconds;
     protected SceneVisual sprite;
     protected Hitbox hitbox;
     protected Trajectory trajectory;
@@ -49,8 +49,8 @@ abstract public class Entity {
         this.evil = evil;
         this.invincible = false;
         this.entityId = entityId;
-        this.startingTimeSeconds = 0.0f;
-        this.lifetimeSeconds = 0.0f;
+        this.startingTimeSeconds = 0.0d;
+        this.lifetimeSeconds = 0.0d;
         this.deathSpawn = deathSpawn;
         this.extraComponents = extraComponents;
         setOrientation(orientationRadians);
@@ -104,7 +104,7 @@ abstract public class Entity {
         hitbox.setOrientation(orientationRadians);
     }
 
-    final public float getLifetimeSeconds() {
+    final public double getLifetimeSeconds() {
         return lifetimeSeconds;
     }
 
@@ -143,11 +143,11 @@ abstract public class Entity {
     public void setScene(LevelScene scene) {
         assert scene != null;
         this.scene = scene;
-        this.lifetimeSeconds = 0.0f;
+        this.lifetimeSeconds = 0.0d;
         this.startingTimeSeconds = scene.getSceneTimeSeconds();
     }
 
-    public void update(float currentTimeSeconds) {
+    public void update(double currentTimeSeconds) {
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
         trajectory.update(this, scene);
         for (ExtraComponent extraComponent : extraComponents) {
@@ -220,12 +220,12 @@ abstract public class Entity {
             return this;
         }
 
-        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY) {
+        public Builder createFixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY) {
             this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
             return this;
         }
 
-        public Builder createFixedTrajectory(Function<Float, Float> trajectoryFunctionX, Function<Float, Float> trajectoryFunctionY, boolean relative) {
+        public Builder createFixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY, boolean relative) {
             this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY, relative);
             return this;
         }

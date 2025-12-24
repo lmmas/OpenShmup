@@ -117,8 +117,8 @@ final public class GameDataLoader {
             if (type.equals("fixed")) {
                 String functionXString = trajectoryNode.checkAndGetString("functionX");
                 String functionYString = trajectoryNode.checkAndGetString("functionY");
-                Function<Float, Float> trajectoryFunctionX = convertToFunction(functionXString);
-                Function<Float, Float> trajectoryFunctionY = convertToFunction(functionYString);
+                Function<Double, Float> trajectoryFunctionX = convertToFunction(functionXString);
+                Function<Double, Float> trajectoryFunctionY = convertToFunction(functionYString);
                 newTrajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
             }
             else if (type.equals("player")) {
@@ -282,7 +282,7 @@ final public class GameDataLoader {
         }
     }
 
-    private Function<Float, Float> convertToFunction(String expressionString) {
+    private Function<Double, Float> convertToFunction(String expressionString) {
         return t -> {
             Expression expr = new ExpressionBuilder(expressionString)
                 .variable("t")

@@ -23,7 +23,7 @@ final public class LevelTimeline {
     }
 
     public void updateSpawning(LevelScene scene) {
-        float currentTime = scene.getSceneTimeSeconds();
+        double currentTime = scene.getSceneTimeSeconds();
         while (nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration) {
             ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
             for (Spawnable spawnable : spawnables) {

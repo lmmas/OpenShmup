@@ -24,9 +24,9 @@ import static engine.GlobalVars.debugDisplayLayer;
 
 
 public class Scene {
-    protected float sceneTime;
+    protected double sceneTime;
     final protected SceneTimer timer;
-    protected float lastDrawTime = 0.0f;
+    protected double lastDrawTime = 0.0d;
     final protected TreeMap<Integer, SceneLayer> layers;
     final protected HashSet<SceneVisual> visualsToRemove;
     final protected ArrayList<MenuScreen> displayedMenus;
@@ -36,7 +36,7 @@ public class Scene {
     final protected SceneDebug sceneDebug;
 
     public Scene() {
-        this.sceneTime = 0.0f;
+        this.sceneTime = 0.0d;
         this.timer = new SceneTimer();
         this.layers = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
@@ -164,7 +164,7 @@ public class Scene {
         }
     }
 
-    final public float getSceneTimeSeconds() {
+    final public double getSceneTimeSeconds() {
         return sceneTime;
     }
 
@@ -219,7 +219,7 @@ public class Scene {
             if (debugModeEnabled) {
                 DecimalFormat df = new DecimalFormat("#");
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
-                float fpsVal = 1 / (sceneTime - lastDrawTime);
+                double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
             }
         }

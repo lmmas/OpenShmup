@@ -75,11 +75,11 @@ abstract public class SceneVisual {
         this.getGraphics().forEach(g -> g.setPosition(positionX, positionY));
     }
 
-    public void initDisplay(float startingTimeSeconds) {
+    public void initDisplay(double startingTimeSeconds) {
 
     }
 
-    public void update(float currentTimeSeconds) {
+    public void update(double currentTimeSeconds) {
 
     }
 

@@ -143,7 +143,7 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
-    public void update(float currentTimeSeconds) {
+    public void update(double currentTimeSeconds) {
         if (dynamicText) {
             updateText();
             this.setReloadGraphicsFlag(true);

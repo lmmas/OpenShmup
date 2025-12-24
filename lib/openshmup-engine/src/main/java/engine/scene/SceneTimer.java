@@ -5,7 +5,7 @@ final public class SceneTimer {
     private boolean alreadyStarted;
     private long pausedTime;
     private boolean isPaused;
-    private float lastSceneTime;
+    private double lastSceneTime;
     private long lastReadTimeMillis;
     private float speed;
 
@@ -14,7 +14,7 @@ final public class SceneTimer {
         this.alreadyStarted = false;
         this.pausedTime = 0;
         this.isPaused = false;
-        this.lastSceneTime = 0.0f;
+        this.lastSceneTime = 0.0d;
         this.lastReadTimeMillis = 0;
         this.speed = 1.0f;
     }
@@ -55,17 +55,17 @@ final public class SceneTimer {
         this.speed = speed;
     }
 
-    public float getTimeSeconds() {
+    public double getTimeSeconds() {
         if (alreadyStarted) {
             if (!isPaused) {
                 long currentTimeMillis = System.nanoTime();
-                float sceneTime = lastSceneTime + (float) (currentTimeMillis - lastReadTimeMillis) * speed / 1000000000.0f;
+                double sceneTime = lastSceneTime + (double) (currentTimeMillis - lastReadTimeMillis) * speed / 1000000000.0;
                 lastReadTimeMillis = currentTimeMillis;
                 lastSceneTime = sceneTime;
                 return sceneTime;
             }
             return lastSceneTime;
         }
-        return 0.0f;
+        return 0.0d;
     }
 }
