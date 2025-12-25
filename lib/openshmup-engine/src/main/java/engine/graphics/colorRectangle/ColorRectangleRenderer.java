@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive> {
+final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex> {
     final static private int vertexFloatCount = 8;
 
     public ColorRectangleRenderer() {
@@ -25,7 +25,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         return new ColorRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectanglePrimitive>.Batch {
+    public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex>.Batch {
         final private FloatBuffer dataBuffer;
 
         public ColorRectangleBatch(Shader shader) {
@@ -37,8 +37,8 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         }
 
         @Override
-        protected boolean canReceivePrimitiveFrom(ColorRectangle graphic) {
-            if (primitives.size() >= batchSize) {
+        protected boolean canReceiveVertexFrom(ColorRectangle graphic) {
+            if (vertices.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -59,7 +59,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         @Override
         protected void uploadData() {
             dataBuffer.clear();
-            for (ColorRectangle.ColorRectanglePrimitive rectangle : primitives) {
+            for (ColorRectangle.ColorRectangleVertex rectangle : vertices) {
                 Vec2D position = rectangle.getPosition();
                 Vec2D size = rectangle.getSize();
                 RGBAValue color = rectangle.getColor();
@@ -88,16 +88,16 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
-            glDrawArrays(GL_POINTS, 0, primitives.size());
+            glDrawArrays(GL_POINTS, 0, vertices.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);
         }
 
         @Override
-        public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
-            primitives.remove(primitiveToRemoveIndex);
+        public void removeVertex(int vertexToRemoveIndex) {
+            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
+            vertices.remove(vertexToRemoveIndex);
         }
     }
 }

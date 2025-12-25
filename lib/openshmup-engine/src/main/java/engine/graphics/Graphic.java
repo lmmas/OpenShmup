@@ -4,7 +4,7 @@ import engine.assets.Shader;
 import engine.types.Vec2D;
 
 
-public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G, P>.Primitive> {
+public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
     final protected RenderType renderType;
     final protected Shader shader;
 
@@ -34,17 +34,17 @@ public abstract class Graphic<G extends Graphic<G, P>, P extends Graphic<G, P>.P
 
     abstract public void setScale(float scaleX, float scaleY);
 
-    abstract public int getPrimitiveCount();
+    abstract public int getVertexCount();
 
-    abstract public P getPrimitive(int index);
+    abstract public V getVertex(int index);
 
     abstract public void remove();
 
-    abstract public class Primitive {
+    abstract public class Vertex {
         protected boolean dataHasChangedFlag = true;
         protected boolean shouldBeRemovedFlag = false;
 
-        public Primitive() {
+        public Vertex() {
             this.shouldBeRemovedFlag = false;
         }
 

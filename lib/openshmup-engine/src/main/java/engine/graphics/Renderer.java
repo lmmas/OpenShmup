@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.Primitive> {
+public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
     protected int vaoID;
     protected RenderType type;
     final protected int drawingType;
@@ -46,29 +46,29 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
     }
 
     public void addGraphic(G newGraphic) {
-        int primitiveCount = newGraphic.getPrimitiveCount();
-        for (int primitiveIndex = 0; primitiveIndex < primitiveCount; primitiveIndex++) {
-            P newPrimitive = newGraphic.getPrimitive(primitiveIndex);
-            boolean newPrimitiveAllocated = false;
+        int vertexCount = newGraphic.getVertexCount();
+        for (int vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++) {
+            V newVertex = newGraphic.getVertex(vertexIndex);
+            boolean newVertexAllocated = false;
             int batchIndex = 0;
             while (batchIndex < batches.size()) {
-                if (batches.get(batchIndex).canReceivePrimitiveFrom(newGraphic)) {
-                    batches.get(batchIndex).addPrimitive(newPrimitive);
-                    newPrimitiveAllocated = true;
+                if (batches.get(batchIndex).canReceiveVertexFrom(newGraphic)) {
+                    batches.get(batchIndex).addVertex(newVertex);
+                    newVertexAllocated = true;
                     break;
                 }
                 batchIndex++;
             }
-            if (!newPrimitiveAllocated) {
+            if (!newVertexAllocated) {
                 addNewBatchFromGraphic(newGraphic);
-                batches.getLast().addPrimitive(newPrimitive);
+                batches.getLast().addVertex(newVertex);
             }
         }
     }
 
     public abstract class Batch {
         protected int vboID;
-        protected ArrayList<P> primitives = new ArrayList<>(batchSize);
+        protected ArrayList<V> vertices = new ArrayList<>(batchSize);
         protected Shader shader;
 
         protected Batch(Shader shader) {
@@ -80,14 +80,14 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
             return shader;
         }
 
-        public void addPrimitive(P newPrimitive) {
-            assert primitives.size() < batchSize : "Can't add primitive data to the batch";
-            assert !primitives.contains(newPrimitive) : "primitive already in batch";
-            primitives.add(newPrimitive);
-            newPrimitive.dataHasChanged();
+        public void addVertex(V newVertex) {
+            assert vertices.size() < batchSize : "Can't add vertex data to the batch";
+            assert !vertices.contains(newVertex) : "vertex already in batch";
+            vertices.add(newVertex);
+            newVertex.dataHasChanged();
         }
 
-        abstract protected boolean canReceivePrimitiveFrom(G graphic);
+        abstract protected boolean canReceiveVertexFrom(G graphic);
 
         abstract protected void setupVertexAttributes();
 
@@ -98,15 +98,15 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
         public void dataHasChanged() {
         }
 
-        abstract public void removePrimitive(int primitiveToRemoveIndex);
+        abstract public void removeVertex(int vertexToRemoveIndex);
 
-        public void cleanupPrimitives() {
+        public void cleanupVertices() {
             int i = 0;
-            while (i < primitives.size()) {
-                P primitive = primitives.get(i);
-                if (primitive.getShouldBeRemoved()) {
-                    primitive.hasBeenRemoved();
-                    removePrimitive(i);
+            while (i < vertices.size()) {
+                V vertex = vertices.get(i);
+                if (vertex.getShouldBeRemoved()) {
+                    vertex.hasBeenRemoved();
+                    removeVertex(i);
                     dataHasChanged();
                 }
                 else {
@@ -116,13 +116,13 @@ public abstract class Renderer<G extends Graphic<G, P>, P extends Graphic<G, P>.
         }
 
         public void update() {
-            this.cleanupPrimitives();
+            this.cleanupVertices();
             this.setupVertexAttributes();
             this.shader.use();
-            for (var primitive : primitives) {
-                if (primitive.getDataHasChangedFlag()) {
+            for (var vertex : vertices) {
+                if (vertex.getDataHasChangedFlag()) {
                     this.uploadData();
-                    primitives.forEach(P::resetDataHasChangedFlag);
+                    vertices.forEach(V::resetDataHasChangedFlag);
                     break;
                 }
             }

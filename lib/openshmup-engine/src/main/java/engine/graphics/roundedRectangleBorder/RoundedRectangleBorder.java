@@ -8,14 +8,14 @@ import engine.types.Vec2D;
 
 import static engine.Engine.assetManager;
 
-final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive> {
+final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/roundedRectangleBorder.glsl";
 
-    private final RoundedRectangleBorderPrimitive primitive;
+    private final RoundedRectangleBorderVertex vertex;
 
     public RoundedRectangleBorder(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a, Shader shader) {
         super(RenderType.ROUNDED_RECTANGLE_BORDER, shader);
-        this.primitive = new RoundedRectangleBorder.RoundedRectangleBorderPrimitive(sizeX, sizeY, positionX, positionY, roundingRadius, borderWidth, r, g, b, a);
+        this.vertex = new RoundedRectangleBorderVertex(sizeX, sizeY, positionX, positionY, roundingRadius, borderWidth, r, g, b, a);
     }
 
     public RoundedRectangleBorder(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a) {
@@ -24,51 +24,51 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
 
     public RoundedRectangleBorder(RoundedRectangleBorder roundedRectangleBorder) {
         this(
-            roundedRectangleBorder.primitive.size.x, roundedRectangleBorder.primitive.size.y,
-            roundedRectangleBorder.primitive.position.x, roundedRectangleBorder.primitive.position.y,
-            roundedRectangleBorder.primitive.roundingRadius,
-            roundedRectangleBorder.primitive.borderWidth,
-            roundedRectangleBorder.primitive.color.r, roundedRectangleBorder.primitive.color.g, roundedRectangleBorder.primitive.color.b, roundedRectangleBorder.primitive.color.a,
+            roundedRectangleBorder.vertex.size.x, roundedRectangleBorder.vertex.size.y,
+            roundedRectangleBorder.vertex.position.x, roundedRectangleBorder.vertex.position.y,
+            roundedRectangleBorder.vertex.roundingRadius,
+            roundedRectangleBorder.vertex.borderWidth,
+            roundedRectangleBorder.vertex.color.r, roundedRectangleBorder.vertex.color.g, roundedRectangleBorder.vertex.color.b, roundedRectangleBorder.vertex.color.a,
             roundedRectangleBorder.shader
         );
     }
 
     @Override
-    public int getPrimitiveCount() {
+    public int getVertexCount() {
         return 1;
     }
 
     @Override
-    public RoundedRectangleBorderPrimitive getPrimitive(int index) {
-        return primitive;
+    public RoundedRectangleBorderVertex getVertex(int index) {
+        return vertex;
     }
 
     public Vec2D getPosition() {
-        return new Vec2D(primitive.position);
+        return new Vec2D(vertex.position);
     }
 
     public Vec2D getScale() {
-        return new Vec2D(primitive.size);
+        return new Vec2D(vertex.size);
     }
 
     @Override
     public void remove() {
-        primitive.remove();
+        vertex.remove();
     }
 
     public void setPosition(float positionX, float positionY) {
-        primitive.position.x = positionX;
-        primitive.position.y = positionY;
-        primitive.dataHasChanged();
+        vertex.position.x = positionX;
+        vertex.position.y = positionY;
+        vertex.dataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY) {
-        primitive.size.x = scaleX;
-        primitive.size.y = scaleY;
-        primitive.dataHasChanged();
+        vertex.size.x = scaleX;
+        vertex.size.y = scaleY;
+        vertex.dataHasChanged();
     }
 
-    public class RoundedRectangleBorderPrimitive extends Graphic<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive>.Primitive {
+    public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorder, RoundedRectangleBorderVertex>.Vertex {
 
         private final Vec2D size;
 
@@ -100,7 +100,7 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
             return new RGBAValue(color);
         }
 
-        public RoundedRectangleBorderPrimitive(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a) {
+        public RoundedRectangleBorderVertex(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a) {
             this.size = new Vec2D(sizeX, sizeY);
             this.position = new Vec2D(positionX, positionY);
             this.roundingRadius = roundingRadius;

@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive> {
+final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex> {
     final static private int vertexFloatCount = 9;
 
     public ColorRoundedRectangleRenderer() {
@@ -25,7 +25,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         return new ColorRoundedRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectanglePrimitive>.Batch {
+    public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex>.Batch {
         final private FloatBuffer dataBuffer;
 
         public ColorRoundedRectangleBatch(Shader shader) {
@@ -37,8 +37,8 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         }
 
         @Override
-        protected boolean canReceivePrimitiveFrom(ColorRoundedRectangle graphic) {
-            if (primitives.size() >= batchSize) {
+        protected boolean canReceiveVertexFrom(ColorRoundedRectangle graphic) {
+            if (vertices.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -61,7 +61,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         @Override
         protected void uploadData() {
             dataBuffer.clear();
-            for (ColorRoundedRectangle.ColorRoundedRectanglePrimitive rectangle : primitives) {
+            for (ColorRoundedRectangle.ColorRoundedRectangleVertex rectangle : vertices) {
                 Vec2D position = rectangle.getPosition();
                 Vec2D size = rectangle.getSize();
                 float roundingRadius = rectangle.getRoundingRadius();
@@ -92,7 +92,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
             glEnableVertexAttribArray(3);
-            glDrawArrays(GL_POINTS, 0, primitives.size());
+            glDrawArrays(GL_POINTS, 0, vertices.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);
@@ -100,9 +100,9 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         }
 
         @Override
-        public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
-            primitives.remove(primitiveToRemoveIndex);
+        public void removeVertex(int vertexToRemoveIndex) {
+            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
+            vertices.remove(vertexToRemoveIndex);
         }
     }
 }

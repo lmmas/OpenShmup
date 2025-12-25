@@ -9,11 +9,11 @@ import engine.types.Vec2D;
 
 import static engine.Engine.assetManager;
 
-final public class Image extends Graphic<Image, Image.ImagePrimitive> {
+final public class Image extends Graphic<Image, Image.ImageVertex> {
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
 
-    private Texture texture;
-    final private ImagePrimitive primitive;
+    private final Texture texture;
+    final private ImageVertex vertex;
 
     public Image(Texture texture, boolean dynamic,
                  float imageSizeX, float imageSizeY,
@@ -26,7 +26,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
 
         super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
         this.texture = texture;
-        this.primitive = new ImagePrimitive(
+        this.vertex = new ImageVertex(
             imageSizeX, imageSizeY,
             imagePositionX, imagePositionY,
             textureSizeX, textureSizeY,
@@ -59,43 +59,43 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     public Image(Image image) {
         super(image);
         this.texture = image.texture;
-        this.primitive = new ImagePrimitive(image.primitive);
+        this.vertex = new ImageVertex(image.vertex);
     }
 
     public void setPosition(float imagePositionX, float imagePositionY) {
-        primitive.imagePosition.x = imagePositionX;
-        primitive.imagePosition.y = imagePositionY;
-        primitive.dataHasChanged();
+        vertex.imagePosition.x = imagePositionX;
+        vertex.imagePosition.y = imagePositionY;
+        vertex.dataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY) {
-        primitive.imageSize.x = scaleX;
-        primitive.imageSize.y = scaleY;
-        primitive.dataHasChanged();
+        vertex.imageSize.x = scaleX;
+        vertex.imageSize.y = scaleY;
+        vertex.dataHasChanged();
     }
 
     public void setTexturePosition(float texturePositionX, float texturePositionY) {
-        primitive.texturePosition.x = texturePositionX;
-        primitive.texturePosition.y = texturePositionY;
-        primitive.dataHasChanged();
+        vertex.texturePosition.x = texturePositionX;
+        vertex.texturePosition.y = texturePositionY;
+        vertex.dataHasChanged();
     }
 
     public void setTextureSize(float textureSizeX, float textureSizeY) {
-        primitive.textureSize.x = textureSizeX;
-        primitive.textureSize.y = textureSizeY;
-        primitive.dataHasChanged();
+        vertex.textureSize.x = textureSizeX;
+        vertex.textureSize.y = textureSizeY;
+        vertex.dataHasChanged();
     }
 
-    public void setPrimitiveData(float imagePositionX, float imagePositionY, float imageSizeX, float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY) {
-        primitive.imagePosition.x = imagePositionX;
-        primitive.imagePosition.y = imagePositionY;
-        primitive.imageSize.x = imageSizeX;
-        primitive.imageSize.y = imageSizeY;
-        primitive.texturePosition.x = texturePositionX;
-        primitive.texturePosition.y = texturePositionY;
-        primitive.textureSize.x = textureSizeX;
-        primitive.textureSize.y = textureSizeY;
-        primitive.dataHasChanged();
+    public void setVertexData(float imagePositionX, float imagePositionY, float imageSizeX, float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY) {
+        vertex.imagePosition.x = imagePositionX;
+        vertex.imagePosition.y = imagePositionY;
+        vertex.imageSize.x = imageSizeX;
+        vertex.imageSize.y = imageSizeY;
+        vertex.texturePosition.x = texturePositionX;
+        vertex.texturePosition.y = texturePositionY;
+        vertex.textureSize.x = textureSizeX;
+        vertex.textureSize.y = textureSizeY;
+        vertex.dataHasChanged();
     }
 
     public Texture getTexture() {
@@ -103,34 +103,34 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
     }
 
     public Vec2D getPosition() {
-        return new Vec2D(primitive.imagePosition);
+        return new Vec2D(vertex.imagePosition);
     }
 
     public Vec2D getScale() {
-        return new Vec2D(primitive.imageSize);
+        return new Vec2D(vertex.imageSize);
     }
 
-    public int getPrimitiveCount() {
+    public int getVertexCount() {
         return 1;
     }
 
-    public ImagePrimitive getPrimitive(int primitiveIndex) {
-        return this.primitive;
+    public ImageVertex getVertex(int vertexIndex) {
+        return this.vertex;
     }
 
     @Override
     public void remove() {
-        primitive.remove();
+        vertex.remove();
     }
 
     public void setColorCoefs(float r, float g, float b, float a) {
-        primitive.textureColorCoefs.r = r;
-        primitive.textureColorCoefs.g = g;
-        primitive.textureColorCoefs.b = b;
-        primitive.textureColorCoefs.a = a;
+        vertex.textureColorCoefs.r = r;
+        vertex.textureColorCoefs.g = g;
+        vertex.textureColorCoefs.b = b;
+        vertex.textureColorCoefs.a = a;
     }
 
-    public class ImagePrimitive extends Graphic<Image, ImagePrimitive>.Primitive {
+    public class ImageVertex extends Graphic<Image, ImageVertex>.Vertex {
 
         private final Vec2D imageSize;
 
@@ -144,7 +144,7 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
 
         private final RGBAValue addedColor;
 
-        public ImagePrimitive(
+        public ImageVertex(
             float imageSizeX, float imageSizeY,
             float imagePositionX, float imagePositionY,
             float textureSizeX, float textureSizeY,
@@ -160,13 +160,13 @@ final public class Image extends Graphic<Image, Image.ImagePrimitive> {
             this.addedColor = new RGBAValue(addedColorR, addedColorG, addedColorB, addedColorA);
         }
 
-        public ImagePrimitive(ImagePrimitive imagePrimitive) {
-            this.imagePosition = new Vec2D(imagePrimitive.imagePosition);
-            this.imageSize = new Vec2D(imagePrimitive.imageSize);
-            this.texturePosition = new Vec2D(imagePrimitive.texturePosition);
-            this.textureSize = new Vec2D(imagePrimitive.textureSize);
-            this.textureColorCoefs = new RGBAValue(imagePrimitive.textureColorCoefs);
-            this.addedColor = new RGBAValue(imagePrimitive.addedColor);
+        public ImageVertex(ImageVertex imageVertex) {
+            this.imagePosition = new Vec2D(imageVertex.imagePosition);
+            this.imageSize = new Vec2D(imageVertex.imageSize);
+            this.texturePosition = new Vec2D(imageVertex.texturePosition);
+            this.textureSize = new Vec2D(imageVertex.textureSize);
+            this.textureColorCoefs = new RGBAValue(imageVertex.textureColorCoefs);
+            this.addedColor = new RGBAValue(imageVertex.addedColor);
         }
 
         public Vec2D getImagePosition() {

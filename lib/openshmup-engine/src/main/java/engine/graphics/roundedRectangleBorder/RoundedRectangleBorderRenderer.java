@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive> {
+final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
     final static private int vertexFloatCount = 10;
 
     public RoundedRectangleBorderRenderer() {
@@ -25,7 +25,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         return new RoundedRectangleBorderBatch(graphic.getShader());
     }
 
-    public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderPrimitive>.Batch {
+    public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex>.Batch {
         final private FloatBuffer dataBuffer;
 
         public RoundedRectangleBorderBatch(Shader shader) {
@@ -37,8 +37,8 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         }
 
         @Override
-        protected boolean canReceivePrimitiveFrom(RoundedRectangleBorder graphic) {
-            if (primitives.size() >= batchSize) {
+        protected boolean canReceiveVertexFrom(RoundedRectangleBorder graphic) {
+            if (vertices.size() >= batchSize) {
                 return false;
             }
             return graphic.getShader() == shader;
@@ -63,7 +63,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         @Override
         protected void uploadData() {
             dataBuffer.clear();
-            for (RoundedRectangleBorder.RoundedRectangleBorderPrimitive rectangle : primitives) {
+            for (RoundedRectangleBorder.RoundedRectangleBorderVertex rectangle : vertices) {
                 Vec2D position = rectangle.getPosition();
                 Vec2D size = rectangle.getSize();
                 float roundingRadius = rectangle.getRoundingRadius();
@@ -98,7 +98,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
             glEnableVertexAttribArray(2);
             glEnableVertexAttribArray(3);
             glEnableVertexAttribArray(4);
-            glDrawArrays(GL_POINTS, 0, primitives.size());
+            glDrawArrays(GL_POINTS, 0, vertices.size());
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);
@@ -107,9 +107,9 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         }
 
         @Override
-        public void removePrimitive(int primitiveToRemoveIndex) {
-            assert primitiveToRemoveIndex < primitives.size() : "index out of bounds";
-            primitives.remove(primitiveToRemoveIndex);
+        public void removeVertex(int vertexToRemoveIndex) {
+            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
+            vertices.remove(vertexToRemoveIndex);
         }
     }
 }
