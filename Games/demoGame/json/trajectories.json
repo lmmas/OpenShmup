@@ -29,15 +29,15 @@
         "functionY": "1000 * t"
     },
     {
-        "id": 11,
-        "type": "fixed",
-        "functionX": "0",
-        "functionY": "300 * sin(2*t)"
-    },
-    {
         "id": 12,
         "type": "fixed",
         "functionX": "100 * cos(2 * t)",
+        "functionY": "-200 * t"
+    },
+    {
+        "id": 13,
+        "type": "fixed",
+        "functionX": "0.0",
         "functionY": "-200 * t"
     }
 ]

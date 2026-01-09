@@ -62,8 +62,8 @@
             "type": "simpleRectangle"
         },
         "shot":{
-            "shotPeriod": 1.0,
-            "firstShotTime": 2,
+            "shotPeriod": 0.5,
+            "firstShotTime": 1.5,
             "spawn": {
                 "type": "entity",
                 "id": 3,
@@ -85,6 +85,22 @@
         "spriteVisualId": 6,
         "hitbox": {
             "type": "simpleRectangle"
+        }
+    },
+    {
+        "id": 4,
+        "type": "ship",
+        "hp": 5,
+        "evil": true,
+        "size": [50, 50],
+        "spriteVisualId": 7,
+        "hitbox": {
+            "type": "simpleRectangle"
+        },
+        "deathSpawn": {
+            "type": "display",
+            "id": 2,
+            "position": [0, 0]
         }
     }
 ]

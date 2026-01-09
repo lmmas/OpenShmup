@@ -1,5 +1,6 @@
 package engine.scene;
 
+import engine.Engine;
 import engine.entity.hitbox.Hitbox;
 import engine.graphics.Graphic;
 import engine.scene.menu.MenuItem;
@@ -20,7 +21,6 @@ import java.util.TreeMap;
 import static engine.Engine.graphicsManager;
 import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
-import static engine.GlobalVars.debugDisplayLayer;
 
 
 public class Scene {
@@ -187,8 +187,9 @@ public class Scene {
     }
 
     protected class SceneDebug {
-        private TextDisplay fpsDisplay;
         final private RGBAValue fpsDisplayTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+        final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
+        final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle);
 
         public SceneDebug(boolean debugModeEnabled) {
             if (debugModeEnabled) {
@@ -197,13 +198,10 @@ public class Scene {
         }
 
         public void enable() {
-            TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 0.02f);
-            this.fpsDisplay = new TextDisplay(debugDisplayLayer, true, 0.9f, 0.9f, "", fpsDisplayTextStyle);
-            Scene.this.addVisual(fpsDisplay);
         }
 
         public void disable() {
-            Scene.this.removeVisual(fpsDisplay);
+            fpsDisplay.getGraphics().forEach(Graphic::remove);
         }
 
         public void toggle() {
@@ -221,6 +219,8 @@ public class Scene {
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
                 double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
+                fpsDisplay.update(sceneTime);
+                fpsDisplay.getGraphics().forEach(graphic -> graphicsManager.addDebugGraphic(graphic));
             }
         }
     }

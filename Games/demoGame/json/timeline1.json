@@ -20,7 +20,93 @@
         {
             "type": "interval",
             "startTime": 1.0,
-            "endTime": 6.0,
+            "endTime": 3.0,
+            "interval": 2.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [50, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [125, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [200, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [275, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [350, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [425, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [500, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [575, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [650, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [725, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [800, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [875, 1300]
+                },
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [950, 1300]
+                }
+            ]
+        },
+        {
+            "type": "interval",
+            "startTime": 8.0,
+            "endTime": 9.0,
             "interval": 1.0,
             "spawn": [
                 {

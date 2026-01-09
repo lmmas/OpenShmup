@@ -5,7 +5,7 @@
         "type": "scrollingImage",
         "fileName": "background.png",
         "size": [1000,1200],
-        "speed": -200,
+        "speed": -400,
         "horizontalScrolling": false
     },
     {
@@ -82,5 +82,20 @@
         "framePeriodSeconds": 0.25,
         "looping": true,
         "size": [10, 10]
+    },
+    {
+        "id": 7,
+        "layer": 4,
+        "type": "animation",
+        "animationInfo": {
+            "fileName": "oga-swm-extra-enemies-2-alpha.png",
+            "frameCount": 6,
+            "frameSize": [16, 16],
+            "startingPosition": [1, 81],
+            "stride": [18, 0]
+        },
+        "framePeriodSeconds": 0.05,
+        "looping": true,
+        "size": [50, 50]
     }
 ]
