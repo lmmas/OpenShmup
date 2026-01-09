@@ -14,26 +14,54 @@ import engine.scene.spawnable.EmptySpawnable;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.function.Function;
 
 abstract public class Entity {
+
     protected int entityId;
+
+    @Getter
     protected EntityType type;
+
+    @Getter
     protected boolean evil;
+
     final protected Vec2D position;
+
     final protected Vec2D trajectoryReferencePosition;
+
     final protected Vec2D size;
+
+    @Getter
     protected float orientationRadians;
+
+    @Setter
+    @Getter
     protected boolean invincible;
+
     protected double startingTimeSeconds;
+
     protected double lifetimeSeconds;
+
+    @Getter
     protected SceneVisual sprite;
+
+    @Getter
     protected Hitbox hitbox;
+
+    @Setter
     protected Trajectory trajectory;
+
+    @Getter
     protected Spawnable deathSpawn;
+
+    @Getter
     protected ArrayList<ExtraComponent> extraComponents;
+
     protected LevelScene scene;
 
     public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents) {
@@ -59,10 +87,6 @@ abstract public class Entity {
     }
 
     abstract public Entity copy();
-
-    public EntityType getType() {
-        return this.type;
-    }
 
     public void setSize(float sizeX, float sizeY) {
         this.size.x = sizeX;
@@ -91,14 +115,6 @@ abstract public class Entity {
         trajectoryReferencePosition.y = startingPositionY;
     }
 
-    public void setTrajectory(Trajectory trajectory) {
-        this.trajectory = trajectory;
-    }
-
-    public float getOrientationRadians() {
-        return orientationRadians;
-    }
-
     public void setOrientation(float orientationRadians) {
         this.orientationRadians = orientationRadians;
         hitbox.setOrientation(orientationRadians);
@@ -106,34 +122,6 @@ abstract public class Entity {
 
     final public double getLifetimeSeconds() {
         return lifetimeSeconds;
-    }
-
-    public boolean isEvil() {
-        return evil;
-    }
-
-    public boolean isInvincible() {
-        return invincible;
-    }
-
-    public void setInvincible(boolean invincible) {
-        this.invincible = invincible;
-    }
-
-    public SceneVisual getSprite() {
-        return sprite;
-    }
-
-    public Hitbox getHitbox() {
-        return hitbox;
-    }
-
-    public Spawnable getDeathSpawn() {
-        return deathSpawn;
-    }
-
-    public ArrayList<ExtraComponent> getExtraComponents() {
-        return extraComponents;
     }
 
     public void addExtraComponent(ExtraComponent extraComponent) {
@@ -162,17 +150,29 @@ abstract public class Entity {
     }
 
     public static class Builder {
+
         private int id = -1;
+
         private EntityType type = EntityType.PROJECTILE;
+
         private int hitPoints = 1;
+
         private boolean evil = true;
+
         private final Vec2D size = new Vec2D(0.0f, 0.0f);
+
         private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
+
         private float orientationRadians = 0.0f;
+
         private SceneVisual sprite = SceneVisual.DEFAULT_EMPTY();
+
         private Hitbox hitbox = Hitbox.DEFAULT_EMPTY();
+
         private Trajectory trajectory = Trajectory.DEFAULT_EMPTY();
+
         private Spawnable deathSpawn = Spawnable.DEFAULT_EMPTY();
+
         private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
 
         public Builder setType(EntityType type) {

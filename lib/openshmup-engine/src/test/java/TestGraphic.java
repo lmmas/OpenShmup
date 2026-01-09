@@ -7,6 +7,7 @@ import java.io.IOException;
 import static engine.Engine.*;
 
 public class TestGraphic {
+
     public static void main(String[] args) throws IOException {
 
         Engine myEngine = new Engine();

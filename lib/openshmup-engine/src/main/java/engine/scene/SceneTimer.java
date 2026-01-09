@@ -1,12 +1,22 @@
 package engine.scene;
 
+import lombok.Getter;
+import lombok.Setter;
+
 final public class SceneTimer {
+
     private long referenceTimeMillis;
+
     private boolean alreadyStarted;
+
     private long pausedTime;
+    @Getter
     private boolean isPaused;
+
     private double lastSceneTime;
+
     private long lastReadTimeMillis;
+    @Setter
     private float speed;
 
     public SceneTimer() {
@@ -34,10 +44,6 @@ final public class SceneTimer {
         }
     }
 
-    public boolean isPaused() {
-        return isPaused;
-    }
-
     public void resume() {
         if (alreadyStarted && isPaused) {
             long pauseIntervalMillis = System.nanoTime() - pausedTime;
@@ -49,10 +55,6 @@ final public class SceneTimer {
 
     public void reset() {
         alreadyStarted = false;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public double getTimeSeconds() {

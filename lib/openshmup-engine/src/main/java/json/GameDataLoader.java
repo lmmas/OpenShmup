@@ -31,8 +31,11 @@ import static engine.Engine.assetManager;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class GameDataLoader {
+
     final private GameDataManager gameDataManager;
+
     final private GameConfig gameConfig;
+
     final private ObjectMapper objectMapper;
 
     public GameDataLoader(GameDataManager gameDataManager) {

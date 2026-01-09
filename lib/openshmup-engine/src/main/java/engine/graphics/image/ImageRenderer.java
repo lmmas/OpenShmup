@@ -29,9 +29,13 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
     }
 
     protected class ImageBatch extends Renderer<Image, Image.ImageVertex>.Batch {
+
         protected ArrayList<Texture> textures;
+
         protected ArrayList<Integer> textureIndexes;
+
         final protected ByteBuffer dataBuffer;
+
         protected static final int vertexAttributeCount = 17;
 
         public ImageBatch(Shader shader, Texture texture) {

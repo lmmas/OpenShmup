@@ -5,6 +5,7 @@ import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
 public interface ExtraComponent {
+
     ExtraComponent copyIfNotReusable();
 
     Spawnable getSpawnable();

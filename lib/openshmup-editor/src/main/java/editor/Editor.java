@@ -4,6 +4,7 @@ import editor.scenes.MainMenuScene;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.gameData.GameDataManager;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +15,8 @@ import java.util.stream.Stream;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class Editor extends Engine {
+
+    @Getter
     private static List<GameDataManager> loadedGames = null;
 
     public static void main(String[] args) throws IOException {
@@ -28,10 +31,6 @@ final public class Editor extends Engine {
         setNativeResolution(1920, 1080);
         switchCurrentScene(new MainMenuScene());
         window.show();
-    }
-
-    public static List<GameDataManager> getLoadedGames() {
-        return loadedGames;
     }
 
     public static void loadGames() throws IOException {

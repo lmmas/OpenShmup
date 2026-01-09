@@ -16,9 +16,12 @@ import java.util.Map;
 import static editor.Style.*;
 
 public class EditGameScene extends Scene {
-    private GameDataManager gameData;
-    private ArrayList<MenuItem> visualSelectButtons;
-    private MenuScreen editMenu;
+
+    private final GameDataManager gameData;
+
+    private final ArrayList<MenuItem> visualSelectButtons;
+
+    private final MenuScreen editMenu;
 
     public EditGameScene(GameDataManager gameData) {
         this.gameData = gameData;

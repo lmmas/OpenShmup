@@ -3,12 +3,19 @@ package engine.gameData;
 import engine.GlobalVars;
 
 final public class GamePaths {
+
     final public String gameFolder;
+
     final public String gameConfigFile;
+
     final public String gameTextureFolder;
+
     final public String gameVisualsFile;
+
     final public String gameTrajectoriesFile;
+
     final public String gameEntitiesFile;
+
     final public String gameTimelineFile;
 
     public GamePaths(String gameFolderName) {

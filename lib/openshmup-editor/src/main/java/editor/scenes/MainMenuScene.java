@@ -20,11 +20,15 @@ import static engine.GlobalVars.Paths.debugFont;
 import static engine.scene.menu.MenuActions.terminateProgram;
 
 final public class MainMenuScene extends Scene {
+
     final private int backgroundLayer = 0;
 
     final private MenuScreen mainMenu;
+
     final private MenuScreen popupMenu;
+
     final private ColorRectangleVisual menuBackground;
+
     final private TextDisplay menuTitle;
 
     public MainMenuScene() {
@@ -54,9 +58,7 @@ final public class MainMenuScene extends Scene {
                 }
                 for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
                     var game = Editor.getLoadedGames().get(i);
-                    popupMenu.menuItems().add(new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, () -> {
-                        Engine.switchCurrentScene(new EditGameScene(game));
-                    }));
+                    popupMenu.menuItems().add(new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, () -> Engine.switchCurrentScene(new EditGameScene(game))));
                 }
                 addMenu(popupMenu);
             }

@@ -6,8 +6,11 @@ import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 
 final public class NonPlayerShot implements ExtraComponent {
+
     private final Spawnable spawnable;
+
     private final float shotPeriodSeconds;
+
     private float nextShotTimeSeconds;
 
     public NonPlayerShot(Spawnable spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {

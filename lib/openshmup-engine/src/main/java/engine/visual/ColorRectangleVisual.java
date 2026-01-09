@@ -8,6 +8,7 @@ import engine.types.Vec2D;
 import java.util.List;
 
 final public class ColorRectangleVisual extends SceneVisual {
+
     final private ColorRectangle colorRectangle;
 
     public ColorRectangleVisual(int layer, ColorRectangle colorRectangle) {

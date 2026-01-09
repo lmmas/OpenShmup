@@ -13,6 +13,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex> {
+
     final static private int vertexFloatCount = 8;
 
     public ColorRectangleRenderer() {
@@ -26,6 +27,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
     }
 
     public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex>.Batch {
+
         final private FloatBuffer dataBuffer;
 
         public ColorRectangleBatch(Shader shader) {

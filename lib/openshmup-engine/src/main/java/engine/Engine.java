@@ -5,6 +5,7 @@ import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
 import engine.scene.Scene;
 import engine.types.IVec2D;
+import lombok.Setter;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -20,14 +21,23 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Engine {
+
     public static AssetManager assetManager;
+
     public static InputStatesManager inputStatesManager;
+
     public static GraphicsManager graphicsManager;
+    @Setter
     private static Runnable inLoopScript;
+
     static public Window window;
+
     static private IVec2D nativeResolution;
+
     protected static Callback debugProc;
+
     public static Scene currentScene;
+
     private static boolean programShouldTerminate = false;
 
     public Engine() throws IOException {
@@ -116,10 +126,6 @@ public class Engine {
     public void run() {
         loop();
         terminate();
-    }
-
-    public static void setInLoopScript(Runnable script) {
-        inLoopScript = script;
     }
 
     public static void switchCurrentScene(Scene scene) {

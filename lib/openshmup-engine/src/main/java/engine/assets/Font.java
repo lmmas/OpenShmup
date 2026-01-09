@@ -1,6 +1,7 @@
 package engine.assets;
 
 import engine.types.Vec2D;
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
@@ -15,13 +16,21 @@ import java.util.Optional;
 import static org.lwjgl.stb.STBTruetype.*;
 
 final public class Font {
+
     final private String fontFilepath;
+    @Getter
     final private Texture bitmap;
+
     final private float capHeightPixels;
+
     final private float normalizedAscent;
+
     final private float normalizedDescent;
+
     final private float normalizedLineGap;
+    @Getter
     final private float normalizedLineHeight;
+
     final private HashMap<Integer, FontCharInfo> charInfoMap;
 
     private Font(String fontFilepath, Texture bitmap, float capHeightPixels, float normalizedAscent, float normalizedDescent, float normalizedLineGap, float normalizedLineHeight, HashMap<Integer, FontCharInfo> charInfoMap) {
@@ -105,11 +114,4 @@ final public class Font {
         return Optional.empty();
     }
 
-    public Texture getBitmap() {
-        return bitmap;
-    }
-
-    public float getNormalizedLineHeight() {
-        return normalizedLineHeight;
-    }
 }

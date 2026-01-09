@@ -8,18 +8,30 @@ import engine.scene.LevelTimeline;
 import engine.scene.spawnable.Spawnable;
 import engine.visual.SceneVisual;
 import json.GameDataLoader;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 final public class GameDataManager {
+
     final private String gameFolderName;
+
     final public GamePaths paths;
+
     final public GameConfig config;
+
+    @Getter
     final private HashMap<Integer, SceneVisual> visuals;
+
+    @Getter
     final private HashMap<Integer, Trajectory> trajectories;
+
+    @Getter
     final private HashMap<Integer, Entity> entities;
+
+    @Getter
     final private ArrayList<LevelTimeline> timelines;
 
     public GameDataManager(String gameFolderName) {
@@ -108,19 +120,4 @@ final public class GameDataManager {
         return gameFolderName;
     }
 
-    public HashMap<Integer, SceneVisual> getVisuals() {
-        return visuals;
-    }
-
-    public HashMap<Integer, Trajectory> getTrajectories() {
-        return trajectories;
-    }
-
-    public HashMap<Integer, Entity> getEntities() {
-        return entities;
-    }
-
-    public ArrayList<LevelTimeline> getTimelines() {
-        return timelines;
-    }
 }

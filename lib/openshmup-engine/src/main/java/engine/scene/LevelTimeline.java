@@ -3,6 +3,7 @@ package engine.scene;
 import engine.assets.Texture;
 import engine.gameData.GameDataManager;
 import engine.scene.spawnable.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,9 +11,14 @@ import java.util.List;
 import java.util.TreeMap;
 
 final public class LevelTimeline {
+
+    @Getter
     final private GameDataManager gameDataManager;
+
     private final float levelDuration;
+
     private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
+
     private Float nextSpawnTime;
 
     public LevelTimeline(GameDataManager gameDataManager, float levelDuration) {
@@ -112,7 +118,4 @@ final public class LevelTimeline {
         this.nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
-    public GameDataManager getGameDataManager() {
-        return gameDataManager;
-    }
 }

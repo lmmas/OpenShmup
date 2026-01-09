@@ -6,13 +6,16 @@ import engine.graphics.Graphic;
 import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
+import lombok.Getter;
 
 import static engine.Engine.assetManager;
 
 final public class Image extends Graphic<Image, Image.ImageVertex> {
-    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
 
+    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
+    @Getter
     private final Texture texture;
+
     final private ImageVertex vertex;
 
     public Image(Texture texture, boolean dynamic,
@@ -96,10 +99,6 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
         vertex.textureSize.x = textureSizeX;
         vertex.textureSize.y = textureSizeY;
         vertex.dataHasChanged();
-    }
-
-    public Texture getTexture() {
-        return texture;
     }
 
     public Vec2D getPosition() {
@@ -194,7 +193,7 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
         }
 
         public RGBAValue getAddedColor() {
-            return addedColor;
+            return new RGBAValue(addedColor);
         }
     }
 }

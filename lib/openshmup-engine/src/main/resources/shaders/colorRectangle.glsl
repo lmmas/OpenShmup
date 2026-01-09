@@ -33,16 +33,16 @@ flat out vec4 v_Color;
 
 void build_quad(vec4 position, vec2 quadSize, vec4 color){
     vec2 tempCoords = quadSize / 2.0f;
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0); //top-left
+    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
     v_Color = color;
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0); //top-right
+    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
     v_Color = color;
     EmitVertex();
     gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
     v_Color = color;
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0); //bottom-right
+    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
     v_Color = color;
     EmitVertex();
     EndPrimitive();

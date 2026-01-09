@@ -9,8 +9,11 @@ import static engine.GlobalVars.Paths.debugFont;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class AssetManager {
+
     final private HashMap<String, Shader> shaderMap;
+
     final private HashMap<String, Texture> imageFileMap;
+
     final private HashMap<String, Font> fontFileMap;
 
     public AssetManager() throws IOException {

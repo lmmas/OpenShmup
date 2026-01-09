@@ -11,6 +11,7 @@ import engine.visual.style.TextStyle;
 import java.util.List;
 
 public class RoundedRectangleButton extends MenuItem {
+
     public RoundedRectangleButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
         super(
             List.of(

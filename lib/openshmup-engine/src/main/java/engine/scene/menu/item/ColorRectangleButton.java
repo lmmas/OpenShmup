@@ -11,6 +11,7 @@ import engine.visual.style.TextStyle;
 import java.util.List;
 
 public class ColorRectangleButton extends MenuItem {
+
     public ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
         super(List.of(
                 new ColorRectangleVisual(layer, size, position, color),

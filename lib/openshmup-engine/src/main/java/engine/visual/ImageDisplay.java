@@ -8,6 +8,7 @@ import engine.types.Vec2D;
 import java.util.List;
 
 final public class ImageDisplay extends SceneVisual {
+
     Image image;
 
     public ImageDisplay(int layer, Image image) {

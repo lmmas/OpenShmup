@@ -5,6 +5,7 @@ import engine.graphics.Graphic;
 import java.util.List;
 
 final public class EmptyVisual extends SceneVisual {
+
     public static EmptyVisual instance = null;
 
     private EmptyVisual() {

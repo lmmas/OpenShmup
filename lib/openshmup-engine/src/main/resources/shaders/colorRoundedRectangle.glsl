@@ -42,20 +42,20 @@ out vec2 v_PositionInQuad;
 
 void build_quad(vec4 position, vec2 quadSize, float roundingRadius, vec4 color){
     float quadRelativeHeight;
-    if(quadSize[0] != 0){
+    if (quadSize[0] != 0){
         quadRelativeHeight = quadSize[1] / quadSize[0] / u_NativeAspectRatio;
     }
-    else{
+    else {
         quadRelativeHeight = 0.0f;
     }
     vec2 tempCoords = quadSize / 2.0f;
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0); //top-left
+    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
     v_Color = color;
     v_RoundingRadius = roundingRadius;
     v_QuadRelativeHeight = quadRelativeHeight;
     v_PositionInQuad = vec2(-1.0f, quadRelativeHeight);
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0); //top-right
+    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
     v_Color = color;
     v_RoundingRadius = roundingRadius;
     v_QuadRelativeHeight = quadRelativeHeight;
@@ -67,7 +67,7 @@ void build_quad(vec4 position, vec2 quadSize, float roundingRadius, vec4 color){
     v_QuadRelativeHeight = quadRelativeHeight;
     v_PositionInQuad = vec2(-1.0f, -quadRelativeHeight);
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0); //bottom-right
+    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
     v_Color = color;
     v_RoundingRadius = roundingRadius;
     v_QuadRelativeHeight = quadRelativeHeight;
@@ -94,8 +94,8 @@ out vec4 fragColor;
 void main(){
     fragColor = v_Color;
     vec2 cornerPosition = vec2(abs(v_PositionInQuad[0]) - (1.0f - v_RoundingRadius), abs(v_PositionInQuad[1]) - (v_QuadRelativeHeight - v_RoundingRadius));
-    if(cornerPosition[0] > 0 && cornerPosition[1] > 0){
-        if(cornerPosition[0] * cornerPosition[0] + cornerPosition[1] * cornerPosition[1] > v_RoundingRadius * v_RoundingRadius){
+    if (cornerPosition[0] > 0 && cornerPosition[1] > 0){
+        if (cornerPosition[0] * cornerPosition[0] + cornerPosition[1] * cornerPosition[1] > v_RoundingRadius * v_RoundingRadius){
             fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
         }
     }

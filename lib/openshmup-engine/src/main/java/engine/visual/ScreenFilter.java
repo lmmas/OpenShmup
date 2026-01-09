@@ -8,6 +8,7 @@ import engine.types.RGBAValue;
 import java.util.List;
 
 final public class ScreenFilter extends SceneVisual {
+
     final private ColorRectangle colorRectangle;
 
     public ScreenFilter(int layer, float r, float g, float b, float a) {

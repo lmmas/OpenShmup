@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public record MultiSpawnable(
     ArrayList<Spawnable> spawnables
 ) implements Spawnable {
+
     @Override
     public void spawn(LevelScene scene) {
         for (var spawnable : spawnables) {

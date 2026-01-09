@@ -13,6 +13,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
+
     final static private int vertexFloatCount = 10;
 
     public RoundedRectangleBorderRenderer() {
@@ -26,6 +27,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
     }
 
     public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex>.Batch {
+
         final private FloatBuffer dataBuffer;
 
         public RoundedRectangleBorderBatch(Shader shader) {

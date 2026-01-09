@@ -10,9 +10,13 @@ import java.util.ArrayList;
 import static engine.Engine.assetManager;
 
 public class LevelUI {
+
     final private LevelScene scene;
+
     final private ArrayList<ImageDisplay> playerLives;
+
     private Ship playerShip;
+
     final private GameConfig.LevelUI config;
 
     public LevelUI(LevelScene scene) {

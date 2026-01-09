@@ -7,11 +7,17 @@ import engine.graphics.image.Image;
 import java.util.List;
 
 final public class Animation extends SceneVisual {
+
     final private Image image;
+
     final private AnimationInfo info;
+
     final private boolean looping;
+
     private final float framePeriodSeconds;
+
     private int frameIndex;
+
     private double timeOfLastFrame;
 
     public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {

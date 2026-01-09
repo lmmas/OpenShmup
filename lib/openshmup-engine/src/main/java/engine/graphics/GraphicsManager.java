@@ -16,6 +16,7 @@ import java.util.List;
 final public class GraphicsManager {
 
     final private ArrayList<ArrayList<Renderer<?, ?>>> layers;
+
     final private ArrayList<Renderer<?, ?>> debugLayer;
 
     public GraphicsManager() {

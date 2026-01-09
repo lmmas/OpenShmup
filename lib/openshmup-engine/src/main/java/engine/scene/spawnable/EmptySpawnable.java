@@ -3,6 +3,7 @@ package engine.scene.spawnable;
 import engine.scene.LevelScene;
 
 final public class EmptySpawnable implements Spawnable {
+
     private static EmptySpawnable instance = null;
 
     private EmptySpawnable() {

@@ -11,8 +11,11 @@ import static engine.Engine.assetManager;
 import static engine.Engine.graphicsManager;
 
 final public class HitboxDebugRectangle implements ExtraComponent {
+
     final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";
+
     private final SimpleRectangleHitbox simpleRectangleHitbox;
+
     private final ColorRectangle debugDisplay;
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {

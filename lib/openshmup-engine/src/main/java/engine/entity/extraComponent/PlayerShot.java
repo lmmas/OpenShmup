@@ -7,8 +7,11 @@ import engine.types.GameControl;
 import engine.types.Vec2D;
 
 final public class PlayerShot implements ExtraComponent {
+
     private final Spawnable spawnable;
+
     private final double shotPeriodSeconds;
+
     private double nextShotTimeSeconds;
 
     public PlayerShot(Spawnable spawnable, double shotPeriodSeconds, double firstShotTimeSeconds) {

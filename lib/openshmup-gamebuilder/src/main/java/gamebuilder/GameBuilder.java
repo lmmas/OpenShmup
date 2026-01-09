@@ -1,15 +1,18 @@
 package gamebuilder;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.*;
-import java.util.stream.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.stream.Stream;
 
 public class GameBuilder {
+
     public static void main(String[] args) throws IOException, URISyntaxException {
         Path rootFolderPath = java.nio.file.Paths.get(GameBuilder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent();
         Path gamesDir = rootFolderPath.resolve("Games");
-        Path gameJAR = rootFolderPath.resolve ("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
+        Path gameJAR = rootFolderPath.resolve("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
 
         if (!Files.exists(gameJAR)) {
             System.err.println("Engine JAR not found: " + gameJAR);

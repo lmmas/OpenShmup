@@ -6,7 +6,9 @@ import engine.scene.LevelScene;
 import java.io.IOException;
 
 final public class Game extends Engine {
+
     public static GameDataManager gameDataManager;
+
     public static PlayerSettings playerSettings;
 
     public static void main(String[] args) throws IOException {

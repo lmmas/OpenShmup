@@ -3,15 +3,22 @@ package engine.entity.hitbox;
 import engine.assets.Texture;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import lombok.Getter;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 final public class CompositeHitbox implements Hitbox {
-    private Vec2D position;
-    private Vec2D size;
+
+    private final Vec2D position;
+
+    private final Vec2D size;
+
+    @Getter
     private ArrayList<Hitbox> rectangleList;
+
     private ArrayList<Vec2D> rectangleRelativePositions;
+
     private ArrayList<Vec2D> rectangleRelativeSizes;
 
     public CompositeHitbox(Texture texture, float sizeX, float sizeY) {
@@ -56,14 +63,14 @@ final public class CompositeHitbox implements Hitbox {
             boolean startingNewRectangle = false;
             int rectangleStartIndex = 0;
             for (int j = 0; j < pixelWidth; j++) {
-                if (rectanglePositions[i][j] == true) {
+                if (rectanglePositions[i][j]) {
                     if (!startingNewRectangle) {
                         startingNewRectangle = true;
                         rectangleStartIndex = j;
                     }
                 }
                 else {
-                    if (startingNewRectangle == true) {
+                    if (startingNewRectangle) {
                         positionRowList.add(new Vec2D(
                             (float) (rectangleStartIndex + j) / 2 / pixelWidth,
                             ((float) i + 0.5f) / pixelHeight
@@ -76,7 +83,7 @@ final public class CompositeHitbox implements Hitbox {
                     }
                 }
             }
-            if (startingNewRectangle == true) {
+            if (startingNewRectangle) {
                 positionRowList.add(new Vec2D(
                     (float) (rectangleStartIndex + pixelWidth) / 2 / pixelWidth,
                     ((float) i + 0.5f) / pixelHeight
@@ -175,7 +182,4 @@ final public class CompositeHitbox implements Hitbox {
         return new CompositeHitbox(position, size, rectanglesCopy, rectangleRelativePositions, rectangleRelativeSizes);
     }
 
-    public ArrayList<Hitbox> getRectangleList() {
-        return rectangleList;
-    }
 }

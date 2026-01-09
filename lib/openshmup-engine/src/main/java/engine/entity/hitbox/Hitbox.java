@@ -5,6 +5,7 @@ import engine.types.Vec2D;
 import java.util.ArrayList;
 
 public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRectangleHitbox {
+
     boolean containsPoint(Vec2D position);
 
     void setPosition(float positionX, float positionY);

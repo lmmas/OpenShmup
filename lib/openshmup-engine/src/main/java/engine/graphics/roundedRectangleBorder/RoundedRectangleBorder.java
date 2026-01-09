@@ -5,10 +5,12 @@ import engine.graphics.Graphic;
 import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
+import lombok.Getter;
 
 import static engine.Engine.assetManager;
 
 final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
+
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/roundedRectangleBorder.glsl";
 
     private final RoundedRectangleBorderVertex vertex;
@@ -73,10 +75,10 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         private final Vec2D size;
 
         private final Vec2D position;
-
-        private float roundingRadius;
-
-        private float borderWidth;
+        @Getter
+        private final float roundingRadius;
+        @Getter
+        private final float borderWidth;
 
         private final RGBAValue color;
 
@@ -86,14 +88,6 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
 
         public Vec2D getSize() {
             return new Vec2D(size);
-        }
-
-        public float getRoundingRadius() {
-            return roundingRadius;
-        }
-
-        public float getBorderWidth() {
-            return borderWidth;
         }
 
         public RGBAValue getColor() {

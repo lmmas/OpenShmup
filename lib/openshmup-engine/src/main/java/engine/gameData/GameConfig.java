@@ -4,6 +4,7 @@ import engine.types.IVec2D;
 import engine.types.Vec2D;
 
 final public class GameConfig {
+
     final private IVec2D nativeResolution = new IVec2D(0, 0);
 
     public IVec2D getNativeResolution() {
@@ -26,12 +27,17 @@ final public class GameConfig {
     public int playerEntityId = 0;
 
     public static class LevelUI {
+
         public int contentsLayer = 1000;
 
         public static class Lives {
+
             public String textureFilepath;
+
             public Vec2D size;
+
             public Vec2D position;
+
             public Vec2D stride;
         }
 

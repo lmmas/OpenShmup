@@ -8,6 +8,7 @@ import java.io.IOException;
 import static engine.Engine.window;
 
 public class TestTextDisplay {
+
     public static void main(String[] args) throws IOException {
 
         Engine myEngine = new Engine();

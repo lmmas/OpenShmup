@@ -11,12 +11,19 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.*;
 
 final public class InputStatesManager {
+
     final private long glfwWindow;
+
     final private HashMap<Integer, GameControl> controlsMap;
+
     final private ArrayList<Boolean> controlStatesList;
+
     private boolean leftClickState = false;
+
     final private double[] cursorPositionXBuffer;
+
     final private double[] cursorPositionYBuffer;
+
     final private Vec2D cursorPosition;
 
     public InputStatesManager(long glfwWindow) {

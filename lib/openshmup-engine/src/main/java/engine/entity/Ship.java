@@ -9,6 +9,7 @@ import engine.visual.SceneVisual;
 import java.util.ArrayList;
 
 final public class Ship extends Entity {
+
     private int hitPoints;
 
     public Ship(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, Spawnable deathSpawn, ArrayList<ExtraComponent> extraComponents, int hitPoints) {

@@ -7,7 +7,9 @@ import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
 import java.util.List;
 
 final public class BorderedRoundedRectangle extends SceneVisual {
+
     final private ColorRoundedRectangle rectangle;
+
     final private RoundedRectangleBorder border;
 
     public BorderedRoundedRectangle(int layer, float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float rectangleColorR, float rectangleColorG, float rectangleColorB, float rectangleColorA, float borderColorR, float borderColorG, float borderColorB, float borderColorA) {

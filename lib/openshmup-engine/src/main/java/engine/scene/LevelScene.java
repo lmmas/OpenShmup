@@ -24,6 +24,7 @@ import engine.types.Vec2D;
 import engine.visual.SceneVisual;
 import engine.visual.ScreenFilter;
 import engine.visual.style.TextStyle;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,19 +36,33 @@ import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 
 final public class LevelScene extends Scene {
+
     final private HashSet<Entity> goodEntities;
+
     final private HashSet<Entity> evilEntities;
+
     final private HashSet<EntitySpawnInfo> entitiesToSpawn;
+
     final private HashSet<Entity> entitiesToRemove;
+
     final private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
+
     private List<Boolean> controlStates;
+
     private List<Boolean> lastControlStates;
+    @Getter
     final private GameDataManager gameDataManager;
+
     final private GameConfig gameConfig;
-    private LevelTimeline timeline;
+
+    private final LevelTimeline timeline;
+
     final private LevelUI levelUI;
+
     final private MenuScreen pauseMenu;
+
     final private MenuScreen gameOverScreen;
+
     final private LevelDebug levelDebug;
 
     public LevelScene(LevelTimeline timeline) {
@@ -291,10 +306,6 @@ final public class LevelScene extends Scene {
     private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
         extraComponent.onRemove();
         entity.getExtraComponents().remove(extraComponent);
-    }
-
-    public GameDataManager getGameDataManager() {
-        return gameDataManager;
     }
 
     private class LevelDebug {

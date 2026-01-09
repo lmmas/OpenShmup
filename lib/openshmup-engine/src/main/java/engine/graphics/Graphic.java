@@ -2,28 +2,20 @@ package engine.graphics;
 
 import engine.assets.Shader;
 import engine.types.Vec2D;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
+@AllArgsConstructor
+@Getter
 public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
-    final protected RenderType renderType;
-    final protected Shader shader;
 
-    public Graphic(RenderType type, Shader shader) {
-        this.renderType = type;
-        this.shader = shader;
-    }
+    final protected RenderType renderType;
+
+    final protected Shader shader;
 
     public Graphic(Graphic<?, ?> graphic) {
         this.renderType = graphic.renderType;
         this.shader = graphic.shader;
-    }
-
-    public Shader getShader() {
-        return shader;
-    }
-
-    public RenderType getRenderType() {
-        return renderType;
     }
 
     abstract public Vec2D getPosition();
@@ -41,7 +33,9 @@ public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.V
     abstract public void remove();
 
     abstract public class Vertex {
+
         protected boolean dataHasChangedFlag = true;
+
         protected boolean shouldBeRemovedFlag = false;
 
         public Vertex() {

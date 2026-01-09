@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,16 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 final public class SafeJsonNode {
+
     final private JsonNode node;
+    @Getter
     final private String path;
 
     private SafeJsonNode(JsonNode node, String path) {
         this.node = node;
         this.path = path;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public static SafeJsonNode getObjectRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {

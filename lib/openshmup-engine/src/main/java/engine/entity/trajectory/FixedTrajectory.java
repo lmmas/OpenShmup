@@ -9,7 +9,9 @@ import java.util.function.Function;
 final public class FixedTrajectory implements Trajectory {
 
     final private Function<Double, Float> trajectoryFunctionX;
+
     final private Function<Double, Float> trajectoryFunctionY;
+
     final private boolean relativeTrajectory;
 
     public FixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY, boolean relativeTrajectory) {

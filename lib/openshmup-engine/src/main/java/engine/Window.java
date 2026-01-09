@@ -1,14 +1,17 @@
 package engine;
 
 import engine.types.IVec2D;
+import lombok.Getter;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 final public class Window {
+
     final private IVec2D resolution = new IVec2D(1920, 1080);
-    private long glfwWindow;
+    @Getter
+    private final long glfwWindow;
 
     public Window(long glfwWindow) {
         this.glfwWindow = glfwWindow;
@@ -30,10 +33,6 @@ final public class Window {
         resolution.x = width;
         resolution.y = height;
         glfwSetWindowPos(glfwWindow, (vidmode.width() - resolution.x) / 2, (vidmode.height() - resolution.y) / 2 - 25);
-    }
-
-    public long getGlfwWindow() {
-        return glfwWindow;
     }
 
     public void show() {

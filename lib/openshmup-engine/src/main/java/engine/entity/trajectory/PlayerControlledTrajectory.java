@@ -7,7 +7,9 @@ import engine.types.GameControl;
 import engine.types.Vec2D;
 
 final public class PlayerControlledTrajectory implements Trajectory {
-    private float speed;
+
+    private final float speed;
+
     private double lastUpdateTimeSeconds;
 
     public PlayerControlledTrajectory(float speed) {

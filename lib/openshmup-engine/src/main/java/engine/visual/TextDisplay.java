@@ -9,6 +9,8 @@ import engine.graphics.image.Image;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.style.TextStyle;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +19,27 @@ import java.util.stream.Collectors;
 import static engine.Engine.assetManager;
 
 final public class TextDisplay extends SceneVisual {
+
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
+
     final private RenderInfo renderInfo;
+
     final private Vec2D position;
-    private float textHeight;
-    private float textWidth;
+
+    private final float textHeight;
+
+    private final float textWidth;
+    @Setter
     private String displayedString;
-    private Font font;
+
+    private final Font font;
+
     final private boolean dynamicText;
+
     private final RGBAValue textColor;
+
     final private ArrayList<ArrayList<TextCharacter>> textLines;
+
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a) {
@@ -116,10 +129,6 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
-    public void setDisplayedString(String displayedString) {
-        this.displayedString = displayedString;
-    }
-
     @Override
     public SceneVisual copy() {
         return new TextDisplay(renderInfo.layer(), font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a);
@@ -151,9 +160,12 @@ final public class TextDisplay extends SceneVisual {
     }
 
     final public class TextCharacter {
+
         final private int codepoint;
-        private FontCharInfo fontCharInfo;
-        private Image image;
+
+        private final FontCharInfo fontCharInfo;
+        @Getter
+        private final Image image;
 
         public TextCharacter(int codepoint, Font font) {
             this.codepoint = codepoint;
@@ -182,8 +194,5 @@ final public class TextDisplay extends SceneVisual {
             image.setColorCoefs(r, g, b, a);
         }
 
-        public Image getImage() {
-            return image;
-        }
     }
 }

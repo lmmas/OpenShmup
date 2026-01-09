@@ -1,5 +1,6 @@
 package engine.assets;
 
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -13,9 +14,13 @@ import static org.lwjgl.opengl.GL33.*;
 final public class Shader {
 
     private int shaderProgramID;
+    @Getter
     private final String filepath;
+
     private String vertexSource;
+
     private String geometrySource;
+
     private String fragmentSource;
 
     public Shader(String filepath) {
@@ -38,10 +43,6 @@ final public class Shader {
         } catch (IOException e) {
             assert false : "Error (Shader): could not open shader file '" + filepath + "'.";
         }
-    }
-
-    public String getFilepath() {
-        return filepath;
     }
 
     public void compile() {

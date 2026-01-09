@@ -13,6 +13,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex> {
+
     final static private int vertexFloatCount = 9;
 
     public ColorRoundedRectangleRenderer() {
@@ -26,6 +27,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
     }
 
     public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex>.Batch {
+
         final private FloatBuffer dataBuffer;
 
         public ColorRoundedRectangleBatch(Shader shader) {

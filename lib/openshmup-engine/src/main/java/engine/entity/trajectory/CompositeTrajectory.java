@@ -5,8 +5,11 @@ import engine.scene.LevelScene;
 import engine.types.Vec2D;
 
 final public class CompositeTrajectory implements Trajectory {
+
     final private float[] bounds;
+
     final private Trajectory[] trajectories;
+
     private int trajectoryIndex;
 
     public CompositeTrajectory(float[] bounds, Trajectory[] trajectories) {

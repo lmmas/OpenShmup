@@ -24,15 +24,25 @@ import static engine.GlobalVars.Paths.debugFont;
 
 
 public class Scene {
+
     protected double sceneTime;
+
     final protected SceneTimer timer;
+
     protected double lastDrawTime = 0.0d;
+
     final protected TreeMap<Integer, SceneLayer> layers;
+
     final protected HashSet<SceneVisual> visualsToRemove;
+
     final protected ArrayList<MenuScreen> displayedMenus;
+
     protected boolean debugModeEnabled = false;
+
     protected boolean leftClickPressedOnItem = false;
+
     protected MenuItem leftClickPressedItem = null;
+
     final protected SceneDebug sceneDebug;
 
     public Scene() {
@@ -187,8 +197,11 @@ public class Scene {
     }
 
     protected class SceneDebug {
+
         final private RGBAValue fpsDisplayTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+
         final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
+
         final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle);
 
         public SceneDebug(boolean debugModeEnabled) {

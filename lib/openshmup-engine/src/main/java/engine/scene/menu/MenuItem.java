@@ -2,14 +2,17 @@ package engine.scene.menu;
 
 import engine.entity.hitbox.Hitbox;
 import engine.visual.SceneVisual;
+import lombok.Getter;
 
 import java.util.List;
 
 
 public class MenuItem {
-    final private List<SceneVisual> visuals;
 
-    private Hitbox clickHitbox;
+    @Getter
+    final private List<SceneVisual> visuals;
+    @Getter
+    private final Hitbox clickHitbox;
 
     private Runnable onClick;
 
@@ -17,14 +20,6 @@ public class MenuItem {
         this.clickHitbox = clickHitbox;
         this.onClick = onClick;
         this.visuals = visuals;
-    }
-
-    public List<SceneVisual> getVisuals() {
-        return visuals;
-    }
-
-    public Hitbox getClickHitbox() {
-        return clickHitbox;
     }
 
     public void onClick() {

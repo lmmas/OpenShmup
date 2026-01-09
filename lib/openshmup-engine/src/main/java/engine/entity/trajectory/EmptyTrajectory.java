@@ -4,6 +4,7 @@ import engine.entity.Entity;
 import engine.scene.LevelScene;
 
 final public class EmptyTrajectory implements Trajectory {
+
     private static EmptyTrajectory instance = null;
 
     private EmptyTrajectory() {

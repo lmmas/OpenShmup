@@ -9,7 +9,9 @@ import engine.types.Vec2D;
 import static engine.Engine.assetManager;
 
 final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectangleVertex> {
+
     final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
+
     private final ColorRectangleVertex vertex;
 
     public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader) {

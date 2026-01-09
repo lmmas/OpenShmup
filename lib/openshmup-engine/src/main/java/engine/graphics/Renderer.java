@@ -1,17 +1,25 @@
 package engine.graphics;
 
 import engine.assets.Shader;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL33.*;
 
 public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
+
+    @Getter
     protected int vaoID;
+    @Getter
     protected RenderType type;
+
     final protected int drawingType;
+
     final protected int vboStrideBytes;
+
     protected int batchSize;
+
     protected ArrayList<Batch> batches;
 
     public Renderer(RenderType type, int drawingType, int vboStrideBytes) {
@@ -22,19 +30,11 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
         this.batches = new ArrayList<>();
     }
 
-    public int getVaoID() {
-        return vaoID;
-    }
-
     abstract protected Batch createBatchFromGraphic(G graphic);
 
     protected void addNewBatchFromGraphic(G graphic) {
         Batch newBatch = createBatchFromGraphic(graphic);
         batches.add(newBatch);
-    }
-
-    public RenderType getType() {
-        return type;
     }
 
     public void draw() {
@@ -67,17 +67,16 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
     }
 
     public abstract class Batch {
+
         protected int vboID;
+
         protected ArrayList<V> vertices = new ArrayList<>(batchSize);
+        @Getter
         protected Shader shader;
 
         protected Batch(Shader shader) {
             vboID = glGenBuffers();
             this.shader = shader;
-        }
-
-        public Shader getShader() {
-            return shader;
         }
 
         public void addVertex(V newVertex) {

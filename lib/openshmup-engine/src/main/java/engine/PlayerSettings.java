@@ -1,7 +1,9 @@
 package engine;
 
 final public class PlayerSettings {
+
     private WindowMode windowMode;
+
     private int windowWidth;
 
     private int windowHeight;

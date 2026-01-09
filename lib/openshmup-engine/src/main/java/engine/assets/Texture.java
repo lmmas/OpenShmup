@@ -1,5 +1,6 @@
 package engine.assets;
 
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -9,11 +10,17 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 
 final public class Texture {
+
     private Integer textureID;
+    @Getter
     private final int width;
+    @Getter
     private final int height;
+    @Getter
     private final int channelCount;
+    @Getter
     private ByteBuffer imageBuffer;
+    @Getter
     private boolean loadedInGPU;
 
     Texture(int width, int height, int channelCount, ByteBuffer imageBuffer) {
@@ -66,22 +73,6 @@ final public class Texture {
         loadedInGPU = true;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getChannelCount() {
-        return channelCount;
-    }
-
-    public ByteBuffer getImageBuffer() {
-        return imageBuffer;
-    }
-
     public void flipImageBuffer() {
         assert imageBuffer != null : "trying to flip umage buffer while it is null";
         ByteBuffer flippedBuffer = BufferUtils.createByteBuffer(imageBuffer.capacity());
@@ -92,10 +83,6 @@ final public class Texture {
             }
         }
         this.imageBuffer = flippedBuffer;
-    }
-
-    public boolean isLoadedInGPU() {
-        return loadedInGPU;
     }
 
     public void bind(int slot) {

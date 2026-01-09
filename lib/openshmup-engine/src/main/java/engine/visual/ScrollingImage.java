@@ -9,13 +9,21 @@ import engine.types.Vec2D;
 import java.util.List;
 
 final public class ScrollingImage extends SceneVisual {
+
     private final Image image1;
+
     final private Vec2D position1;
+
     private final Image image2;
+
     final private Vec2D position2;
+
     final private Vec2D size;
+
     boolean horizontalScrolling;
-    private float speed;
+
+    private final float speed;
+
     private double lastUpdateTimeSeconds;
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {

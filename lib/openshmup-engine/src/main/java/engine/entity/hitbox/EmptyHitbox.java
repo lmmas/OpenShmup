@@ -3,6 +3,7 @@ package engine.entity.hitbox;
 import engine.types.Vec2D;
 
 final public class EmptyHitbox implements Hitbox {
+
     private static EmptyHitbox instance = null;
 
     private EmptyHitbox() {
