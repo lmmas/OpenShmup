@@ -1,4 +1,4 @@
-package json.factories.trajectory;
+package json.converters.trajectory;
 
 import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
@@ -6,7 +6,7 @@ import json.SafeJsonNode;
 
 import java.util.function.Function;
 
-import static json.factories.GameFactory.convertToFunction;
+import static json.factories.TrajectoryFactories.convertToFunction;
 
 public class FixedTrajectoryFactory implements TrajectoryFactory {
 

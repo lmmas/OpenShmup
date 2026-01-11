@@ -1,4 +1,4 @@
-package json.factories.visual;
+package json.factories;
 
 import engine.assets.Texture;
 import engine.types.IVec2D;
@@ -6,16 +6,28 @@ import engine.types.Vec2D;
 import engine.visual.Animation;
 import engine.visual.AnimationInfo;
 import engine.visual.SceneVisual;
+import engine.visual.ScrollingImage;
 import json.SafeJsonNode;
 
 import java.nio.file.Path;
+import java.util.function.BiFunction;
 
 import static engine.Engine.assetManager;
 
-public class AnimationFactory implements VisualFactory {
+public class VisualFactories {
 
-    @Override
-    public SceneVisual fromJson(SafeJsonNode node, Path textureFolderPath) {
+    final public static BiFunction<SafeJsonNode, Path, SceneVisual> scrollingImageFactory = (node, textureFolderPath) -> {
+        int layer = node.checkAndGetInt("layer");
+        Vec2D size = node.checkAndGetVec2D("size");
+        String imagePath = textureFolderPath.resolve(node.checkAndGetString("fileName")).toString();
+        Texture texture = assetManager.getTexture(imagePath);
+        boolean horizontalScrolling = node.checkAndGetBoolean("horizontalScrolling");
+        float speed = node.checkAndGetFloat("speed");
+
+        return new ScrollingImage(texture, layer, size.x, size.y, speed, horizontalScrolling);
+    };
+
+    final public static BiFunction<SafeJsonNode, Path, SceneVisual> animationFactory = (node, textureFolderPath) -> {
         int layer = node.checkAndGetInt("layer");
         Vec2D size = node.checkAndGetVec2D("size");
 
@@ -43,5 +55,5 @@ public class AnimationFactory implements VisualFactory {
             (float) stride.y / animationTextureHeight);
 
         return new Animation(layer, texture, animationInfo, framePeriodSeconds, looping, size.x, size.y);
-    }
+    };
 }

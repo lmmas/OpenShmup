@@ -1,4 +1,4 @@
-package json.factories.entity;
+package json.converters.entity;
 
 import engine.entity.Entity;
 import engine.gameData.GameDataManager;

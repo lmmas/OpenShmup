@@ -1,4 +1,4 @@
-package json.factories.extraComponent;
+package json.converters.extraComponent;
 
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.extraComponent.NonPlayerShot;

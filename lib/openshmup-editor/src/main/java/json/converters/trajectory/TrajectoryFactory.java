@@ -1,4 +1,4 @@
-package json.factories.trajectory;
+package json.converters.trajectory;
 
 import engine.entity.trajectory.Trajectory;
 import json.SafeJsonNode;

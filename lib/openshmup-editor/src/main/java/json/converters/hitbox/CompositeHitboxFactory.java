@@ -1,4 +1,4 @@
-package json.factories.hitbox;
+package json.converters.hitbox;
 
 import engine.assets.Texture;
 import engine.entity.hitbox.CompositeHitbox;

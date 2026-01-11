@@ -1,4 +1,4 @@
-package json.factories.visual;
+package json.converters.visual;
 
 import engine.assets.Texture;
 import engine.types.Vec2D;

@@ -13,25 +13,8 @@ import engine.scene.spawnable.Spawnable;
 import engine.types.IVec2D;
 import engine.visual.SceneVisual;
 import json.SafeJsonNode;
-import json.factories.entity.EntityFactory;
-import json.factories.entity.ProjectileFactory;
-import json.factories.entity.ShipFactory;
-import json.factories.extraComponent.ExtraComponentFactory;
-import json.factories.extraComponent.ShotFactory;
-import json.factories.hitbox.CompositeHitboxFactory;
-import json.factories.hitbox.HitboxFactory;
-import json.factories.hitbox.SimpleRectangleHitboxFactory;
-import json.factories.spawnable.EntitySpawnInfoFactory;
-import json.factories.spawnable.SpawnableFactory;
-import json.factories.spawnable.VisualSpawnInfoFactory;
-import json.factories.trajectory.FixedTrajectoryFactory;
-import json.factories.trajectory.PlayerTrajectoryFactory;
-import json.factories.trajectory.TrajectoryFactory;
-import json.factories.visual.AnimationFactory;
-import json.factories.visual.ScrollingImageFactory;
-import json.factories.visual.VisualFactory;
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
+import json.TetraFunction;
+import json.TriFunction;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,111 +22,113 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
+import static json.factories.EntityFactories.projectileFactory;
+import static json.factories.EntityFactories.shipFactory;
+import static json.factories.ExtraComponentFactories.shotFactory;
+import static json.factories.HitboxFactories.compositeHitboxFactory;
+import static json.factories.HitboxFactories.simpleRectangleHitboxFactory;
+import static json.factories.SpawnableFactories.entitySpawnInfoFactory;
+import static json.factories.SpawnableFactories.visualSpawnInfoFactory;
+import static json.factories.TrajectoryFactories.fixedTrajectoryFactory;
+import static json.factories.TrajectoryFactories.playerControlledTrajectoryFactory;
+import static json.factories.VisualFactories.animationFactory;
+import static json.factories.VisualFactories.scrollingImageFactory;
 
 public class GameFactory {
 
-    final private Map<String, VisualFactory> visualFactories;
+    final private Map<String, BiFunction<SafeJsonNode, Path, SceneVisual>> visualFactories;
 
-    final private Map<String, TrajectoryFactory> trajectoryFactories;
+    final private Map<String, Function<SafeJsonNode, Trajectory>> trajectoryFactories;
 
-    final private Map<String, HitboxFactory> hitboxFactories;
+    final private Map<String, BiFunction<SafeJsonNode, Path, Hitbox>> hitboxFactories;
 
-    final private Map<String, SpawnableFactory> spawnableFactories;
+    final private Map<String, Function<SafeJsonNode, Spawnable>> spawnableFactories;
 
-    final private Map<String, ExtraComponentFactory> extraComponentFactories;
+    final private Map<String, TetraFunction<SafeJsonNode, GameDataManager, GameFactory, Boolean, ExtraComponent>> extraComponentFactories;
 
-    final private Map<String, EntityFactory> entityFactories;
+    final private Map<String, TriFunction<SafeJsonNode, GameFactory, GameDataManager, Entity>> entityFactories;
 
     public GameFactory() {
         this.visualFactories = new HashMap<>(2);
-        visualFactories.put("scrollingImage", new ScrollingImageFactory());
-        visualFactories.put("animation", new AnimationFactory());
+        visualFactories.put("scrollingImage", scrollingImageFactory);
+        visualFactories.put("animation", animationFactory);
 
         this.trajectoryFactories = new HashMap<>(2);
-        trajectoryFactories.put("fixed", new FixedTrajectoryFactory());
-        trajectoryFactories.put("player", new PlayerTrajectoryFactory());
+        trajectoryFactories.put("fixed", fixedTrajectoryFactory);
+        trajectoryFactories.put("player", playerControlledTrajectoryFactory);
 
         this.hitboxFactories = new HashMap<>(2);
-        hitboxFactories.put("simpleRectangle", new SimpleRectangleHitboxFactory());
-        hitboxFactories.put("composite", new CompositeHitboxFactory());
+        hitboxFactories.put("simpleRectangle", simpleRectangleHitboxFactory);
+        hitboxFactories.put("composite", compositeHitboxFactory);
 
         this.spawnableFactories = new HashMap<>(2);
-        spawnableFactories.put("visual", new VisualSpawnInfoFactory());
-        spawnableFactories.put("entity", new EntitySpawnInfoFactory());
+        spawnableFactories.put("visual", visualSpawnInfoFactory);
+        spawnableFactories.put("entity", entitySpawnInfoFactory);
 
         this.extraComponentFactories = new HashMap<>(1);
-        extraComponentFactories.put("shot", new ShotFactory());
+        extraComponentFactories.put("shot", shotFactory);
 
         this.entityFactories = new HashMap<>(2);
-        entityFactories.put("ship", new ShipFactory());
-        entityFactories.put("projectile", new ProjectileFactory());
-    }
-
-    public static Function<Double, Float> convertToFunction(String expressionString) {
-        return t -> {
-            Expression expr = new ExpressionBuilder(expressionString)
-                .variable("t")
-                .build()
-                .setVariable("t", t);
-            return (float) expr.evaluate();
-        };
+        entityFactories.put("ship", shipFactory);
+        entityFactories.put("projectile", projectileFactory);
     }
 
     public SceneVisual visualFromJson(SafeJsonNode node, Path textureFolderpath) {
         String type = node.checkAndGetString("type");
-        VisualFactory factory = visualFactories.get(type);
+        var factory = visualFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": visual type is not supported");
         }
-        return factory.fromJson(node, textureFolderpath);
+        return factory.apply(node, textureFolderpath);
     }
 
     public Trajectory trajectoryFromJSon(SafeJsonNode node) {
         String type = node.checkAndGetString("type");
-        TrajectoryFactory factory = trajectoryFactories.get(type);
+        var factory = trajectoryFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": trajectory type is not supported");
         }
-        return factory.fromJson(node);
+        return factory.apply(node);
     }
 
     public Hitbox hitboxFromJson(SafeJsonNode node, GamePaths paths) {
         String type = node.checkAndGetString("type");
-        HitboxFactory factory = hitboxFactories.get(type);
+        var factory = hitboxFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": hitbox type is not supported");
         }
-        return factory.fromJson(node, paths);
+        return factory.apply(node, Path.of(paths.gameTextureFolder));
     }
 
     public Spawnable spawnableFromJson(SafeJsonNode node) {
         String type = node.checkAndGetString("type");
-        SpawnableFactory factory = spawnableFactories.get(type);
+        var factory = spawnableFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawnable type is not supported");
         }
-        return factory.fromJson(node);
+        return factory.apply(node);
     }
 
     public ExtraComponent extraComponentFromJson(SafeJsonNode node, GameDataManager gameData, boolean isPlayer) {
         String type = "shot";
-        ExtraComponentFactory factory = extraComponentFactories.get(type);
+        var factory = extraComponentFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": extra component type is not supported");
         }
-        return factory.fromJson(node, gameData, this, isPlayer);
+        return factory.apply(node, gameData, this, isPlayer);
     }
 
     public Entity entityFromJson(SafeJsonNode node, GameDataManager gameData) {
         String type = node.checkAndGetString("type");
-        EntityFactory factory = entityFactories.get(type);
+        var factory = entityFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": entity type is not supported");
         }
-        return factory.fromJson(node, this, gameData);
+        return factory.apply(node, this, gameData);
     }
 
     public LevelTimeline timelineFromJson(SafeJsonNode node, GameDataManager gameData) {

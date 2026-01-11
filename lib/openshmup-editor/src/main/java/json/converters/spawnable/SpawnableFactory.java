@@ -1,4 +1,4 @@
-package json.factories.spawnable;
+package json.converters.spawnable;
 
 import engine.scene.spawnable.Spawnable;
 import json.SafeJsonNode;

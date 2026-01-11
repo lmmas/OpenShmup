@@ -1,4 +1,4 @@
-package json.factories.visual;
+package json.converters.visual;
 
 import engine.visual.SceneVisual;
 import json.SafeJsonNode;

@@ -1,4 +1,4 @@
-package json.factories.hitbox;
+package json.converters.hitbox;
 
 import engine.entity.hitbox.Hitbox;
 import engine.gameData.GamePaths;
