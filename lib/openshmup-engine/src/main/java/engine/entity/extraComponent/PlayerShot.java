@@ -6,28 +6,30 @@ import engine.scene.spawnable.Spawnable;
 import engine.types.GameControl;
 import engine.types.Vec2D;
 
+import java.util.List;
+
 final public class PlayerShot implements ExtraComponent {
 
-    private final Spawnable spawnable;
+    private final List<Spawnable> spawnables;
 
     private final double shotPeriodSeconds;
 
     private double nextShotTimeSeconds;
 
-    public PlayerShot(Spawnable spawnable, double shotPeriodSeconds, double firstShotTimeSeconds) {
-        this.spawnable = spawnable;
+    public PlayerShot(List<Spawnable> spawnables, double shotPeriodSeconds, double firstShotTimeSeconds) {
+        this.spawnables = spawnables;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = firstShotTimeSeconds;
     }
 
     @Override
     public ExtraComponent copyIfNotReusable() {
-        return new PlayerShot(spawnable, shotPeriodSeconds, nextShotTimeSeconds);
+        return new PlayerShot(spawnables, shotPeriodSeconds, nextShotTimeSeconds);
     }
 
     @Override
-    public Spawnable getSpawnable() {
-        return spawnable;
+    public List<Spawnable> getSpawnables() {
+        return spawnables;
     }
 
     @Override
@@ -45,7 +47,9 @@ final public class PlayerShot implements ExtraComponent {
         double currentTime = entity.getLifetimeSeconds();
         if (scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
-            spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+            for (Spawnable spawnable : spawnables) {
+                spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+            }
             nextShotTimeSeconds = currentTime + shotPeriodSeconds;
         }
     }

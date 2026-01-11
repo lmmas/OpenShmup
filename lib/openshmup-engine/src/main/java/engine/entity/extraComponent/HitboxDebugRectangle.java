@@ -7,6 +7,8 @@ import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 import engine.types.RGBAValue;
 
+import java.util.List;
+
 import static engine.Engine.assetManager;
 import static engine.Engine.graphicsManager;
 
@@ -29,8 +31,8 @@ final public class HitboxDebugRectangle implements ExtraComponent {
     }
 
     @Override
-    public Spawnable getSpawnable() {
-        return Spawnable.DEFAULT_EMPTY();
+    public List<Spawnable> getSpawnables() {
+        return List.of();
     }
 
     @Override

@@ -4,11 +4,13 @@ import engine.entity.Entity;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 
+import java.util.List;
+
 public interface ExtraComponent {
 
     ExtraComponent copyIfNotReusable();
 
-    Spawnable getSpawnable();
+    List<Spawnable> getSpawnables();
 
     void init();
 

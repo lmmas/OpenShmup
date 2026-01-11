@@ -9,8 +9,4 @@ public interface Spawnable {
     Spawnable copy();
 
     Spawnable copyWithOffset(float offsetX, float offsetY);
-
-    static Spawnable DEFAULT_EMPTY() {
-        return EmptySpawnable.getInstance();
-    }
 }

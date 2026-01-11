@@ -86,6 +86,9 @@ final public class Texture {
     }
 
     public void bind(int slot) {
+        if (!loadedInGPU) {
+            loadInGPU(); //FIXME: quick hack to mitigate the bug when textures aren't properly loaded in GPU
+        }
         assert loadedInGPU : "texture has not been loaded in GPU before binding";
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, textureID);

@@ -89,9 +89,9 @@ final public class GameDataManager {
         Entity entity = entities.get(id);
         ArrayList<Spawnable> spawnablesList = new ArrayList<>();
         for (ExtraComponent component : entity.getExtraComponents()) {
-            spawnablesList.add(component.getSpawnable());
+            spawnablesList.addAll(component.getSpawnables());
         }
-        spawnablesList.add(entity.getDeathSpawn());
+        spawnablesList.addAll(entity.getDeathSpawn());
         return spawnablesList;
     }
 

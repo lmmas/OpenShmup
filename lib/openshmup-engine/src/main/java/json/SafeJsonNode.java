@@ -8,6 +8,8 @@ import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +17,14 @@ final public class SafeJsonNode {
 
     final private JsonNode node;
     @Getter
-    final private String path;
+    final private Path filePath;
 
-    private SafeJsonNode(JsonNode node, String path) {
+    final private String JSONPath;
+
+    private SafeJsonNode(JsonNode node, Path filePath, String JSONpath) {
         this.node = node;
-        this.path = path;
+        this.filePath = filePath;
+        this.JSONPath = JSONpath;
     }
 
     public static SafeJsonNode getObjectRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
@@ -29,11 +34,11 @@ final public class SafeJsonNode {
         } catch (IOException e) {
             throw new IllegalArgumentException("Invalid JSON file: " + filepath);
         }
-        String rootPath = filepath + ":$";
+        String rootPath = ":$";
         if (!rootNode.isObject()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + rootPath + "root node should be an object");
+            throw new IllegalArgumentException("Invalid JSON format: " + filepath + rootPath + "root node should be an object");
         }
-        return new SafeJsonNode(rootNode, rootPath);
+        return new SafeJsonNode(rootNode, Paths.get(filepath), rootPath);
     }
 
     public static SafeJsonNode getArrayRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
@@ -43,16 +48,16 @@ final public class SafeJsonNode {
         } catch (IOException e) {
             throw new IllegalArgumentException("Invalid JSON file: " + filepath);
         }
-        String rootPath = filepath + ":$";
+        String rootPath = ":$";
         if (!rootNode.isArray()) {
             throw new IllegalArgumentException("Invalid JSON format: " + rootPath + "root node should be an array");
         }
-        return new SafeJsonNode(rootNode, rootPath);
+        return new SafeJsonNode(rootNode, Paths.get(filepath), rootPath);
     }
 
     public void checkForField(String field) throws IllegalArgumentException {
         if (!node.has(field)) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + ": field \"" + field + "\" not found");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + ": field \"" + field + "\" not found");
         }
     }
 
@@ -60,7 +65,7 @@ final public class SafeJsonNode {
         checkForField(fieldName);
         JsonNode booleanNode = node.get(fieldName);
         if (!booleanNode.isBoolean()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be a boolean");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be a boolean");
         }
         return booleanNode.booleanValue();
     }
@@ -69,7 +74,7 @@ final public class SafeJsonNode {
         checkForField(fieldName);
         JsonNode intNode = node.get(fieldName);
         if (!intNode.isInt()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be an int");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be an int");
         }
         return intNode.intValue();
     }
@@ -78,7 +83,7 @@ final public class SafeJsonNode {
         checkForField(fieldName);
         JsonNode floatNode = node.get(fieldName);
         if (!floatNode.isNumber()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be a float");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be a float");
         }
         return floatNode.floatValue();
     }
@@ -87,7 +92,7 @@ final public class SafeJsonNode {
         checkForField(fieldName);
         JsonNode stringNode = node.get(fieldName);
         if (!stringNode.isTextual()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be a string");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be a string");
         }
         return stringNode.textValue();
     }
@@ -96,45 +101,36 @@ final public class SafeJsonNode {
         checkForField(fieldName);
         JsonNode objectNode = node.get(fieldName);
         if (!objectNode.isObject()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be an object");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be an object");
         }
-        return new SafeJsonNode(objectNode, path + "." + fieldName);
+        return new SafeJsonNode(objectNode, filePath, JSONPath + "." + fieldName);
     }
 
-    public SafeJsonNode checkAndGetObjectOrArray(String fieldName) throws IllegalArgumentException {
-        checkForField(fieldName);
-        JsonNode childNode = node.get(fieldName);
-        if (!childNode.isObject() && !childNode.isArray()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be an object or an array of objects");
-        }
-        return new SafeJsonNode(childNode, path + "." + fieldName);
-    }
-
-    public SafeJsonNode checkAndGetObjectArray(String fieldName) throws IllegalArgumentException {
+    public SafeJsonNode checkAndGetArray(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode arrayNode = node.get(fieldName);
         if (!arrayNode.isArray()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + "." + fieldName + " should be an array");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be an array");
         }
-        return new SafeJsonNode(arrayNode, path + "." + fieldName);
+        return new SafeJsonNode(arrayNode, filePath, JSONPath + "." + fieldName);
     }
 
     public void checkArraySize(int size) throws IllegalArgumentException {
         if (node.size() != size) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + " should be of size " + size);
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + " should be of size " + size);
         }
     }
 
-    public List<SafeJsonNode> checkAndGetObjectsFromArray() throws IllegalArgumentException {
+    public List<SafeJsonNode> checkAndGetObjectListFromArray() throws IllegalArgumentException {
         if (!node.isArray()) {
-            throw new IllegalArgumentException("Invalid JSON format: " + path + " is not an array");
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + " is not an array");
         }
         ArrayList<SafeJsonNode> objectList = new ArrayList<>(node.size());
         for (int i = 0; i < node.size(); i++) {
             if (!node.get(i).isObject()) {
-                throw new IllegalArgumentException("Invalid JSON format: " + path + " should only contain objects");
+                throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + " should only contain objects");
             }
-            objectList.add(new SafeJsonNode(node.get(i), path + "[" + i + "]"));
+            objectList.add(new SafeJsonNode(node.get(i), filePath, getFullPath() + "[" + i + "]"));
         }
         return objectList;
     }
@@ -142,7 +138,7 @@ final public class SafeJsonNode {
     public Vec2D checkAndGetVec2D(String fieldName) {
         checkForField(fieldName);
         JsonNode vecNode = node.get(fieldName);
-        String vecPath = path + "." + fieldName;
+        String vecPath = getFullPath() + "." + fieldName;
         if (!vecNode.isArray()) {
             throw new IllegalArgumentException("Invalid JSON format: " + vecPath + " is not an array");
         }
@@ -160,7 +156,7 @@ final public class SafeJsonNode {
     public IVec2D checkAndGetIVec2D(String fieldName) {
         checkForField(fieldName);
         JsonNode vecNode = node.get(fieldName);
-        String vecPath = path + "." + fieldName;
+        String vecPath = getFullPath() + "." + fieldName;
         if (!vecNode.isArray()) {
             throw new IllegalArgumentException("Invalid JSON format: " + vecPath + " is not an array");
         }
@@ -182,4 +178,6 @@ final public class SafeJsonNode {
     public boolean isArray() {
         return node.isArray();
     }
+
+    public String getFullPath() {return this.JSONPath;}
 }

@@ -2,7 +2,9 @@ package engine.scene;
 
 import engine.assets.Texture;
 import engine.gameData.GameDataManager;
-import engine.scene.spawnable.*;
+import engine.scene.spawnable.EntitySpawnInfo;
+import engine.scene.spawnable.SceneDisplaySpawnInfo;
+import engine.scene.spawnable.Spawnable;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -42,28 +44,7 @@ final public class LevelTimeline {
     private HashSet<Spawnable> getAllSpawnables() {
         HashSet<Spawnable> allSpawnablesSet = new HashSet<>(spawnList.size());
         for (ArrayList<Spawnable> spawnEntry : spawnList.values()) {
-            for (Spawnable spawnable : spawnEntry) {
-                if (!(spawnable instanceof EmptySpawnable)) {
-                    HashSet<Spawnable> spawnablesToCheck = new HashSet<>();
-                    spawnablesToCheck.add(spawnable);
-                    while (!spawnablesToCheck.isEmpty()) {
-                        Spawnable currentSpawnable = spawnablesToCheck.iterator().next();
-                        spawnablesToCheck.remove(currentSpawnable);
-                        if (!allSpawnablesSet.contains(currentSpawnable)) {
-                            if (!(currentSpawnable instanceof EmptySpawnable) && !(currentSpawnable instanceof MultiSpawnable)) {
-                                allSpawnablesSet.add(currentSpawnable);
-                            }
-                            if (currentSpawnable instanceof EntitySpawnInfo entitySpawnInfo) {
-                                ArrayList<Spawnable> entitySpawnables = gameDataManager.getSpawnablesOfEntity(entitySpawnInfo.id());
-                                spawnablesToCheck.addAll(entitySpawnables);
-                            }
-                            if (currentSpawnable instanceof MultiSpawnable(ArrayList<Spawnable> spawnables)) {
-                                spawnablesToCheck.addAll(spawnables);
-                            }
-                        }
-                    }
-                }
-            }
+            allSpawnablesSet.addAll(spawnEntry);
         }
         return allSpawnablesSet;
     }

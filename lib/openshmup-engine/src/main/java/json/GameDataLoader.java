@@ -11,7 +11,6 @@ import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.EntitySpawnInfo;
-import engine.scene.spawnable.MultiSpawnable;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.scene.spawnable.Spawnable;
 import engine.types.IVec2D;
@@ -62,7 +61,7 @@ final public class GameDataLoader {
 
     public void loadGameVisuals(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
-        List<SafeJsonNode> visualList = rootNode.checkAndGetObjectsFromArray();
+        List<SafeJsonNode> visualList = rootNode.checkAndGetObjectListFromArray();
         for (SafeJsonNode visualNode : visualList) {
             int id = visualNode.checkAndGetInt("id");
             int layer = visualNode.checkAndGetInt("layer");
@@ -111,7 +110,7 @@ final public class GameDataLoader {
 
     public void loadGameTrajectories(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
-        List<SafeJsonNode> elementList = rootNode.checkAndGetObjectsFromArray();
+        List<SafeJsonNode> elementList = rootNode.checkAndGetObjectListFromArray();
         for (SafeJsonNode trajectoryNode : elementList) {
             int id = trajectoryNode.checkAndGetInt("id");
             String type = trajectoryNode.checkAndGetString("type");
@@ -137,7 +136,7 @@ final public class GameDataLoader {
 
     public void loadGameEntities(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + filepath, objectMapper);
-        List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectsFromArray();
+        List<SafeJsonNode> customEntities = rootNode.checkAndGetObjectListFromArray();
         for (SafeJsonNode entityNode : customEntities) {
 
             int id = entityNode.checkAndGetInt("id");
@@ -160,19 +159,14 @@ final public class GameDataLoader {
                 }
             }
             if (entityNode.hasField("deathSpawn")) {
-                SafeJsonNode deathSpawnNode = entityNode.checkAndGetObjectOrArray("deathSpawn");
-                Spawnable deathSpawn;
-                if (deathSpawnNode.isArray()) {
-                    ArrayList<Spawnable> spawnables = new ArrayList<>();
-                    List<SafeJsonNode> elementsList = deathSpawnNode.checkAndGetObjectsFromArray();
-                    for (var deathSpawnElement : elementsList) {
-                        spawnables.add(getSingleSpawnable(deathSpawnElement));
-                    }
-                    deathSpawn = new MultiSpawnable(spawnables);
+                SafeJsonNode deathSpawnNode = entityNode.checkAndGetArray("deathSpawn");
+                List<Spawnable> deathSpawn;
+                ArrayList<Spawnable> spawnables = new ArrayList<>();
+                List<SafeJsonNode> elementsList = deathSpawnNode.checkAndGetObjectListFromArray();
+                for (var deathSpawnElement : elementsList) {
+                    spawnables.add(getSingleSpawnable(deathSpawnElement));
                 }
-                else {
-                    deathSpawn = getSingleSpawnable(deathSpawnNode);
-                }
+                deathSpawn = spawnables;
                 customEntityBuilder = customEntityBuilder.setDeathSpawn(deathSpawn);
             }
 
@@ -187,19 +181,14 @@ final public class GameDataLoader {
                 float shotPeriod = shotNode.checkAndGetFloat("shotPeriod");
                 float firstShotTime = shotNode.checkAndGetFloat("firstShotTime");
 
-                SafeJsonNode spawnableNode = shotNode.checkAndGetObjectOrArray("spawn");
-                Spawnable shot;
-                if (spawnableNode.isArray()) {
+                SafeJsonNode spawnableNode = shotNode.checkAndGetArray("spawn");
+                List<Spawnable> shot;
                     ArrayList<Spawnable> spawnables = new ArrayList<>();
-                    List<SafeJsonNode> elementsList = spawnableNode.checkAndGetObjectsFromArray();
+                List<SafeJsonNode> elementsList = spawnableNode.checkAndGetObjectListFromArray();
                     for (var spawnElement : elementsList) {
                         spawnables.add(getSingleSpawnable(spawnElement));
                     }
-                    shot = new MultiSpawnable(spawnables);
-                }
-                else {
-                    shot = getSingleSpawnable(spawnableNode);
-                }
+                shot = spawnables;
                 customEntityBuilder = customEntityBuilder.createShot(shot, shotPeriod, firstShotTime);
             }
 
@@ -220,34 +209,31 @@ final public class GameDataLoader {
     public void loadGameTimeline(String filepath) throws IllegalArgumentException {
         SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(rootFolderAbsolutePath + filepath, objectMapper);
         float duration = rootNode.checkAndGetFloat("duration");
-        SafeJsonNode spawnsNode = rootNode.checkAndGetObjectArray("spawns");
+        SafeJsonNode spawnsNode = rootNode.checkAndGetArray("spawns");
         LevelTimeline newTimeline = new LevelTimeline(gameDataManager, duration);
-        List<SafeJsonNode> elementList = spawnsNode.checkAndGetObjectsFromArray();
+        List<SafeJsonNode> elementList = spawnsNode.checkAndGetObjectListFromArray();
         for (SafeJsonNode childNode : elementList) {
-            SafeJsonNode spawnableNode = childNode.checkAndGetObjectOrArray("spawn");
-            Spawnable newSpawnable;
-            if (spawnableNode.isArray()) {
-                ArrayList<Spawnable> spawnables = new ArrayList<>();
-                List<SafeJsonNode> nodeList = spawnableNode.checkAndGetObjectsFromArray();
-                for (var spawnElement : nodeList) {
-                    spawnables.add(getSingleSpawnable(spawnElement));
-                }
-                newSpawnable = new MultiSpawnable(spawnables);
-            }
-            else {
-                newSpawnable = getSingleSpawnable(spawnableNode);
+            SafeJsonNode spawnableNode = childNode.checkAndGetArray("spawn");
+            ArrayList<Spawnable> newSpawnables = new ArrayList<>();
+            List<SafeJsonNode> nodeList = spawnableNode.checkAndGetObjectListFromArray();
+            for (var spawnElement : nodeList) {
+                newSpawnables.add(getSingleSpawnable(spawnElement));
             }
             String type = childNode.checkAndGetString("type");
             if (type.equals("single")) {
                 float time = childNode.checkAndGetFloat("time");
-                newTimeline.addSpawnable(time, newSpawnable);
+                for (var spawnable : newSpawnables) {
+                    newTimeline.addSpawnable(time, spawnable);
+                }
             }
             else if (type.equals("interval")) {
                 float startTime = childNode.checkAndGetFloat("startTime");
                 float endTime = childNode.checkAndGetFloat("endTime");
                 float interval = childNode.checkAndGetFloat("interval");
                 for (float i = startTime; i <= endTime; i += interval) {
-                    newTimeline.addSpawnable(i, newSpawnable);
+                    for (var spawnable : newSpawnables) {
+                        newTimeline.addSpawnable(i, spawnable);
+                    }
                 }
             }
             else {
@@ -281,11 +267,11 @@ final public class GameDataLoader {
             return new SceneDisplaySpawnInfo(id, positionVec.x, positionVec.y);
         }
         else {
-            throw new IllegalArgumentException("Invalid JSON format: " + spawnableNode.getPath() + ": spwnable type can only be \"display\" or \"entity\"");
+            throw new IllegalArgumentException("Invalid JSON format: " + spawnableNode.getFullPath() + ": spwnable type can only be \"display\" or \"entity\"");
         }
     }
 
-    private Function<Double, Float> convertToFunction(String expressionString) {
+    public static Function<Double, Float> convertToFunction(String expressionString) {
         return t -> {
             Expression expr = new ExpressionBuilder(expressionString)
                 .variable("t")

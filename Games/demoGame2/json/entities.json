@@ -10,7 +10,7 @@
             "type": "simpleRectangle"
         },
         "defaultTrajectoryId": 0,
-        "shot":{
+        "shot": {
             "shotPeriod": 0.05,
             "firstShotTime": 0.1,
             "spawn": [
@@ -34,11 +34,13 @@
                 }
             ]
         },
-        "deathSpawn": {
-            "type": "display",
-            "id": 2,
-            "position": [0,0]
-        }
+        "deathSpawn": [
+            {
+                "type": "display",
+                "id": 2,
+                "position": [0, 0]
+            }
+        ]
     },
     {
         "id": 1,
@@ -60,21 +62,25 @@
         "hitbox": {
             "type": "simpleRectangle"
         },
-        "shot":{
+        "shot": {
             "shotPeriod": 1.0,
             "firstShotTime": 2,
-            "spawn": {
-                "type": "entity",
-                "id": 3,
-                "trajectory": 1,
-                "startingPosition": [0, -30]
-            }
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 1,
+                    "startingPosition": [0, -30]
+                }
+            ]
         },
-        "deathSpawn": {
-            "type": "display",
-            "id": 2,
-            "position": [0,0]
-        }
+        "deathSpawn": [
+            {
+                "type": "display",
+                "id": 2,
+                "position": [0, 0]
+            }
+        ]
     },
     {
         "id": 3,
