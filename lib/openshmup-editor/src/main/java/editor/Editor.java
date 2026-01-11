@@ -1,9 +1,9 @@
 package editor;
 
+import editor.attribute.EditorGameDataManager;
 import editor.scenes.MainMenuScene;
 import engine.Engine;
 import engine.GlobalVars;
-import engine.gameData.GameDataManager;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 final public class Editor extends Engine {
 
     @Getter
-    private static List<GameDataManager> loadedGames = null;
+    private static List<EditorGameDataManager> loadedGames = null;
 
     public static void main(String[] args) throws IOException {
         if (args.length != 0) {
@@ -37,11 +37,10 @@ final public class Editor extends Engine {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
         try (Stream<Path> paths = Files.list(Path.of(rootFolderAbsolutePath + GlobalVars.Paths.Partial.customGamesFolder))) {
             loadedGames = paths.filter(Files::isDirectory)
-                .map(path -> new GameDataManager(path.getFileName().toString()))
+                .map(path -> new EditorGameDataManager(path.getFileName().toString()))
                 .toList();
         }
         loadedGames.forEach(gameDataManager -> {
-            gameDataManager.loadGameConfig();
             gameDataManager.loadGameContents();
         });
     }

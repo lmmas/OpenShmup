@@ -2,10 +2,10 @@ package json.converters.extraComponent;
 
 import engine.entity.extraComponent.ExtraComponent;
 import engine.gameData.GameDataManager;
+import json.GameLoader;
 import json.SafeJsonNode;
-import json.factories.GameFactory;
 
 public interface ExtraComponentFactory {
 
-    ExtraComponent fromJson(SafeJsonNode node, GameDataManager gameData, GameFactory gameFactory, boolean isPlayer);
+    ExtraComponent fromJson(SafeJsonNode node, GameDataManager gameData, GameLoader gameLoader, boolean isPlayer);
 }

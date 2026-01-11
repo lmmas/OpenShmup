@@ -10,6 +10,7 @@ import engine.gameData.GameDataManager;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
+import json.GameLoader;
 import json.SafeJsonNode;
 import json.TriFunction;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class EntityFactories {
 
-    final public static TriFunction<SafeJsonNode, GameFactory, GameDataManager, Entity> shipFactory = (node, gameFactory, gameData) -> {
+    final public static TriFunction<SafeJsonNode, GameLoader, GameDataManager, Entity> shipFactory = (node, gameFactory, gameData) -> {
         int id = node.checkAndGetInt("id");
         boolean evil = node.checkAndGetBoolean("evil");
         Vec2D size = node.checkAndGetVec2D("size");
@@ -46,7 +47,7 @@ public class EntityFactories {
         return new Ship(0f, 0f, size.x, size.y, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
     };
 
-    final public static TriFunction<SafeJsonNode, GameFactory, GameDataManager, Entity> projectileFactory = (node, gameFactory, gameData) -> {
+    final public static TriFunction<SafeJsonNode, GameLoader, GameDataManager, Entity> projectileFactory = (node, gameFactory, gameData) -> {
         int id = node.checkAndGetInt("id");
         boolean evil = node.checkAndGetBoolean("evil");
         Vec2D size = node.checkAndGetVec2D("size");

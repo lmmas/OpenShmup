@@ -7,7 +7,7 @@ import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.Spawnable;
 import engine.visual.SceneVisual;
-import json.factories.GameFactory;
+import json.GameLoader;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -45,26 +45,21 @@ final public class GameDataManager {
     }
 
     public void loadGameConfig() {
-        GameFactory gameFactory = new GameFactory();
+        GameLoader gameLoader = new GameLoader();
         try {
-            //gameDataLoader.loadGameConfig(paths.gameConfigFile);
-            gameFactory.loadGameConfig(this);
+            gameLoader.loadGameConfig(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void loadGameContents() {
-        GameFactory gameFactory = new GameFactory();
+        GameLoader gameLoader = new GameLoader();
         try {
-            //gameDataLoader.loadGameVisuals(paths.gameVisualsFile);
-            gameFactory.loadGameVisuals(this);
-            //gameDataLoader.loadGameTrajectories(paths.gameTrajectoriesFile);
-            gameFactory.loadGameTrajectories(this);
-            //gameDataLoader.loadGameEntities(paths.gameEntitiesFile);
-            gameFactory.loadGameEntities(this);
-            //gameDataLoader.loadGameTimeline(paths.gameTimelineFile);
-            gameFactory.loadGameTimelines(this);
+            gameLoader.loadGameVisuals(this);
+            gameLoader.loadGameTrajectories(this);
+            gameLoader.loadGameEntities(this);
+            gameLoader.loadGameTimelines(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

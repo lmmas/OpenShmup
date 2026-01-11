@@ -1,4 +1,4 @@
-package json.factories;
+package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import engine.entity.Entity;
@@ -12,9 +12,6 @@ import engine.scene.LevelTimeline;
 import engine.scene.spawnable.Spawnable;
 import engine.types.IVec2D;
 import engine.visual.SceneVisual;
-import json.SafeJsonNode;
-import json.TetraFunction;
-import json.TriFunction;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,7 +35,7 @@ import static json.factories.TrajectoryFactories.playerControlledTrajectoryFacto
 import static json.factories.VisualFactories.animationFactory;
 import static json.factories.VisualFactories.scrollingImageFactory;
 
-public class GameFactory {
+public class GameLoader {
 
     final private Map<String, BiFunction<SafeJsonNode, Path, SceneVisual>> visualFactories;
 
@@ -48,11 +45,11 @@ public class GameFactory {
 
     final private Map<String, Function<SafeJsonNode, Spawnable>> spawnableFactories;
 
-    final private Map<String, TetraFunction<SafeJsonNode, GameDataManager, GameFactory, Boolean, ExtraComponent>> extraComponentFactories;
+    final private Map<String, TetraFunction<SafeJsonNode, GameDataManager, GameLoader, Boolean, ExtraComponent>> extraComponentFactories;
 
-    final private Map<String, TriFunction<SafeJsonNode, GameFactory, GameDataManager, Entity>> entityFactories;
+    final private Map<String, TriFunction<SafeJsonNode, GameLoader, GameDataManager, Entity>> entityFactories;
 
-    public GameFactory() {
+    public GameLoader() {
         this.visualFactories = new HashMap<>(2);
         visualFactories.put("scrollingImage", scrollingImageFactory);
         visualFactories.put("animation", animationFactory);

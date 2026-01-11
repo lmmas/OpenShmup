@@ -5,6 +5,7 @@ import engine.entity.extraComponent.NonPlayerShot;
 import engine.entity.extraComponent.PlayerShot;
 import engine.gameData.GameDataManager;
 import engine.scene.spawnable.Spawnable;
+import json.GameLoader;
 import json.SafeJsonNode;
 import json.TetraFunction;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ExtraComponentFactories {
 
-    final public static TetraFunction<SafeJsonNode, GameDataManager, GameFactory, Boolean, ExtraComponent> shotFactory = (node, gameDataManager, gameFactory, isPlayer) -> {
+    final public static TetraFunction<SafeJsonNode, GameDataManager, GameLoader, Boolean, ExtraComponent> shotFactory = (node, gameDataManager, gameFactory, isPlayer) -> {
         float shotPeriod = node.checkAndGetFloat("shotPeriod");
         float firstShotTime = node.checkAndGetFloat("firstShotTime");
         SafeJsonNode spawnsNode = node.checkAndGetArray("spawn");
