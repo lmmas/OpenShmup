@@ -130,7 +130,7 @@ final public class SafeJsonNode {
             if (!node.get(i).isObject()) {
                 throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + " should only contain objects");
             }
-            objectList.add(new SafeJsonNode(node.get(i), filePath, getFullPath() + "[" + i + "]"));
+            objectList.add(new SafeJsonNode(node.get(i), filePath, JSONPath + "[" + i + "]"));
         }
         return objectList;
     }
@@ -179,5 +179,7 @@ final public class SafeJsonNode {
         return node.isArray();
     }
 
-    public String getFullPath() {return this.JSONPath;}
+    public String getFullPath() {
+        return this.filePath + this.JSONPath;
+    }
 }

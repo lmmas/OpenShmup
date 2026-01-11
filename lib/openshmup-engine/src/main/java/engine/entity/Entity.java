@@ -1,13 +1,7 @@
 package engine.entity;
 
-import engine.assets.Texture;
 import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.extraComponent.NonPlayerShot;
-import engine.entity.extraComponent.PlayerShot;
-import engine.entity.hitbox.CompositeHitbox;
 import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.SimpleRectangleHitbox;
-import engine.entity.trajectory.FixedTrajectory;
 import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
@@ -18,7 +12,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 abstract public class Entity {
 
@@ -140,142 +133,4 @@ abstract public class Entity {
         }
     }
 
-    public static class Builder {
-
-        private int id = -1;
-
-        private EntityType type = EntityType.PROJECTILE;
-
-        private int hitPoints = 1;
-
-        private boolean evil = true;
-
-        private final Vec2D size = new Vec2D(0.0f, 0.0f);
-
-        private final Vec2D startingPosition = new Vec2D(0.0f, 0.0f);
-
-        private float orientationRadians = 0.0f;
-
-        private SceneVisual sprite = SceneVisual.DEFAULT_EMPTY();
-
-        private Hitbox hitbox = Hitbox.DEFAULT_EMPTY();
-
-        private Trajectory trajectory = Trajectory.DEFAULT_EMPTY();
-
-        private List<Spawnable> deathSpawn = new ArrayList<>();
-
-        private final ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
-
-        public Builder setType(EntityType type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder setHitPoints(int hp) {
-            this.hitPoints = hp;
-            return this;
-        }
-
-        public Builder setStartingPosition(float startPosX, float startPosY) {
-            this.startingPosition.x = startPosX;
-            this.startingPosition.y = startPosY;
-            return this;
-        }
-
-        public Builder setSize(float sizeX, float sizeY) {
-            this.size.x = sizeX;
-            this.size.y = sizeY;
-            return this;
-        }
-
-        public Builder setOrientation(float orientationRadians) {
-            this.orientationRadians = orientationRadians;
-            return this;
-        }
-
-        public Builder setId(int id) {
-            this.id = id;
-            if (this.id == 0) {
-                this.evil = false;
-            }
-            return this;
-        }
-
-        public Builder setEvil(boolean evil) {
-            this.evil = evil;
-            return this;
-        }
-
-        public Builder setSprite(SceneVisual sprite) {
-            this.sprite = sprite;
-            return this;
-        }
-
-        public Builder createFixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY) {
-            this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY);
-            return this;
-        }
-
-        public Builder createFixedTrajectory(Function<Double, Float> trajectoryFunctionX, Function<Double, Float> trajectoryFunctionY, boolean relative) {
-            this.trajectory = new FixedTrajectory(trajectoryFunctionX, trajectoryFunctionY, relative);
-            return this;
-        }
-
-        public Builder setTrajectory(Trajectory trajectory) {
-            this.trajectory = trajectory;
-            return this;
-        }
-
-        public Builder setDeathSpawn(List<Spawnable> deathSpawn) {
-            this.deathSpawn = deathSpawn;
-            return this;
-        }
-
-        public Builder addCompositeHitbox(Texture hitboxTexture, boolean orientable) {
-            assert size.x != 0.0f && size.y != 0.0f : "Invalid hitbox size";
-            if (orientable) {
-
-            }
-            else {
-                hitbox = new CompositeHitbox(hitboxTexture, size.x, size.y);
-            }
-            return this;
-        }
-
-        public Builder addRectangleHitbox(boolean orientable) {
-            if (orientable) {
-
-            }
-            else {
-                hitbox = new SimpleRectangleHitbox(0.0f, 0.0f, size.x, size.y);
-            }
-            return this;
-        }
-
-        public Builder createShot(List<Spawnable> spawnable, float shotPeriodSeconds, float firstShotTimeSeconds) {
-            assert this.id != -1 : "incorrect building steps order: must define the id first";
-            if (this.id == 0) {
-                extraComponents.add(new PlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
-            }
-            else {
-                extraComponents.add(new NonPlayerShot(spawnable, shotPeriodSeconds, firstShotTimeSeconds));
-            }
-            return this;
-        }
-
-        public Builder addExtraComponent(ExtraComponent extraComponent) {
-            extraComponents.add(extraComponent);
-            return this;
-        }
-
-        public Entity build() {
-            assert (sprite != null) : "Entity construction error: null fields";
-            if (type != EntityType.SHIP) {
-                return new Projectile(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
-            }
-            else {
-                return new Ship(startingPosition.x, startingPosition.y, size.x, size.y, orientationRadians, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hitPoints);
-            }
-        }
-    }
 }

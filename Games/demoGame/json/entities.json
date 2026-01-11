@@ -8,6 +8,7 @@
         "spriteVisualId": 3,
         "hitbox": {
             "type": "composite",
+            "size": [50, 75],
             "fileName": "shipHitbox.png"
         },
         "defaultTrajectoryId": 0,
@@ -37,7 +38,7 @@
         },
         "deathSpawn": [
             {
-                "type": "display",
+                "type": "visual",
                 "id": 2,
                 "position": [0, 0]
             }
@@ -50,8 +51,10 @@
         "size": [10, 26],
         "spriteVisualId": 4,
         "hitbox": {
-            "type": "simpleRectangle"
-        }
+            "type": "simpleRectangle",
+            "size": [10, 26]
+        },
+        "deathSpawn": []
     },
     {
         "id": 2,
@@ -61,7 +64,8 @@
         "size": [50, 50],
         "spriteVisualId": 5,
         "hitbox": {
-            "type": "simpleRectangle"
+            "type": "simpleRectangle",
+            "size": [50, 50]
         },
         "shot": {
             "shotPeriod": 0.5,
@@ -77,7 +81,7 @@
         },
         "deathSpawn": [
             {
-                "type": "display",
+                "type": "visual",
                 "id": 2,
                 "position": [0, 0]
             }
@@ -90,8 +94,10 @@
         "size": [10, 10],
         "spriteVisualId": 6,
         "hitbox": {
-            "type": "simpleRectangle"
-        }
+            "type": "simpleRectangle",
+            "size": [10, 10]
+        },
+        "deathSpawn": []
     },
     {
         "id": 4,
@@ -101,11 +107,12 @@
         "size": [50, 50],
         "spriteVisualId": 7,
         "hitbox": {
-            "type": "simpleRectangle"
+            "type": "simpleRectangle",
+            "size": [50, 50]
         },
         "deathSpawn": [
             {
-                "type": "display",
+                "type": "visual",
                 "id": 2,
                 "position": [0, 0]
             }

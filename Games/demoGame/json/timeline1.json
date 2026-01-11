@@ -8,10 +8,11 @@
                 {
                     "type": "entity",
                     "id": 0,
+                    "trajectory": -1,
                     "startingPosition": [500, 200]
                 },
                 {
-                    "type": "display",
+                    "type": "visual",
                     "id": 1,
                     "position": [500, 550]
                 }

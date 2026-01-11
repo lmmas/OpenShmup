@@ -6,7 +6,7 @@ import json.SafeJsonNode;
 
 import java.util.function.Function;
 
-import static json.GameDataLoader.convertToFunction;
+import static json.factories.GameFactory.convertToFunction;
 
 public class FixedTrajectoryFactory implements TrajectoryFactory {
 

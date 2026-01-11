@@ -7,7 +7,7 @@ import engine.entity.trajectory.Trajectory;
 import engine.scene.LevelTimeline;
 import engine.scene.spawnable.Spawnable;
 import engine.visual.SceneVisual;
-import json.GameDataLoader;
+import json.factories.GameFactory;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ final public class GameDataManager {
 
     final public GamePaths paths;
 
-    final public GameConfig config;
+    public GameConfig config;
 
     @Getter
     final private HashMap<Integer, SceneVisual> visuals;
@@ -45,21 +45,26 @@ final public class GameDataManager {
     }
 
     public void loadGameConfig() {
-        GameDataLoader gameDataLoader = new GameDataLoader(this);
+        GameFactory gameFactory = new GameFactory();
         try {
-            gameDataLoader.loadGameConfig(paths.gameConfigFile);
+            //gameDataLoader.loadGameConfig(paths.gameConfigFile);
+            gameFactory.loadGameConfig(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void loadGameContents() {
-        GameDataLoader gameDataLoader = new GameDataLoader(this);
+        GameFactory gameFactory = new GameFactory();
         try {
-            gameDataLoader.loadGameVisuals(paths.gameVisualsFile);
-            gameDataLoader.loadGameTrajectories(paths.gameTrajectoriesFile);
-            gameDataLoader.loadGameEntities(paths.gameEntitiesFile);
-            gameDataLoader.loadGameTimeline(paths.gameTimelineFile);
+            //gameDataLoader.loadGameVisuals(paths.gameVisualsFile);
+            gameFactory.loadGameVisuals(this);
+            //gameDataLoader.loadGameTrajectories(paths.gameTrajectoriesFile);
+            gameFactory.loadGameTrajectories(this);
+            //gameDataLoader.loadGameEntities(paths.gameEntitiesFile);
+            gameFactory.loadGameEntities(this);
+            //gameDataLoader.loadGameTimeline(paths.gameTimelineFile);
+            gameFactory.loadGameTimelines(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

@@ -23,7 +23,7 @@ public class ProjectileFactory implements EntityFactory {
         boolean evil = node.checkAndGetBoolean("evil");
         Vec2D size = node.checkAndGetVec2D("size");
         SafeJsonNode hitboxNode = node.checkAndGetObject("hitbox");
-        Hitbox hitbox = gameFactory.hitboxFromJson(hitboxNode);
+        Hitbox hitbox = gameFactory.hitboxFromJson(hitboxNode, gameData.paths);
         SafeJsonNode deathSpawnNode = node.checkAndGetArray("deathSpawn");
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.checkAndGetObjectListFromArray();
         List<Spawnable> deathSpawn = spawnableNodes.stream().map(gameFactory::spawnableFromJson).toList();
