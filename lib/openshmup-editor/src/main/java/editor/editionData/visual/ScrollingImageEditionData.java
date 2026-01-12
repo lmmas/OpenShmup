@@ -1,4 +1,4 @@
-package editor.objectAttributes.visual;
+package editor.editionData.visual;
 
 import editor.attribute.BooleanAttribute;
 import editor.attribute.FloatAttribute;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ScrollingImageAttributes extends VisualAttributes {
+public class ScrollingImageEditionData extends VisualEditionData {
 
     private StringAttribute fileName;
 
@@ -16,7 +16,7 @@ public class ScrollingImageAttributes extends VisualAttributes {
 
     private BooleanAttribute horizontalScrolling;
 
-    public ScrollingImageAttributes(int id, int layer, float sizeX, float sizeY, String imageFileName, float speed, boolean horizontalScrolling) {
+    public ScrollingImageEditionData(int id, int layer, float sizeX, float sizeY, String imageFileName, float speed, boolean horizontalScrolling) {
         super(id, layer, sizeX, sizeY);
         this.fileName = new StringAttribute("Image file name", imageFileName);
         this.speed = new FloatAttribute("Scrolling speed", speed);

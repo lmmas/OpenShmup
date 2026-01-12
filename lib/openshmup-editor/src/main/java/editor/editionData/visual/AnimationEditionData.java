@@ -1,4 +1,4 @@
-package editor.objectAttributes.visual;
+package editor.editionData.visual;
 
 import editor.attribute.*;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AnimationAttributes extends VisualAttributes {
+public class AnimationEditionData extends VisualEditionData {
 
     private DoubleAttribute framePeriodSeconds;
 
@@ -14,7 +14,7 @@ public class AnimationAttributes extends VisualAttributes {
 
     private AnimationInfoAttributes animationInfo;
 
-    public AnimationAttributes(int id, int layer, float sizeX, float sizeY, double framePeriodSeconds, boolean looping, AnimationInfoAttributes animationInfo) {
+    public AnimationEditionData(int id, int layer, float sizeX, float sizeY, double framePeriodSeconds, boolean looping, AnimationInfoAttributes animationInfo) {
         super(id, layer, sizeX, sizeY);
         this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", framePeriodSeconds);
         this.looping = new BooleanAttribute("looping", looping);

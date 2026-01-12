@@ -1,6 +1,6 @@
 package editor.attribute;
 
-import editor.objectAttributes.visual.VisualAttributes;
+import editor.editionData.visual.VisualEditionData;
 import engine.gameData.GamePaths;
 import json.converters.JsonDataConverter;
 import lombok.Getter;
@@ -14,12 +14,12 @@ public class EditorGameDataManager {
 
     final public GamePaths paths;
     @Getter
-    final private List<VisualAttributes> visualAttributesList;
+    final private List<VisualEditionData> visualEditionDataList;
 
     public EditorGameDataManager(String gameFolderName) {
         this.gameFolderName = gameFolderName;
         this.paths = new GamePaths(gameFolderName);
-        this.visualAttributesList = new ArrayList<>();
+        this.visualEditionDataList = new ArrayList<>();
     }
 
     public void loadGameContents() {
@@ -31,9 +31,9 @@ public class EditorGameDataManager {
         }
     }
 
-    public void addVisual(VisualAttributes visualAttributes) {
-        assert !visualAttributesList.contains(visualAttributes) : "visual already defined";
-        visualAttributesList.add(visualAttributes);
+    public void addVisual(VisualEditionData visualEditionData) {
+        assert !visualEditionDataList.contains(visualEditionData) : "visual already defined";
+        visualEditionDataList.add(visualEditionData);
     }
 
     public String getGameName() {

@@ -2,7 +2,7 @@ package json.converters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import editor.attribute.EditorGameDataManager;
-import editor.objectAttributes.visual.VisualAttributes;
+import editor.editionData.visual.VisualEditionData;
 import json.SafeJsonNode;
 import json.converters.visual.AnimationConverter;
 import json.converters.visual.ScrollingImageConverter;
@@ -30,7 +30,7 @@ public class JsonDataConverter {
         this.visualConverters.put("scrollingImage", new ScrollingImageConverter());
     }
 
-    public VisualAttributes visualAttributesFromJSON(SafeJsonNode node, Path textureFolderPath) {
+    public VisualEditionData visualAttributesFromJSON(SafeJsonNode node, Path textureFolderPath) {
         String type = node.checkAndGetString("type");
         VisualConverter converter = visualConverters.get(type);
         if (converter == null) {
@@ -43,7 +43,7 @@ public class JsonDataConverter {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + editorGameData.paths.gameVisualsFile, objectMapper);
         List<SafeJsonNode> visualNodesList = rootNode.checkAndGetObjectListFromArray();
         for (var visualNode : visualNodesList) {
-            VisualAttributes newVisual = visualAttributesFromJSON(visualNode, Paths.get(editorGameData.paths.gameTextureFolder));
+            VisualEditionData newVisual = visualAttributesFromJSON(visualNode, Paths.get(editorGameData.paths.gameTextureFolder));
             editorGameData.addVisual(newVisual);
         }
     }
