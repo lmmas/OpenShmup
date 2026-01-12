@@ -9,18 +9,15 @@ import json.converters.visual.ScrollingImageConverter;
 import json.converters.visual.VisualConverter;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 public class JsonDataConverter {
 
     final private Map<String, VisualConverter> visualConverters;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public JsonDataConverter() {
         this.objectMapper = new ObjectMapper();
@@ -40,10 +37,10 @@ public class JsonDataConverter {
     }
 
     public void loadVisualAttributes(EditorGameDataManager editorGameData) {
-        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(rootFolderAbsolutePath + editorGameData.paths.gameVisualsFile, objectMapper);
+        SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameVisualsFile, objectMapper);
         List<SafeJsonNode> visualNodesList = rootNode.checkAndGetObjectListFromArray();
         for (var visualNode : visualNodesList) {
-            VisualEditionData newVisual = visualAttributesFromJSON(visualNode, Paths.get(editorGameData.paths.gameTextureFolder));
+            VisualEditionData newVisual = visualAttributesFromJSON(visualNode, editorGameData.paths.gameTextureFolder);
             editorGameData.addVisual(newVisual);
         }
     }

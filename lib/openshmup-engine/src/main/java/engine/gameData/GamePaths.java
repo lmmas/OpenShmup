@@ -2,30 +2,34 @@ package engine.gameData;
 
 import engine.GlobalVars;
 
+import java.nio.file.Path;
+
+import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
+
 final public class GamePaths {
 
-    final public String gameFolder;
+    final public Path gameFolder;
 
-    final public String gameConfigFile;
+    final public Path gameConfigFile;
 
-    final public String gameTextureFolder;
+    final public Path gameTextureFolder;
 
-    final public String gameVisualsFile;
+    final public Path gameVisualsFile;
 
-    final public String gameTrajectoriesFile;
+    final public Path gameTrajectoriesFile;
 
-    final public String gameEntitiesFile;
+    final public Path gameEntitiesFile;
 
-    final public String gameTimelineFile;
+    final public Path gameTimelineFile;
 
     public GamePaths(String gameFolderName) {
-        gameFolder = GlobalVars.Paths.Partial.customGamesFolder + gameFolderName;
-        gameConfigFile = gameFolder + GlobalVars.Paths.Partial.gameConfigFile;
-        gameTextureFolder = gameFolder + GlobalVars.Paths.Partial.gameTextureFolder;
-        gameVisualsFile = gameFolder + GlobalVars.Paths.Partial.gameVisualsFile;
-        gameTrajectoriesFile = gameFolder + GlobalVars.Paths.Partial.gameTrajectoriesFile;
-        gameEntitiesFile = gameFolder + GlobalVars.Paths.Partial.gameEntitiesFile;
-        gameTimelineFile = gameFolder + GlobalVars.Paths.Partial.gameTimelineFile;
+        gameFolder = rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder).resolve(gameFolderName);
+        gameConfigFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameConfigFile);
+        gameTextureFolder = gameFolder.resolve(GlobalVars.Paths.Partial.gameTextureFolder);
+        gameVisualsFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameVisualsFile);
+        gameTrajectoriesFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameTrajectoriesFile);
+        gameEntitiesFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameEntitiesFile);
+        gameTimelineFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameTimelineFile);
     }
 
 

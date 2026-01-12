@@ -3,6 +3,8 @@ package engine.gameData;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 
+import java.nio.file.Path;
+
 final public class GameConfig {
 
     final private IVec2D nativeResolution = new IVec2D(0, 0);
@@ -32,7 +34,7 @@ final public class GameConfig {
 
         public static class Lives {
 
-            public String textureFilepath;
+            public Path textureFilepath;
 
             public Vec2D size;
 

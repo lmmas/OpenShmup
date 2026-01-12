@@ -19,7 +19,7 @@ public class VisualFactories {
     final public static BiFunction<SafeJsonNode, Path, SceneVisual> scrollingImageFactory = (node, textureFolderPath) -> {
         int layer = node.checkAndGetInt("layer");
         Vec2D size = node.checkAndGetVec2D("size");
-        String imagePath = textureFolderPath.resolve(node.checkAndGetString("fileName")).toString();
+        Path imagePath = textureFolderPath.resolve(node.checkAndGetString("fileName"));
         Texture texture = assetManager.getTexture(imagePath);
         boolean horizontalScrolling = node.checkAndGetBoolean("horizontalScrolling");
         float speed = node.checkAndGetFloat("speed");
@@ -33,7 +33,7 @@ public class VisualFactories {
 
         SafeJsonNode animationInfoNode = node.checkAndGetObject("animationInfo");
 
-        String textureFilepath = textureFolderPath.resolve(animationInfoNode.checkAndGetString("fileName")).toString();
+        Path textureFilepath = textureFolderPath.resolve(animationInfoNode.checkAndGetString("fileName"));
         int frameCount = animationInfoNode.checkAndGetInt("frameCount");
         IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
         IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");

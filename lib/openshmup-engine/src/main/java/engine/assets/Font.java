@@ -17,7 +17,7 @@ import static org.lwjgl.stb.STBTruetype.*;
 
 final public class Font {
 
-    final private String fontFilepath;
+    final private Path fontFilepath;
     @Getter
     final private Texture bitmap;
 
@@ -33,7 +33,7 @@ final public class Font {
 
     final private HashMap<Integer, FontCharInfo> charInfoMap;
 
-    private Font(String fontFilepath, Texture bitmap, float capHeightPixels, float normalizedAscent, float normalizedDescent, float normalizedLineGap, float normalizedLineHeight, HashMap<Integer, FontCharInfo> charInfoMap) {
+    private Font(Path fontFilepath, Texture bitmap, float capHeightPixels, float normalizedAscent, float normalizedDescent, float normalizedLineGap, float normalizedLineHeight, HashMap<Integer, FontCharInfo> charInfoMap) {
         this.fontFilepath = fontFilepath;
         this.bitmap = bitmap;
         this.capHeightPixels = capHeightPixels;
@@ -44,8 +44,8 @@ final public class Font {
         this.charInfoMap = charInfoMap;
     }
 
-    public static Font createFromTTF(String filepath) throws IOException {
-        byte[] fontBytes = Files.readAllBytes(Path.of(filepath));
+    public static Font createFromTTF(Path filepath) throws IOException {
+        byte[] fontBytes = Files.readAllBytes(filepath);
         ByteBuffer dataBuffer = BufferUtils.createByteBuffer(fontBytes.length);
         dataBuffer.put(fontBytes);
         dataBuffer.flip();

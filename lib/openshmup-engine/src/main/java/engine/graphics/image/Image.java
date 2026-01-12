@@ -8,11 +8,14 @@ import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import lombok.Getter;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static engine.Engine.assetManager;
 
 final public class Image extends Graphic<Image, Image.ImageVertex> {
 
-    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl";
+    final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl");
     @Getter
     private final Texture texture;
 

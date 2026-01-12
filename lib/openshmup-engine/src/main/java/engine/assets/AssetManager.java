@@ -3,6 +3,7 @@ package engine.assets;
 import engine.GlobalVars;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 import static engine.GlobalVars.Paths.debugFont;
@@ -10,34 +11,34 @@ import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class AssetManager {
 
-    final private HashMap<String, Shader> shaderMap;
+    final private HashMap<Path, Shader> shaderMap;
 
-    final private HashMap<String, Texture> imageFileMap;
+    final private HashMap<Path, Texture> imageFileMap;
 
-    final private HashMap<String, Font> fontFileMap;
+    final private HashMap<Path, Font> fontFileMap;
 
     public AssetManager() throws IOException {
         this.shaderMap = new HashMap<>();
         this.imageFileMap = new HashMap<>();
         this.fontFileMap = new HashMap<>();
 
-        Texture placeholderTexture = Texture.createFromImageFile(rootFolderAbsolutePath + GlobalVars.Paths.placeholderTextureFile);
+        Texture placeholderTexture = Texture.createFromImageFile(rootFolderAbsolutePath.resolve(GlobalVars.Paths.placeholderTextureFile));
         imageFileMap.put(GlobalVars.Paths.placeholderTextureFile, placeholderTexture);
 
-        Font defaultFont = Font.createFromTTF(rootFolderAbsolutePath + debugFont);
+        Font defaultFont = Font.createFromTTF(rootFolderAbsolutePath.resolve(debugFont));
         fontFileMap.put(debugFont, defaultFont);
         defaultFont.getBitmap().loadInGPU();
         imageFileMap.put(debugFont, defaultFont.getBitmap());
     }
 
-    public Texture getTexture(String filepath) {
+    public Texture getTexture(Path filepath) {
         if (imageFileMap.containsKey(filepath)) {
             return imageFileMap.get(filepath);
         }
         else {
             Texture newTexture;
             try {
-                newTexture = Texture.createFromImageFile(rootFolderAbsolutePath + filepath);
+                newTexture = Texture.createFromImageFile(filepath);
             } catch (IOException e) {
                 newTexture = imageFileMap.get(GlobalVars.Paths.placeholderTextureFile);
             }
@@ -46,25 +47,25 @@ final public class AssetManager {
         }
     }
 
-    public Shader getShader(String filepath) {
+    public Shader getShader(Path filepath) {
         if (shaderMap.containsKey(filepath)) {
             return shaderMap.get(filepath);
         }
         else {
-            Shader newShader = new Shader(rootFolderAbsolutePath + filepath);
+            Shader newShader = new Shader(filepath);
             shaderMap.put(filepath, newShader);
             newShader.compile();
             return newShader;
         }
     }
 
-    public Font getFont(String filepath) {
+    public Font getFont(Path filepath) {
         if (fontFileMap.containsKey(filepath)) {
             return fontFileMap.get(filepath);
         }
         else {
             try {
-                Font newFont = Font.createFromTTF(rootFolderAbsolutePath + filepath);
+                Font newFont = Font.createFromTTF(filepath);
                 fontFileMap.put(filepath, newFont);
                 return newFont;
             } catch (IOException e) {

@@ -6,7 +6,7 @@ import org.lwjgl.BufferUtils;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL33.*;
 
@@ -15,7 +15,7 @@ final public class Shader {
 
     private int shaderProgramID;
     @Getter
-    private final String filepath;
+    private final Path filepath;
 
     private String vertexSource;
 
@@ -23,10 +23,10 @@ final public class Shader {
 
     private String fragmentSource;
 
-    public Shader(String filepath) {
+    public Shader(Path filepath) {
         this.filepath = filepath;
         try {
-            String source = new String(Files.readAllBytes(Paths.get(filepath)));
+            String source = new String(Files.readAllBytes(filepath));
 
             String[] splitSource = source.split("#type\\sfragment|#type\\sgeometry");
 

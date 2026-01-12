@@ -7,14 +7,17 @@ import engine.scene.LevelScene;
 import engine.scene.spawnable.Spawnable;
 import engine.types.RGBAValue;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static engine.Engine.assetManager;
 import static engine.Engine.graphicsManager;
+import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class HitboxDebugRectangle implements ExtraComponent {
 
-    final static public String hitboxDebugShader = "/lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl";
+    final static public Path hitboxDebugShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl");
 
     private final SimpleRectangleHitbox simpleRectangleHitbox;
 
@@ -22,7 +25,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangle(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(hitboxDebugShader));
+        this.debugDisplay = new ColorRectangle(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
     }
 
     @Override

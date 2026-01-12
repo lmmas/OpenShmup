@@ -6,11 +6,14 @@ import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static engine.Engine.assetManager;
 
 final public class ColorRectangle extends Graphic<ColorRectangle, ColorRectangle.ColorRectangleVertex> {
 
-    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl";
+    final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl");
 
     private final ColorRectangleVertex vertex;
 

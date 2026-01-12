@@ -21,7 +21,7 @@ public class HitboxFactories {
 
     final public static BiFunction<SafeJsonNode, Path, Hitbox> compositeHitboxFactory = (node, path) -> {
         String textureFileName = node.checkAndGetString("fileName");
-        Texture texture = assetManager.getTexture(path.resolve(textureFileName).toString());
+        Texture texture = assetManager.getTexture(path.resolve(textureFileName));
         Vec2D size = node.checkAndGetVec2D("size");
         return new CompositeHitbox(texture, size.x, size.y);
     };

@@ -1,7 +1,9 @@
 package engine.visual;
 
+import java.nio.file.Path;
+
 public record AnimationInfo(
-    String filepath,
+    Path filepath,
     int frameCount,
     float frameSizeX,
     float frameSizeY,

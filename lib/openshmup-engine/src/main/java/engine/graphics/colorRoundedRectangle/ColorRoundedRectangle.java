@@ -7,11 +7,14 @@ import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import lombok.Getter;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static engine.Engine.assetManager;
 
 final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex> {
 
-    final static public String defaultShader = "/lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl";
+    final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl");
 
     private final ColorRoundedRectangleVertex vertex;
 

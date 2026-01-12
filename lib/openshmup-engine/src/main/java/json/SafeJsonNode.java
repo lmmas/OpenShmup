@@ -9,7 +9,6 @@ import lombok.Getter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +26,10 @@ final public class SafeJsonNode {
         this.JSONPath = JSONpath;
     }
 
-    public static SafeJsonNode getObjectRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
+    public static SafeJsonNode getObjectRootNode(Path filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
         JsonNode rootNode;
         try {
-            rootNode = objectMapper.readTree(new File(filepath));
+            rootNode = objectMapper.readTree(new File(filepath.toString()));
         } catch (IOException e) {
             throw new IllegalArgumentException("Invalid JSON file: " + filepath);
         }
@@ -38,13 +37,13 @@ final public class SafeJsonNode {
         if (!rootNode.isObject()) {
             throw new IllegalArgumentException("Invalid JSON format: " + filepath + rootPath + "root node should be an object");
         }
-        return new SafeJsonNode(rootNode, Paths.get(filepath), rootPath);
+        return new SafeJsonNode(rootNode, filepath, rootPath);
     }
 
-    public static SafeJsonNode getArrayRootNode(String filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
+    public static SafeJsonNode getArrayRootNode(Path filepath, ObjectMapper objectMapper) throws IllegalArgumentException {
         JsonNode rootNode;
         try {
-            rootNode = objectMapper.readTree(new File(filepath));
+            rootNode = objectMapper.readTree(new File(filepath.toString()));
         } catch (IOException e) {
             throw new IllegalArgumentException("Invalid JSON file: " + filepath);
         }
@@ -52,7 +51,7 @@ final public class SafeJsonNode {
         if (!rootNode.isArray()) {
             throw new IllegalArgumentException("Invalid JSON format: " + rootPath + "root node should be an array");
         }
-        return new SafeJsonNode(rootNode, Paths.get(filepath), rootPath);
+        return new SafeJsonNode(rootNode, filepath, rootPath);
     }
 
     public void checkForField(String field) throws IllegalArgumentException {

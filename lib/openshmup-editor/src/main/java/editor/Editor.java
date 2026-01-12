@@ -35,7 +35,7 @@ final public class Editor extends Engine {
 
     public static void loadGames() throws IOException {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
-        try (Stream<Path> paths = Files.list(Path.of(rootFolderAbsolutePath + GlobalVars.Paths.Partial.customGamesFolder))) {
+        try (Stream<Path> paths = Files.list(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder))) {
             loadedGames = paths.filter(Files::isDirectory)
                 .map(path -> new EditorGameDataManager(path.getFileName().toString()))
                 .toList();

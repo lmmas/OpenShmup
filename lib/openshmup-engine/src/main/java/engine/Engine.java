@@ -15,6 +15,8 @@ import org.lwjgl.system.Callback;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -53,7 +55,7 @@ public class Engine {
 
     private void detectRootFolder() {
         try {
-            String rootFolderAbsolutePath = java.nio.file.Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent().toString();
+            Path rootFolderAbsolutePath = Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
             GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
             System.out.println(rootFolderAbsolutePath);
         } catch (URISyntaxException e) {

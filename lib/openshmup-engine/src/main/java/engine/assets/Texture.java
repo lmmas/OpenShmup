@@ -5,6 +5,7 @@ import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
@@ -32,12 +33,12 @@ final public class Texture {
         this.loadedInGPU = false;
     }
 
-    public static Texture createFromImageFile(String filepath) throws IOException {
+    public static Texture createFromImageFile(Path filepath) throws IOException {
         int[] widthArray = new int[1];
         int[] heightArray = new int[1];
         int[] channelCountArray = new int[1];
         stbi_set_flip_vertically_on_load(true);
-        ByteBuffer imageBuffer = stbi_load(filepath, widthArray, heightArray, channelCountArray, 0);
+        ByteBuffer imageBuffer = stbi_load(filepath.toString(), widthArray, heightArray, channelCountArray, 0);
         if (imageBuffer == null)
             throw new IOException("Could not load texture file \"" + filepath + "\"" + stbi_failure_reason());
         //assert channelCountArray[0] == 3 || channelCountArray[0] == 4: "Invalid number of channels :" + channelCountArray[0];
