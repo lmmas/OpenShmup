@@ -1,6 +1,5 @@
 package editor;
 
-import editor.attribute.EditorGameDataManager;
 import editor.scenes.MainMenuScene;
 import engine.Engine;
 import engine.GlobalVars;

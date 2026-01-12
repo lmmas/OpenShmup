@@ -16,6 +16,6 @@ final public class DoubleAttribute extends Attribute {
 
     @Override
     public String toString() {
-        return name + " : " + value;
+        return name + ": " + value;
     }
 }

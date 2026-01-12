@@ -2,6 +2,7 @@ import engine.Engine;
 import engine.assets.Font;
 import engine.scene.Scene;
 import engine.visual.TextDisplay;
+import engine.visual.style.TextAlignment;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -21,7 +22,7 @@ public class TestTextDisplay {
 
             Font myFont = Font.createFromTTF(Paths.get("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf"));
             myFont.getBitmap().loadInGPU();
-            TextDisplay myTextDisplay = new TextDisplay(2, myFont, false, 24.0f / Engine.getNativeHeight(), 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", 1.0f, 1.0f, 1.0f, 1.0f);
+            TextDisplay myTextDisplay = new TextDisplay(2, myFont, false, 24.0f / Engine.getNativeHeight(), 0.5f, 0.5f, "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", 1.0f, 1.0f, 1.0f, 1.0f, TextAlignment.CENTER);
             testScene.addVisual(myTextDisplay);
 
         } catch (IOException e) {

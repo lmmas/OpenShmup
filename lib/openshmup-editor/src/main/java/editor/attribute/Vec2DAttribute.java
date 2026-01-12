@@ -19,6 +19,6 @@ final public class Vec2DAttribute extends Attribute {
 
     @Override
     public String toString() {
-        return name + " : " + x + ", " + y;
+        return name + ": " + x + ", " + y;
     }
 }

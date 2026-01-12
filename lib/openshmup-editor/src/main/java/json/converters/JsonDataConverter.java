@@ -1,7 +1,7 @@
 package json.converters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import editor.attribute.EditorGameDataManager;
+import editor.EditorGameDataManager;
 import editor.editionData.visual.VisualEditionData;
 import json.SafeJsonNode;
 import json.converters.visual.AnimationConverter;

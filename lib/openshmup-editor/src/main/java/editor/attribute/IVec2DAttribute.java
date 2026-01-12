@@ -19,6 +19,6 @@ final public class IVec2DAttribute extends Attribute {
 
     @Override
     public String toString() {
-        return name + " : " + x + ", " + y;
+        return name + ": " + x + ", " + y;
     }
 }

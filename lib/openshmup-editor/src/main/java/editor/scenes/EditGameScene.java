@@ -1,6 +1,6 @@
 package editor.scenes;
 
-import editor.attribute.EditorGameDataManager;
+import editor.EditorGameDataManager;
 import editor.editionData.visual.VisualEditionData;
 import engine.Engine;
 import engine.scene.Scene;
@@ -10,6 +10,7 @@ import engine.scene.menu.item.RoundedRectangleButton;
 import engine.types.Vec2D;
 import engine.visual.BorderedRoundedRectangle;
 import engine.visual.TextDisplay;
+import engine.visual.style.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +51,9 @@ public class EditGameScene extends Scene {
     }
 
     private void setEditMenuVisual(VisualEditionData visualEditionData) {
-        TextDisplay idDisplay = new TextDisplay(4, false, 600f, 700f, visualEditionData.getId().toString(), menuButtonLabelStyle);
-        TextDisplay layerDisplay = new TextDisplay(4, false, 600f, 670f, visualEditionData.getLayer().toString(), menuButtonLabelStyle);
-        TextDisplay sizeDisplay = new TextDisplay(4, false, 600f, 640f, visualEditionData.getSize().toString(), menuButtonLabelStyle);
+        TextDisplay idDisplay = new TextDisplay(4, false, 600f, 700f, visualEditionData.getId().toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+        TextDisplay layerDisplay = new TextDisplay(4, false, 600f, 670f, visualEditionData.getLayer().toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+        TextDisplay sizeDisplay = new TextDisplay(4, false, 600f, 640f, visualEditionData.getSize().toString(), menuButtonLabelStyle, TextAlignment.LEFT);
 
         editVisualMenu.otherVisuals().add(idDisplay);
         editVisualMenu.otherVisuals().add(layerDisplay);

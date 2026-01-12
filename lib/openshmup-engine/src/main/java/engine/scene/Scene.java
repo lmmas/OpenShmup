@@ -9,6 +9,7 @@ import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
 import engine.visual.TextDisplay;
+import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
 
 import java.math.RoundingMode;
@@ -202,7 +203,7 @@ public class Scene {
 
         final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
 
-        final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle);
+        final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle, TextAlignment.CENTER);
 
         public SceneDebug(boolean debugModeEnabled) {
             if (debugModeEnabled) {

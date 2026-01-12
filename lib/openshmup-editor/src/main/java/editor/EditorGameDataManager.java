@@ -1,4 +1,4 @@
-package editor.attribute;
+package editor;
 
 import editor.editionData.visual.VisualEditionData;
 import engine.gameData.GamePaths;

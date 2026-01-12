@@ -3,11 +3,10 @@ package engine.visual;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.graphics.Graphic;
-import engine.graphics.RenderInfo;
-import engine.graphics.RenderType;
 import engine.graphics.image.Image;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
+import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,48 +21,40 @@ final public class TextDisplay extends SceneVisual {
 
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
-    final private RenderInfo renderInfo;
-
     final private Vec2D position;
-
-    private final float textHeight;
-
-    private final float textWidth;
     @Setter
     private String displayedString;
 
     private final Font font;
 
-    final private boolean dynamicText;
+    private final float textHeight;
 
     private final RGBAValue textColor;
+
+    private final TextAlignment alignment;
+
+    final private boolean dynamicText;
 
     final private ArrayList<ArrayList<TextCharacter>> textLines;
 
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a) {
+    public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a, TextAlignment alignment) {
         super(layer, new ArrayList<>());
-        if (dynamicText) {
-            this.renderInfo = new RenderInfo(layer, RenderType.DYNAMIC_IMAGE);
-        }
-        else {
-            this.renderInfo = new RenderInfo(layer, RenderType.STATIC_IMAGE);
-        }
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
-        this.textWidth = textHeight;
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;
         this.textLines = new ArrayList<>();
         this.normalizedLineWidthsList = new ArrayList<>();
         this.textColor = new RGBAValue(r, g, b, a);
+        this.alignment = alignment;
         updateText();
     }
 
-    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style) {
-        this(layer, assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), positionX, positionY, displayedString, style.textColor().r, style.textColor().b, style.textColor().b, style.textColor().a);
+    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style, TextAlignment alignment) {
+        this(layer, assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), positionX, positionY, displayedString, style.textColor().r, style.textColor().b, style.textColor().b, style.textColor().a, alignment);
     }
 
     private void updateText() {
@@ -110,13 +101,22 @@ final public class TextDisplay extends SceneVisual {
         int lineCount = normalizedLineWidthsList.size();
         for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
             ArrayList<TextCharacter> currentLine = textLines.get(lineIndex);
-            float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textWidth;
-            float characterBaselineX = position.x - currentLineWidth / 2;
+            float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
+            float characterBaselineX;
+            switch (alignment) {
+                case LEFT -> characterBaselineX = position.x;
+                case RIGHT -> characterBaselineX = position.x - currentLineWidth;
+                case CENTER -> characterBaselineX = position.x - currentLineWidth / 2;
+                case null -> {
+                    assert false : "uninitialized alignment";
+                    characterBaselineX = 0f;
+                }
+            }
             float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float) lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
             for (TextCharacter character : currentLine) {
                 Vec2D characterPositionOffset = character.fontCharInfo.normalizedQuadPositionOffset();
                 character.setPosition(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight);
-                characterBaselineX += character.fontCharInfo.normalizedAdvance() * textWidth;
+                characterBaselineX += character.fontCharInfo.normalizedAdvance() * textHeight;
             }
         }
     }
@@ -131,7 +131,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(renderInfo.layer(), font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a);
+        return new TextDisplay(sceneLayer, font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a, alignment);
     }
 
     @Override
@@ -174,7 +174,7 @@ final public class TextDisplay extends SceneVisual {
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
             this.image = new Image(font.getBitmap(), TextDisplay.this.dynamicText,
-                charSize.x * textWidth, charSize.y * textHeight,
+                charSize.x * textHeight, charSize.y * textHeight,
                 0.0f, 0.0f,
                 bitmapTextureSize.x, bitmapTextureSize.y,
                 bitmapTexturePosition.x, bitmapTexturePosition.y,

@@ -10,6 +10,7 @@ import engine.types.Vec2D;
 import engine.visual.ColorRectangleVisual;
 import engine.visual.ScreenFilter;
 import engine.visual.TextDisplay;
+import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ final public class MainMenuScene extends Scene {
 
         RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
         TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50);
-        menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle);
+        menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
         RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, null);
         RoundedRectangleButton button2 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
