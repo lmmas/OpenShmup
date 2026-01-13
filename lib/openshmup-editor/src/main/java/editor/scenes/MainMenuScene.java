@@ -2,11 +2,8 @@ package editor.scenes;
 
 import editor.Editor;
 import engine.Engine;
+import engine.menu.*;
 import engine.scene.Scene;
-import engine.scene.menu.MenuItem;
-import engine.scene.menu.MenuItems;
-import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.MenuAction;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.ColorRectangleVisual;
@@ -19,7 +16,7 @@ import java.io.IOException;
 
 import static editor.Style.*;
 import static engine.GlobalVars.Paths.debugFont;
-import static engine.scene.menu.MenuActions.terminateProgram;
+import static engine.menu.MenuActions.terminateProgram;
 
 final public class MainMenuScene extends Scene {
 
@@ -32,6 +29,8 @@ final public class MainMenuScene extends Scene {
     final private TextDisplay menuTitle;
 
     public MainMenuScene() {
+        MenuManager menuManager = new MenuManager(this);
+        this.setMenuManager(menuManager);
         RGBAValue menuBackgroundColor = new RGBAValue(0.0f, 0.1f, 0.3f, 1.0f);
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
@@ -47,7 +46,7 @@ final public class MainMenuScene extends Scene {
                 throw new RuntimeException(e);
             }
             MenuScreen popupMenu = PopupMenu();
-            scene.addMenu(popupMenu);
+            menuManager.addMenu(popupMenu);
         };
         MenuItem button1 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
         MenuItem button2 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
@@ -62,7 +61,7 @@ final public class MainMenuScene extends Scene {
     public void start() {
         addVisual(menuBackground);
         addVisual(menuTitle);
-        addMenu(mainMenu);
+        getMenuManager().addMenu(mainMenu);
         super.start();
     }
 
@@ -70,7 +69,7 @@ final public class MainMenuScene extends Scene {
 
         MenuScreen popupMenu = new MenuScreen(backgroundLayer + 3);
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        MenuItem closeButton = MenuItems.RoundedRectangleButton(backgroundLayer + 4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (scene) -> scene.removeMenu(popupMenu));
+        MenuItem closeButton = MenuItems.RoundedRectangleButton(backgroundLayer + 4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (scene) -> Engine.menuManager.removeMenu(popupMenu));
         popupMenu.addItem(closeButton);
         popupMenu.addVisual(new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f));
 

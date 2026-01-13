@@ -1,4 +1,4 @@
-package engine.scene.menu;
+package engine.menu;
 
 import engine.types.RGBAValue;
 import engine.types.Vec2D;

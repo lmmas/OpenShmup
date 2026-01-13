@@ -58,6 +58,6 @@ final public class Game extends Engine {
         currentScene.start();
         currentLevel.start();
 
-        Engine.activeSystemsList = List.of(inputStatesManager, currentLevel, currentScene, graphicsManager);
+        Engine.activeSystemsList = List.of(inputStatesManager, currentLevel, menuManager, currentScene, graphicsManager);
     }
 }

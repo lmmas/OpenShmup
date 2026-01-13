@@ -3,6 +3,7 @@ package engine;
 import debug.DebugMethods;
 import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
+import engine.menu.MenuManager;
 import engine.scene.Scene;
 import engine.types.IVec2D;
 import lombok.Getter;
@@ -43,6 +44,8 @@ public class Engine {
     protected static Callback debugProc;
 
     public static Scene currentScene;
+
+    public static MenuManager menuManager;
 
     @Getter @Setter
     private static double sceneTime;
@@ -112,12 +115,6 @@ public class Engine {
                 inLoopScript.run();
             }
             activeSystemsList.forEach(EngineSystem::update);
-            inputStatesManager.update();
-            if (currentScene != null) {
-                currentScene.handleInputs();
-                currentScene.update();
-            }
-            graphicsManager.drawGraphics();
             glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
             if (glfwWindowShouldClose(window.getGlfwWindow())) {
@@ -141,6 +138,7 @@ public class Engine {
     public static void switchCurrentScene(Scene scene) {
         graphicsManager.clearLayers();
         currentScene = scene;
+        menuManager = scene.getMenuManager();
         currentScene.start();
     }
 

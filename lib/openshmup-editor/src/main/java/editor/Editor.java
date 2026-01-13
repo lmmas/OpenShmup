@@ -35,7 +35,7 @@ final public class Editor extends Engine {
         MainMenuScene mainMenuScene = new MainMenuScene();
         switchCurrentScene(mainMenuScene);
 
-        activeSystemsList = List.of(inputStatesManager, currentScene, graphicsManager);
+        activeSystemsList = List.of(inputStatesManager, menuManager, currentScene, graphicsManager);
         window.show();
 
     }
@@ -47,8 +47,6 @@ final public class Editor extends Engine {
                 .map(path -> new EditorGameDataManager(path.getFileName().toString()))
                 .toList();
         }
-        loadedGames.forEach(gameDataManager -> {
-            gameDataManager.loadGameContents();
-        });
+        loadedGames.forEach(EditorGameDataManager::loadGameContents);
     }
 }

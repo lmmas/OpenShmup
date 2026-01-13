@@ -1,7 +1,6 @@
-package engine.scene.menu;
+package engine.menu;
 
 import engine.entity.hitbox.SimpleRectangleHitbox;
-import engine.scene.menu.item.MenuAction;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.BorderedRoundedRectangle;

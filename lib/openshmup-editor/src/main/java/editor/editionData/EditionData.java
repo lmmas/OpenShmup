@@ -1,7 +1,7 @@
 package editor.editionData;
 
 import editor.EditPanels;
-import engine.scene.menu.MenuScreen;
+import engine.menu.MenuScreen;
 
 public sealed interface EditionData permits AnimationEditionData, ScrollingImageEditionData {
 

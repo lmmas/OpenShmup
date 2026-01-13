@@ -3,17 +3,18 @@ package engine.scene;
 import engine.Engine;
 import engine.EngineSystem;
 import engine.Timer;
-import engine.entity.hitbox.Hitbox;
 import engine.graphics.Graphic;
-import engine.scene.menu.MenuItem;
-import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.MenuAction;
+import engine.menu.MenuAction;
+import engine.menu.MenuItem;
+import engine.menu.MenuManager;
+import engine.menu.MenuScreen;
 import engine.types.RGBAValue;
-import engine.types.Vec2D;
 import engine.visual.SceneVisual;
 import engine.visual.TextDisplay;
 import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import static engine.Engine.graphicsManager;
-import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 
 
@@ -52,6 +52,8 @@ public class Scene implements EngineSystem {
     private MenuAction onClick;
 
     final protected SceneDebug sceneDebug;
+    @Getter @Setter
+    private MenuManager menuManager;
 
     public Scene() {
         this.timer = new Timer();
@@ -66,41 +68,15 @@ public class Scene implements EngineSystem {
         this.leftClickPressedItem = null;
         this.runOnclick = false;
         this.onClick = null;
+        this.menuManager = null;
     }
 
     public void start() {
         this.timer.start();
     }
 
-    public void handleInputs() {
-        if (displayedMenus.isEmpty()) {
-            return;
-        }
-        Vec2D cursorPosition = inputStatesManager.getCursorPosition();
-        if (leftClickPressedOnItem) {
-            if (!inputStatesManager.getLeftClickState()) {
-                if (leftClickPressedItem.getClickHitbox().containsPoint(cursorPosition)) {
-                    onClick = leftClickPressedItem.getOnClick();
-                    runOnclick = true;
-                }
-                leftClickPressedItem = null;
-                leftClickPressedOnItem = false;
-            }
-        }
-        else {
-            for (MenuItem menuItem : displayedMenus.getLast().getMenuItems()) {
-                Hitbox clickHitbox = menuItem.getClickHitbox();
-                if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
-                    leftClickPressedOnItem = true;
-                    leftClickPressedItem = menuItem;
-                }
-            }
-        }
-    }
-
     @Override
     public void update() {
-        handleInputs();
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
         if (runOnclick && onClick != null) {
@@ -193,28 +169,6 @@ public class Scene implements EngineSystem {
         for (var graphic : graphics) {
             graphic.remove();
         }
-    }
-
-    final public void setSpeed(float speed) {
-        this.timer.setSpeed(speed);
-    }
-
-    final public void addMenu(MenuScreen menuScreen) {
-        assert !menuScreen.isOpen() : "menu screen already open";
-        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-            .forEach(this::addVisual);
-        menuScreen.getOtherVisuals().forEach(this::addVisual);
-        displayedMenus.add(menuScreen);
-        menuScreen.setOpen(true);
-    }
-
-    final public void removeMenu(MenuScreen menuScreen) {
-        assert menuScreen.isOpen() : "menu screen not open";
-        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-            .forEach(this::removeVisual);
-        menuScreen.getOtherVisuals().forEach(this::removeVisual);
-        displayedMenus.remove(menuScreen);
-        menuScreen.setOpen(false);
     }
 
     protected class SceneDebug {

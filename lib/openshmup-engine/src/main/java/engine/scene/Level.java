@@ -16,8 +16,9 @@ import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
-import engine.scene.menu.GameMenus;
-import engine.scene.menu.MenuScreen;
+import engine.menu.GameMenus;
+import engine.menu.MenuManager;
+import engine.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.types.GameControl;
@@ -37,6 +38,8 @@ import static engine.Engine.inputStatesManager;
 final public class Level implements EngineSystem {
 
     private Scene scene;
+
+    private MenuManager menuManager;
 
     final private HashSet<Entity> goodEntities;
 
@@ -72,6 +75,8 @@ final public class Level implements EngineSystem {
 
     public Level(Scene scene, LevelTimeline timeline) {
         this.scene = scene;
+        this.menuManager = new MenuManager(scene);
+        this.scene.setMenuManager(this.menuManager);
         this.timeline = timeline;
         this.gameDataManager = timeline.getGameDataManager();
         this.gameConfig = gameDataManager.config;
@@ -113,11 +118,11 @@ final public class Level implements EngineSystem {
         if (getControlPress(GameControl.PAUSE)) {
             if (timer.isPaused()) {
                 timer.resume();
-                scene.removeMenu(pauseMenu);
+                menuManager.removeMenu(pauseMenu);
             }
             else {
                 timer.pause();
-                scene.addMenu(pauseMenu);
+                menuManager.addMenu(pauseMenu);
             }
         }
         if (getControlPress(GameControl.SLOWDOWN)) {
@@ -287,7 +292,7 @@ final public class Level implements EngineSystem {
                         shipEntity.deathEvent();
                         entitiesToRemove.add(entity);
                         if (!shipEntity.isEvil()) {
-                            scene.addMenu(gameOverScreen);
+                            menuManager.addMenu(gameOverScreen);
                             timer.pause();
                         }
                     }

@@ -1,4 +1,4 @@
-package engine.scene.menu;
+package engine.menu;
 
 import engine.visual.SceneVisual;
 import lombok.Getter;

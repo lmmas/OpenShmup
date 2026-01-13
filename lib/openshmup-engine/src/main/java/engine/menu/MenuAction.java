@@ -1,4 +1,4 @@
-package engine.scene.menu.item;
+package engine.menu;
 
 import engine.scene.Scene;
 

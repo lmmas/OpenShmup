@@ -1,7 +1,6 @@
-package engine.scene.menu;
+package engine.menu;
 
 import engine.entity.hitbox.Hitbox;
-import engine.scene.menu.item.MenuAction;
 import engine.visual.SceneVisual;
 import lombok.Getter;
 

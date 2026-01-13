@@ -1,8 +1,7 @@
-package engine.scene.menu;
+package engine.menu;
 
 import engine.Engine;
 import engine.Game;
-import engine.scene.menu.item.MenuAction;
 
 final public class MenuActions {
 
