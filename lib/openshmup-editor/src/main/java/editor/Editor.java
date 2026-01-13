@@ -3,6 +3,8 @@ package editor;
 import editor.scenes.MainMenuScene;
 import engine.Engine;
 import engine.GlobalVars;
+import engine.InputStatesManager;
+import engine.graphics.GraphicsManager;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -28,8 +30,14 @@ final public class Editor extends Engine {
     public Editor() throws IOException {
         super();
         setNativeResolution(1920, 1080);
-        switchCurrentScene(new MainMenuScene());
+        graphicsManager = new GraphicsManager();
+        inputStatesManager = new InputStatesManager();
+        MainMenuScene mainMenuScene = new MainMenuScene();
+        switchCurrentScene(mainMenuScene);
+
+        activeSystemsList = List.of(inputStatesManager, currentScene, graphicsManager);
         window.show();
+
     }
 
     public static void loadGames() throws IOException {

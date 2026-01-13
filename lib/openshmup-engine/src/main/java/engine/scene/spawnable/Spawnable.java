@@ -1,10 +1,10 @@
 package engine.scene.spawnable;
 
-import engine.scene.LevelScene;
+import engine.scene.Level;
 
 public interface Spawnable {
 
-    void spawn(LevelScene scene);
+    void spawn(Level scene);
 
     Spawnable copy();
 

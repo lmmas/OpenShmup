@@ -2,7 +2,7 @@ package engine.entity.trajectory;
 
 import engine.Engine;
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.types.GameControl;
 import engine.types.Vec2D;
 
@@ -18,8 +18,8 @@ final public class PlayerControlledTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, LevelScene scene) {
-        double currentTime = scene.getSceneTimeSeconds();
+    public void update(Entity entity, Level scene) {
+        double currentTime = scene.getLevelTimeSeconds();
         float positionX = entity.getPosition().x;
         float positionY = entity.getPosition().y;
         double deltaTimeSeconds = currentTime - lastUpdateTimeSeconds;

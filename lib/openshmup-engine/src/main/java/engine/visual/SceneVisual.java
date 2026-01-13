@@ -78,7 +78,7 @@ abstract public class SceneVisual {
 
     }
 
-    public void update(double currentTimeSeconds) {
+    public void update() {
 
     }
 

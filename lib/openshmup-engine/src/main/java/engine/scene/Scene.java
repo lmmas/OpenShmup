@@ -1,6 +1,8 @@
 package engine.scene;
 
 import engine.Engine;
+import engine.EngineSystem;
+import engine.Timer;
 import engine.entity.hitbox.Hitbox;
 import engine.graphics.Graphic;
 import engine.scene.menu.MenuItem;
@@ -25,9 +27,9 @@ import static engine.Engine.inputStatesManager;
 import static engine.GlobalVars.Paths.debugFont;
 
 
-public class Scene {
+public class Scene implements EngineSystem {
 
-    final protected SceneTimer timer;
+    final protected Timer timer;
 
     protected double sceneTime;
 
@@ -52,7 +54,7 @@ public class Scene {
     final protected SceneDebug sceneDebug;
 
     public Scene() {
-        this.timer = new SceneTimer();
+        this.timer = new Timer();
         this.sceneTime = 0.0d;
         this.lastDrawTime = 0.0d;
         this.layers = new TreeMap<>();
@@ -96,37 +98,38 @@ public class Scene {
         }
     }
 
+    @Override
     public void update() {
-        if (!timer.isPaused()) {
-            sceneTime = timer.getTimeSeconds();
-            if (runOnclick && onClick != null) {
-                onClick.run(this);
-                runOnclick = false;
-                onClick = null;
-            }
-            for (SceneLayer layer : layers.values()) {
-                for (SceneVisual visual : layer.getVisuals()) {
-                    visual.update(sceneTime);
-                    if (visual.shouldBeRemoved()) {
-                        visualsToRemove.add(visual);
+        handleInputs();
+        sceneTime = this.timer.getTimeSeconds();
+        Engine.setSceneTime(sceneTime);
+        if (runOnclick && onClick != null) {
+            onClick.run(this);
+            runOnclick = false;
+            onClick = null;
+        }
+        for (SceneLayer layer : layers.values()) {
+            for (SceneVisual visual : layer.getVisuals()) {
+                visual.update();
+                if (visual.shouldBeRemoved()) {
+                    visualsToRemove.add(visual);
+                }
+                if (visual.getReloadGraphicsFlag()) {
+                    int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayerIndex());
+                    var graphicalLayers = visual.getGraphicalSubLayers();
+                    var graphics = visual.getGraphics();
+                    for (int i = 0; i < graphicalLayers.size(); i++) {
+                        graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
                     }
-                    if (visual.getReloadGraphicsFlag()) {
-                        int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayerIndex());
-                        var graphicalLayers = visual.getGraphicalSubLayers();
-                        var graphics = visual.getGraphics();
-                        for (int i = 0; i < graphicalLayers.size(); i++) {
-                            graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
-                        }
 
-                        visual.setReloadGraphicsFlag(false);
-                    }
+                    visual.setReloadGraphicsFlag(false);
                 }
             }
-            for (var display : visualsToRemove) {
-                removeVisual(display);
-            }
-            visualsToRemove.clear();
         }
+        for (var display : visualsToRemove) {
+            removeVisual(display);
+        }
+        visualsToRemove.clear();
         sceneDebug.update();
         lastDrawTime = sceneTime;
     }
@@ -192,12 +195,8 @@ public class Scene {
         }
     }
 
-    final public double getSceneTimeSeconds() {
-        return sceneTime;
-    }
-
     final public void setSpeed(float speed) {
-        timer.setSpeed(speed);
+        this.timer.setSpeed(speed);
     }
 
     final public void addMenu(MenuScreen menuScreen) {
@@ -254,7 +253,7 @@ public class Scene {
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
                 double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
-                fpsDisplay.update(sceneTime);
+                fpsDisplay.update();
                 fpsDisplay.getGraphics().forEach(graphic -> graphicsManager.addDebugGraphic(graphic));
             }
         }

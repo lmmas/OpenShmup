@@ -8,9 +8,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import static engine.Engine.window;
 import static org.lwjgl.glfw.GLFW.*;
 
-final public class InputStatesManager {
+final public class InputStatesManager implements EngineSystem {
 
     final private long glfwWindow;
 
@@ -18,7 +19,7 @@ final public class InputStatesManager {
 
     final private ArrayList<Boolean> controlStatesList;
 
-    private boolean leftClickState = false;
+    final private ArrayList<Boolean> previousControlStatesList;
 
     final private double[] cursorPositionXBuffer;
 
@@ -26,8 +27,8 @@ final public class InputStatesManager {
 
     final private Vec2D cursorPosition;
 
-    public InputStatesManager(long glfwWindow) {
-        this.glfwWindow = glfwWindow;
+    public InputStatesManager() {
+        this.glfwWindow = window.getGlfwWindow();
         this.controlsMap = new HashMap<>();
         controlsMap.put(GLFW_KEY_LEFT, GameControl.MOVE_LEFT);
         controlsMap.put(GLFW_KEY_RIGHT, GameControl.MOVE_RIGHT);
@@ -40,22 +41,28 @@ final public class InputStatesManager {
         controlsMap.put(GLFW_KEY_T, GameControl.SLOWDOWN);
         controlsMap.put(GLFW_KEY_F3, GameControl.TOGGLE_DEBUG);
         this.controlStatesList = new ArrayList<>(Collections.nCopies(controlsMap.size(), Boolean.FALSE));
+        this.previousControlStatesList = new ArrayList<>(Collections.nCopies(controlsMap.size(), Boolean.FALSE));
         this.cursorPositionXBuffer = new double[1];
         this.cursorPositionYBuffer = new double[1];
         this.cursorPosition = new Vec2D(0.0f, 0.0f);
     }
 
-    public void updateInputStates() {
+    @Override
+    public void update() {
+        for (int i = 0; i < previousControlStatesList.size(); i++) {
+            previousControlStatesList.set(i, controlStatesList.get(i));
+        }
+
+        boolean leftClickState = glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+        controlStatesList.set(0, leftClickState);
         for (Integer key : controlsMap.keySet()) {
             GameControl control = controlsMap.get(key);
             controlStatesList.set(control.ordinal(), (glfwGetKey(glfwWindow, key) == GLFW_PRESS));
         }
 
-        leftClickState = glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
-
         glfwGetCursorPos(glfwWindow, cursorPositionXBuffer, cursorPositionYBuffer);
-        cursorPosition.x = (float) (cursorPositionXBuffer[0] / Engine.window.getWidth() * Engine.getNativeWidth());
-        cursorPosition.y = (1.0f - (float) (cursorPositionYBuffer[0] / Engine.window.getHeight())) * Engine.getNativeHeight();
+        cursorPosition.x = (float) (cursorPositionXBuffer[0] / window.getWidth() * Engine.getNativeWidth());
+        cursorPosition.y = (1.0f - (float) (cursorPositionYBuffer[0] / window.getHeight())) * Engine.getNativeHeight();
     }
 
     public List<Boolean> getGameControlStates() {
@@ -65,7 +72,7 @@ final public class InputStatesManager {
     }
 
     public boolean getLeftClickState() {
-        return leftClickState;
+        return controlStatesList.getFirst();
     }
 
     public Vec2D getCursorPosition() {

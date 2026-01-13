@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 final public class LevelTimeline {
-
     @Getter
     final private GameDataManager gameDataManager;
 
@@ -30,12 +29,12 @@ final public class LevelTimeline {
         this.nextSpawnTime = null;
     }
 
-    public void updateSpawning(LevelScene scene) {
-        double currentTime = scene.getSceneTimeSeconds();
+    public void updateSpawning(Level level) {
+        double currentTime = level.getLevelTimeSeconds();
         while (nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration) {
             ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
             for (Spawnable spawnable : spawnables) {
-                spawnable.spawn(scene);
+                spawnable.spawn(level);
             }
             nextSpawnTime = spawnList.higherKey(nextSpawnTime);
         }

@@ -1,7 +1,7 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.types.Vec2D;
 
 final public class CompositeTrajectory implements Trajectory {
@@ -29,7 +29,7 @@ final public class CompositeTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, LevelScene scene) {
+    public void update(Entity entity, Level scene) {
         if (trajectoryIndex < bounds.length) {
             double currentTime = entity.getLifetimeSeconds();
             if (currentTime >= bounds[trajectoryIndex]) {

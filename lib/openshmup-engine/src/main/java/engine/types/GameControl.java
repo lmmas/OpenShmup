@@ -1,6 +1,7 @@
 package engine.types;
 
 public enum GameControl {
+    LEFT_CLICK,
     MOVE_UP,
     MOVE_DOWN,
     MOVE_LEFT,

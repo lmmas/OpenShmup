@@ -1,6 +1,9 @@
 package engine.scene;
 
 import engine.Engine;
+import engine.EngineSystem;
+import engine.Game;
+import engine.Timer;
 import engine.assets.Texture;
 import engine.entity.Entity;
 import engine.entity.EntityType;
@@ -13,9 +16,7 @@ import engine.entity.hitbox.Hitbox;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
-import engine.scene.menu.MenuActions;
-import engine.scene.menu.MenuItem;
-import engine.scene.menu.MenuItems;
+import engine.scene.menu.GameMenus;
 import engine.scene.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -23,8 +24,6 @@ import engine.types.GameControl;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
-import engine.visual.ScreenFilter;
-import engine.visual.style.TextStyle;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -34,9 +33,10 @@ import java.util.List;
 
 import static engine.Engine.assetManager;
 import static engine.Engine.inputStatesManager;
-import static engine.GlobalVars.Paths.debugFont;
 
-final public class LevelScene extends Scene {
+final public class Level implements EngineSystem {
+
+    private Scene scene;
 
     final private HashSet<Entity> goodEntities;
 
@@ -66,8 +66,12 @@ final public class LevelScene extends Scene {
 
     final private LevelDebug levelDebug;
 
-    public LevelScene(LevelTimeline timeline) {
-        super();
+    private boolean debugModeEnabled;
+
+    private Timer timer;
+
+    public Level(Scene scene, LevelTimeline timeline) {
+        this.scene = scene;
         this.timeline = timeline;
         this.gameDataManager = timeline.getGameDataManager();
         this.gameConfig = gameDataManager.config;
@@ -78,29 +82,22 @@ final public class LevelScene extends Scene {
         this.displaysToSpawn = new HashSet<>();
         this.controlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
         this.lastControlStates = new ArrayList<Boolean>(Collections.nCopies(GameControl.values().length, Boolean.FALSE));
-        this.levelUI = new LevelUI(this);
+        this.levelUI = new LevelUI(gameConfig.levelUI, scene);
 
-        RGBAValue buttonColor = new RGBAValue(0.7f, 0.9f, 1.0f, 1.0f);
-        RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
-        TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
-        Vec2D buttonSize = new Vec2D(300, 150);
-        MenuItem blueButton = MenuItems.ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
-        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer);
-        this.pauseMenu.addItem(blueButton);
-        this.pauseMenu.addVisual(new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f));
+        this.pauseMenu = GameMenus.PauseMenu(gameConfig.pauseMenuLayer);
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);
+        this.debugModeEnabled = false;
+        this.timer = new Timer();
     }
 
-    @Override
     public void start() {
         loadAssets();
-        super.start();
+        scene.start();
+        timer.start();
     }
 
     void loadAssets() {
-        //HashSet<RenderInfo> timelineRenderInfos = timeline.getAllRenderInfos();
-        //timelineRenderInfos.add(new RenderInfo(gameConfig.levelUI.contentsLayer, RenderType.STATIC_IMAGE));
         //graphicsManager.constructRenderers(timelineRenderInfos);
         HashSet<Texture> allTextures = timeline.getAllTextures();
         allTextures.add(assetManager.getTexture(gameConfig.levelUI.lives.textureFilepath));
@@ -111,34 +108,31 @@ final public class LevelScene extends Scene {
         }
     }
 
-    @Override
     public void handleInputs() {
-        super.handleInputs();
         controlStates = inputStatesManager.getGameControlStates();
-        if (getControlActivation(GameControl.PAUSE)) {
+        if (getControlPress(GameControl.PAUSE)) {
             if (timer.isPaused()) {
                 timer.resume();
-                removeMenu(pauseMenu);
+                scene.removeMenu(pauseMenu);
             }
             else {
                 timer.pause();
-                addMenu(pauseMenu);
+                scene.addMenu(pauseMenu);
             }
         }
-        if (getControlActivation(GameControl.SLOWDOWN)) {
-            setSpeed(0.5f);
+        if (getControlPress(GameControl.SLOWDOWN)) {
+            timer.setSpeed(0.5f);
         }
-        if (getControlDeactivation(GameControl.SLOWDOWN)) {
-            setSpeed(1.0f);
+        if (getControlUnpress(GameControl.SLOWDOWN)) {
+            timer.setSpeed(1.0f);
         }
-        if (getControlActivation(GameControl.TOGGLE_DEBUG)) {
+        if (getControlPress(GameControl.TOGGLE_DEBUG)) {
             this.toggleDebug();
         }
         this.lastControlStates = controlStates;
     }
 
     private void toggleDebug() {
-        sceneDebug.toggle();
         levelDebug.toggle();
         this.debugModeEnabled = !debugModeEnabled;
     }
@@ -148,15 +142,17 @@ final public class LevelScene extends Scene {
         if (timer.isPaused()) {
             return;
         }
+        Game.setLevelTime(timer.getTimeSeconds());
+        handleInputs();
         timeline.updateSpawning(this);
         spawnEntities();
         spawnDisplays();
-
+        double levelTime = timer.getTimeSeconds();
         for (Entity entity : goodEntities) {
-            entity.update(sceneTime);
+            entity.update(levelTime);
         }
         for (Entity entity : evilEntities) {
-            entity.update(sceneTime);
+            entity.update(levelTime);
         }
         removeFarAwayEntities(goodEntities);
         removeFarAwayEntities(evilEntities);
@@ -171,7 +167,6 @@ final public class LevelScene extends Scene {
         }
         entitiesToRemove.clear();
         levelUI.update();
-        super.update();
     }
 
     public void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo) {
@@ -182,7 +177,7 @@ final public class LevelScene extends Scene {
         for (var displaySpawn : displaysToSpawn) {
             SceneVisual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
-            addVisual(newDisplay);
+            scene.addVisual(newDisplay);
         }
         displaysToSpawn.clear();
     }
@@ -192,7 +187,7 @@ final public class LevelScene extends Scene {
     }
 
     public void addEntity(Entity entity) {
-        addVisual(entity.getSprite());
+        scene.addVisual(entity.getSprite());
 
         for (ExtraComponent component : entity.getExtraComponents()) {
             component.init();
@@ -206,7 +201,7 @@ final public class LevelScene extends Scene {
         else {
             goodEntities.add(entity);
         }
-        entity.setScene(this);
+        entity.setLevel(this);
     }
 
     public void deleteEntity(Entity entity) {
@@ -243,11 +238,11 @@ final public class LevelScene extends Scene {
         return controlStates.get(control.ordinal());
     }
 
-    public boolean getControlActivation(GameControl control) {
+    public boolean getControlPress(GameControl control) {
         return controlStates.get(control.ordinal()) && !lastControlStates.get(control.ordinal());
     }
 
-    public boolean getControlDeactivation(GameControl control) {
+    public boolean getControlUnpress(GameControl control) {
         return (!controlStates.get(control.ordinal())) && lastControlStates.get(control.ordinal());
     }
 
@@ -292,7 +287,7 @@ final public class LevelScene extends Scene {
                         shipEntity.deathEvent();
                         entitiesToRemove.add(entity);
                         if (!shipEntity.isEvil()) {
-                            addMenu(gameOverScreen);
+                            scene.addMenu(gameOverScreen);
                             timer.pause();
                         }
                     }
@@ -309,6 +304,10 @@ final public class LevelScene extends Scene {
     private static void deleteComponent(Entity entity, ExtraComponent extraComponent) {
         extraComponent.onRemove();
         entity.getExtraComponents().remove(extraComponent);
+    }
+
+    public double getLevelTimeSeconds() {
+        return timer.getTimeSeconds();
     }
 
     private class LevelDebug {
@@ -381,7 +380,7 @@ final public class LevelScene extends Scene {
                         debugDisplaysToRemove.add(hitboxDebugRectangle);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> LevelScene.deleteComponent(entity, hitboxDebugRectangle));
+                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> Level.deleteComponent(entity, hitboxDebugRectangle));
             }
             for (Entity entity : goodEntities) {
                 ArrayList<HitboxDebugRectangle> debugDisplaysToRemove = new ArrayList<>();
@@ -390,7 +389,7 @@ final public class LevelScene extends Scene {
                         debugDisplaysToRemove.add(hitboxDebugRectangle);
                     }
                 }
-                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> LevelScene.deleteComponent(entity, hitboxDebugRectangle));
+                debugDisplaysToRemove.forEach(hitboxDebugRectangle -> Level.deleteComponent(entity, hitboxDebugRectangle));
             }
         }
 

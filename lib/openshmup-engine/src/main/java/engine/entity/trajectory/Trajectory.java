@@ -1,11 +1,11 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 
 public interface Trajectory {
 
-    void update(Entity entity, LevelScene scene);
+    void update(Entity entity, Level scene);
 
     Trajectory copyIfNotReusable();
 

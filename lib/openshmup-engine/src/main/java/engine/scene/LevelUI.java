@@ -11,7 +11,7 @@ import static engine.Engine.assetManager;
 
 public class LevelUI {
 
-    final private LevelScene scene;
+    final private Scene scene;
 
     final private ArrayList<ImageDisplay> playerLives;
 
@@ -19,11 +19,11 @@ public class LevelUI {
 
     final private GameConfig.LevelUI config;
 
-    public LevelUI(LevelScene scene) {
+    public LevelUI(GameConfig.LevelUI uiConfig, Scene scene) {
         this.scene = scene;
         this.playerLives = new ArrayList<>();
         this.playerShip = null;
-        this.config = scene.getGameDataManager().config.levelUI;
+        this.config = uiConfig;
     }
 
     public void update() {

@@ -1,9 +1,9 @@
-package engine.scene;
+package engine;
 
 import lombok.Getter;
 import lombok.Setter;
 
-final public class SceneTimer {
+final public class Timer {
 
     private long referenceTimeMillis;
 
@@ -19,7 +19,7 @@ final public class SceneTimer {
     @Setter
     private float speed;
 
-    public SceneTimer() {
+    public Timer() {
         this.referenceTimeMillis = 0;
         this.alreadyStarted = false;
         this.pausedTime = 0;

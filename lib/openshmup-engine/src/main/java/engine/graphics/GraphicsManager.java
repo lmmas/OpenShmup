@@ -1,5 +1,6 @@
 package engine.graphics;
 
+import engine.EngineSystem;
 import engine.graphics.colorRectangle.ColorRectangle;
 import engine.graphics.colorRectangle.ColorRectangleRenderer;
 import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-final public class GraphicsManager {
+final public class GraphicsManager implements EngineSystem {
 
     final private ArrayList<ArrayList<Renderer<?, ?>>> layers;
 
@@ -138,5 +139,9 @@ final public class GraphicsManager {
 
     public void clearLayers() {
         layers.clear();
+    }
+
+    @Override public void update() {
+        drawGraphics();
     }
 }

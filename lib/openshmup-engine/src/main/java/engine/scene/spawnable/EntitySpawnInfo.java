@@ -1,6 +1,6 @@
 package engine.scene.spawnable;
 
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.types.Vec2D;
 
 public record EntitySpawnInfo(int id, Vec2D startingPosition, int trajectoryId) implements Spawnable {
@@ -10,7 +10,7 @@ public record EntitySpawnInfo(int id, Vec2D startingPosition, int trajectoryId) 
     }
 
     @Override
-    public void spawn(LevelScene scene) {
+    public void spawn(Level scene) {
         scene.addEntitySpawn(this);
     }
 

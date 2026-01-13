@@ -1,7 +1,7 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 
 final public class EmptyTrajectory implements Trajectory {
 
@@ -24,7 +24,7 @@ final public class EmptyTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, LevelScene scene) {
+    public void update(Entity entity, Level scene) {
 
     }
 

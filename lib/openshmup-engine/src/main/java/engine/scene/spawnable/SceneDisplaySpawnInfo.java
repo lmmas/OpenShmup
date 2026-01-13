@@ -1,6 +1,6 @@
 package engine.scene.spawnable;
 
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.types.Vec2D;
 
 public record SceneDisplaySpawnInfo(
@@ -13,7 +13,7 @@ public record SceneDisplaySpawnInfo(
     }
 
     @Override
-    public void spawn(LevelScene scene) {
+    public void spawn(Level scene) {
         scene.addDisplaySpawn(this);
     }
 

@@ -5,6 +5,7 @@ import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
 import engine.scene.Scene;
 import engine.types.IVec2D;
+import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -17,12 +18,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Engine {
+
+    private static boolean programShouldTerminate;
 
     public static AssetManager assetManager;
 
@@ -40,17 +44,20 @@ public class Engine {
 
     public static Scene currentScene;
 
-    private static boolean programShouldTerminate = false;
+    @Getter @Setter
+    private static double sceneTime;
+
+    protected static List<EngineSystem> activeSystemsList;
 
     public Engine() throws IOException {
+        programShouldTerminate = false;
         Engine.inLoopScript = null;
+        sceneTime = 0.0d;
         nativeResolution = new IVec2D(1920, 1080);
         detectRootFolder();
 
         OpenGLInitialization();
-        graphicsManager = new GraphicsManager();
         assetManager = new AssetManager();
-        inputStatesManager = new InputStatesManager(window.getGlfwWindow());
     }
 
     private void detectRootFolder() {
@@ -104,7 +111,8 @@ public class Engine {
             if (inLoopScript != null) {
                 inLoopScript.run();
             }
-            inputStatesManager.updateInputStates();
+            activeSystemsList.forEach(EngineSystem::update);
+            inputStatesManager.update();
             if (currentScene != null) {
                 currentScene.handleInputs();
                 currentScene.update();

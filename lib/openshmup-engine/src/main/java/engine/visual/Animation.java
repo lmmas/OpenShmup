@@ -1,8 +1,11 @@
 package engine.visual;
 
+import engine.Engine;
+import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
+import engine.visual.style.TimeReference;
 
 import java.util.List;
 
@@ -20,7 +23,9 @@ final public class Animation extends SceneVisual {
 
     private double timeOfLastFrame;
 
-    public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY) {
+    private TimeReference timeReference;
+
+    public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY, TimeReference timeReference) {
         super(layer, List.of(0));
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
@@ -35,6 +40,7 @@ final public class Animation extends SceneVisual {
             0.0f, 0.0f, 0.0f, 0.0f);
         updateTexturePosition();
         this.timeOfLastFrame = 0.0d;
+        this.timeReference = timeReference;
     }
 
     public Animation(Animation animation) {
@@ -69,7 +75,14 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public void update(double currentTimeSeconds) {
+    public void update() {
+        double currentTimeSeconds;
+        if (timeReference == TimeReference.SCENE) {
+            currentTimeSeconds = Engine.getSceneTime();
+        }
+        else {
+            currentTimeSeconds = Game.getLevelTime();
+        }
         if (currentTimeSeconds >= timeOfLastFrame + framePeriodSeconds) {
             frameIndex++;
             if (frameIndex >= info.frameCount()) {

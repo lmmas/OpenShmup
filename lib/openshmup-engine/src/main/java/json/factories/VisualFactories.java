@@ -7,6 +7,7 @@ import engine.visual.Animation;
 import engine.visual.AnimationInfo;
 import engine.visual.SceneVisual;
 import engine.visual.ScrollingImage;
+import engine.visual.style.TimeReference;
 import json.SafeJsonNode;
 
 import java.nio.file.Path;
@@ -24,7 +25,7 @@ public class VisualFactories {
         boolean horizontalScrolling = node.checkAndGetBoolean("horizontalScrolling");
         float speed = node.checkAndGetFloat("speed");
 
-        return new ScrollingImage(texture, layer, size.x, size.y, speed, horizontalScrolling);
+        return new ScrollingImage(texture, layer, size.x, size.y, speed, horizontalScrolling, TimeReference.LEVEL);
     };
 
     final public static BiFunction<SafeJsonNode, Path, SceneVisual> animationFactory = (node, textureFolderPath) -> {
@@ -54,6 +55,6 @@ public class VisualFactories {
             (float) stride.x / animationTextureWidth,
             (float) stride.y / animationTextureHeight);
 
-        return new Animation(layer, texture, animationInfo, framePeriodSeconds, looping, size.x, size.y);
+        return new Animation(layer, texture, animationInfo, framePeriodSeconds, looping, size.x, size.y, TimeReference.LEVEL);
     };
 }

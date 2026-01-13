@@ -3,7 +3,7 @@ package engine.entity.extraComponent;
 import engine.entity.Entity;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.colorRectangle.ColorRectangle;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.scene.spawnable.Spawnable;
 import engine.types.RGBAValue;
 
@@ -49,7 +49,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
     }
 
     @Override
-    public void update(Entity entity, LevelScene scene) {
+    public void update(Entity entity, Level scene) {
         debugDisplay.setPosition(simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y);
         debugDisplay.setScale(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y);
     }

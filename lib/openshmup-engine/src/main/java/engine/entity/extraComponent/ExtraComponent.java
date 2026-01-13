@@ -1,7 +1,7 @@
 package engine.entity.extraComponent;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.scene.spawnable.Spawnable;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface ExtraComponent {
 
     void onRemove();
 
-    void update(Entity entity, LevelScene scene);
+    void update(Entity entity, Level scene);
 }

@@ -1,10 +1,12 @@
 package engine.visual;
 
 import engine.Engine;
+import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
 import engine.types.Vec2D;
+import engine.visual.style.TimeReference;
 
 import java.util.List;
 
@@ -26,7 +28,9 @@ final public class ScrollingImage extends SceneVisual {
 
     private double lastUpdateTimeSeconds;
 
-    public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling) {
+    private TimeReference timeReference;
+
+    public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling, TimeReference timeReference) {
         super(layer, List.of(0, 0));
         this.size = new Vec2D(sizeX, sizeY);
         this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
@@ -47,6 +51,7 @@ final public class ScrollingImage extends SceneVisual {
             0.0f, 0.0f, 0.0f, 0.0f);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
+        this.timeReference = timeReference;
         lastUpdateTimeSeconds = 0.0f;
         this.setPosition((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
     }
@@ -103,7 +108,14 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public void update(double currentTimeSeconds) {
+    public void update() {
+        double currentTimeSeconds;
+        if (timeReference == TimeReference.SCENE) {
+            currentTimeSeconds = Engine.getSceneTime();
+        }
+        else {
+            currentTimeSeconds = Game.getLevelTime();
+        }
         double deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
         if (horizontalScrolling) {
             position1.x += (float) (speed * deltaTime);

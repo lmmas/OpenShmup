@@ -1,7 +1,7 @@
 package engine.entity.extraComponent;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.scene.spawnable.Spawnable;
 import engine.types.GameControl;
 import engine.types.Vec2D;
@@ -43,7 +43,7 @@ final public class PlayerShot implements ExtraComponent {
     }
 
     @Override
-    public void update(Entity entity, LevelScene scene) {
+    public void update(Entity entity, Level scene) {
         double currentTime = entity.getLifetimeSeconds();
         if (scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();

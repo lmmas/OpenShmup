@@ -3,7 +3,7 @@ package engine.entity;
 import engine.entity.extraComponent.ExtraComponent;
 import engine.entity.hitbox.Hitbox;
 import engine.entity.trajectory.Trajectory;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.scene.spawnable.Spawnable;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
@@ -46,11 +46,11 @@ abstract public class Entity {
     @Getter
     protected ArrayList<ExtraComponent> extraComponents;
 
-    protected LevelScene scene;
+    protected Level level;
 
     public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.type = type;
-        this.scene = null;
+        this.level = null;
         this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
         this.size = new Vec2D(sizeX, sizeY);
@@ -112,24 +112,24 @@ abstract public class Entity {
         extraComponents.add(extraComponent);
     }
 
-    public void setScene(LevelScene scene) {
-        assert scene != null;
-        this.scene = scene;
+    public void setLevel(Level level) {
+        assert level != null;
+        this.level = level;
         this.lifetimeSeconds = 0.0d;
-        this.startingTimeSeconds = scene.getSceneTimeSeconds();
+        this.startingTimeSeconds = level.getLevelTimeSeconds();
     }
 
     public void update(double currentTimeSeconds) {
         lifetimeSeconds = currentTimeSeconds - startingTimeSeconds;
-        trajectory.update(this, scene);
+        trajectory.update(this, level);
         for (ExtraComponent extraComponent : extraComponents) {
-            extraComponent.update(this, scene);
+            extraComponent.update(this, level);
         }
     }
 
     public void deathEvent() {
         for (Spawnable spawnable : deathSpawn) {
-            spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+            spawnable.copyWithOffset(position.x, position.y).spawn(level);
         }
     }
 

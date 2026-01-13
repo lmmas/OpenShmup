@@ -1,7 +1,7 @@
 package engine.entity.trajectory;
 
 import engine.entity.Entity;
-import engine.scene.LevelScene;
+import engine.scene.Level;
 import engine.types.Vec2D;
 
 import java.util.function.Function;
@@ -24,7 +24,7 @@ final public class FixedTrajectory implements Trajectory {
         this(trajectoryFunctionX, trajectoryFunctionY, true);
     }
 
-    public void update(Entity entity, LevelScene scene) {
+    public void update(Entity entity, Level scene) {
         float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
         float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
         if (relativeTrajectory) {
