@@ -1,4 +1,4 @@
-package editor.editionData.visual;
+package editor.editionData;
 
 import editor.attribute.IntegerAttribute;
 import editor.attribute.Vec2DAttribute;

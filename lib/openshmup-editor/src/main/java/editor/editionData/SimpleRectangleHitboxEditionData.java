@@ -1,4 +1,4 @@
-package editor.editionData.hitbox;
+package editor.editionData;
 
 import editor.attribute.Vec2DAttribute;
 import lombok.Data;

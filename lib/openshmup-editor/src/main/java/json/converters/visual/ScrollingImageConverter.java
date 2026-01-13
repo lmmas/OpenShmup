@@ -1,7 +1,7 @@
 package json.converters.visual;
 
-import editor.editionData.visual.ScrollingImageEditionData;
-import editor.editionData.visual.VisualEditionData;
+import editor.editionData.ScrollingImageEditionData;
+import editor.editionData.VisualEditionData;
 import engine.types.Vec2D;
 import json.SafeJsonNode;
 
@@ -15,10 +15,10 @@ public class ScrollingImageConverter implements VisualConverter {
         int layer = node.checkAndGetInt("layer");
         Vec2D size = node.checkAndGetVec2D("size");
 
-        String imagePath = textureFolderPath.resolve(node.checkAndGetString("fileName")).toString();
+        String imageFilename = node.checkAndGetString("fileName");
         boolean horizontalScrolling = node.checkAndGetBoolean("horizontalScrolling");
         float speed = node.checkAndGetFloat("speed");
 
-        return new ScrollingImageEditionData(id, layer, size.x, size.y, imagePath, speed, horizontalScrolling);
+        return new ScrollingImageEditionData(id, layer, size.x, size.y, imageFilename, speed, horizontalScrolling);
     }
 }

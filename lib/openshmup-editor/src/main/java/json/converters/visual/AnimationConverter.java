@@ -1,7 +1,7 @@
 package json.converters.visual;
 
-import editor.editionData.visual.AnimationEditionData;
-import editor.editionData.visual.VisualEditionData;
+import editor.editionData.AnimationEditionData;
+import editor.editionData.VisualEditionData;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 import json.SafeJsonNode;

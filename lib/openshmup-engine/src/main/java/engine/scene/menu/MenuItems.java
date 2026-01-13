@@ -1,6 +1,7 @@
 package engine.scene.menu;
 
 import engine.entity.hitbox.SimpleRectangleHitbox;
+import engine.scene.menu.item.MenuAction;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.BorderedRoundedRectangle;
@@ -13,7 +14,9 @@ import java.util.List;
 
 public class MenuItems {
 
-    public static MenuItem ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
+    private MenuItems() {}
+
+    public static MenuItem ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, MenuAction onClick) {
         return new MenuItem(List.of(
             new ColorRectangleVisual(layer, size, position, color),
             new TextDisplay(layer + 1, false, position.x, position.y, label, textStyle, TextAlignment.CENTER)),
@@ -21,7 +24,7 @@ public class MenuItems {
             onClick);
     }
 
-    public static MenuItem RoundedRectangleButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
+    public static MenuItem RoundedRectangleButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, MenuAction onClick) {
         return new MenuItem(
             List.of(
                 new BorderedRoundedRectangle(layer, size.x, size.y, position.x, position.y, roundingRadius, borderWidth, rectangleColor.r, rectangleColor.g, rectangleColor.b, rectangleColor.a, borderColor.r, borderColor.g, borderColor.b, borderColor.a),

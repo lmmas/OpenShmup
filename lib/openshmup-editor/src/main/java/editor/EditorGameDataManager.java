@@ -1,6 +1,6 @@
 package editor;
 
-import editor.editionData.visual.VisualEditionData;
+import editor.editionData.VisualEditionData;
 import engine.gameData.GamePaths;
 import json.converters.JsonDataConverter;
 import lombok.Getter;

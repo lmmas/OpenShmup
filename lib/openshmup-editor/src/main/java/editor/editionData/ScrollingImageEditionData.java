@@ -1,4 +1,4 @@
-package editor.editionData.visual;
+package editor.editionData;
 
 import editor.attribute.BooleanAttribute;
 import editor.attribute.FloatAttribute;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ScrollingImageEditionData extends VisualEditionData {
+public final class ScrollingImageEditionData extends VisualEditionData implements EditionData {
 
     private StringAttribute fileName;
 

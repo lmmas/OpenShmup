@@ -5,6 +5,7 @@ import engine.entity.hitbox.Hitbox;
 import engine.graphics.Graphic;
 import engine.scene.menu.MenuItem;
 import engine.scene.menu.MenuScreen;
+import engine.scene.menu.item.MenuAction;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.SceneVisual;
@@ -46,7 +47,7 @@ public class Scene {
 
     private boolean runOnclick;
 
-    private Runnable onClick;
+    private MenuAction onClick;
 
     final protected SceneDebug sceneDebug;
 
@@ -99,7 +100,7 @@ public class Scene {
         if (!timer.isPaused()) {
             sceneTime = timer.getTimeSeconds();
             if (runOnclick && onClick != null) {
-                onClick.run();
+                onClick.run(this);
                 runOnclick = false;
                 onClick = null;
             }

@@ -1,4 +1,4 @@
-package editor.editionData.visual;
+package editor.editionData;
 
 import editor.attribute.*;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AnimationEditionData extends VisualEditionData {
+public final class AnimationEditionData extends VisualEditionData implements EditionData {
 
     private DoubleAttribute framePeriodSeconds;
 

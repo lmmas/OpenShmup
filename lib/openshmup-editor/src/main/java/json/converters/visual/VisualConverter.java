@@ -1,6 +1,6 @@
 package json.converters.visual;
 
-import editor.editionData.visual.VisualEditionData;
+import editor.editionData.VisualEditionData;
 import json.SafeJsonNode;
 
 import java.nio.file.Path;
