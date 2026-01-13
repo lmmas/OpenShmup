@@ -6,12 +6,12 @@ import lombok.Getter;
 
 import java.util.List;
 
-
+@Getter
 public class MenuItem {
 
-    @Getter
+
     final private List<SceneVisual> visuals;
-    @Getter
+
     private final Hitbox clickHitbox;
 
     private Runnable onClick;
@@ -20,12 +20,6 @@ public class MenuItem {
         this.clickHitbox = clickHitbox;
         this.onClick = onClick;
         this.visuals = visuals;
-    }
-
-    public void onClick() {
-        if (onClick != null) {
-            onClick.run();
-        }
     }
 
     public void setOnclick(Runnable onClick) {

@@ -26,7 +26,7 @@ final public class ColorRectangleVisual extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new ColorRectangleVisual(this.sceneLayer, new ColorRectangle(colorRectangle));
+        return new ColorRectangleVisual(this.sceneLayerIndex, new ColorRectangle(colorRectangle));
     }
 
     @Override

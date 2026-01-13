@@ -3,6 +3,7 @@ package engine.visual;
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.Image;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,15 +14,16 @@ abstract public class SceneVisual {
     private boolean visualShouldBeRemovedFlag = false;
 
     private boolean reloadGraphicsFlag = false;
+    @Getter
     @Setter
-    protected int sceneLayer;
+    protected int sceneLayerIndex;
 
     final protected List<Integer> graphicalSubLayers;
 
     final private int maxGraphicalSubLayer;
 
     public SceneVisual(int layer, List<Integer> graphicalSubLayers) {
-        this.sceneLayer = layer;
+        this.sceneLayerIndex = layer;
         this.graphicalSubLayers = graphicalSubLayers;
         this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);
     }
@@ -63,10 +65,6 @@ abstract public class SceneVisual {
 
     final public void setReloadGraphicsFlag(boolean reloadGraphics) {
         this.reloadGraphicsFlag = reloadGraphics;
-    }
-
-    public int getSceneLayerIndex() {
-        return sceneLayer;
     }
 
     public void setScale(float scaleX, float scaleY) {

@@ -1,17 +1,34 @@
 package engine.scene.menu;
 
 import engine.visual.SceneVisual;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public record MenuScreen(int backgroundLayer, ArrayList<MenuItem> menuItems, ArrayList<SceneVisual> otherVisuals) {
+@Getter
+public class MenuScreen {
 
-    public MenuScreen(int backgroundLayer, List<MenuItem> menuItems, List<SceneVisual> otherVisuals) {
-        this(backgroundLayer, new ArrayList<>(menuItems), new ArrayList<>(otherVisuals));
-    }
+    private int backgroundLayer;
+
+    final private ArrayList<MenuItem> menuItems;
+
+    final private ArrayList<SceneVisual> otherVisuals;
+    @Setter
+    private boolean isOpen;
 
     public MenuScreen(int backgroundLayer) {
-        this(backgroundLayer, new ArrayList<>(), new ArrayList<>());
+        this.backgroundLayer = backgroundLayer;
+        this.menuItems = new ArrayList<>();
+        this.otherVisuals = new ArrayList<>();
+        this.isOpen = false;
+    }
+
+    public void addItem(MenuItem menuItem) {
+        menuItems.add(menuItem);
+    }
+
+    public void addVisual(SceneVisual visual) {
+        otherVisuals.add(visual);
     }
 }

@@ -5,8 +5,8 @@ import editor.editionData.visual.VisualEditionData;
 import engine.Engine;
 import engine.scene.Scene;
 import engine.scene.menu.MenuItem;
+import engine.scene.menu.MenuItems;
 import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.RoundedRectangleButton;
 import engine.types.Vec2D;
 import engine.visual.BorderedRoundedRectangle;
 import engine.visual.TextDisplay;
@@ -31,12 +31,12 @@ public class EditGameScene extends Scene {
         this.gameData = gameData;
         this.visualSelectButtons = new ArrayList<>();
         this.editMenu = new MenuScreen(0);
-        this.editVisualMenu = new MenuScreen(3, List.of(), List.of(new BorderedRoundedRectangle(3, 1500f, 900f, Engine.getNativeWidth() / 2, Engine.getNativeHeight() / 2, menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor.r, menuButtonColor.g, menuButtonColor.b, menuButtonColor.a, menuButtonBorderColor.r, menuButtonBorderColor.g, menuButtonColor.b, menuButtonBorderColor.a)));
-
+        this.editVisualMenu = new MenuScreen(3);
+        this.editVisualMenu.addVisual(new BorderedRoundedRectangle(3, 1500f, 900f, Engine.getNativeWidth() / 2, Engine.getNativeHeight() / 2, menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor.r, menuButtonColor.g, menuButtonColor.b, menuButtonColor.a, menuButtonBorderColor.r, menuButtonBorderColor.g, menuButtonColor.b, menuButtonBorderColor.a));
         List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         int visualListIndex = 0;
         for (var visualAttributes : visualEditionDataList) {
-            editMenu.menuItems().add(new RoundedRectangleButton(1, new Vec2D(400f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, Integer.toString(visualAttributes.getId().getValue()), menuButtonLabelStyle, () -> {
+            editMenu.addItem(MenuItems.RoundedRectangleButton(1, new Vec2D(400f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, Integer.toString(visualAttributes.getId().getValue()), menuButtonLabelStyle, () -> {
                 setEditMenuVisual(visualAttributes);
                 addMenu(editVisualMenu);
             }));
@@ -55,8 +55,8 @@ public class EditGameScene extends Scene {
         TextDisplay layerDisplay = new TextDisplay(4, false, 600f, 670f, visualEditionData.getLayer().toString(), menuButtonLabelStyle, TextAlignment.LEFT);
         TextDisplay sizeDisplay = new TextDisplay(4, false, 600f, 640f, visualEditionData.getSize().toString(), menuButtonLabelStyle, TextAlignment.LEFT);
 
-        editVisualMenu.otherVisuals().add(idDisplay);
-        editVisualMenu.otherVisuals().add(layerDisplay);
-        editVisualMenu.otherVisuals().add(sizeDisplay);
+        editVisualMenu.addVisual(idDisplay);
+        editVisualMenu.addVisual(layerDisplay);
+        editVisualMenu.addVisual(sizeDisplay);
     }
 }

@@ -33,7 +33,7 @@ final public class ImageDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new ImageDisplay(this.sceneLayer, image);
+        return new ImageDisplay(this.sceneLayerIndex, image);
     }
 
     @Override

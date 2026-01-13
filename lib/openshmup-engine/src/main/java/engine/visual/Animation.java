@@ -38,7 +38,7 @@ final public class Animation extends SceneVisual {
     }
 
     public Animation(Animation animation) {
-        super(animation.sceneLayer, List.of(0));
+        super(animation.sceneLayerIndex, List.of(0));
         this.image = new Image(animation.image);
         this.info = animation.info;
         this.looping = animation.looping;

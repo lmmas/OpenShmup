@@ -26,11 +26,11 @@ import static engine.GlobalVars.Paths.debugFont;
 
 public class Scene {
 
-    protected double sceneTime;
-
     final protected SceneTimer timer;
 
-    protected double lastDrawTime = 0.0d;
+    protected double sceneTime;
+
+    protected double lastDrawTime;
 
     final protected TreeMap<Integer, SceneLayer> layers;
 
@@ -38,21 +38,31 @@ public class Scene {
 
     final protected ArrayList<MenuScreen> displayedMenus;
 
-    protected boolean debugModeEnabled = false;
+    protected boolean debugModeEnabled;
 
-    protected boolean leftClickPressedOnItem = false;
+    protected boolean leftClickPressedOnItem;
 
-    protected MenuItem leftClickPressedItem = null;
+    protected MenuItem leftClickPressedItem;
+
+    private boolean runOnclick;
+
+    private Runnable onClick;
 
     final protected SceneDebug sceneDebug;
 
     public Scene() {
-        this.sceneTime = 0.0d;
         this.timer = new SceneTimer();
+        this.sceneTime = 0.0d;
+        this.lastDrawTime = 0.0d;
         this.layers = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
         this.displayedMenus = new ArrayList<>();
         this.sceneDebug = new SceneDebug(false);
+        this.debugModeEnabled = false;
+        this.leftClickPressedOnItem = false;
+        this.leftClickPressedItem = null;
+        this.runOnclick = false;
+        this.onClick = null;
     }
 
     public void start() {
@@ -67,14 +77,15 @@ public class Scene {
         if (leftClickPressedOnItem) {
             if (!inputStatesManager.getLeftClickState()) {
                 if (leftClickPressedItem.getClickHitbox().containsPoint(cursorPosition)) {
-                    leftClickPressedItem.onClick();
+                    onClick = leftClickPressedItem.getOnClick();
+                    runOnclick = true;
                 }
                 leftClickPressedItem = null;
                 leftClickPressedOnItem = false;
             }
         }
         else {
-            for (MenuItem menuItem : displayedMenus.getLast().menuItems()) {
+            for (MenuItem menuItem : displayedMenus.getLast().getMenuItems()) {
                 Hitbox clickHitbox = menuItem.getClickHitbox();
                 if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
                     leftClickPressedOnItem = true;
@@ -87,6 +98,11 @@ public class Scene {
     public void update() {
         if (!timer.isPaused()) {
             sceneTime = timer.getTimeSeconds();
+            if (runOnclick && onClick != null) {
+                onClick.run();
+                runOnclick = false;
+                onClick = null;
+            }
             for (SceneLayer layer : layers.values()) {
                 for (SceneVisual visual : layer.getVisuals()) {
                     visual.update(sceneTime);
@@ -184,17 +200,21 @@ public class Scene {
     }
 
     final public void addMenu(MenuScreen menuScreen) {
-        menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+        assert !menuScreen.isOpen() : "menu screen already open";
+        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(this::addVisual);
-        menuScreen.otherVisuals().forEach(this::addVisual);
+        menuScreen.getOtherVisuals().forEach(this::addVisual);
         displayedMenus.add(menuScreen);
+        menuScreen.setOpen(true);
     }
 
     final public void removeMenu(MenuScreen menuScreen) {
-        menuScreen.menuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+        assert menuScreen.isOpen() : "menu screen not open";
+        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(this::removeVisual);
-        menuScreen.otherVisuals().forEach(this::removeVisual);
+        menuScreen.getOtherVisuals().forEach(this::removeVisual);
         displayedMenus.remove(menuScreen);
+        menuScreen.setOpen(false);
     }
 
     protected class SceneDebug {

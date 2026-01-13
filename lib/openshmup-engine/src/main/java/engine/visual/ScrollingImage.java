@@ -52,7 +52,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     public ScrollingImage(ScrollingImage scrollingImage) {
-        super(scrollingImage.sceneLayer, List.of(0, 0));
+        super(scrollingImage.sceneLayerIndex, List.of(0, 0));
         this.image1 = new Image(scrollingImage.image1);
         this.position1 = new Vec2D(scrollingImage.position1);
         this.position2 = new Vec2D(scrollingImage.position2);

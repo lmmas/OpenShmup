@@ -21,7 +21,7 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     public ScreenFilter(ScreenFilter screenFilter) {
-        super(screenFilter.sceneLayer, List.of(0));
+        super(screenFilter.sceneLayerIndex, List.of(0));
         this.colorRectangle = new ColorRectangle(screenFilter.colorRectangle);
     }
 

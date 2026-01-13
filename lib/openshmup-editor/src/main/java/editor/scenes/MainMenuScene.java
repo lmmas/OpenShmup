@@ -3,8 +3,9 @@ package editor.scenes;
 import editor.Editor;
 import engine.Engine;
 import engine.scene.Scene;
+import engine.scene.menu.MenuItem;
+import engine.scene.menu.MenuItems;
 import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.RoundedRectangleButton;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import engine.visual.ColorRectangleVisual;
@@ -14,7 +15,6 @@ import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
 
 import java.io.IOException;
-import java.util.List;
 
 import static editor.Style.*;
 import static engine.GlobalVars.Paths.debugFont;
@@ -41,15 +41,19 @@ final public class MainMenuScene extends Scene {
         TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50);
         menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
-        RoundedRectangleButton button1 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, null);
-        RoundedRectangleButton button2 = new RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        MenuItem button1 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, null);
+        MenuItem button2 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
 
 
-        mainMenu = new MenuScreen(backgroundLayer, List.of(button1, button2), List.of());
+        mainMenu = new MenuScreen(backgroundLayer);
+        mainMenu.addItem(button1);
+        mainMenu.addItem(button2);
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        RoundedRectangleButton closeButton = new RoundedRectangleButton(backgroundLayer + 4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, null);
-        popupMenu = new MenuScreen(backgroundLayer + 3, List.of(closeButton), List.of(new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f)));
+        MenuItem closeButton = MenuItems.RoundedRectangleButton(backgroundLayer + 4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, null);
+        popupMenu = new MenuScreen(backgroundLayer + 3);
+        popupMenu.addItem(closeButton);
+        popupMenu.addVisual(new ScreenFilter(backgroundLayer + 3, 0.0f, 0.0f, 0.0f, 0.5f));
 
         button1.setOnclick(() -> {
                 try {
@@ -59,7 +63,7 @@ final public class MainMenuScene extends Scene {
                 }
                 for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
                     var game = Editor.getLoadedGames().get(i);
-                    popupMenu.menuItems().add(new RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, () -> Engine.switchCurrentScene(new EditGameScene(game))));
+                    popupMenu.addItem(MenuItems.RoundedRectangleButton(backgroundLayer + 4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, () -> Engine.switchCurrentScene(new EditGameScene(game))));
                 }
                 addMenu(popupMenu);
             }

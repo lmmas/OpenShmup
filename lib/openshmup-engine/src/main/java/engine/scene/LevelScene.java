@@ -14,8 +14,9 @@ import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.scene.menu.MenuActions;
+import engine.scene.menu.MenuItem;
+import engine.scene.menu.MenuItems;
 import engine.scene.menu.MenuScreen;
-import engine.scene.menu.item.ColorRectangleButton;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
 import engine.types.GameControl;
@@ -83,8 +84,10 @@ final public class LevelScene extends Scene {
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
         Vec2D buttonSize = new Vec2D(300, 150);
-        ColorRectangleButton blueButton = new ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
-        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer, List.of(blueButton), List.of(new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f)));
+        MenuItem blueButton = MenuItems.ColorRectangleButton(gameConfig.pauseMenuLayer + 1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        this.pauseMenu = new MenuScreen(gameConfig.pauseMenuLayer);
+        this.pauseMenu.addItem(blueButton);
+        this.pauseMenu.addVisual(new ScreenFilter(gameConfig.pauseMenuLayer, 0.0f, 0.0f, 0.0f, 0.7f));
         this.gameOverScreen = pauseMenu;
         this.levelDebug = new LevelDebug(false);
     }
