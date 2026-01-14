@@ -4,6 +4,7 @@ import engine.gameData.GameDataManager;
 import engine.graphics.GraphicsManager;
 import engine.scene.Level;
 import engine.scene.Scene;
+import engine.types.Reference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ final public class Game extends Engine {
 
     public static PlayerSettings playerSettings;
 
-    public static Level currentLevel;
+    private static Reference<Level> currentLevel;
     @Getter @Setter
     private static double levelTime;
 
@@ -31,8 +32,8 @@ final public class Game extends Engine {
         super();
         levelTime = 0.0d;
 
-        graphicsManager = new GraphicsManager();
-        inputStatesManager = new InputStatesManager();
+        graphicsManager.set(new GraphicsManager());
+        inputStatesManager.set(new InputStatesManager());
         gameDataManager = new GameDataManager(gameFolderName);
         gameDataManager.loadGameConfig();
         gameDataManager.loadGameContents();
@@ -53,11 +54,15 @@ final public class Game extends Engine {
     public static void gameInit() {
         gameDataManager.getTimeline(0).resetTime();
         Scene levelScene = new Scene();
-        currentLevel = new Level(levelScene, gameDataManager.getTimeline(0));
+        currentLevel.set(new Level(levelScene, gameDataManager.getTimeline(0)));
         switchCurrentScene(levelScene);
-        currentScene.start();
-        currentLevel.start();
+        getCurrentScene().start();
+        getCurrentLevel().start();
 
-        Engine.activeSystemsList = List.of(inputStatesManager, currentLevel, menuManager, currentScene, graphicsManager);
+        Engine.activeSystemsList = List.of(inputStatesManager, currentLevel, currentMenu, currentScene, graphicsManager);
+    }
+
+    public static Level getCurrentLevel() {
+        return currentLevel.get();
     }
 }

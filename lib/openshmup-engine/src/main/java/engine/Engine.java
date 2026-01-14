@@ -3,13 +3,13 @@ package engine;
 import debug.DebugMethods;
 import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
-import engine.menu.MenuManager;
+import engine.menu.Menu;
 import engine.scene.Scene;
 import engine.types.IVec2D;
+import engine.types.Reference;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLUtil;
@@ -29,28 +29,27 @@ public class Engine {
 
     private static boolean programShouldTerminate;
 
-    public static AssetManager assetManager;
-
-    public static InputStatesManager inputStatesManager;
-
-    public static GraphicsManager graphicsManager;
-    @Setter
-    private static Runnable inLoopScript;
-
     static public Window window;
 
     static private IVec2D nativeResolution;
-
-    protected static Callback debugProc;
-
-    public static Scene currentScene;
-
-    public static MenuManager menuManager;
-
+    @Setter
+    private static Runnable inLoopScript;
     @Getter @Setter
     private static double sceneTime;
 
-    protected static List<EngineSystem> activeSystemsList;
+    protected static Callback debugProc;
+
+    public static AssetManager assetManager;
+
+    final protected static Reference<InputStatesManager> inputStatesManager = new Reference<>(null);
+
+    final protected static Reference<GraphicsManager> graphicsManager = new Reference<>(null);
+
+    final protected static Reference<Scene> currentScene = new Reference<>(null);
+
+    final protected static Reference<Menu> currentMenu = new Reference<>(null);
+
+    protected static List<Reference<? extends EngineSystem>> activeSystemsList;
 
     public Engine() throws IOException {
         programShouldTerminate = false;
@@ -76,7 +75,7 @@ public class Engine {
 
     private void OpenGLInitialization() {
         GLFWErrorCallback.createPrint(System.err).set();
-        if (!GLFW.glfwInit()) {
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
@@ -114,7 +113,7 @@ public class Engine {
             if (inLoopScript != null) {
                 inLoopScript.run();
             }
-            activeSystemsList.forEach(EngineSystem::update);
+            activeSystemsList.forEach(ref -> ref.get().update());
             glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
             if (glfwWindowShouldClose(window.getGlfwWindow())) {
@@ -136,10 +135,9 @@ public class Engine {
     }
 
     public static void switchCurrentScene(Scene scene) {
-        graphicsManager.clearLayers();
-        currentScene = scene;
-        menuManager = scene.getMenuManager();
-        currentScene.start();
+        graphicsManager.get().clearLayers();
+        currentScene.set(scene);
+        scene.start();
     }
 
     public static int getNativeWidth() {
@@ -158,5 +156,28 @@ public class Engine {
         nativeResolution.x = width;
         nativeResolution.y = height;
         window.setResolution(width, height);
+    }
+
+    public static InputStatesManager getInputStatesManager() {
+        return inputStatesManager.get();
+    }
+
+    public static GraphicsManager getGraphicsManager() {
+        return graphicsManager.get();
+    }
+
+    public static Scene getCurrentScene() {
+        return currentScene.get();
+    }
+
+    public static Menu getCurrentMenu() {
+        return currentMenu.get();
+    }
+
+    public static void switchCurrentMenu(Menu menu) {
+        currentMenu.set(menu);
+        if (menu != null) {
+            menu.setScene(getCurrentScene());
+        }
     }
 }

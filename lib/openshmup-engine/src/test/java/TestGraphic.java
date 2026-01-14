@@ -1,10 +1,12 @@
 import engine.Engine;
+import engine.graphics.GraphicsManager;
 import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
 
 import java.io.IOException;
 
-import static engine.Engine.*;
+import static engine.Engine.setNativeResolution;
+import static engine.Engine.window;
 
 public class TestGraphic {
 
@@ -13,6 +15,8 @@ public class TestGraphic {
         Engine myEngine = new Engine();
 
         setNativeResolution(1920, 1080);
+
+        GraphicsManager graphicsManager = Engine.getGraphicsManager();
 
         ColorRoundedRectangle testRectangle = new ColorRoundedRectangle(0.3f, 0.2f, 0.5f, 0.6f, 0.2f, 0.0f, 0.0f, 1.0f, 1.0f);
         graphicsManager.addDebugGraphic(testRectangle);

@@ -1,5 +1,6 @@
 package engine.entity.extraComponent;
 
+import engine.Engine;
 import engine.entity.Entity;
 import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.graphics.colorRectangle.ColorRectangle;
@@ -12,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static engine.Engine.assetManager;
-import static engine.Engine.graphicsManager;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class HitboxDebugRectangle implements ExtraComponent {
@@ -40,7 +40,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     @Override
     public void init() {
-        graphicsManager.addDebugGraphic(debugDisplay);
+        Engine.getGraphicsManager().addDebugGraphic(debugDisplay);
     }
 
     @Override

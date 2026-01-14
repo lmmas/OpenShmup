@@ -14,15 +14,15 @@ public class MenuItem {
 
     private final Hitbox clickHitbox;
 
-    private MenuAction onClick;
+    private Runnable onClick;
 
-    public MenuItem(List<SceneVisual> visuals, Hitbox clickHitbox, MenuAction onClick) {
+    public MenuItem(List<SceneVisual> visuals, Hitbox clickHitbox, Runnable onClick) {
         this.clickHitbox = clickHitbox;
         this.onClick = onClick;
         this.visuals = visuals;
     }
 
-    public void setOnclick(MenuAction onClick) {
+    public void setOnclick(Runnable onClick) {
         this.onClick = onClick;
     }
 }

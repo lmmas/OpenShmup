@@ -1,0 +1,103 @@
+package editor;
+
+import editor.editionData.EditionData;
+import editor.editionData.VisualEditionData;
+import engine.Engine;
+import engine.menu.Menu;
+import engine.menu.MenuItem;
+import engine.menu.MenuItems;
+import engine.menu.MenuScreen;
+import engine.scene.Scene;
+import engine.types.RGBAValue;
+import engine.types.Vec2D;
+import engine.visual.ColorRectangleVisual;
+import engine.visual.SceneVisual;
+import engine.visual.ScreenFilter;
+import engine.visual.TextDisplay;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
+
+import java.io.IOException;
+import java.util.List;
+
+import static editor.Style.*;
+import static engine.GlobalVars.Paths.debugFont;
+import static engine.menu.MenuActions.terminateProgram;
+
+public class Menus {
+
+    private Menus() {}
+
+    public static class Screens {
+
+        private Screens() {}
+
+        private static MenuScreen PopupScreen() {
+
+            MenuScreen popupMenu = new MenuScreen(3);
+            Vec2D closeButtonSize = new Vec2D(150, 50);
+            MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            popupMenu.addItem(closeButton);
+            popupMenu.addVisual(new ScreenFilter(3, 0.0f, 0.0f, 0.0f, 0.5f));
+
+            Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
+            for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
+                var game = Editor.getLoadedGames().get(i);
+                Runnable onclick = () -> {
+                    Engine.switchCurrentScene(new Scene());
+                    Engine.switchCurrentMenu(Menus.EditGameMenu(game));
+                };
+                popupMenu.addItem(MenuItems.RoundedRectangleButton(4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
+            }
+            return popupMenu;
+        }
+    }
+
+    public static Menu MainMenu() {
+        Menu mainMenu = new Menu();
+        RGBAValue menuBackgroundColor = new RGBAValue(0.0f, 0.1f, 0.3f, 1.0f);
+        Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
+        int backgroundLayer = 0;
+        SceneVisual menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
+
+        RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+        TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50);
+        SceneVisual menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
+
+        Runnable editGameAction = () -> {
+            try {
+                Editor.loadGames();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            MenuScreen popupScreen = Screens.PopupScreen();
+            mainMenu.addMenuScreen(popupScreen);
+        };
+        MenuItem button1 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
+        MenuItem button2 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+
+        MenuScreen titleScreen = new MenuScreen(backgroundLayer);
+        titleScreen.addItem(button1);
+        titleScreen.addItem(button2);
+        titleScreen.addVisual(menuBackground);
+        titleScreen.addVisual(menuTitle);
+
+        mainMenu.addMenuScreen(titleScreen);
+        return mainMenu;
+    }
+
+    public static Menu EditGameMenu(EditorGameDataManager gameData) {
+        Menu menu = new Menu();
+        MenuScreen editMenuScreen = new MenuScreen(0);
+        List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
+        int visualListIndex = 0;
+        for (var visualAttributes : visualEditionDataList) {
+            Runnable onClick = () -> menu.addMenuScreen(EditionData.createPanel((EditionData) visualAttributes));
+            MenuItem visualSelectButton = MenuItems.RoundedRectangleButton(1, new Vec2D(400f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, Integer.toString(visualAttributes.getId().getValue()), menuButtonLabelStyle, onClick);
+            editMenuScreen.addItem(visualSelectButton);
+            visualListIndex++;
+        }
+        menu.addMenuScreen(editMenuScreen);
+        return menu;
+    }
+}

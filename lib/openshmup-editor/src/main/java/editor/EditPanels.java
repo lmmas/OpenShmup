@@ -26,7 +26,7 @@ final public class EditPanels {
         panel.addVisual(backgroundRectangle);
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (scene -> scene.getMenuManager().removeMenu(panel)));
+        MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (() -> Engine.getCurrentMenu().removeMenuScreen(panel)));
         panel.addItem(closeButton);
 
         return panel;

@@ -1,47 +1,47 @@
 package engine.menu;
 
+import engine.Engine;
 import engine.EngineSystem;
+import engine.InputStatesManager;
 import engine.entity.hitbox.Hitbox;
 import engine.scene.Scene;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
 
-import static engine.Engine.inputStatesManager;
+public class Menu implements EngineSystem {
 
-public class MenuManager implements EngineSystem {
+    private Scene scene;
 
-    private final Scene scene;
-
-    final private ArrayList<MenuScreen> displayedMenus;
+    final private ArrayList<MenuScreen> displayedMenuScreens;
 
     private boolean leftClickPressedOnItem;
 
     private MenuItem leftClickPressedItem;
 
-    public MenuManager(Scene scene) {
-        this.scene = scene;
-        this.displayedMenus = new ArrayList<>();
+    public Menu() {
+        this.displayedMenuScreens = new ArrayList<>();
         this.leftClickPressedOnItem = false;
         this.leftClickPressedItem = null;
     }
 
     @Override public void update() {
-        if (displayedMenus.isEmpty()) {
+        if (displayedMenuScreens.isEmpty()) {
             return;
         }
+        InputStatesManager inputStatesManager = Engine.getInputStatesManager();
         Vec2D cursorPosition = inputStatesManager.getCursorPosition();
         if (leftClickPressedOnItem) {
             if (!inputStatesManager.getLeftClickState()) {
                 if (leftClickPressedItem.getClickHitbox().containsPoint(cursorPosition)) {
-                    leftClickPressedItem.getOnClick().run(scene);
+                    leftClickPressedItem.getOnClick().run();
                 }
                 leftClickPressedItem = null;
                 leftClickPressedOnItem = false;
             }
         }
         else {
-            for (MenuItem menuItem : displayedMenus.getLast().getMenuItems()) {
+            for (MenuItem menuItem : displayedMenuScreens.getLast().getMenuItems()) {
                 Hitbox clickHitbox = menuItem.getClickHitbox();
                 if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
                     leftClickPressedOnItem = true;
@@ -51,21 +51,42 @@ public class MenuManager implements EngineSystem {
         }
     }
 
-    public void addMenu(MenuScreen menuScreen) {
-        assert !menuScreen.isOpen() : "menu screen already open";
+    private void addMenuScreenToScene(MenuScreen menuScreen) {
+        assert scene != null : "no scene attached to this menu";
         menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(scene::addVisual);
         menuScreen.getOtherVisuals().forEach(scene::addVisual);
-        displayedMenus.add(menuScreen);
+    }
+
+    public void addMenuScreen(MenuScreen menuScreen) {
+        assert !menuScreen.isOpen() : "menu screen already open";
+        if (scene != null) {
+            addMenuScreenToScene(menuScreen);
+        }
+        displayedMenuScreens.add(menuScreen);
         menuScreen.setOpen(true);
     }
 
-    public void removeMenu(MenuScreen menuScreen) {
-        assert menuScreen.isOpen() : "menu screen not open";
+    private void removeMenuScreenFromScene(MenuScreen menuScreen) {
+        assert scene != null : "no scene attached to this menu";
         menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
             .forEach(scene::removeVisual);
         menuScreen.getOtherVisuals().forEach(scene::removeVisual);
-        displayedMenus.remove(menuScreen);
+    }
+
+    public void removeMenuScreen(MenuScreen menuScreen) {
+        assert menuScreen.isOpen() : "menu screen not open";
+        if (scene != null) {
+            removeMenuScreenFromScene(menuScreen);
+        }
+        displayedMenuScreens.remove(menuScreen);
         menuScreen.setOpen(false);
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+        if (scene != null) {
+            displayedMenuScreens.forEach(this::addMenuScreenToScene);
+        }
     }
 }

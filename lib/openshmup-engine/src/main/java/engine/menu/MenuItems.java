@@ -15,7 +15,7 @@ public class MenuItems {
 
     private MenuItems() {}
 
-    public static MenuItem ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, MenuAction onClick) {
+    public static MenuItem ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
         return new MenuItem(List.of(
             new ColorRectangleVisual(layer, size, position, color),
             new TextDisplay(layer + 1, false, position.x, position.y, label, textStyle, TextAlignment.CENTER)),
@@ -23,7 +23,7 @@ public class MenuItems {
             onClick);
     }
 
-    public static MenuItem RoundedRectangleButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, MenuAction onClick) {
+    public static MenuItem RoundedRectangleButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
         return new MenuItem(
             List.of(
                 new BorderedRoundedRectangle(layer, size.x, size.y, position.x, position.y, roundingRadius, borderWidth, rectangleColor.r, rectangleColor.g, rectangleColor.b, rectangleColor.a, borderColor.r, borderColor.g, borderColor.b, borderColor.a),

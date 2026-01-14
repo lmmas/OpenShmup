@@ -4,26 +4,19 @@ import engine.Engine;
 import engine.EngineSystem;
 import engine.Timer;
 import engine.graphics.Graphic;
-import engine.menu.MenuAction;
-import engine.menu.MenuItem;
-import engine.menu.MenuManager;
-import engine.menu.MenuScreen;
+import engine.graphics.GraphicsManager;
 import engine.types.RGBAValue;
 import engine.visual.SceneVisual;
 import engine.visual.TextDisplay;
 import engine.visual.style.TextAlignment;
 import engine.visual.style.TextStyle;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
-import static engine.Engine.graphicsManager;
 import static engine.GlobalVars.Paths.debugFont;
 
 
@@ -39,21 +32,9 @@ public class Scene implements EngineSystem {
 
     final protected HashSet<SceneVisual> visualsToRemove;
 
-    final protected ArrayList<MenuScreen> displayedMenus;
-
     protected boolean debugModeEnabled;
 
-    protected boolean leftClickPressedOnItem;
-
-    protected MenuItem leftClickPressedItem;
-
-    private boolean runOnclick;
-
-    private MenuAction onClick;
-
     final protected SceneDebug sceneDebug;
-    @Getter @Setter
-    private MenuManager menuManager;
 
     public Scene() {
         this.timer = new Timer();
@@ -61,14 +42,8 @@ public class Scene implements EngineSystem {
         this.lastDrawTime = 0.0d;
         this.layers = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
-        this.displayedMenus = new ArrayList<>();
         this.sceneDebug = new SceneDebug(false);
         this.debugModeEnabled = false;
-        this.leftClickPressedOnItem = false;
-        this.leftClickPressedItem = null;
-        this.runOnclick = false;
-        this.onClick = null;
-        this.menuManager = null;
     }
 
     public void start() {
@@ -79,11 +54,6 @@ public class Scene implements EngineSystem {
     public void update() {
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
-        if (runOnclick && onClick != null) {
-            onClick.run(this);
-            runOnclick = false;
-            onClick = null;
-        }
         for (SceneLayer layer : layers.values()) {
             for (SceneVisual visual : layer.getVisuals()) {
                 visual.update();
@@ -95,7 +65,7 @@ public class Scene implements EngineSystem {
                     var graphicalLayers = visual.getGraphicalSubLayers();
                     var graphics = visual.getGraphics();
                     for (int i = 0; i < graphicalLayers.size(); i++) {
-                        graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
+                        Engine.getGraphicsManager().addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
                     }
 
                     visual.setReloadGraphicsFlag(false);
@@ -133,6 +103,7 @@ public class Scene implements EngineSystem {
         }
 
         //inserting the graphical layers
+        GraphicsManager graphicsManager = Engine.getGraphicsManager();
         for (int i = 0; i < graphicalLayersToInsertCount; i++) {
             graphicsManager.insertNewLayer(sceneLayerGraphicalIndex + sceneLayerGraphicalSubLayerCount);
         }
@@ -208,7 +179,7 @@ public class Scene implements EngineSystem {
                 double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
                 fpsDisplay.update();
-                fpsDisplay.getGraphics().forEach(graphic -> graphicsManager.addDebugGraphic(graphic));
+                fpsDisplay.getGraphics().forEach(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
             }
         }
     }

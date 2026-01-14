@@ -17,7 +17,7 @@ import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.menu.GameMenus;
-import engine.menu.MenuManager;
+import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.scene.spawnable.EntitySpawnInfo;
 import engine.scene.spawnable.SceneDisplaySpawnInfo;
@@ -33,13 +33,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import static engine.Engine.assetManager;
-import static engine.Engine.inputStatesManager;
+import static engine.Engine.getInputStatesManager;
 
 final public class Level implements EngineSystem {
 
     private Scene scene;
 
-    private MenuManager menuManager;
+    private Menu menu;
 
     final private HashSet<Entity> goodEntities;
 
@@ -75,8 +75,7 @@ final public class Level implements EngineSystem {
 
     public Level(Scene scene, LevelTimeline timeline) {
         this.scene = scene;
-        this.menuManager = new MenuManager(scene);
-        this.scene.setMenuManager(this.menuManager);
+        this.menu = new Menu();
         this.timeline = timeline;
         this.gameDataManager = timeline.getGameDataManager();
         this.gameConfig = gameDataManager.config;
@@ -114,15 +113,15 @@ final public class Level implements EngineSystem {
     }
 
     public void handleInputs() {
-        controlStates = inputStatesManager.getGameControlStates();
+        controlStates = getInputStatesManager().getGameControlStates();
         if (getControlPress(GameControl.PAUSE)) {
             if (timer.isPaused()) {
                 timer.resume();
-                menuManager.removeMenu(pauseMenu);
+                menu.removeMenuScreen(pauseMenu);
             }
             else {
                 timer.pause();
-                menuManager.addMenu(pauseMenu);
+                menu.addMenuScreen(pauseMenu);
             }
         }
         if (getControlPress(GameControl.SLOWDOWN)) {
@@ -292,7 +291,7 @@ final public class Level implements EngineSystem {
                         shipEntity.deathEvent();
                         entitiesToRemove.add(entity);
                         if (!shipEntity.isEvil()) {
-                            menuManager.addMenu(gameOverScreen);
+                            menu.addMenuScreen(gameOverScreen);
                             timer.pause();
                         }
                     }

@@ -1,10 +1,11 @@
 package editor;
 
-import editor.scenes.MainMenuScene;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.InputStatesManager;
 import engine.graphics.GraphicsManager;
+import engine.menu.Menu;
+import engine.scene.Scene;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -30,12 +31,13 @@ final public class Editor extends Engine {
     public Editor() throws IOException {
         super();
         setNativeResolution(1920, 1080);
-        graphicsManager = new GraphicsManager();
-        inputStatesManager = new InputStatesManager();
-        MainMenuScene mainMenuScene = new MainMenuScene();
-        switchCurrentScene(mainMenuScene);
+        graphicsManager.set(new GraphicsManager());
+        inputStatesManager.set(new InputStatesManager());
+        Menu mainMenu = Menus.MainMenu();
+        switchCurrentScene(new Scene());
+        switchCurrentMenu(mainMenu);
 
-        activeSystemsList = List.of(inputStatesManager, menuManager, currentScene, graphicsManager);
+        activeSystemsList = List.of(inputStatesManager, currentMenu, currentScene, graphicsManager);
         window.show();
 
     }
