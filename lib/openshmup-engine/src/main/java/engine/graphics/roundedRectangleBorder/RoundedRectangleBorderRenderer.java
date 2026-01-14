@@ -73,10 +73,10 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
                 RGBAValue color = rectangle.getColor();
 
 
-                dataBuffer.put(size.x / Engine.getNativeWidth());
-                dataBuffer.put(size.y / Engine.getNativeHeight());
-                dataBuffer.put(position.x / Engine.getNativeWidth());
-                dataBuffer.put(position.y / Engine.getNativeHeight());
+                dataBuffer.put(size.x);
+                dataBuffer.put(size.y);
+                dataBuffer.put(position.x);
+                dataBuffer.put(position.y);
                 dataBuffer.put(roundingRadius);
                 dataBuffer.put(borderWidth);
                 dataBuffer.put(color.r);
@@ -94,6 +94,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         @Override
         protected void draw() {
             shader.use();
+            shader.uploadUniform("u_NativeResolution", new int[]{Engine.getNativeWidth(), Engine.getNativeHeight()});
             shader.uploadUniform("u_NativeAspectRatio", (float) Engine.getNativeWidth() / Engine.getNativeHeight());
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);

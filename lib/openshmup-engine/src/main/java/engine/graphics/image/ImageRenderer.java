@@ -51,6 +51,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
 
         public void draw() {
             shader.use();
+            shader.uploadUniform("u_NativeResolution", new int[]{Engine.getNativeWidth(), Engine.getNativeHeight()});
             for (int i = 0; i < textures.size(); i++) {
                 textures.get(i).bind(i);
             }
@@ -110,10 +111,10 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
                 RGBAValue colorCoefs = image.getTextureColorCoefs();
                 RGBAValue addedColor = image.getAddedColor();
 
-                dataBuffer.putFloat(imageSize.x / Engine.getNativeWidth());
-                dataBuffer.putFloat(imageSize.y / Engine.getNativeHeight());
-                dataBuffer.putFloat(imagePosition.x / Engine.getNativeWidth());
-                dataBuffer.putFloat(imagePosition.y / Engine.getNativeHeight());
+                dataBuffer.putFloat(imageSize.x);
+                dataBuffer.putFloat(imageSize.y);
+                dataBuffer.putFloat(imagePosition.x);
+                dataBuffer.putFloat(imagePosition.y);
                 dataBuffer.putFloat(textureSize.x);
                 dataBuffer.putFloat(textureSize.y);
                 dataBuffer.putFloat(texturePosition.x);

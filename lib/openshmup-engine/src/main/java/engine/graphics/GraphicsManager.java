@@ -139,6 +139,12 @@ final public class GraphicsManager implements EngineSystem {
 
     public void clearLayers() {
         layers.clear();
+        debugLayer.clear();
+        debugLayer.add(new ColorRectangleRenderer());
+        debugLayer.add(new ImageRenderer(RenderType.STATIC_IMAGE));
+        debugLayer.add(new ImageRenderer(RenderType.DYNAMIC_IMAGE));
+        debugLayer.add(new ColorRoundedRectangleRenderer());
+        debugLayer.add(new RoundedRectangleBorderRenderer());
     }
 
     @Override public void update() {

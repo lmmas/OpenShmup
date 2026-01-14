@@ -52,7 +52,7 @@ final public class AssetManager {
             return shaderMap.get(filepath);
         }
         else {
-            Shader newShader = new Shader(filepath);
+            Shader newShader = new Shader(rootFolderAbsolutePath.resolve(filepath));
             shaderMap.put(filepath, newShader);
             newShader.compile();
             return newShader;

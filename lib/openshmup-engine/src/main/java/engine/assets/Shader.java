@@ -27,6 +27,7 @@ final public class Shader {
         this.filepath = filepath;
         try {
             String source = new String(Files.readAllBytes(filepath));
+            assert !source.isEmpty() : "incorrect source file";
 
             String[] splitSource = source.split("#type\\sfragment|#type\\sgeometry");
 

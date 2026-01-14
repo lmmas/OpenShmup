@@ -8,6 +8,8 @@ layout(location=4) in int a_TextureSlot;
 layout(location=5) in vec4 a_ColorCoefs;
 layout(location=6) in vec4 a_AddedColor;
 
+uniform ivec2 u_NativeResolution;
+
 out VS_OUT{
     vec2 v_QuadSize;
     vec2 v_TexturePosition;
@@ -22,8 +24,8 @@ out VS_OUT{
 void main(){
 
     //Window coordinates to NDC coordinates conversion
-    gl_Position = vec4(a_Position * 2.0f - vec2(1.0f, 1.0f), 0.0f, 1.0f);
-    vs_out.v_QuadSize = a_QuadSize * 2.0f;
+    gl_Position = vec4(a_Position / u_NativeResolution * 2.0f - vec2(1.0f, 1.0f), 0.0f, 1.0f);
+    vs_out.v_QuadSize = a_QuadSize / u_NativeResolution * 2.0f;
     vs_out.v_TexturePosition = a_TexturePosition;
     vs_out.v_TextureSize = a_TextureSize;
     vs_out.v_TextureSlot = a_TextureSlot;
