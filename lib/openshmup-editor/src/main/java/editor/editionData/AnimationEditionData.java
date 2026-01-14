@@ -12,9 +12,9 @@ public final class AnimationEditionData extends VisualEditionData implements Edi
 
     private BooleanAttribute looping;
 
-    private AnimationInfoAttributes animationInfo;
+    private AnimationInfoData animationInfo;
 
-    public AnimationEditionData(int id, int layer, float sizeX, float sizeY, double framePeriodSeconds, boolean looping, AnimationInfoAttributes animationInfo) {
+    public AnimationEditionData(int id, int layer, float sizeX, float sizeY, double framePeriodSeconds, boolean looping, AnimationInfoData animationInfo) {
         super(id, layer, sizeX, sizeY);
         this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", framePeriodSeconds);
         this.looping = new BooleanAttribute("looping", looping);
@@ -23,7 +23,7 @@ public final class AnimationEditionData extends VisualEditionData implements Edi
 
     @Getter
     @Setter
-    public static class AnimationInfoAttributes {
+    public static class AnimationInfoData {
 
         final private StringAttribute fileName;
 
@@ -35,11 +35,11 @@ public final class AnimationEditionData extends VisualEditionData implements Edi
 
         final private IVec2DAttribute stride;
 
-        public AnimationInfoAttributes(String fileName,
-                                       int frameCount,
-                                       int frameSizeX, int frameSizeY,
-                                       int startPositionX, int startPositionY,
-                                       int strideX, int strideY) {
+        public AnimationInfoData(String fileName,
+                                 int frameCount,
+                                 int frameSizeX, int frameSizeY,
+                                 int startPositionX, int startPositionY,
+                                 int strideX, int strideY) {
             this.fileName = new StringAttribute("File name", fileName);
             this.frameCount = new IntegerAttribute("Frame count", frameCount);
             this.frameSize = new IVec2DAttribute("Frame count", frameSizeX, frameSizeY);

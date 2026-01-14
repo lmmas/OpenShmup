@@ -75,7 +75,7 @@ final public class Level implements EngineSystem {
 
     public Level(Scene scene, LevelTimeline timeline) {
         this.scene = scene;
-        this.menu = new Menu();
+        this.menu = Engine.getCurrentMenu();
         this.timeline = timeline;
         this.gameDataManager = timeline.getGameDataManager();
         this.gameConfig = gameDataManager.config;

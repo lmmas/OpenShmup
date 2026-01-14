@@ -8,7 +8,7 @@
         "id": 1,
         "type": "fixed",
         "functionX": "0.0",
-        "functionY": "-200 * t"
+        "functionY": "0.0"
     },
     {
         "id": 2,

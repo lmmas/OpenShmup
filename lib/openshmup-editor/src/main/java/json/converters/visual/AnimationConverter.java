@@ -17,7 +17,7 @@ public class AnimationConverter implements VisualConverter {
         Vec2D size = node.checkAndGetVec2D("size");
 
         SafeJsonNode animationInfoNode = node.checkAndGetObject("animationInfo");
-        String textureFilepath = textureFolderPath.resolve(animationInfoNode.checkAndGetString("fileName")).toString();
+        String textureFileName = animationInfoNode.checkAndGetString("fileName");
         int frameCount = animationInfoNode.checkAndGetInt("frameCount");
         IVec2D frameSize = animationInfoNode.checkAndGetIVec2D("frameSize");
         IVec2D startingPosition = animationInfoNode.checkAndGetIVec2D("startingPosition");
@@ -26,8 +26,8 @@ public class AnimationConverter implements VisualConverter {
         float framePeriodSeconds = node.checkAndGetFloat("framePeriodSeconds");
         boolean looping = node.checkAndGetBoolean("looping");
 
-        AnimationEditionData.AnimationInfoAttributes animationInfo = new AnimationEditionData.AnimationInfoAttributes(
-            textureFilepath,
+        AnimationEditionData.AnimationInfoData animationInfo = new AnimationEditionData.AnimationInfoData(
+            textureFileName,
             frameCount,
             frameSize.x, frameSize.y,
             startingPosition.x, startingPosition.y,

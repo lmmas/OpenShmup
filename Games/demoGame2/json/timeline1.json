@@ -8,12 +8,14 @@
                 {
                     "type": "entity",
                     "id": 0,
-                    "startingPosition": [100, 330]
+                    "startingPosition": [100, 330],
+                    "trajectory": 0
                 },
                 {
-                    "type": "display",
+                    "type": "visual",
                     "id": 1,
-                    "position": [500,281]
+                    "position": [500, 281],
+                    "trajectory": 1
                 }
             ]
         }

@@ -2,6 +2,7 @@ package engine;
 
 import engine.gameData.GameDataManager;
 import engine.graphics.GraphicsManager;
+import engine.menu.Menu;
 import engine.scene.Level;
 import engine.scene.Scene;
 import engine.types.Reference;
@@ -17,7 +18,7 @@ final public class Game extends Engine {
 
     public static PlayerSettings playerSettings;
 
-    private static Reference<Level> currentLevel;
+    final private static Reference<Level> currentLevel = new Reference<>(null);
     @Getter @Setter
     private static double levelTime;
 
@@ -54,6 +55,10 @@ final public class Game extends Engine {
     public static void gameInit() {
         gameDataManager.getTimeline(0).resetTime();
         Scene levelScene = new Scene();
+        Menu gameMenu = new Menu();
+        gameMenu.setScene(levelScene);
+        switchCurrentScene(levelScene);
+        switchCurrentMenu(gameMenu);
         currentLevel.set(new Level(levelScene, gameDataManager.getTimeline(0)));
         switchCurrentScene(levelScene);
         getCurrentScene().start();

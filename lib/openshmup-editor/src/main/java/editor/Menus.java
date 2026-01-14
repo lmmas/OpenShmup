@@ -1,6 +1,8 @@
 package editor;
 
+import editor.editionData.AnimationEditionData;
 import editor.editionData.EditionData;
+import editor.editionData.ScrollingImageEditionData;
 import editor.editionData.VisualEditionData;
 import engine.Engine;
 import engine.menu.Menu;
@@ -20,11 +22,12 @@ import engine.visual.style.TextStyle;
 import java.io.IOException;
 import java.util.List;
 
+import static editor.Style.Color.menuBackgroundColor;
 import static editor.Style.*;
 import static engine.GlobalVars.Paths.debugFont;
 import static engine.menu.MenuActions.terminateProgram;
 
-public class Menus {
+final public class Menus {
 
     private Menus() {}
 
@@ -33,7 +36,6 @@ public class Menus {
         private Screens() {}
 
         private static MenuScreen PopupScreen() {
-
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
             MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
@@ -55,7 +57,6 @@ public class Menus {
 
     public static Menu MainMenu() {
         Menu mainMenu = new Menu();
-        RGBAValue menuBackgroundColor = new RGBAValue(0.0f, 0.1f, 0.3f, 1.0f);
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         int backgroundLayer = 0;
         SceneVisual menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
@@ -89,11 +90,27 @@ public class Menus {
     public static Menu EditGameMenu(EditorGameDataManager gameData) {
         Menu menu = new Menu();
         MenuScreen editMenuScreen = new MenuScreen(0);
+
+        SceneVisual menuBackground = new ScreenFilter(0, menuBackgroundColor);
+        editMenuScreen.addVisual(menuBackground);
+
+        TextDisplay screenTitle = new TextDisplay(1, false, (float) Engine.getNativeWidth() / 2, 970f, "Edit visuals", menuScreenTitleStyle, TextAlignment.CENTER);
+        editMenuScreen.addVisual(screenTitle);
+
         List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         int visualListIndex = 0;
-        for (var visualAttributes : visualEditionDataList) {
-            Runnable onClick = () -> menu.addMenuScreen(EditionData.createPanel((EditionData) visualAttributes));
-            MenuItem visualSelectButton = MenuItems.RoundedRectangleButton(1, new Vec2D(400f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, Integer.toString(visualAttributes.getId().getValue()), menuButtonLabelStyle, onClick);
+        for (var visualData : visualEditionDataList) {
+            Runnable onClick = () -> menu.addMenuScreen(EditionData.createPanel((EditionData) visualData));
+            String typeString = "";
+            if (visualData instanceof AnimationEditionData) {
+                typeString = "Animation";
+            }
+            if (visualData instanceof ScrollingImageEditionData) {
+                typeString = "Scrolling image";
+            }
+            String menuButtonLabel = visualData.getId().getValue() + ": " + typeString;
+
+            MenuItem visualSelectButton = MenuItems.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, menuButtonLabel, menuButtonLabelStyle, onClick);
             editMenuScreen.addItem(visualSelectButton);
             visualListIndex++;
         }

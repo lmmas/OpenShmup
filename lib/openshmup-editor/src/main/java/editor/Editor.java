@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class Editor extends Engine {
-
     @Getter
     private static List<EditorGameDataManager> loadedGames = null;
 
