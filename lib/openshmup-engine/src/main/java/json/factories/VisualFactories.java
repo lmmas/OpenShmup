@@ -1,13 +1,13 @@
 package json.factories;
 
 import engine.assets.Texture;
+import engine.scene.visual.Animation;
+import engine.scene.visual.AnimationInfo;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.ScrollingImage;
+import engine.scene.visual.style.TimeReference;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
-import engine.visual.Animation;
-import engine.visual.AnimationInfo;
-import engine.visual.SceneVisual;
-import engine.visual.ScrollingImage;
-import engine.visual.style.TimeReference;
 import json.SafeJsonNode;
 
 import java.nio.file.Path;
@@ -15,7 +15,7 @@ import java.util.function.BiFunction;
 
 import static engine.Engine.assetManager;
 
-public class VisualFactories {
+final public class VisualFactories {
 
     final public static BiFunction<SafeJsonNode, Path, SceneVisual> scrollingImageFactory = (node, textureFolderPath) -> {
         int layer = node.checkAndGetInt("layer");

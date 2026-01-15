@@ -5,11 +5,11 @@ import engine.EngineSystem;
 import engine.Timer;
 import engine.graphics.Graphic;
 import engine.graphics.GraphicsManager;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.TextDisplay;
+import engine.scene.visual.style.TextAlignment;
+import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
-import engine.visual.SceneVisual;
-import engine.visual.TextDisplay;
-import engine.visual.style.TextAlignment;
-import engine.visual.style.TextStyle;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -42,7 +42,7 @@ public class Scene implements EngineSystem {
         this.lastDrawTime = 0.0d;
         this.layers = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
-        this.sceneDebug = new SceneDebug(false);
+        this.sceneDebug = new SceneDebug();
         this.debugModeEnabled = false;
     }
 
@@ -119,7 +119,7 @@ public class Scene implements EngineSystem {
         if (visualMaxGraphicalSubLayer >= sceneLayer.getGraphicalSubLayerCount()) {
             sceneLayer.setGraphicalSubLayerCount(visualMaxGraphicalSubLayer + 1);
         }
-        visual.initDisplay(this.sceneTime);
+        visual.initDisplay();
     }
 
     private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
@@ -133,13 +133,18 @@ public class Scene implements EngineSystem {
         return layerSum;
     }
 
-    final public void removeVisual(SceneVisual visual) {
+    public void removeVisual(SceneVisual visual) {
         int sceneLayerIndex = visual.getSceneLayerIndex();
         layers.get(sceneLayerIndex).getVisuals().remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
         for (var graphic : graphics) {
             graphic.remove();
         }
+    }
+
+    public void toggleDebug() {
+        debugModeEnabled = !debugModeEnabled;
+        sceneDebug.toggle();
     }
 
     protected class SceneDebug {
@@ -149,12 +154,6 @@ public class Scene implements EngineSystem {
         final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
 
         final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle, TextAlignment.CENTER);
-
-        public SceneDebug(boolean debugModeEnabled) {
-            if (debugModeEnabled) {
-                this.enable();
-            }
-        }
 
         public void enable() {
         }

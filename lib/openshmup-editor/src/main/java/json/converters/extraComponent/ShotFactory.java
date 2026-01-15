@@ -1,10 +1,10 @@
 package json.converters.extraComponent;
 
-import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.extraComponent.NonPlayerShot;
-import engine.entity.extraComponent.PlayerShot;
 import engine.gameData.GameDataManager;
-import engine.scene.spawnable.Spawnable;
+import engine.level.entity.extraComponent.ExtraComponent;
+import engine.level.entity.extraComponent.NonPlayerShot;
+import engine.level.entity.extraComponent.PlayerShot;
+import engine.level.spawnable.Spawnable;
 import json.GameLoader;
 import json.SafeJsonNode;
 

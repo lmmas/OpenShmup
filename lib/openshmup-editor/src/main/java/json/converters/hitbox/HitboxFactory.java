@@ -1,7 +1,7 @@
 package json.converters.hitbox;
 
-import engine.entity.hitbox.Hitbox;
 import engine.gameData.GamePaths;
+import engine.level.entity.hitbox.Hitbox;
 import json.SafeJsonNode;
 
 public interface HitboxFactory {

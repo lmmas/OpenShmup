@@ -1,7 +1,7 @@
 package json.converters.trajectory;
 
-import engine.entity.trajectory.FixedTrajectory;
-import engine.entity.trajectory.Trajectory;
+import engine.level.entity.trajectory.FixedTrajectory;
+import engine.level.entity.trajectory.Trajectory;
 import json.SafeJsonNode;
 
 import java.util.function.Function;

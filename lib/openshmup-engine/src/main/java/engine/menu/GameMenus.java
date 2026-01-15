@@ -1,9 +1,9 @@
 package engine.menu;
 
+import engine.scene.visual.ScreenFilter;
+import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.visual.ScreenFilter;
-import engine.visual.style.TextStyle;
 
 import static engine.GlobalVars.Paths.debugFont;
 

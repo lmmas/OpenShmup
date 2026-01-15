@@ -1,7 +1,7 @@
 package json.converters.spawnable;
 
-import engine.scene.spawnable.SceneDisplaySpawnInfo;
-import engine.scene.spawnable.Spawnable;
+import engine.level.spawnable.SceneDisplaySpawnInfo;
+import engine.level.spawnable.Spawnable;
 import engine.types.Vec2D;
 import json.SafeJsonNode;
 

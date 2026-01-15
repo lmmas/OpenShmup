@@ -1,14 +1,14 @@
 package json.converters.entity;
 
-import engine.entity.Entity;
-import engine.entity.Projectile;
-import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.hitbox.Hitbox;
-import engine.entity.trajectory.Trajectory;
 import engine.gameData.GameDataManager;
-import engine.scene.spawnable.Spawnable;
+import engine.level.entity.Entity;
+import engine.level.entity.Projectile;
+import engine.level.entity.extraComponent.ExtraComponent;
+import engine.level.entity.hitbox.Hitbox;
+import engine.level.entity.trajectory.Trajectory;
+import engine.level.spawnable.Spawnable;
+import engine.scene.visual.SceneVisual;
 import engine.types.Vec2D;
-import engine.visual.SceneVisual;
 import json.GameLoader;
 import json.SafeJsonNode;
 

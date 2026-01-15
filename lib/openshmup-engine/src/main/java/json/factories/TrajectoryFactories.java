@@ -1,8 +1,8 @@
 package json.factories;
 
-import engine.entity.trajectory.FixedTrajectory;
-import engine.entity.trajectory.PlayerControlledTrajectory;
-import engine.entity.trajectory.Trajectory;
+import engine.level.entity.trajectory.FixedTrajectory;
+import engine.level.entity.trajectory.PlayerControlledTrajectory;
+import engine.level.entity.trajectory.Trajectory;
 import json.SafeJsonNode;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;

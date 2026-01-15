@@ -1,8 +1,8 @@
 package json.converters.hitbox;
 
-import engine.entity.hitbox.Hitbox;
-import engine.entity.hitbox.SimpleRectangleHitbox;
 import engine.gameData.GamePaths;
+import engine.level.entity.hitbox.Hitbox;
+import engine.level.entity.hitbox.SimpleRectangleHitbox;
 import engine.types.Vec2D;
 import json.SafeJsonNode;
 

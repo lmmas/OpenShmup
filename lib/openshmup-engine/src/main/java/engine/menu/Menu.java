@@ -3,7 +3,7 @@ package engine.menu;
 import engine.Engine;
 import engine.EngineSystem;
 import engine.InputStatesManager;
-import engine.entity.hitbox.Hitbox;
+import engine.level.entity.hitbox.Hitbox;
 import engine.scene.Scene;
 import engine.types.Vec2D;
 

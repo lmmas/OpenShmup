@@ -1,12 +1,12 @@
 package engine.gameData;
 
 import engine.assets.Texture;
-import engine.entity.Entity;
-import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.trajectory.Trajectory;
-import engine.scene.LevelTimeline;
-import engine.scene.spawnable.Spawnable;
-import engine.visual.SceneVisual;
+import engine.level.LevelTimeline;
+import engine.level.entity.Entity;
+import engine.level.entity.extraComponent.ExtraComponent;
+import engine.level.entity.trajectory.Trajectory;
+import engine.level.spawnable.Spawnable;
+import engine.scene.visual.SceneVisual;
 import json.GameLoader;
 import lombok.Getter;
 

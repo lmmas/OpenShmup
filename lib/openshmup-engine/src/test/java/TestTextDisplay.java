@@ -1,8 +1,8 @@
 import engine.Engine;
 import engine.assets.Font;
 import engine.scene.Scene;
-import engine.visual.TextDisplay;
-import engine.visual.style.TextAlignment;
+import engine.scene.visual.TextDisplay;
+import engine.scene.visual.style.TextAlignment;
 
 import java.io.IOException;
 import java.nio.file.Paths;

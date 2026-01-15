@@ -1,8 +1,8 @@
 package editor;
 
+import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.visual.style.TextStyle;
 
 import static engine.GlobalVars.Paths.debugFont;
 

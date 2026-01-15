@@ -1,7 +1,7 @@
 package json.converters.extraComponent;
 
-import engine.entity.extraComponent.ExtraComponent;
 import engine.gameData.GameDataManager;
+import engine.level.entity.extraComponent.ExtraComponent;
 import json.GameLoader;
 import json.SafeJsonNode;
 

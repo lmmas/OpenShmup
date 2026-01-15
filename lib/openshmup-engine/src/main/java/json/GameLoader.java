@@ -1,17 +1,17 @@
 package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.entity.Entity;
-import engine.entity.extraComponent.ExtraComponent;
-import engine.entity.hitbox.Hitbox;
-import engine.entity.trajectory.Trajectory;
 import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.gameData.GamePaths;
-import engine.scene.LevelTimeline;
-import engine.scene.spawnable.Spawnable;
+import engine.level.LevelTimeline;
+import engine.level.entity.Entity;
+import engine.level.entity.extraComponent.ExtraComponent;
+import engine.level.entity.hitbox.Hitbox;
+import engine.level.entity.trajectory.Trajectory;
+import engine.level.spawnable.Spawnable;
+import engine.scene.visual.SceneVisual;
 import engine.types.IVec2D;
-import engine.visual.SceneVisual;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

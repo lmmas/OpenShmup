@@ -1,7 +1,7 @@
 package json.converters.entity;
 
-import engine.entity.Entity;
 import engine.gameData.GameDataManager;
+import engine.level.entity.Entity;
 import json.GameLoader;
 import json.SafeJsonNode;
 

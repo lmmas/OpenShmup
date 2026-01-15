@@ -2,8 +2,8 @@ package engine;
 
 import engine.gameData.GameDataManager;
 import engine.graphics.GraphicsManager;
+import engine.level.Level;
 import engine.menu.Menu;
-import engine.scene.Level;
 import engine.scene.Scene;
 import engine.types.Reference;
 import lombok.Getter;

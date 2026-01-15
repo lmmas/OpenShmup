@@ -1,13 +1,13 @@
 package engine.menu;
 
-import engine.entity.hitbox.SimpleRectangleHitbox;
+import engine.level.entity.hitbox.SimpleRectangleHitbox;
+import engine.scene.visual.BorderedRoundedRectangle;
+import engine.scene.visual.ColorRectangleVisual;
+import engine.scene.visual.TextDisplay;
+import engine.scene.visual.style.TextAlignment;
+import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
-import engine.visual.BorderedRoundedRectangle;
-import engine.visual.ColorRectangleVisual;
-import engine.visual.TextDisplay;
-import engine.visual.style.TextAlignment;
-import engine.visual.style.TextStyle;
 
 import java.util.List;
 

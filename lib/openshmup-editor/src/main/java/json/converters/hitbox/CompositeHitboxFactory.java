@@ -1,9 +1,9 @@
 package json.converters.hitbox;
 
 import engine.assets.Texture;
-import engine.entity.hitbox.CompositeHitbox;
-import engine.entity.hitbox.Hitbox;
 import engine.gameData.GamePaths;
+import engine.level.entity.hitbox.CompositeHitbox;
+import engine.level.entity.hitbox.Hitbox;
 import engine.types.Vec2D;
 import json.SafeJsonNode;
 

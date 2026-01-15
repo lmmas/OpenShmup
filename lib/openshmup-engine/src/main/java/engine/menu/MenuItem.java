@@ -1,7 +1,7 @@
 package engine.menu;
 
-import engine.entity.hitbox.Hitbox;
-import engine.visual.SceneVisual;
+import engine.level.entity.hitbox.Hitbox;
+import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 
 import java.util.List;

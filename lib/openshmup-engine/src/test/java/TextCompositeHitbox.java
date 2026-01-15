@@ -1,5 +1,5 @@
 import engine.assets.Texture;
-import engine.entity.hitbox.CompositeHitbox;
+import engine.level.entity.hitbox.CompositeHitbox;
 
 import java.io.IOException;
 import java.nio.file.Paths;

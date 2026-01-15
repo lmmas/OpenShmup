@@ -1,6 +1,6 @@
 package engine.scene;
 
-import engine.visual.SceneVisual;
+import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package json.converters.spawnable;
 
-import engine.scene.spawnable.Spawnable;
+import engine.level.spawnable.Spawnable;
 import json.SafeJsonNode;
 
 public interface SpawnableFactory {

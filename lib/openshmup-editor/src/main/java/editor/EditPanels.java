@@ -7,11 +7,11 @@ import engine.Engine;
 import engine.menu.MenuItem;
 import engine.menu.MenuItems;
 import engine.menu.MenuScreen;
+import engine.scene.visual.BorderedRoundedRectangle;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.TextDisplay;
+import engine.scene.visual.style.TextAlignment;
 import engine.types.Vec2D;
-import engine.visual.BorderedRoundedRectangle;
-import engine.visual.SceneVisual;
-import engine.visual.TextDisplay;
-import engine.visual.style.TextAlignment;
 
 import java.util.List;
 
