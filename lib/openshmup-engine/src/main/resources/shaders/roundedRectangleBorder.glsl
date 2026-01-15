@@ -23,8 +23,8 @@ void main(){
     gl_Position = vec4(a_Position / u_NativeResolution * 2.0f - vec2(1.0f, 1.0f), 0.0f, 1.0f);
     v_Out.v_QuadSize = a_QuadSize / u_NativeResolution * 2.0f;
     v_Out.v_Color = a_Color;
-    v_Out.v_RoundingRadius = a_RoundingRadius;
-    v_Out.v_BorderWidth = a_BorderWidth;
+    v_Out.v_RoundingRadius = a_RoundingRadius * 2 / a_QuadSize[0];
+    v_Out.v_BorderWidth = a_BorderWidth * 2 / a_QuadSize[0];
 }
 
 #type geometry

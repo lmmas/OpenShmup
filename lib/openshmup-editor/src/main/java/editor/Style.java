@@ -23,9 +23,9 @@ final public class Style {
 
     final public static RGBAValue menuButtonBorderColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
 
-    final public static float menuButtonRoundingRadius = 0.1f;
+    final public static float menuButtonRoundingRadius = 20f;
 
-    final public static float menuButtonBorderWidth = 0.02f;
+    final public static float menuButtonBorderWidth = 4f;
 
     final public static RGBAValue menuButtonTextColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
 
