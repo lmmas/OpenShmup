@@ -29,7 +29,7 @@ final public class CompositeTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, Level scene) {
+    public void update(Entity entity, Level level) {
         if (trajectoryIndex < bounds.length) {
             double currentTime = entity.getLifetimeSeconds();
             if (currentTime >= bounds[trajectoryIndex]) {
@@ -38,7 +38,7 @@ final public class CompositeTrajectory implements Trajectory {
                 entity.setTrajectoryStartingPosition(currentPosition.x, currentPosition.y);
             }
         }
-        trajectories[trajectoryIndex].update(entity, scene);
+        trajectories[trajectoryIndex].update(entity, level);
     }
 
 }

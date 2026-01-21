@@ -34,7 +34,7 @@ final public class LevelTimeline {
         while (nextSpawnTime != null && currentTime >= nextSpawnTime && currentTime < levelDuration) {
             ArrayList<Spawnable> spawnables = spawnList.get(nextSpawnTime);
             for (Spawnable spawnable : spawnables) {
-                spawnable.spawn(level);
+                level.addSpawnable(spawnable);
             }
             nextSpawnTime = spawnList.higherKey(nextSpawnTime);
         }

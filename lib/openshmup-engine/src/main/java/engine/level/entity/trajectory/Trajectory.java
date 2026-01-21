@@ -5,7 +5,7 @@ import engine.level.entity.Entity;
 
 public interface Trajectory {
 
-    void update(Entity entity, Level scene);
+    void update(Entity entity, Level level);
 
     Trajectory copyIfNotReusable();
 

@@ -18,21 +18,21 @@ final public class PlayerControlledTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, Level scene) {
-        double currentTime = scene.getLevelTimeSeconds();
+    public void update(Entity entity, Level level) {
+        double currentTime = level.getLevelTimeSeconds();
         float positionX = entity.getPosition().x;
         float positionY = entity.getPosition().y;
         double deltaTimeSeconds = currentTime - lastUpdateTimeSeconds;
-        if (scene.getControlState(GameControl.MOVE_LEFT)) {
+        if (level.getControlState(GameControl.MOVE_LEFT)) {
             positionX -= (float) (speed * deltaTimeSeconds);
         }
-        if (scene.getControlState(GameControl.MOVE_RIGHT)) {
+        if (level.getControlState(GameControl.MOVE_RIGHT)) {
             positionX += (float) (speed * deltaTimeSeconds);
         }
-        if (scene.getControlState(GameControl.MOVE_UP)) {
+        if (level.getControlState(GameControl.MOVE_UP)) {
             positionY += (float) (speed * deltaTimeSeconds);
         }
-        if (scene.getControlState(GameControl.MOVE_DOWN)) {
+        if (level.getControlState(GameControl.MOVE_DOWN)) {
             positionY -= (float) (speed * deltaTimeSeconds);
         }
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());

@@ -24,7 +24,7 @@ final public class EmptyTrajectory implements Trajectory {
     }
 
     @Override
-    public void update(Entity entity, Level scene) {
+    public void update(Entity entity, Level level) {
 
     }
 

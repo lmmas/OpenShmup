@@ -43,12 +43,12 @@ final public class PlayerShot implements ExtraComponent {
     }
 
     @Override
-    public void update(Entity entity, Level scene) {
+    public void update(Entity entity, Level level) {
         double currentTime = entity.getLifetimeSeconds();
-        if (scene.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds) {
+        if (level.getControlState(GameControl.FIRE) && currentTime >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
             for (Spawnable spawnable : spawnables) {
-                spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+                level.addSpawnable(spawnable.copyWithOffset(position.x, position.y));
             }
             nextShotTimeSeconds = currentTime + shotPeriodSeconds;
         }

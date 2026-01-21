@@ -53,9 +53,12 @@ public class Menu implements EngineSystem {
 
     private void addMenuScreenToScene(MenuScreen menuScreen) {
         assert scene != null : "no scene attached to this menu";
-        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-            .forEach(scene::addVisual);
-        menuScreen.getOtherVisuals().forEach(scene::addVisual);
+        menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream()).forEach(visual ->
+            scene.addVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex())
+        );
+        menuScreen.getOtherVisuals().forEach(visual ->
+            scene.addVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex())
+        );
     }
 
     public void addMenuScreen(MenuScreen menuScreen) {
@@ -70,8 +73,8 @@ public class Menu implements EngineSystem {
     private void removeMenuScreenFromScene(MenuScreen menuScreen) {
         assert scene != null : "no scene attached to this menu";
         menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-            .forEach(scene::removeVisual);
-        menuScreen.getOtherVisuals().forEach(scene::removeVisual);
+            .forEach(visual -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+        menuScreen.getOtherVisuals().forEach(visual -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
     }
 
     public void removeMenuScreen(MenuScreen menuScreen) {

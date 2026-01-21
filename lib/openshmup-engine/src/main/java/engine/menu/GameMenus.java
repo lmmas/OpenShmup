@@ -18,10 +18,10 @@ public class GameMenus {
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
         Vec2D buttonSize = new Vec2D(300, 150);
-        MenuItem blueButton = MenuItems.ColorRectangleButton(layer + 1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        MenuItem blueButton = MenuItems.ColorRectangleButton(1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         pauseMenu.addItem(blueButton);
 
-        pauseMenu.addVisual(new ScreenFilter(layer, 0.0f, 0.0f, 0.0f, 0.7f));
+        pauseMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.7f));
         return pauseMenu;
     }
 }

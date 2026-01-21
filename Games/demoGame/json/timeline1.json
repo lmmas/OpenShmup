@@ -12,7 +12,7 @@
                     "startingPosition": [500, 200]
                 },
                 {
-                    "type": "visual",
+                    "type": "display",
                     "id": 1,
                     "position": [500, 550]
                 }

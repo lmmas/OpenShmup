@@ -81,9 +81,8 @@ public class Scene implements EngineSystem {
     }
 
 
-    final public void addVisual(SceneVisual visual) {
+    final public void addVisual(SceneVisual visual, int sceneLayerIndex) {
         int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
-        int sceneLayerIndex = visual.getSceneLayerIndex();
         SceneLayer sceneLayer = layers.get(sceneLayerIndex);
         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
 
@@ -122,6 +121,10 @@ public class Scene implements EngineSystem {
         visual.initDisplay();
     }
 
+    public void addVisual(SceneVisual visual) {
+        addVisual(visual, visual.getSceneLayerIndex());
+    }
+
     private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
         int layerSum = 0;
         for (var layerIndex : layers.keySet()) {
@@ -133,13 +136,17 @@ public class Scene implements EngineSystem {
         return layerSum;
     }
 
-    public void removeVisual(SceneVisual visual) {
-        int sceneLayerIndex = visual.getSceneLayerIndex();
+    public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
+        assert layers.get(sceneLayerIndex).getVisuals().contains(visual) : "visual not found in layer";
         layers.get(sceneLayerIndex).getVisuals().remove(visual);
         List<Graphic<?, ?>> graphics = visual.getGraphics();
         for (var graphic : graphics) {
             graphic.remove();
         }
+    }
+
+    public void removeVisual(SceneVisual visual) {
+        removeVisual(visual, visual.getSceneLayerIndex());
     }
 
     public void toggleDebug() {

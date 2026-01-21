@@ -16,5 +16,5 @@ public interface ExtraComponent {
 
     void onRemove();
 
-    void update(Entity entity, Level scene);
+    void update(Entity entity, Level level);
 }

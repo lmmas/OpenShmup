@@ -12,7 +12,7 @@
                     "trajectory": 0
                 },
                 {
-                    "type": "visual",
+                    "type": "display",
                     "id": 1,
                     "position": [500, 281],
                     "trajectory": 1

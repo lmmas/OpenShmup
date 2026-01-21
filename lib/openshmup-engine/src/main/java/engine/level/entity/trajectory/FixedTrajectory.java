@@ -24,7 +24,7 @@ final public class FixedTrajectory implements Trajectory {
         this(trajectoryFunctionX, trajectoryFunctionY, true);
     }
 
-    public void update(Entity entity, Level scene) {
+    public void update(Entity entity, Level level) {
         float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
         float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
         if (relativeTrajectory) {

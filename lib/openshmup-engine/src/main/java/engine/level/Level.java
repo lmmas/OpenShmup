@@ -19,6 +19,7 @@ import engine.level.entity.hitbox.Hitbox;
 import engine.level.entity.hitbox.SimpleRectangleHitbox;
 import engine.level.spawnable.EntitySpawnInfo;
 import engine.level.spawnable.SceneDisplaySpawnInfo;
+import engine.level.spawnable.Spawnable;
 import engine.menu.GameMenus;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
@@ -182,7 +183,16 @@ final public class Level implements EngineSystem {
         levelUI.update();
     }
 
-    public void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo) {
+    public void addSpawnable(Spawnable spawnable) {
+        switch (spawnable) {
+            case EntitySpawnInfo entitySpawnInfo -> addEntitySpawn(entitySpawnInfo);
+            case SceneDisplaySpawnInfo displaySpawnInfo -> addDisplaySpawn(displaySpawnInfo);
+            default -> {
+            }
+        }
+    }
+
+    private void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo) {
         displaysToSpawn.add(displaySpawnInfo);
     }
 
@@ -195,7 +205,7 @@ final public class Level implements EngineSystem {
         displaysToSpawn.clear();
     }
 
-    public void addEntitySpawn(EntitySpawnInfo entitySpawnInfo) {
+    private void addEntitySpawn(EntitySpawnInfo entitySpawnInfo) {
         entitiesToSpawn.add(entitySpawnInfo);
     }
 
@@ -214,7 +224,7 @@ final public class Level implements EngineSystem {
         else {
             goodEntities.add(entity);
         }
-        entity.setLevel(this);
+        entity.init(this);
     }
 
     public void deleteEntity(Entity entity) {
@@ -285,8 +295,7 @@ final public class Level implements EngineSystem {
                 Ship ennemyShip = (Ship) ennemy;
                 Hitbox ennemyHitbox = ennemyShip.getHitbox();
                 if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
-                    entity.deathEvent();
-                    entitiesToRemove.add(entity);
+                    handleEntityDeath(entity);
                 }
             }
         }
@@ -297,8 +306,7 @@ final public class Level implements EngineSystem {
                 if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
                     shipEntity.takeDamage(1);
                     if (shipEntity.isDead()) {
-                        shipEntity.deathEvent();
-                        entitiesToRemove.add(entity);
+                        handleEntityDeath(entity);
                         if (!shipEntity.isEvil()) {
                             menu.addMenuScreen(gameOverScreen);
                             timer.pause();
@@ -307,6 +315,12 @@ final public class Level implements EngineSystem {
                 }
             }
         }
+    }
+
+    private void handleEntityDeath(Entity entity) {
+        Vec2D entityPosition = entity.getPosition();
+        entity.getDeathSpawn().forEach(spawnable -> addSpawnable(spawnable.copyWithOffset(entityPosition.x, entityPosition.y)));
+        entitiesToRemove.add(entity);
     }
 
     private static void addComponent(Entity entity, ExtraComponent component) {

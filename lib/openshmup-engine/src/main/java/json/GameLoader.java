@@ -33,7 +33,7 @@ import static json.factories.TrajectoryFactories.playerControlledTrajectoryFacto
 import static json.factories.VisualFactories.animationFactory;
 import static json.factories.VisualFactories.scrollingImageFactory;
 
-public class GameLoader {
+final public class GameLoader {
 
     final private ObjectMapper objectMapper;
 
@@ -65,7 +65,7 @@ public class GameLoader {
         hitboxFactories.put("composite", compositeHitboxFactory);
 
         this.spawnableFactories = new HashMap<>(2);
-        spawnableFactories.put("visual", visualSpawnInfoFactory);
+        spawnableFactories.put("display", visualSpawnInfoFactory);
         spawnableFactories.put("entity", entitySpawnInfoFactory);
 
         this.extraComponentFactories = new HashMap<>(1);

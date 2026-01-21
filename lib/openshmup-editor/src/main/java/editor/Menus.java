@@ -38,9 +38,9 @@ final public class Menus {
         private static MenuScreen PopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            MenuItem closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addItem(closeButton);
-            popupMenu.addVisual(new ScreenFilter(3, 0.0f, 0.0f, 0.0f, 0.5f));
+            popupMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f));
 
             Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
             for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
@@ -49,7 +49,7 @@ final public class Menus {
                     Engine.switchCurrentScene(new Scene());
                     Engine.switchCurrentMenu(Menus.EditGameMenu(game));
                 };
-                popupMenu.addItem(MenuItems.RoundedRectangleButton(4, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
+                popupMenu.addItem(MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
             }
             return popupMenu;
         }
@@ -59,11 +59,11 @@ final public class Menus {
         Menu mainMenu = new Menu();
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         int backgroundLayer = 0;
-        SceneVisual menuBackground = new ColorRectangleVisual(backgroundLayer, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
+        SceneVisual menuBackground = new ColorRectangleVisual(0, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
 
         RGBAValue menuTitleTextColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
         TextStyle menuTitleTextStyle = new TextStyle(debugFont, menuTitleTextColor, 50);
-        SceneVisual menuTitle = new TextDisplay(backgroundLayer + 1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
+        SceneVisual menuTitle = new TextDisplay(1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
         Runnable editGameAction = () -> {
             try {
@@ -74,8 +74,8 @@ final public class Menus {
             MenuScreen popupScreen = Screens.PopupScreen();
             mainMenu.addMenuScreen(popupScreen);
         };
-        MenuItem button1 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
-        MenuItem button2 = MenuItems.RoundedRectangleButton(backgroundLayer + 1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        MenuItem button1 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
+        MenuItem button2 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
 
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
         titleScreen.addItem(button1);

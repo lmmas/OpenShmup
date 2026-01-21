@@ -22,11 +22,11 @@ final public class EditPanels {
     private static MenuScreen BaseEditPanel() {
         MenuScreen panel = new MenuScreen(3);
 
-        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(3, 1500f, 900f, Engine.getNativeWidth() / 2, Engine.getNativeHeight() / 2, menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor.r, menuButtonColor.g, menuButtonColor.b, menuButtonColor.a, menuButtonBorderColor.r, menuButtonBorderColor.g, menuButtonColor.b, menuButtonBorderColor.a);
+        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(0, 1500f, 900f, Engine.getNativeWidth() / 2, Engine.getNativeHeight() / 2, menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor.r, menuButtonColor.g, menuButtonColor.b, menuButtonColor.a, menuButtonBorderColor.r, menuButtonBorderColor.g, menuButtonColor.b, menuButtonBorderColor.a);
         panel.addVisual(backgroundRectangle);
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        MenuItem closeButton = MenuItems.RoundedRectangleButton(4, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (() -> Engine.getCurrentMenu().removeMenuScreen(panel)));
+        MenuItem closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (() -> Engine.getCurrentMenu().removeMenuScreen(panel)));
         panel.addItem(closeButton);
 
         return panel;
@@ -35,22 +35,22 @@ final public class EditPanels {
     public static MenuScreen AnimationEditPanel(AnimationEditionData animationData) {
         MenuScreen panel = BaseEditPanel();
 
-        TextDisplay panelTitle = new TextDisplay(4, false, (float) Engine.getNativeWidth() / 2, 950f, "Edit Animation", menuButtonLabelStyle, TextAlignment.CENTER);
+        TextDisplay panelTitle = new TextDisplay(1, false, (float) Engine.getNativeWidth() / 2, 950f, "Edit Animation", menuButtonLabelStyle, TextAlignment.CENTER);
         panel.addVisual(panelTitle);
 
         List<Attribute> attributesList = List.of(animationData.getId(), animationData.getLayer(), animationData.getSize(), animationData.getFramePeriodSeconds(), animationData.getLooping());
         for (int i = 0; i < attributesList.size(); i++) {
-            TextDisplay attributeText = new TextDisplay(4, false, 300f, 700f - 30f * i, attributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+            TextDisplay attributeText = new TextDisplay(1, false, 300f, 700f - 30f * i, attributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
             panel.addVisual(attributeText);
         }
 
-        TextDisplay spritesheetInfoSectionTitle = new TextDisplay(4, false, 300f, 530f, "Spritesheet info:", menuButtonLabelStyle, TextAlignment.LEFT);
+        TextDisplay spritesheetInfoSectionTitle = new TextDisplay(1, false, 300f, 530f, "Spritesheet info:", menuButtonLabelStyle, TextAlignment.LEFT);
         panel.addVisual(spritesheetInfoSectionTitle);
 
         AnimationEditionData.AnimationInfoData animationInfoData = animationData.getAnimationInfo();
         List<Attribute> spriteSheetAttributesList = List.of(animationInfoData.getFileName(), animationInfoData.getFrameCount(), animationInfoData.getFrameSize(), animationInfoData.getStartPosition(), animationInfoData.getStride());
         for (int i = 0; i < spriteSheetAttributesList.size(); i++) {
-            TextDisplay attributeText = new TextDisplay(4, false, 330f, 490f - 30f * i, spriteSheetAttributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+            TextDisplay attributeText = new TextDisplay(1, false, 330f, 490f - 30f * i, spriteSheetAttributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
             panel.addVisual(attributeText);
         }
 
@@ -61,13 +61,13 @@ final public class EditPanels {
     public static MenuScreen ScrollingImageEditPanel(ScrollingImageEditionData scrollingImageData) {
         MenuScreen panel = BaseEditPanel();
 
-        TextDisplay panelTitle = new TextDisplay(4, false, (float) Engine.getNativeWidth() / 2, 950f, "Edit Scrolling Image", menuButtonLabelStyle, TextAlignment.CENTER);
+        TextDisplay panelTitle = new TextDisplay(1, false, (float) Engine.getNativeWidth() / 2, 950f, "Edit Scrolling Image", menuButtonLabelStyle, TextAlignment.CENTER);
         panel.addVisual(panelTitle);
 
         List<Attribute> attributesList = List.of(scrollingImageData.getId(), scrollingImageData.getLayer(), scrollingImageData.getSize(), scrollingImageData.getFileName());
 
         for (int i = 0; i < attributesList.size(); i++) {
-            TextDisplay attributeText = new TextDisplay(4, false, 300f, 700f - 30f * i, attributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+            TextDisplay attributeText = new TextDisplay(1, false, 300f, 700f - 30f * i, attributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
             panel.addVisual(attributeText);
         }
 

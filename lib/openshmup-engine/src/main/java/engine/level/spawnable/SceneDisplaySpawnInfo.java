@@ -1,6 +1,5 @@
 package engine.level.spawnable;
 
-import engine.level.Level;
 import engine.types.Vec2D;
 
 public record SceneDisplaySpawnInfo(
@@ -10,11 +9,6 @@ public record SceneDisplaySpawnInfo(
 
     public SceneDisplaySpawnInfo(int id, float positionX, float positionY) {
         this(id, new Vec2D(positionX, positionY));
-    }
-
-    @Override
-    public void spawn(Level scene) {
-        scene.addDisplaySpawn(this);
     }
 
     @Override

@@ -112,7 +112,7 @@ abstract public class Entity {
         extraComponents.add(extraComponent);
     }
 
-    public void setLevel(Level level) {
+    public void init(Level level) {
         assert level != null;
         this.level = level;
         this.lifetimeSeconds = 0.0d;
@@ -126,11 +126,4 @@ abstract public class Entity {
             extraComponent.update(this, level);
         }
     }
-
-    public void deathEvent() {
-        for (Spawnable spawnable : deathSpawn) {
-            spawnable.copyWithOffset(position.x, position.y).spawn(level);
-        }
-    }
-
 }

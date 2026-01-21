@@ -37,7 +37,7 @@
         },
         "deathSpawn": [
             {
-                "type": "visual",
+                "type": "display",
                 "id": 2,
                 "position": [0, 0]
             }
@@ -80,7 +80,7 @@
         },
         "deathSpawn": [
             {
-                "type": "visual",
+                "type": "display",
                 "id": 2,
                 "position": [0, 0]
             }

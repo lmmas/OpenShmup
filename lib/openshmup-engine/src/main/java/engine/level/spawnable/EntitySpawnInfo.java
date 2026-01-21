@@ -1,17 +1,11 @@
 package engine.level.spawnable;
 
-import engine.level.Level;
 import engine.types.Vec2D;
 
 public record EntitySpawnInfo(int id, Vec2D startingPosition, int trajectoryId) implements Spawnable {
 
     public EntitySpawnInfo(int id, float startingPositionX, float startingPositionY, int trajectoryId) {
         this(id, new Vec2D(startingPositionX, startingPositionY), trajectoryId);
-    }
-
-    @Override
-    public void spawn(Level scene) {
-        scene.addEntitySpawn(this);
     }
 
     @Override

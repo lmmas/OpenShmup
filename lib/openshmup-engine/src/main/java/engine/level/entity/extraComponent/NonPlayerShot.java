@@ -42,12 +42,12 @@ final public class NonPlayerShot implements ExtraComponent {
     }
 
     @Override
-    public void update(Entity entity, Level scene) {
+    public void update(Entity entity, Level level) {
         double currentTimeSeconds = entity.getLifetimeSeconds();
         if (currentTimeSeconds >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
             for (var spawnable : spawnables) {
-                spawnable.copyWithOffset(position.x, position.y).spawn(scene);
+                level.addSpawnable(spawnable.copyWithOffset(position.x, position.y));
             }
             nextShotTimeSeconds = nextShotTimeSeconds + shotPeriodSeconds;
         }
