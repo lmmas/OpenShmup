@@ -9,7 +9,6 @@ import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,7 @@ final public class TextDisplay extends SceneVisual {
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
     final private Vec2D position;
-    @Setter
-    private String displayedString;
+    @Getter final private StringBuffer stringBuffer;
 
     private final Font font;
 
@@ -43,7 +41,7 @@ final public class TextDisplay extends SceneVisual {
         super(layer, new ArrayList<>());
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
-        this.displayedString = displayedString;
+        this.stringBuffer = new StringBuffer(displayedString);
         this.font = font;
         this.dynamicText = dynamicText;
         this.textLines = new ArrayList<>();
@@ -66,7 +64,7 @@ final public class TextDisplay extends SceneVisual {
         textLines.clear();
         graphicalSubLayers.clear();
         textLines.add(new ArrayList<>());
-        displayedString.codePoints().forEach(this::addCharacter);
+        stringBuffer.codePoints().forEach(this::addCharacter);
         updateTextColor();
         calculateLineWidths();
         updateTextPosition();
@@ -131,7 +129,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a, alignment);
+        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position.x, position.y, stringBuffer.toString(), textColor.r, textColor.g, textColor.b, textColor.a, alignment);
     }
 
     @Override
@@ -194,5 +192,10 @@ final public class TextDisplay extends SceneVisual {
             image.setColorCoefs(r, g, b, a);
         }
 
+    }
+
+    public void setDisplayedString(String displayedString) {
+        this.stringBuffer.setLength(0);
+        this.stringBuffer.append(displayedString);
     }
 }

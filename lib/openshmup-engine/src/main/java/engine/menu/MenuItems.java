@@ -1,14 +1,18 @@
 package engine.menu;
 
+import engine.Engine;
+import engine.InputStatesManager;
 import engine.level.entity.hitbox.SimpleRectangleHitbox;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.ColorRectangleVisual;
+import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItems {
@@ -30,5 +34,22 @@ public class MenuItems {
                 new TextDisplay(layer + 1, false, position.x, position.y, label, textStyle, TextAlignment.CENTER)),
             new SimpleRectangleHitbox(position.x, position.y, size.x, size.y),
             onClick);
+    }
+
+    public static MenuItem TextInputField(float sizeX, float sizeY, float positionX, float positionY, TextStyle style, List<SceneVisual> otherVisuals) {
+        TextDisplay textInputDisplay = new TextDisplay(2, true, positionX - sizeX / 2, positionY, "", style, TextAlignment.LEFT);
+        ArrayList<SceneVisual> visuals = new ArrayList<>(otherVisuals);
+        visuals.add(textInputDisplay);
+        SimpleRectangleHitbox hitbox = new SimpleRectangleHitbox(positionX, positionY, sizeX, sizeY);
+        Runnable onClick = () -> {
+            InputStatesManager inputStatesManager = Engine.getInputStatesManager();
+            if (inputStatesManager.getTextInputTarget() == textInputDisplay.getStringBuffer()) {
+                inputStatesManager.closeTextInput();
+            }
+            else {
+                inputStatesManager.addTextInput(textInputDisplay.getStringBuffer());
+            }
+        };
+        return new MenuItem(visuals, hitbox, onClick);
     }
 }

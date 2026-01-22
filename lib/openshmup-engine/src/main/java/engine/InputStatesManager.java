@@ -27,6 +27,8 @@ final public class InputStatesManager implements EngineSystem {
 
     final private Vec2D cursorPosition;
 
+    private TextInputHandler textInputHandler;
+
     public InputStatesManager() {
         this.glfwWindow = window.getGlfwWindow();
         this.controlsMap = new HashMap<>();
@@ -45,6 +47,7 @@ final public class InputStatesManager implements EngineSystem {
         this.cursorPositionXBuffer = new double[1];
         this.cursorPositionYBuffer = new double[1];
         this.cursorPosition = new Vec2D(0.0f, 0.0f);
+        this.textInputHandler = null;
     }
 
     @Override
@@ -63,6 +66,10 @@ final public class InputStatesManager implements EngineSystem {
         glfwGetCursorPos(glfwWindow, cursorPositionXBuffer, cursorPositionYBuffer);
         cursorPosition.x = (float) (cursorPositionXBuffer[0] / window.getWidth() * Engine.getNativeWidth());
         cursorPosition.y = (1.0f - (float) (cursorPositionYBuffer[0] / window.getHeight())) * Engine.getNativeHeight();
+
+        if (textInputHandler != null) {
+            textInputHandler.update();
+        }
     }
 
     public List<Boolean> getGameControlStates() {
@@ -77,5 +84,23 @@ final public class InputStatesManager implements EngineSystem {
 
     public Vec2D getCursorPosition() {
         return new Vec2D(cursorPosition);
+    }
+
+    public void addTextInput(StringBuffer targetBuffer) {
+        this.textInputHandler = new TextInputHandler(glfwWindow, targetBuffer);
+    }
+
+    public void closeTextInput() {
+        glfwSetCharCallback(glfwWindow, null);
+        this.textInputHandler = null;
+    }
+
+    public StringBuffer getTextInputTarget() {
+        if (textInputHandler != null) {
+            return textInputHandler.getTargetBuffer();
+        }
+        else {
+            return null;
+        }
     }
 }

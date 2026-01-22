@@ -76,7 +76,6 @@ final public class Menus {
         };
         MenuItem button1 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
         MenuItem button2 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
-
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
         titleScreen.addItem(button1);
         titleScreen.addItem(button2);
