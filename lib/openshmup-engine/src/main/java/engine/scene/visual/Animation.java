@@ -13,7 +13,7 @@ final public class Animation extends SceneVisual {
 
     final private Image image;
 
-    final private AnimationInfo info;
+    final private SpritesheetInfo info;
 
     final private boolean looping;
 
@@ -25,7 +25,7 @@ final public class Animation extends SceneVisual {
 
     private TimeReference timeReference;
 
-    public Animation(int layer, Texture animationTexture, AnimationInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY, TimeReference timeReference) {
+    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY, TimeReference timeReference) {
         super(layer, List.of(0));
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;

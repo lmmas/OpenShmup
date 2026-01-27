@@ -2,7 +2,7 @@ package engine.scene.visual;
 
 import java.nio.file.Path;
 
-public record AnimationInfo(
+public record SpritesheetInfo(
     Path filepath,
     int frameCount,
     float frameSizeX,

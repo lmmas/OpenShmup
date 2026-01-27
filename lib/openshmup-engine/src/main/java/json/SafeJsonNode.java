@@ -60,7 +60,7 @@ final public class SafeJsonNode {
         }
     }
 
-    public boolean checkAndGetBoolean(String fieldName) throws IllegalArgumentException {
+    public boolean safeGetBoolean(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode booleanNode = node.get(fieldName);
         if (!booleanNode.isBoolean()) {
@@ -69,7 +69,7 @@ final public class SafeJsonNode {
         return booleanNode.booleanValue();
     }
 
-    public int checkAndGetInt(String fieldName) throws IllegalArgumentException {
+    public int safeGetInt(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode intNode = node.get(fieldName);
         if (!intNode.isInt()) {
@@ -78,7 +78,7 @@ final public class SafeJsonNode {
         return intNode.intValue();
     }
 
-    public float checkAndGetFloat(String fieldName) throws IllegalArgumentException {
+    public float safeGetFloat(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode floatNode = node.get(fieldName);
         if (!floatNode.isNumber()) {
@@ -87,7 +87,7 @@ final public class SafeJsonNode {
         return floatNode.floatValue();
     }
 
-    public String checkAndGetString(String fieldName) throws IllegalArgumentException {
+    public String safeGetString(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode stringNode = node.get(fieldName);
         if (!stringNode.isTextual()) {
@@ -96,7 +96,7 @@ final public class SafeJsonNode {
         return stringNode.textValue();
     }
 
-    public SafeJsonNode checkAndGetObject(String fieldName) throws IllegalArgumentException {
+    public SafeJsonNode safeGetObject(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode objectNode = node.get(fieldName);
         if (!objectNode.isObject()) {
@@ -105,7 +105,7 @@ final public class SafeJsonNode {
         return new SafeJsonNode(objectNode, filePath, JSONPath + "." + fieldName);
     }
 
-    public SafeJsonNode checkAndGetArray(String fieldName) throws IllegalArgumentException {
+    public SafeJsonNode safeGetArray(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode arrayNode = node.get(fieldName);
         if (!arrayNode.isArray()) {
@@ -120,7 +120,7 @@ final public class SafeJsonNode {
         }
     }
 
-    public List<SafeJsonNode> checkAndGetObjectListFromArray() throws IllegalArgumentException {
+    public List<SafeJsonNode> safeGetObjectListFromArray() throws IllegalArgumentException {
         if (!node.isArray()) {
             throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + " is not an array");
         }
@@ -134,7 +134,7 @@ final public class SafeJsonNode {
         return objectList;
     }
 
-    public Vec2D checkAndGetVec2D(String fieldName) {
+    public Vec2D safeGetVec2D(String fieldName) {
         checkForField(fieldName);
         JsonNode vecNode = node.get(fieldName);
         String vecPath = getFullPath() + "." + fieldName;
@@ -152,7 +152,7 @@ final public class SafeJsonNode {
         return new Vec2D(node1.floatValue(), node2.floatValue());
     }
 
-    public IVec2D checkAndGetIVec2D(String fieldName) {
+    public IVec2D safeGetIVec2D(String fieldName) {
         checkForField(fieldName);
         JsonNode vecNode = node.get(fieldName);
         String vecPath = getFullPath() + "." + fieldName;

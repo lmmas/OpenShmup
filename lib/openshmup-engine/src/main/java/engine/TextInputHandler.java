@@ -19,6 +19,8 @@ final public class TextInputHandler {
     @Getter final private StringBuffer targetBuffer;
 
     private int backspaceCount;
+    @Getter
+    private boolean targetGotModified;
 
     public TextInputHandler(long glfwWindow, StringBuffer targetBuffer) {
         this.glfwWindow = glfwWindow;
@@ -41,14 +43,20 @@ final public class TextInputHandler {
         };
         glfwSetCharCallback(glfwWindow, textInputCallback);
         glfwSetKeyCallback(glfwWindow, keyInputCallback);
+        this.backspaceCount = 0;
+        this.targetGotModified = false;
     }
 
     public void update() {
+        if (!textInputBuffer.isEmpty()) {
+            this.targetGotModified = true;
+        }
         textInputBuffer.forEach(targetBuffer::appendCodePoint);
         textInputBuffer.clear();
         for (int i = 0; i < backspaceCount; i++) {
             if (!targetBuffer.isEmpty()) {
                 targetBuffer.setLength(targetBuffer.length() - 1);
+                this.targetGotModified = true;
             }
         }
         backspaceCount = 0;

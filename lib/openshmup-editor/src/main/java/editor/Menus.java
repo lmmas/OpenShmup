@@ -99,7 +99,7 @@ final public class Menus {
         List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         int visualListIndex = 0;
         for (var visualData : visualEditionDataList) {
-            Runnable onClick = () -> menu.addMenuScreen(EditionData.createPanel((EditionData) visualData));
+            Runnable onClick = () -> menu.addMenuScreen(EditPanels.createPanel((EditionData) visualData));
             String typeString = "";
             if (visualData instanceof AnimationEditionData) {
                 typeString = "Animation";
@@ -107,7 +107,7 @@ final public class Menus {
             if (visualData instanceof ScrollingImageEditionData) {
                 typeString = "Scrolling image";
             }
-            String menuButtonLabel = visualData.getId().getValue() + ": " + typeString;
+            String menuButtonLabel = visualData.getId() + ": " + typeString;
 
             MenuItem visualSelectButton = MenuItems.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, menuButtonLabel, menuButtonLabelStyle, onClick);
             editMenuScreen.addItem(visualSelectButton);

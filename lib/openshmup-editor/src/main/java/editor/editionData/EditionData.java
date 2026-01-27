@@ -1,14 +1,5 @@
 package editor.editionData;
 
-import editor.EditPanels;
-import engine.menu.MenuScreen;
+public sealed interface EditionData permits AnimationEditionData, CompositeHitboxEditionData, DisplaySpawnInfoEditionData, EntitySpawnInfoEditionData, FixedTrajectoryEditionData, PlayerControlledTrajectoryEditionData, ProjectileEditionData, ScrollingImageEditionData, ShipEditionData, ShotEditionData, SimpleRectangleHitboxEditionData {
 
-public sealed interface EditionData permits AnimationEditionData, ScrollingImageEditionData {
-
-    static MenuScreen createPanel(EditionData editionData) {
-        return switch (editionData) {
-            case AnimationEditionData animationData -> EditPanels.AnimationEditPanel(animationData);
-            case ScrollingImageEditionData scrollingImageData -> EditPanels.ScrollingImageEditPanel(scrollingImageData);
-        };
-    }
 }

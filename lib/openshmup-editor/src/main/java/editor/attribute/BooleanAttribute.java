@@ -1,21 +1,28 @@
 package editor.attribute;
 
-import lombok.Getter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Setter;
 
-@Getter
 @Setter
 final public class BooleanAttribute extends Attribute {
 
     private boolean value;
 
-    public BooleanAttribute(String name, boolean value) {
-        super(name);
+    public BooleanAttribute(String name, String jsonFieldName, boolean value) {
+        super(name, jsonFieldName);
         this.value = value;
     }
 
     @Override
     public String toString() {
         return name + ": " + value;
+    }
+
+    public boolean getValue() {
+        return value;
+    }
+
+    @Override public void addToNode(ObjectNode node) {
+        node.put(jsonFieldName, value);
     }
 }

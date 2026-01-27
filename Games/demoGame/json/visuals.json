@@ -12,7 +12,7 @@
         "id": 2,
         "layer": 10,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "explosion.png",
             "frameCount": 5,
             "frameSize": [16, 16],
@@ -27,7 +27,7 @@
         "id": 3,
         "layer": 2,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "ship.png",
             "frameCount": 5,
             "frameSize": [16, 24],
@@ -42,7 +42,7 @@
         "id": 4,
         "layer": 2,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "laser-bolts.png",
             "frameCount": 2,
             "frameSize": [5, 13],
@@ -57,7 +57,7 @@
         "id": 5,
         "layer": 4,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
             "frameCount": 6,
             "frameSize": [16, 16],
@@ -72,7 +72,7 @@
         "id": 6,
         "layer": 3,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "laser-bolts.png",
             "frameCount": 2,
             "frameSize": [5, 5],
@@ -87,7 +87,7 @@
         "id": 7,
         "layer": 4,
         "type": "animation",
-        "animationInfo": {
+        "spritesheetInfo": {
             "fileName": "oga-swm-extra-enemies-2-alpha.png",
             "frameCount": 6,
             "frameSize": [16, 16],

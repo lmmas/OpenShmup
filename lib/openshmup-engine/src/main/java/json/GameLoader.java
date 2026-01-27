@@ -26,8 +26,8 @@ import static json.factories.EntityFactories.shipFactory;
 import static json.factories.ExtraComponentFactories.shotFactory;
 import static json.factories.HitboxFactories.compositeHitboxFactory;
 import static json.factories.HitboxFactories.simpleRectangleHitboxFactory;
+import static json.factories.SpawnableFactories.displaySpawnInfoFactory;
 import static json.factories.SpawnableFactories.entitySpawnInfoFactory;
-import static json.factories.SpawnableFactories.visualSpawnInfoFactory;
 import static json.factories.TrajectoryFactories.fixedTrajectoryFactory;
 import static json.factories.TrajectoryFactories.playerControlledTrajectoryFactory;
 import static json.factories.VisualFactories.animationFactory;
@@ -65,7 +65,7 @@ final public class GameLoader {
         hitboxFactories.put("composite", compositeHitboxFactory);
 
         this.spawnableFactories = new HashMap<>(2);
-        spawnableFactories.put("display", visualSpawnInfoFactory);
+        spawnableFactories.put("display", displaySpawnInfoFactory);
         spawnableFactories.put("entity", entitySpawnInfoFactory);
 
         this.extraComponentFactories = new HashMap<>(1);
@@ -77,7 +77,7 @@ final public class GameLoader {
     }
 
     public SceneVisual visualFromJson(SafeJsonNode node, Path textureFolderpath) {
-        String type = node.checkAndGetString("type");
+        String type = node.safeGetString("type");
         var factory = visualFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": visual type is not supported");
@@ -86,7 +86,7 @@ final public class GameLoader {
     }
 
     public Trajectory trajectoryFromJSon(SafeJsonNode node) {
-        String type = node.checkAndGetString("type");
+        String type = node.safeGetString("type");
         var factory = trajectoryFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": trajectory type is not supported");
@@ -95,7 +95,7 @@ final public class GameLoader {
     }
 
     public Hitbox hitboxFromJson(SafeJsonNode node, GamePaths paths) {
-        String type = node.checkAndGetString("type");
+        String type = node.safeGetString("type");
         var factory = hitboxFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": hitbox type is not supported");
@@ -104,7 +104,7 @@ final public class GameLoader {
     }
 
     public Spawnable spawnableFromJson(SafeJsonNode node) {
-        String type = node.checkAndGetString("type");
+        String type = node.safeGetString("type");
         var factory = spawnableFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawnable type is not supported");
@@ -122,7 +122,7 @@ final public class GameLoader {
     }
 
     public Entity entityFromJson(SafeJsonNode node, GameDataManager gameData) {
-        String type = node.checkAndGetString("type");
+        String type = node.safeGetString("type");
         var factory = entityFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": entity type is not supported");
@@ -131,28 +131,28 @@ final public class GameLoader {
     }
 
     public LevelTimeline timelineFromJson(SafeJsonNode node, GameDataManager gameData) {
-        float duration = node.checkAndGetFloat("duration");
-        SafeJsonNode spawnsNode = node.checkAndGetArray("spawns");
+        float duration = node.safeGetFloat("duration");
+        SafeJsonNode spawnsNode = node.safeGetArray("spawns");
         LevelTimeline newTimeline = new LevelTimeline(gameData, duration);
-        List<SafeJsonNode> elementList = spawnsNode.checkAndGetObjectListFromArray();
+        List<SafeJsonNode> elementList = spawnsNode.safeGetObjectListFromArray();
         for (SafeJsonNode childNode : elementList) {
-            SafeJsonNode spawnableNode = childNode.checkAndGetArray("spawn");
+            SafeJsonNode spawnableNode = childNode.safeGetArray("spawn");
             ArrayList<Spawnable> newSpawnables = new ArrayList<>();
-            List<SafeJsonNode> nodeList = spawnableNode.checkAndGetObjectListFromArray();
+            List<SafeJsonNode> nodeList = spawnableNode.safeGetObjectListFromArray();
             for (var spawnElement : nodeList) {
                 newSpawnables.add(spawnableFromJson(spawnElement));
             }
-            String type = childNode.checkAndGetString("type");
+            String type = childNode.safeGetString("type");
             if (type.equals("single")) {
-                float time = childNode.checkAndGetFloat("time");
+                float time = childNode.safeGetFloat("time");
                 for (var spawnable : newSpawnables) {
                     newTimeline.addSpawnable(time, spawnable);
                 }
             }
             else if (type.equals("interval")) {
-                float startTime = childNode.checkAndGetFloat("startTime");
-                float endTime = childNode.checkAndGetFloat("endTime");
-                float interval = childNode.checkAndGetFloat("interval");
+                float startTime = childNode.safeGetFloat("startTime");
+                float endTime = childNode.safeGetFloat("endTime");
+                float interval = childNode.safeGetFloat("interval");
                 for (float i = startTime; i <= endTime; i += interval) {
                     for (var spawnable : newSpawnables) {
                         newTimeline.addSpawnable(i, spawnable);
@@ -169,17 +169,17 @@ final public class GameLoader {
 
     public GameConfig gameConfigFromJson(SafeJsonNode node, GamePaths paths) {
         GameConfig gameConfig = new GameConfig();
-        IVec2D resolution = node.checkAndGetIVec2D("resolution");
+        IVec2D resolution = node.safeGetIVec2D("resolution");
         gameConfig.setNativeResolution(resolution.x, resolution.y);
 
-        SafeJsonNode levelUINode = node.checkAndGetObject("levelUI");
+        SafeJsonNode levelUINode = node.safeGetObject("levelUI");
 
-        SafeJsonNode livesNode = levelUINode.checkAndGetObject("lives");
+        SafeJsonNode livesNode = levelUINode.safeGetObject("lives");
 
-        gameConfig.levelUI.lives.textureFilepath = paths.gameTextureFolder.resolve(livesNode.checkAndGetString("fileName"));
-        gameConfig.levelUI.lives.size = livesNode.checkAndGetVec2D("size");
-        gameConfig.levelUI.lives.position = livesNode.checkAndGetVec2D("position");
-        gameConfig.levelUI.lives.stride = livesNode.checkAndGetVec2D("stride");
+        gameConfig.levelUI.lives.textureFilepath = paths.gameTextureFolder.resolve(livesNode.safeGetString("fileName"));
+        gameConfig.levelUI.lives.size = livesNode.safeGetVec2D("size");
+        gameConfig.levelUI.lives.position = livesNode.safeGetVec2D("position");
+        gameConfig.levelUI.lives.stride = livesNode.safeGetVec2D("stride");
         return gameConfig;
     }
 
@@ -190,9 +190,9 @@ final public class GameLoader {
 
     public void loadGameVisuals(GameDataManager gameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(gameData.paths.gameVisualsFile, objectMapper);
-        List<SafeJsonNode> visualNodesList = rootNode.checkAndGetObjectListFromArray();
+        List<SafeJsonNode> visualNodesList = rootNode.safeGetObjectListFromArray();
         for (var visualNode : visualNodesList) {
-            int id = visualNode.checkAndGetInt("id");
+            int id = visualNode.safeGetInt("id");
             SceneVisual newVisual = visualFromJson(visualNode, gameData.paths.gameTextureFolder);
             gameData.addCustomVisual(id, newVisual);
         }
@@ -200,9 +200,9 @@ final public class GameLoader {
 
     public void loadGameTrajectories(GameDataManager gameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(gameData.paths.gameTrajectoriesFile, objectMapper);
-        List<SafeJsonNode> trajectoryNodesList = rootNode.checkAndGetObjectListFromArray();
+        List<SafeJsonNode> trajectoryNodesList = rootNode.safeGetObjectListFromArray();
         for (var trajectoryNode : trajectoryNodesList) {
-            int id = trajectoryNode.checkAndGetInt("id");
+            int id = trajectoryNode.safeGetInt("id");
             Trajectory trajectory = trajectoryFromJSon(trajectoryNode);
             gameData.addTrajectory(id, trajectory);
         }
@@ -210,9 +210,9 @@ final public class GameLoader {
 
     public void loadGameEntities(GameDataManager gameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(gameData.paths.gameEntitiesFile, objectMapper);
-        List<SafeJsonNode> entityNodesList = rootNode.checkAndGetObjectListFromArray();
+        List<SafeJsonNode> entityNodesList = rootNode.safeGetObjectListFromArray();
         for (var entityNode : entityNodesList) {
-            int id = entityNode.checkAndGetInt("id");
+            int id = entityNode.safeGetInt("id");
             Entity trajectory = entityFromJson(entityNode, gameData);
             gameData.addCustomEntity(id, trajectory);
         }

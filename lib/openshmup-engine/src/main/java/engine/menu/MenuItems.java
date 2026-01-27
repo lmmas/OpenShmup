@@ -36,8 +36,8 @@ public class MenuItems {
             onClick);
     }
 
-    public static MenuItem TextInputField(float sizeX, float sizeY, float positionX, float positionY, TextStyle style, List<SceneVisual> otherVisuals) {
-        TextDisplay textInputDisplay = new TextDisplay(2, true, positionX - sizeX / 2, positionY, "", style, TextAlignment.LEFT);
+    public static MenuItem TextInputField(float sizeX, float sizeY, float positionX, float positionY, String startingText, TextStyle style, List<SceneVisual> otherVisuals) {
+        TextDisplay textInputDisplay = new TextDisplay(2, true, positionX - sizeX / 2, positionY, startingText, style, TextAlignment.LEFT);
         ArrayList<SceneVisual> visuals = new ArrayList<>(otherVisuals);
         visuals.add(textInputDisplay);
         SimpleRectangleHitbox hitbox = new SimpleRectangleHitbox(positionX, positionY, sizeX, sizeY);
