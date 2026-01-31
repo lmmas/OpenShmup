@@ -1,4 +1,4 @@
-package engine.level.entity.hitbox;
+package engine.hitbox;
 
 import engine.assets.Texture;
 import engine.types.IVec2D;

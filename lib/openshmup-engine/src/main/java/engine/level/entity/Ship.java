@@ -1,7 +1,7 @@
 package engine.level.entity;
 
+import engine.hitbox.Hitbox;
 import engine.level.entity.extraComponent.ExtraComponent;
-import engine.level.entity.hitbox.Hitbox;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;

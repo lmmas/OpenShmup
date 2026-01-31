@@ -1,11 +1,11 @@
 package json.factories;
 
 import engine.gameData.GameDataManager;
+import engine.hitbox.Hitbox;
 import engine.level.entity.Entity;
 import engine.level.entity.Projectile;
 import engine.level.entity.Ship;
 import engine.level.entity.extraComponent.ExtraComponent;
-import engine.level.entity.hitbox.Hitbox;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;

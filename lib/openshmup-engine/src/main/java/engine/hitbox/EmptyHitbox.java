@@ -1,4 +1,4 @@
-package engine.level.entity.hitbox;
+package engine.hitbox;
 
 import engine.types.Vec2D;
 

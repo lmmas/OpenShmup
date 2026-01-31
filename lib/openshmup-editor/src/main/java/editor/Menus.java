@@ -6,14 +6,12 @@ import editor.editionData.ScrollingImageEditionData;
 import editor.editionData.VisualEditionData;
 import engine.Engine;
 import engine.menu.Menu;
-import engine.menu.MenuItem;
-import engine.menu.MenuItems;
 import engine.menu.MenuScreen;
+import engine.menu.item.ActionButton;
+import engine.menu.item.ActionButtons;
+import engine.menu.item.TextField;
 import engine.scene.Scene;
-import engine.scene.visual.ColorRectangleVisual;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.ScreenFilter;
-import engine.scene.visual.TextDisplay;
+import engine.scene.visual.*;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
@@ -38,7 +36,7 @@ final public class Menus {
         private static MenuScreen PopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            MenuItem closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            ActionButton closeButton = ActionButtons.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addItem(closeButton);
             popupMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f));
 
@@ -49,7 +47,7 @@ final public class Menus {
                     Engine.switchCurrentScene(new Scene());
                     Engine.switchCurrentMenu(Menus.EditGameMenu(game));
                 };
-                popupMenu.addItem(MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
+                popupMenu.addItem(ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
             }
             return popupMenu;
         }
@@ -74,13 +72,16 @@ final public class Menus {
             MenuScreen popupScreen = Screens.PopupScreen();
             mainMenu.addMenuScreen(popupScreen);
         };
-        MenuItem button1 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
-        MenuItem button2 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        ActionButton button1 = ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
+        ActionButton button2 = ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
         titleScreen.addItem(button1);
         titleScreen.addItem(button2);
         titleScreen.addVisual(menuBackground);
         titleScreen.addVisual(menuTitle);
+
+        TextField testField = new TextField(100f, 50f, 960f, 650f, "test", menuButtonLabelStyle, List.of(new BorderedRoundedRectangle(1, 100f, 50f, 960f, 650f, 5f, 1f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f, 1.0f)));
+        titleScreen.addItem(testField);
 
         mainMenu.addMenuScreen(titleScreen);
         return mainMenu;
@@ -109,7 +110,7 @@ final public class Menus {
             }
             String menuButtonLabel = visualData.getId() + ": " + typeString;
 
-            MenuItem visualSelectButton = MenuItems.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, menuButtonLabel, menuButtonLabelStyle, onClick);
+            ActionButton visualSelectButton = ActionButtons.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, menuButtonLabel, menuButtonLabelStyle, onClick);
             editMenuScreen.addItem(visualSelectButton);
             visualListIndex++;
         }

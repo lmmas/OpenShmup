@@ -1,5 +1,6 @@
 package engine.menu;
 
+import engine.menu.item.MenuItem;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;

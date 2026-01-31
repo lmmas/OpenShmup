@@ -2,9 +2,9 @@ package engine.level.entity.extraComponent;
 
 import engine.Engine;
 import engine.graphics.colorRectangle.ColorRectangle;
+import engine.hitbox.SimpleRectangleHitbox;
 import engine.level.Level;
 import engine.level.entity.Entity;
-import engine.level.entity.hitbox.SimpleRectangleHitbox;
 import engine.level.spawnable.Spawnable;
 import engine.types.RGBAValue;
 

@@ -1,11 +1,9 @@
 package engine.menu;
 
-import engine.Engine;
 import engine.EngineSystem;
-import engine.InputStatesManager;
-import engine.level.entity.hitbox.Hitbox;
+import engine.menu.item.ActionButton;
+import engine.menu.item.MenuItem;
 import engine.scene.Scene;
-import engine.types.Vec2D;
 
 import java.util.ArrayList;
 
@@ -17,7 +15,7 @@ public class Menu implements EngineSystem {
 
     private boolean leftClickPressedOnItem;
 
-    private MenuItem leftClickPressedItem;
+    private ActionButton leftClickPressedItem;
 
     public Menu() {
         this.displayedMenuScreens = new ArrayList<>();
@@ -29,26 +27,7 @@ public class Menu implements EngineSystem {
         if (displayedMenuScreens.isEmpty()) {
             return;
         }
-        InputStatesManager inputStatesManager = Engine.getInputStatesManager();
-        Vec2D cursorPosition = inputStatesManager.getCursorPosition();
-        if (leftClickPressedOnItem) {
-            if (!inputStatesManager.getLeftClickState()) {
-                if (leftClickPressedItem.getClickHitbox().containsPoint(cursorPosition)) {
-                    leftClickPressedItem.getOnClick().run();
-                }
-                leftClickPressedItem = null;
-                leftClickPressedOnItem = false;
-            }
-        }
-        else {
-            for (MenuItem menuItem : displayedMenuScreens.getLast().getMenuItems()) {
-                Hitbox clickHitbox = menuItem.getClickHitbox();
-                if (inputStatesManager.getLeftClickState() && clickHitbox.containsPoint(cursorPosition)) {
-                    leftClickPressedOnItem = true;
-                    leftClickPressedItem = menuItem;
-                }
-            }
-        }
+        displayedMenuScreens.getLast().getMenuItems().forEach(MenuItem::handleInputs);
     }
 
     private void addMenuScreenToScene(MenuScreen menuScreen) {

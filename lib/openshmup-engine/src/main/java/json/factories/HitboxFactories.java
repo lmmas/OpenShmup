@@ -1,9 +1,9 @@
 package json.factories;
 
 import engine.assets.Texture;
-import engine.level.entity.hitbox.CompositeHitbox;
-import engine.level.entity.hitbox.Hitbox;
-import engine.level.entity.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.CompositeHitbox;
+import engine.hitbox.Hitbox;
+import engine.hitbox.SimpleRectangleHitbox;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;

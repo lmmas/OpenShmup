@@ -3,9 +3,9 @@ package editor;
 import editor.attribute.Attribute;
 import editor.editionData.*;
 import engine.Engine;
-import engine.menu.MenuItem;
-import engine.menu.MenuItems;
 import engine.menu.MenuScreen;
+import engine.menu.item.ActionButton;
+import engine.menu.item.ActionButtons;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
@@ -25,7 +25,7 @@ final public class EditPanels {
         panel.addVisual(backgroundRectangle);
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        MenuItem closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (() -> Engine.getCurrentMenu().removeMenuScreen(panel)));
+        ActionButton closeButton = ActionButtons.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor, menuButtonBorderColor, "Close", menuButtonLabelStyle, (() -> Engine.getCurrentMenu().removeMenuScreen(panel)));
         panel.addItem(closeButton);
 
         TextDisplay panelTitle = new TextDisplay(1, false, (float) Engine.getNativeWidth() / 2, 950f, editPanelTitle, menuButtonLabelStyle, TextAlignment.CENTER);
