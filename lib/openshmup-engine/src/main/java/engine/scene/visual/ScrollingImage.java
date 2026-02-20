@@ -74,7 +74,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
+    public List<Graphic<?>> getGraphics() {
         return List.of(image1, image2);
     }
 

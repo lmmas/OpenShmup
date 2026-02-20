@@ -24,7 +24,7 @@ final public class BorderedRoundedRectangle extends SceneVisual {
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
+    public List<Graphic<?>> getGraphics() {
         return List.of(rectangle, border);
     }
 }

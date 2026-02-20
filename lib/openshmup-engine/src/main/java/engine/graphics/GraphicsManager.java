@@ -35,7 +35,7 @@ final public class GraphicsManager implements EngineSystem {
         debugLayer.forEach(Renderer::draw);
     }
 
-    public void addGraphic(Graphic<?, ?> newGraphic, int layer) {
+    public void addGraphic(Graphic<?> newGraphic, int layer) {
         RenderType type = newGraphic.getRenderType();
         ArrayList<Renderer<?, ?>> renderers = layers.get(layer);
         assert renderers != null : "renderer list not found";
@@ -49,7 +49,7 @@ final public class GraphicsManager implements EngineSystem {
         addGraphicToMatchingRenderer(newGraphic, layers.get(layer).getLast());
     }
 
-    public void addDebugGraphic(Graphic<?, ?> newGraphic) {
+    public void addDebugGraphic(Graphic<?> newGraphic) {
         RenderType type = newGraphic.getRenderType();
         for (Renderer<?, ?> renderer : debugLayer) {
             if (renderer.getType() == type) {
@@ -59,7 +59,7 @@ final public class GraphicsManager implements EngineSystem {
         }
     }
 
-    private void addGraphicToMatchingRenderer(Graphic<?, ?> newGraphic, Renderer<?, ?> renderer) {
+    private void addGraphicToMatchingRenderer(Graphic<?> newGraphic, Renderer<?, ?> renderer) {
         assert newGraphic.getRenderType() == renderer.getType() : "wrong renderer for graphic";
         switch (renderer.getType()) {
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {

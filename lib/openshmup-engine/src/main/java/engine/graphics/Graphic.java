@@ -5,17 +5,26 @@ import engine.types.Vec2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
-public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
+public abstract class Graphic<T extends Graphic<T>.Vertex<T>> {
 
     final protected RenderType renderType;
 
     final protected Shader shader;
 
-    public Graphic(Graphic<?, ?> graphic) {
+    final private List<T> vertexList;
+
+    public Graphic(Graphic<T> graphic) {
         this.renderType = graphic.renderType;
         this.shader = graphic.shader;
+        this.vertexList = new ArrayList<>(graphic.vertexList.size());
+        for (var vertex : graphic.vertexList) {
+            this.vertexList.add(vertex.copy());
+        }
     }
 
     abstract public Vec2D getPosition();
@@ -26,31 +35,29 @@ public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.V
 
     abstract public void setScale(float scaleX, float scaleY);
 
-    abstract public int getVertexCount();
-
-    abstract public V getVertex(int index);
-
     abstract public void remove();
 
-    abstract public class Vertex {
+    abstract public class Vertex<V extends Vertex<V>> {
 
         protected boolean dataHasChangedFlag = true;
 
         protected boolean shouldBeRemovedFlag = false;
 
+        public abstract V copy();
+
         public Vertex() {
             this.shouldBeRemovedFlag = false;
         }
 
-        public boolean getDataHasChangedFlag() {
+        public boolean getDataHasChanged() {
             return dataHasChangedFlag;
         }
 
-        public void dataHasChanged() {
+        public void setDataHasChanged() {
             this.dataHasChangedFlag = true;
         }
 
-        public void resetDataHasChangedFlag() {
+        public void resetDataHasChanged() {
             this.dataHasChangedFlag = false;
         }
 
@@ -58,11 +65,11 @@ public abstract class Graphic<G extends Graphic<G, V>, V extends Graphic<G, V>.V
             return shouldBeRemovedFlag;
         }
 
-        public void remove() {
+        public void setShouldBeRemoved() {
             this.shouldBeRemovedFlag = true;
         }
 
-        public void hasBeenRemoved() {
+        public void resetShouldBeRemoved() {
             this.shouldBeRemovedFlag = false;
         }
     }

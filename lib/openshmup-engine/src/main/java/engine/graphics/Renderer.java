@@ -4,10 +4,11 @@ import engine.assets.Shader;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.Vertex> {
+public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex<V>> {
 
     @Getter
     protected int vaoID;
@@ -46,9 +47,8 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
     }
 
     public void addGraphic(G newGraphic) {
-        int vertexCount = newGraphic.getVertexCount();
-        for (int vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++) {
-            V newVertex = newGraphic.getVertex(vertexIndex);
+        List<V> vertexList = newGraphic.getVertexList();
+        for (V newVertex : vertexList) {
             boolean newVertexAllocated = false;
             int batchIndex = 0;
             while (batchIndex < batches.size()) {
@@ -83,7 +83,7 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
             assert vertices.size() < batchSize : "Can't add vertex data to the batch";
             assert !vertices.contains(newVertex) : "vertex already in batch";
             vertices.add(newVertex);
-            newVertex.dataHasChanged();
+            newVertex.setDataHasChanged();
         }
 
         abstract protected boolean canReceiveVertexFrom(G graphic);
@@ -104,7 +104,7 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
             while (i < vertices.size()) {
                 V vertex = vertices.get(i);
                 if (vertex.getShouldBeRemoved()) {
-                    vertex.hasBeenRemoved();
+                    vertex.resetShouldBeRemoved();
                     removeVertex(i);
                     dataHasChanged();
                 }
@@ -119,9 +119,9 @@ public abstract class Renderer<G extends Graphic<G, V>, V extends Graphic<G, V>.
             this.setupVertexAttributes();
             this.shader.use();
             for (var vertex : vertices) {
-                if (vertex.getDataHasChangedFlag()) {
+                if (vertex.getDataHasChanged()) {
                     this.uploadData();
-                    vertices.forEach(V::resetDataHasChangedFlag);
+                    vertices.forEach(V::resetDataHasChanged);
                     break;
                 }
             }

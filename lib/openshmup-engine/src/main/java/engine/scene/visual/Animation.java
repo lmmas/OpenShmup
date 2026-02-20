@@ -65,7 +65,7 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
+    public List<Graphic<?>> getGraphics() {
         return List.of(image);
     }
 

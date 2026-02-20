@@ -9,18 +9,20 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex> {
+final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle.ColorRoundedRectangleVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl");
 
     private final ColorRoundedRectangleVertex vertex;
 
     public ColorRoundedRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a, Shader shader) {
-        super(RenderType.COLOR_ROUNDED_RECTANGLE, shader);
+        super(RenderType.COLOR_ROUNDED_RECTANGLE, shader, new ArrayList<>(1));
         this.vertex = new ColorRoundedRectangleVertex(sizeX, sizeY, positionX, positionY, roundingRadius, r, g, b, a);
+        this.getVertexList().add(vertex);
     }
 
     public ColorRoundedRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a) {
@@ -37,16 +39,6 @@ final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, 
         );
     }
 
-    @Override
-    public int getVertexCount() {
-        return 1;
-    }
-
-    @Override
-    public ColorRoundedRectangleVertex getVertex(int index) {
-        return vertex;
-    }
-
     public Vec2D getPosition() {
         return new Vec2D(vertex.position);
     }
@@ -57,22 +49,22 @@ final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, 
 
     @Override
     public void remove() {
-        vertex.remove();
+        vertex.setShouldBeRemoved();
     }
 
     public void setPosition(float positionX, float positionY) {
         vertex.position.x = positionX;
         vertex.position.y = positionY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY) {
         vertex.size.x = scaleX;
         vertex.size.y = scaleY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
-    public class ColorRoundedRectangleVertex extends Graphic<ColorRoundedRectangle, ColorRoundedRectangleVertex>.Vertex {
+    public class ColorRoundedRectangleVertex extends Graphic<ColorRoundedRectangleVertex>.Vertex<ColorRoundedRectangleVertex> {
 
         private final Vec2D size;
 
@@ -81,6 +73,11 @@ final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle, 
         private final float roundingRadius;
 
         private final RGBAValue color;
+
+        @Override
+        public ColorRoundedRectangleVertex copy() {
+            return new ColorRoundedRectangleVertex(size.x, size.y, position.x, position.y, roundingRadius, color.r, color.g, color.b, color.a);
+        }
 
         public Vec2D getPosition() {
             return new Vec2D(position);

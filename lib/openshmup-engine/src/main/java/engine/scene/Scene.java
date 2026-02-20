@@ -57,7 +57,7 @@ public class Scene implements EngineSystem {
         for (SceneLayer layer : layers.values()) {
             for (SceneVisual visual : layer.getVisuals()) {
                 visual.update();
-                if (visual.shouldBeRemoved()) {
+                if (visual.getShouldBeRemoved()) {
                     visualsToRemove.add(visual);
                 }
                 if (visual.getReloadGraphicsFlag()) {
@@ -139,7 +139,7 @@ public class Scene implements EngineSystem {
     public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
         assert layers.get(sceneLayerIndex).getVisuals().contains(visual) : "visual not found in layer";
         layers.get(sceneLayerIndex).getVisuals().remove(visual);
-        List<Graphic<?, ?>> graphics = visual.getGraphics();
+        List<Graphic<?>> graphics = visual.getGraphics();
         for (var graphic : graphics) {
             graphic.remove();
         }

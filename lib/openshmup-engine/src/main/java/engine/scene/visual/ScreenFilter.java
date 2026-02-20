@@ -31,7 +31,7 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     @Override
-    public List<Graphic<?, ?>> getGraphics() {
+    public List<Graphic<?>> getGraphics() {
         return List.of(colorRectangle);
     }
 

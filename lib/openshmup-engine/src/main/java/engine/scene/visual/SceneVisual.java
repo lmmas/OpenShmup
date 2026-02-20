@@ -29,7 +29,7 @@ abstract public class SceneVisual {
 
     abstract public SceneVisual copy();
 
-    abstract public List<Graphic<?, ?>> getGraphics();
+    abstract public List<Graphic<?>> getGraphics();
 
     final public List<Integer> getGraphicalSubLayers() {
         return graphicalSubLayers;
@@ -50,7 +50,7 @@ abstract public class SceneVisual {
         return textures;
     }
 
-    final public boolean shouldBeRemoved() {
+    final public boolean getShouldBeRemoved() {
         return visualShouldBeRemovedFlag;
     }
 

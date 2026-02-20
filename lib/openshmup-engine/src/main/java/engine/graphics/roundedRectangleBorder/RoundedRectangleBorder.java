@@ -9,18 +9,20 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
+final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder.RoundedRectangleBorderVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/roundedRectangleBorder.glsl");
 
     private final RoundedRectangleBorderVertex vertex;
 
     public RoundedRectangleBorder(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a, Shader shader) {
-        super(RenderType.ROUNDED_RECTANGLE_BORDER, shader);
+        super(RenderType.ROUNDED_RECTANGLE_BORDER, shader, new ArrayList<>(1));
         this.vertex = new RoundedRectangleBorderVertex(sizeX, sizeY, positionX, positionY, roundingRadius, borderWidth, r, g, b, a);
+        this.getVertexList().add(vertex);
     }
 
     public RoundedRectangleBorder(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float borderWidth, float r, float g, float b, float a) {
@@ -38,16 +40,6 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         );
     }
 
-    @Override
-    public int getVertexCount() {
-        return 1;
-    }
-
-    @Override
-    public RoundedRectangleBorderVertex getVertex(int index) {
-        return vertex;
-    }
-
     public Vec2D getPosition() {
         return new Vec2D(vertex.position);
     }
@@ -58,22 +50,22 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
 
     @Override
     public void remove() {
-        vertex.remove();
+        vertex.setShouldBeRemoved();
     }
 
     public void setPosition(float positionX, float positionY) {
         vertex.position.x = positionX;
         vertex.position.y = positionY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY) {
         vertex.size.x = scaleX;
         vertex.size.y = scaleY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
-    public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorder, RoundedRectangleBorderVertex>.Vertex {
+    public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorderVertex>.Vertex<RoundedRectangleBorderVertex> {
 
         private final Vec2D size;
 
@@ -84,6 +76,11 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         private final float borderWidth;
 
         private final RGBAValue color;
+
+        @Override
+        public RoundedRectangleBorderVertex copy() {
+            return new RoundedRectangleBorderVertex(size.x, size.y, position.x, position.y, roundingRadius, borderWidth, color.r, color.g, color.b, color.a);
+        }
 
         public Vec2D getPosition() {
             return new Vec2D(position);

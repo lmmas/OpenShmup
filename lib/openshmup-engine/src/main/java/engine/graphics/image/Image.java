@@ -10,10 +10,11 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class Image extends Graphic<Image, Image.ImageVertex> {
+final public class Image extends Graphic<Image.ImageVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl");
     @Getter
@@ -30,7 +31,7 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
                  float addedColorR, float addedColorG, float addedColorB, float addedColorA,
                  Shader shader) {
 
-        super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader);
+        super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader, new ArrayList<>(1));
         this.texture = texture;
         this.vertex = new ImageVertex(
             imageSizeX, imageSizeY,
@@ -39,6 +40,7 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
             texturePositionX, texturePositionY,
             textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA,
             addedColorR, addedColorG, addedColorB, addedColorA);
+        this.getVertexList().add(vertex);
     }
 
     public Image(
@@ -65,31 +67,31 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
     public Image(Image image) {
         super(image);
         this.texture = image.texture;
-        this.vertex = new ImageVertex(image.vertex);
+        this.vertex = this.getVertexList().getFirst();
     }
 
     public void setPosition(float imagePositionX, float imagePositionY) {
         vertex.imagePosition.x = imagePositionX;
         vertex.imagePosition.y = imagePositionY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setScale(float scaleX, float scaleY) {
         vertex.imageSize.x = scaleX;
         vertex.imageSize.y = scaleY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setTexturePosition(float texturePositionX, float texturePositionY) {
         vertex.texturePosition.x = texturePositionX;
         vertex.texturePosition.y = texturePositionY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setTextureSize(float textureSizeX, float textureSizeY) {
         vertex.textureSize.x = textureSizeX;
         vertex.textureSize.y = textureSizeY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public void setVertexData(float imagePositionX, float imagePositionY, float imageSizeX, float imageSizeY, float texturePositionX, float texturePositionY, float textureSizeX, float textureSizeY) {
@@ -101,7 +103,7 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
         vertex.texturePosition.y = texturePositionY;
         vertex.textureSize.x = textureSizeX;
         vertex.textureSize.y = textureSizeY;
-        vertex.dataHasChanged();
+        vertex.setDataHasChanged();
     }
 
     public Vec2D getPosition() {
@@ -112,17 +114,9 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
         return new Vec2D(vertex.imageSize);
     }
 
-    public int getVertexCount() {
-        return 1;
-    }
-
-    public ImageVertex getVertex(int vertexIndex) {
-        return this.vertex;
-    }
-
     @Override
     public void remove() {
-        vertex.remove();
+        vertex.setShouldBeRemoved();
     }
 
     public void setColorCoefs(float r, float g, float b, float a) {
@@ -132,7 +126,7 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
         vertex.textureColorCoefs.a = a;
     }
 
-    public class ImageVertex extends Graphic<Image, ImageVertex>.Vertex {
+    public class ImageVertex extends Graphic<ImageVertex>.Vertex<ImageVertex> {
 
         private final Vec2D imageSize;
 
@@ -169,6 +163,11 @@ final public class Image extends Graphic<Image, Image.ImageVertex> {
             this.textureSize = new Vec2D(imageVertex.textureSize);
             this.textureColorCoefs = new RGBAValue(imageVertex.textureColorCoefs);
             this.addedColor = new RGBAValue(imageVertex.addedColor);
+        }
+
+        @Override
+        public ImageVertex copy() {
+            return new ImageVertex(this);
         }
 
         public Vec2D getImagePosition() {
