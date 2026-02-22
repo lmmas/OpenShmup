@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class ColorRectangleRenderer extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex> {
+final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic, ColorRectangleGraphic.ColorRectangleVertex> {
 
     final static private int vertexFloatCount = 8;
 
@@ -22,11 +22,11 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
     }
 
     @Override
-    protected Batch createBatchFromGraphic(ColorRectangle graphic) {
+    protected Batch createBatchFromGraphic(ColorRectangleGraphic graphic) {
         return new ColorRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRectangleBatch extends Renderer<ColorRectangle, ColorRectangle.ColorRectangleVertex>.Batch {
+    public class ColorRectangleBatch extends Renderer<ColorRectangleGraphic, ColorRectangleGraphic.ColorRectangleVertex>.Batch {
 
         final private FloatBuffer dataBuffer;
 
@@ -39,7 +39,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         }
 
         @Override
-        protected boolean canReceiveVertexFrom(ColorRectangle graphic) {
+        protected boolean canReceiveVertexFrom(ColorRectangleGraphic graphic) {
             if (vertices.size() >= batchSize) {
                 return false;
             }
@@ -61,7 +61,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangle, Color
         @Override
         protected void uploadData() {
             dataBuffer.clear();
-            for (ColorRectangle.ColorRectangleVertex rectangle : vertices) {
+            for (ColorRectangleGraphic.ColorRectangleVertex rectangle : vertices) {
                 Vec2D position = rectangle.getPosition();
                 Vec2D size = rectangle.getSize();
                 RGBAValue color = rectangle.getColor();

@@ -28,12 +28,11 @@ abstract public class Entity {
     final protected Vec2D size;
     @Getter
     protected float orientationRadians;
-    @Setter
-    @Getter
+    @Getter @Setter
     protected boolean invincible;
 
     protected double startingTimeSeconds;
-
+    @Getter
     protected double lifetimeSeconds;
     @Getter
     protected SceneVisual sprite;
@@ -102,10 +101,6 @@ abstract public class Entity {
     public void setOrientation(float orientationRadians) {
         this.orientationRadians = orientationRadians;
         hitbox.setOrientation(orientationRadians);
-    }
-
-    final public double getLifetimeSeconds() {
-        return lifetimeSeconds;
     }
 
     public void addExtraComponent(ExtraComponent extraComponent) {

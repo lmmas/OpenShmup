@@ -39,9 +39,8 @@ public class LevelUI {
                     Vec2D size = config.lives.size;
                     Vec2D position = config.lives.position;
                     Vec2D stride = config.lives.stride;
-                    float pointPositionX = position.x + stride.x * playerLives.size();
-                    float pointPositionY = position.y + stride.y * playerLives.size();
-                    ImageDisplay hpPointDisplay = new ImageDisplay(config.contentsLayer, assetManager.getTexture(config.lives.textureFilepath), size.x, size.y, pointPositionX, pointPositionY);
+                    Vec2D pointPosition = position.add(stride.scalar(playerLives.size()));
+                    ImageDisplay hpPointDisplay = new ImageDisplay(config.contentsLayer, assetManager.getTexture(config.lives.textureFilepath), size.x, size.y, pointPosition.x, pointPosition.y);
                     playerLives.add(hpPointDisplay);
                     scene.addVisual(hpPointDisplay);
                 }

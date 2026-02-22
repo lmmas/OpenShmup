@@ -14,28 +14,26 @@ import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class Image extends Graphic<Image.ImageVertex> {
+final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl");
-    @Getter
-    private final Texture texture;
 
     final private ImageVertex vertex;
 
-    public Image(Texture texture, boolean dynamic,
-                 float imageSizeX, float imageSizeY,
-                 float imagePositionX, float imagePositionY,
-                 float textureSizeX, float textureSizeY,
-                 float texturePositionX, float texturePositionY,
-                 float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
-                 float addedColorR, float addedColorG, float addedColorB, float addedColorA,
-                 Shader shader) {
+    public ImageGraphic(Texture texture, boolean dynamic,
+                        float imageSizeX, float imageSizeY,
+                        float imagePositionX, float imagePositionY,
+                        float textureSizeX, float textureSizeY,
+                        float texturePositionX, float texturePositionY,
+                        float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
+                        float addedColorR, float addedColorG, float addedColorB, float addedColorA,
+                        Shader shader) {
 
         super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader, new ArrayList<>(1));
-        this.texture = texture;
         this.vertex = new ImageVertex(
             imageSizeX, imageSizeY,
             imagePositionX, imagePositionY,
+            texture,
             textureSizeX, textureSizeY,
             texturePositionX, texturePositionY,
             textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA,
@@ -43,7 +41,7 @@ final public class Image extends Graphic<Image.ImageVertex> {
         this.getVertexList().add(vertex);
     }
 
-    public Image(
+    public ImageGraphic(
         Texture texture, boolean dynamic,
         float imageSizeX, float imageSizeY,
         float imagePositionX, float imagePositionY,
@@ -64,9 +62,8 @@ final public class Image extends Graphic<Image.ImageVertex> {
         );
     }
 
-    public Image(Image image) {
-        super(image);
-        this.texture = image.texture;
+    public ImageGraphic(ImageGraphic imageGraphic) {
+        super(imageGraphic);
         this.vertex = this.getVertexList().getFirst();
     }
 
@@ -114,6 +111,10 @@ final public class Image extends Graphic<Image.ImageVertex> {
         return new Vec2D(vertex.imageSize);
     }
 
+    public Texture getTexture() {
+        return vertex.texture;
+    }
+
     @Override
     public void remove() {
         vertex.setShouldBeRemoved();
@@ -124,6 +125,15 @@ final public class Image extends Graphic<Image.ImageVertex> {
         vertex.textureColorCoefs.g = g;
         vertex.textureColorCoefs.b = b;
         vertex.textureColorCoefs.a = a;
+        vertex.setDataHasChanged();
+    }
+
+    public void setAddedColor(float r, float g, float b, float a) {
+        vertex.addedColor.r = r;
+        vertex.addedColor.g = g;
+        vertex.addedColor.b = b;
+        vertex.addedColor.a = a;
+        vertex.setDataHasChanged();
     }
 
     public class ImageVertex extends Graphic<ImageVertex>.Vertex<ImageVertex> {
@@ -131,6 +141,8 @@ final public class Image extends Graphic<Image.ImageVertex> {
         private final Vec2D imageSize;
 
         private final Vec2D imagePosition;
+        @Getter
+        private final Texture texture;
 
         private final Vec2D textureSize;
 
@@ -143,6 +155,7 @@ final public class Image extends Graphic<Image.ImageVertex> {
         public ImageVertex(
             float imageSizeX, float imageSizeY,
             float imagePositionX, float imagePositionY,
+            Texture texture,
             float textureSizeX, float textureSizeY,
             float texturePositionX, float texturePositionY,
             float textureColorCoefR, float textureColorCoefG, float textureColorCoefB, float textureColorCoefA,
@@ -150,6 +163,7 @@ final public class Image extends Graphic<Image.ImageVertex> {
         ) {
             this.imageSize = new Vec2D(imageSizeX, imageSizeY);
             this.imagePosition = new Vec2D(imagePositionX, imagePositionY);
+            this.texture = texture;
             this.textureSize = new Vec2D(textureSizeX, textureSizeY);
             this.texturePosition = new Vec2D(texturePositionX, texturePositionY);
             this.textureColorCoefs = new RGBAValue(textureColorCoefR, textureColorCoefG, textureColorCoefB, textureColorCoefA);
@@ -159,6 +173,7 @@ final public class Image extends Graphic<Image.ImageVertex> {
         public ImageVertex(ImageVertex imageVertex) {
             this.imagePosition = new Vec2D(imageVertex.imagePosition);
             this.imageSize = new Vec2D(imageVertex.imageSize);
+            this.texture = imageVertex.texture;
             this.texturePosition = new Vec2D(imageVertex.texturePosition);
             this.textureSize = new Vec2D(imageVertex.textureSize);
             this.textureColorCoefs = new RGBAValue(imageVertex.textureColorCoefs);
@@ -184,10 +199,6 @@ final public class Image extends Graphic<Image.ImageVertex> {
 
         public Vec2D getTextureSize() {
             return new Vec2D(textureSize);
-        }
-
-        public Texture getTexture() {
-            return Image.this.texture;
         }
 
         public RGBAValue getTextureColorCoefs() {

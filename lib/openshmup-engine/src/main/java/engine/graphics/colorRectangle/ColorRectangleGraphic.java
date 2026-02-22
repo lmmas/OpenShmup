@@ -12,28 +12,28 @@ import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class ColorRectangle extends Graphic<ColorRectangle.ColorRectangleVertex> {
+final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.ColorRectangleVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/colorRectangle.glsl");
 
     private final ColorRectangleVertex vertex;
 
-    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader) {
+    public ColorRectangleGraphic(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader) {
         super(RenderType.COLOR_RECTANGLE, shader, new ArrayList<>(1));
         this.vertex = new ColorRectangleVertex(sizeX, sizeY, positionX, positionY, r, g, b, a);
         this.getVertexList().add(vertex);
     }
 
-    public ColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
+    public ColorRectangleGraphic(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
         this(sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
     }
 
-    public ColorRectangle(ColorRectangle colorRectangle) {
+    public ColorRectangleGraphic(ColorRectangleGraphic colorRectangleGraphic) {
         this(
-            colorRectangle.vertex.size.x, colorRectangle.vertex.size.y,
-            colorRectangle.vertex.position.x, colorRectangle.vertex.position.y,
-            colorRectangle.vertex.color.r, colorRectangle.vertex.color.g, colorRectangle.vertex.color.b, colorRectangle.vertex.color.a,
-            colorRectangle.shader
+            colorRectangleGraphic.vertex.size.x, colorRectangleGraphic.vertex.size.y,
+            colorRectangleGraphic.vertex.position.x, colorRectangleGraphic.vertex.position.y,
+            colorRectangleGraphic.vertex.color.r, colorRectangleGraphic.vertex.color.g, colorRectangleGraphic.vertex.color.b, colorRectangleGraphic.vertex.color.a,
+            colorRectangleGraphic.shader
         );
     }
 
@@ -43,6 +43,10 @@ final public class ColorRectangle extends Graphic<ColorRectangle.ColorRectangleV
 
     public Vec2D getScale() {
         return new Vec2D(vertex.size);
+    }
+
+    public RGBAValue getColor() {
+        return new RGBAValue(vertex.color);
     }
 
     @Override
@@ -59,6 +63,14 @@ final public class ColorRectangle extends Graphic<ColorRectangle.ColorRectangleV
     public void setScale(float scaleX, float scaleY) {
         vertex.size.x = scaleX;
         vertex.size.y = scaleY;
+        vertex.setDataHasChanged();
+    }
+
+    public void setColor(float r, float g, float b, float a) {
+        vertex.color.r = r;
+        vertex.color.g = g;
+        vertex.color.b = b;
+        vertex.color.a = a;
         vertex.setDataHasChanged();
     }
 

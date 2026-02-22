@@ -1,19 +1,23 @@
 package engine.scene.visual;
 
 import engine.Engine;
-import engine.graphics.Graphic;
-import engine.graphics.colorRectangle.ColorRectangle;
+import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import engine.types.RGBAValue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 final public class ScreenFilter extends SceneVisual {
 
-    final private ColorRectangle colorRectangle;
+    final private ColorRectangleGraphic colorRectangleGraphic;
+
+    final private RGBAValue originalColor;
 
     public ScreenFilter(int layer, float r, float g, float b, float a) {
-        super(layer, List.of(0));
-        this.colorRectangle = new ColorRectangle(Engine.getNativeWidth(), Engine.getNativeHeight(), (float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2, r, g, b, a);
+        super(layer, new ArrayList<>(1), List.of(0));
+        this.colorRectangleGraphic = new ColorRectangleGraphic(Engine.getNativeWidth(), Engine.getNativeHeight(), (float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2, r, g, b, a);
+        graphicsList.add(colorRectangleGraphic);
+        this.originalColor = new RGBAValue(r, g, b, a);
     }
 
     public ScreenFilter(int layer, RGBAValue color) {
@@ -21,18 +25,15 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     public ScreenFilter(ScreenFilter screenFilter) {
-        super(screenFilter.sceneLayerIndex, List.of(0));
-        this.colorRectangle = new ColorRectangle(screenFilter.colorRectangle);
+        super(screenFilter.sceneLayerIndex, new ArrayList<>(1), List.of(0));
+        this.colorRectangleGraphic = new ColorRectangleGraphic(screenFilter.colorRectangleGraphic);
+        graphicsList.add(colorRectangleGraphic);
+        this.originalColor = new RGBAValue(screenFilter.originalColor);
     }
 
     @Override
     public SceneVisual copy() {
         return new ScreenFilter(this);
-    }
-
-    @Override
-    public List<Graphic<?>> getGraphics() {
-        return List.of(colorRectangle);
     }
 
     @Override
@@ -43,5 +44,11 @@ final public class ScreenFilter extends SceneVisual {
     @Override
     public void setScale(float scaleX, float scaleY) {
 
+    }
+
+    @Override
+    public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+        RGBAValue newRectangleColor = originalColor.multiply(colorCoefs).add(addedColor);
+        colorRectangleGraphic.setColor(newRectangleColor.r, newRectangleColor.g, newRectangleColor.g, newRectangleColor.a);
     }
 }

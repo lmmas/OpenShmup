@@ -9,9 +9,11 @@ import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.item.ActionButton;
 import engine.menu.item.ActionButtons;
-import engine.menu.item.TextField;
 import engine.scene.Scene;
-import engine.scene.visual.*;
+import engine.scene.visual.ColorRectangleVisual;
+import engine.scene.visual.SceneVisual;
+import engine.scene.visual.ScreenFilter;
+import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
@@ -79,9 +81,6 @@ final public class Menus {
         titleScreen.addItem(button2);
         titleScreen.addVisual(menuBackground);
         titleScreen.addVisual(menuTitle);
-
-        TextField testField = new TextField(100f, 50f, 960f, 650f, "test", menuButtonLabelStyle, List.of(new BorderedRoundedRectangle(1, 100f, 50f, 960f, 650f, 5f, 1f, 1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f, 1.0f)));
-        titleScreen.addItem(testField);
 
         mainMenu.addMenuScreen(titleScreen);
         return mainMenu;

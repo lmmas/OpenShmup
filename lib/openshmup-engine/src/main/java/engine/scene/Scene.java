@@ -54,16 +54,17 @@ public class Scene implements EngineSystem {
     public void update() {
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
-        for (SceneLayer layer : layers.values()) {
+        for (int sceneLayerIndex : layers.keySet()) {
+            SceneLayer layer = layers.get(sceneLayerIndex);
             for (SceneVisual visual : layer.getVisuals()) {
                 visual.update();
                 if (visual.getShouldBeRemoved()) {
                     visualsToRemove.add(visual);
                 }
                 if (visual.getReloadGraphicsFlag()) {
-                    int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(visual.getSceneLayerIndex());
+                    int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
                     var graphicalLayers = visual.getGraphicalSubLayers();
-                    var graphics = visual.getGraphics();
+                    var graphics = visual.getGraphicsList();
                     for (int i = 0; i < graphicalLayers.size(); i++) {
                         Engine.getGraphicsManager().addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
                     }
@@ -109,7 +110,7 @@ public class Scene implements EngineSystem {
 
         //adding the graphics to the renderers
         var graphicalLayers = visual.getGraphicalSubLayers();
-        var graphics = visual.getGraphics();
+        var graphics = visual.getGraphicsList();
         for (int i = 0; i < graphicalLayers.size(); i++) {
             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
         }
@@ -139,7 +140,7 @@ public class Scene implements EngineSystem {
     public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
         assert layers.get(sceneLayerIndex).getVisuals().contains(visual) : "visual not found in layer";
         layers.get(sceneLayerIndex).getVisuals().remove(visual);
-        List<Graphic<?>> graphics = visual.getGraphics();
+        List<Graphic<?>> graphics = visual.getGraphicsList();
         for (var graphic : graphics) {
             graphic.remove();
         }
@@ -166,7 +167,7 @@ public class Scene implements EngineSystem {
         }
 
         public void disable() {
-            fpsDisplay.getGraphics().forEach(Graphic::remove);
+            fpsDisplay.getGraphicsList().forEach(Graphic::remove);
         }
 
         public void toggle() {
@@ -185,7 +186,7 @@ public class Scene implements EngineSystem {
                 double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
                 fpsDisplay.update();
-                fpsDisplay.getGraphics().forEach(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
+                fpsDisplay.getGraphicsList().forEach(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
             }
         }
     }

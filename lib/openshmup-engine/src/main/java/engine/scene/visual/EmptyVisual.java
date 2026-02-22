@@ -1,6 +1,6 @@
 package engine.scene.visual;
 
-import engine.graphics.Graphic;
+import engine.types.RGBAValue;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ final public class EmptyVisual extends SceneVisual {
     public static EmptyVisual instance = null;
 
     private EmptyVisual() {
-        super(0, List.of());
+        super(0, List.of(), List.of());
     }
 
     public static EmptyVisual getInstance() {
@@ -25,7 +25,8 @@ final public class EmptyVisual extends SceneVisual {
     }
 
     @Override
-    public List<Graphic<?>> getGraphics() {
-        return List.of();
+    public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+
     }
+
 }

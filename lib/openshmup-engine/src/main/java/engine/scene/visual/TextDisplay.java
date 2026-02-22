@@ -3,7 +3,7 @@ package engine.scene.visual;
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.graphics.Graphic;
-import engine.graphics.image.Image;
+import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
@@ -12,8 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static engine.Engine.assetManager;
 
@@ -40,7 +38,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a, TextAlignment alignment) {
-        super(layer, new ArrayList<>());
+        super(layer, new ArrayList<>(displayedString.length()), new ArrayList<>(displayedString.length()));
         this.position = new Vec2D(positionX, positionY);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
@@ -60,10 +58,11 @@ final public class TextDisplay extends SceneVisual {
     private void updateText() {
         for (var line : textLines) {
             for (TextCharacter character : line) {
-                character.image.remove();
+                character.imageGraphic.remove();
             }
         }
         textLines.clear();
+        graphicsList.clear();
         graphicalSubLayers.clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
@@ -93,6 +92,7 @@ final public class TextDisplay extends SceneVisual {
         else {
             TextCharacter newCharacter = new TextCharacter(newCodepoint, font);
             textLines.getLast().add(newCharacter);
+            graphicsList.add(newCharacter.getImageGraphic());
             graphicalSubLayers.add(0);
         }
     }
@@ -131,12 +131,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position.x, position.y, displayedString.toString(), textColor.r, textColor.g, textColor.b, textColor.a, alignment);
-    }
-
-    @Override
-    public List<Graphic<?>> getGraphics() {
-        return textLines.stream().flatMap(List::stream).map(TextCharacter::getImage).collect(Collectors.toUnmodifiableList());
+        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a, alignment);
     }
 
     @Override
@@ -159,13 +154,22 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
+    @Override public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+        for (Graphic<?> graphic : graphicsList) {
+            ImageGraphic imageGraphic = (ImageGraphic) graphic;
+            imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
+            imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+        }
+    }
+
     final public class TextCharacter {
 
+        @Getter
         final private int codepoint;
 
         private final FontCharInfo fontCharInfo;
         @Getter
-        private final Image image;
+        private final ImageGraphic imageGraphic;
 
         public TextCharacter(int codepoint, Font font) {
             this.codepoint = codepoint;
@@ -173,8 +177,9 @@ final public class TextDisplay extends SceneVisual {
             Vec2D charSize = fontCharInfo.normalizedQuadSize();
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
-            this.image = new Image(font.getBitmap(), TextDisplay.this.dynamicText,
-                charSize.x * textHeight, charSize.y * textHeight,
+            Vec2D imageSize = charSize.scalar(textHeight);
+            this.imageGraphic = new ImageGraphic(font.getBitmap(), TextDisplay.this.dynamicText,
+                imageSize.x, imageSize.y,
                 0.0f, 0.0f,
                 bitmapTextureSize.x, bitmapTextureSize.y,
                 bitmapTexturePosition.x, bitmapTexturePosition.y,
@@ -183,15 +188,15 @@ final public class TextDisplay extends SceneVisual {
         }
 
         public void setPosition(float positionX, float positionY) {
-            image.setPosition(positionX, positionY);
+            imageGraphic.setPosition(positionX, positionY);
         }
 
         public void setSize(float sizeX, float sizeY) {
-            image.setScale(sizeX, sizeY);
+            imageGraphic.setScale(sizeX, sizeY);
         }
 
         public void setColor(float r, float g, float b, float a) {
-            image.setColorCoefs(r, g, b, a);
+            imageGraphic.setColorCoefs(r, g, b, a);
         }
 
     }

@@ -1,11 +1,11 @@
 package engine.graphics;
 
 import engine.EngineSystem;
-import engine.graphics.colorRectangle.ColorRectangle;
+import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import engine.graphics.colorRectangle.ColorRectangleRenderer;
-import engine.graphics.colorRoundedRectangle.ColorRoundedRectangle;
 import engine.graphics.colorRoundedRectangle.ColorRoundedRectangleRenderer;
-import engine.graphics.image.Image;
+import engine.graphics.colorRoundedRectangle.RoundedColorRectangle;
+import engine.graphics.image.ImageGraphic;
 import engine.graphics.image.ImageRenderer;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorderRenderer;
@@ -64,18 +64,18 @@ final public class GraphicsManager implements EngineSystem {
         switch (renderer.getType()) {
             case STATIC_IMAGE, DYNAMIC_IMAGE -> {
                 ImageRenderer imageRenderer = (ImageRenderer) renderer;
-                Image image = (Image) newGraphic;
-                imageRenderer.addGraphic(image);
+                ImageGraphic imageGraphic = (ImageGraphic) newGraphic;
+                imageRenderer.addGraphic(imageGraphic);
             }
             case COLOR_RECTANGLE -> {
                 ColorRectangleRenderer colorRectangleRenderer = (ColorRectangleRenderer) renderer;
-                ColorRectangle colorRectangle = (ColorRectangle) newGraphic;
-                colorRectangleRenderer.addGraphic(colorRectangle);
+                ColorRectangleGraphic colorRectangleGraphic = (ColorRectangleGraphic) newGraphic;
+                colorRectangleRenderer.addGraphic(colorRectangleGraphic);
             }
             case COLOR_ROUNDED_RECTANGLE -> {
                 ColorRoundedRectangleRenderer colorRoundedRectangleRenderer = (ColorRoundedRectangleRenderer) renderer;
-                ColorRoundedRectangle colorRoundedRectangle = (ColorRoundedRectangle) newGraphic;
-                colorRoundedRectangleRenderer.addGraphic(colorRoundedRectangle);
+                RoundedColorRectangle roundedColorRectangle = (RoundedColorRectangle) newGraphic;
+                colorRoundedRectangleRenderer.addGraphic(roundedColorRectangle);
             }
             case ROUNDED_RECTANGLE_BORDER -> {
                 RoundedRectangleBorderRenderer roundedRectangleBorderRenderer = (RoundedRectangleBorderRenderer) renderer;

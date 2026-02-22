@@ -6,43 +6,54 @@ import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.scene.visual.SceneVisual;
+import engine.scene.visual.effects.ColorEffect;
+import engine.types.Vec2D;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooleanField {
+public class BooleanField implements MenuItem {
 
     @Getter
     private ArrayList<SceneVisual> visuals;
 
     private SceneVisual toggleVisual;
 
+    final private ColorEffect invisibilityEffect;
+
     private boolean booleanVal;
 
     final private HitboxClickDetector hitboxClickDetector;
 
-    public BooleanField(float sizeX, float sizeY, float positionX, float positionY, SceneVisual toggleVisual, List<SceneVisual> otherVisuals) {
+    public BooleanField(Vec2D size, Vec2D position, SceneVisual toggleVisual, List<SceneVisual> otherVisuals, boolean startingValue) {
         this.toggleVisual = toggleVisual;
         this.visuals = new ArrayList<>();
         this.visuals.addAll(otherVisuals);
-        Hitbox hitbox = new SimpleRectangleHitbox(positionX, positionY, sizeX, sizeY);
+        this.visuals.add(toggleVisual);
+        this.invisibilityEffect = ColorEffect.Invisibility();
+        Hitbox hitbox = new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
         this.hitboxClickDetector = new HitboxClickDetector(hitbox);
+        this.booleanVal = startingValue;
+        if (!booleanVal) {
+            toggleVisual.addColorEffect(invisibilityEffect);
+        }
     }
 
     public boolean getBooleanVal() {
         return booleanVal;
     }
 
+    @Override
     public void handleInputs() {
         InputStatesManager inputStatesManager = Engine.getInputStatesManager();
         if (hitboxClickDetector.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
             booleanVal = !booleanVal;
             if (booleanVal) {
-                visuals.add(toggleVisual);
+                toggleVisual.clearColorEffects();
             }
             else {
-                visuals.remove(toggleVisual);
+                toggleVisual.addColorEffect(invisibilityEffect);
             }
         }
     }

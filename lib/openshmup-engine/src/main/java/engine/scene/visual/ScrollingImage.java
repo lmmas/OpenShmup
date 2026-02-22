@@ -3,20 +3,21 @@ package engine.scene.visual;
 import engine.Engine;
 import engine.Game;
 import engine.assets.Texture;
-import engine.graphics.Graphic;
-import engine.graphics.image.Image;
+import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 final public class ScrollingImage extends SceneVisual {
 
-    private final Image image1;
+    private final ImageGraphic imageGraphic1;
 
     final private Vec2D position1;
 
-    private final Image image2;
+    private final ImageGraphic imageGraphic2;
 
     final private Vec2D position2;
 
@@ -28,54 +29,53 @@ final public class ScrollingImage extends SceneVisual {
 
     private double lastUpdateTimeSeconds;
 
-    private TimeReference timeReference;
+    final private TimeReference timeReference;
 
     public ScrollingImage(Texture texture, int layer, float sizeX, float sizeY, float speed, boolean horizontalScrolling, TimeReference timeReference) {
-        super(layer, List.of(0, 0));
+        super(layer, new ArrayList<>(2), List.of(0, 0));
         this.size = new Vec2D(sizeX, sizeY);
         this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
         this.position2 = new Vec2D(0.0f, 0.0f);
-        this.image1 = new Image(texture, true,
+        this.imageGraphic1 = new ImageGraphic(texture, true,
             sizeX, sizeY,
             position1.x, position1.y,
             1.0f, 1.0f,
             0.0f, 0.0f,
             1.0f, 1.0f, 1.0f, 1.0f,
             0.0f, 0.0f, 0.0f, 0.0f);
-        this.image2 = new Image(texture, true,
+        graphicsList.add(imageGraphic1);
+        this.imageGraphic2 = new ImageGraphic(texture, true,
             sizeX, sizeY,
             position2.x, position2.y,
             1.0f, 1.0f,
             0.0f, 0.0f,
             1.0f, 1.0f, 1.0f, 1.0f,
             0.0f, 0.0f, 0.0f, 0.0f);
+        graphicsList.add(imageGraphic2);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
         this.timeReference = timeReference;
         lastUpdateTimeSeconds = 0.0f;
-        this.setPosition((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
     }
 
     public ScrollingImage(ScrollingImage scrollingImage) {
-        super(scrollingImage.sceneLayerIndex, List.of(0, 0));
-        this.image1 = new Image(scrollingImage.image1);
+        super(scrollingImage.sceneLayerIndex, new ArrayList<>(2), List.of(0, 0));
+        this.imageGraphic1 = new ImageGraphic(scrollingImage.imageGraphic1);
+        graphicsList.add(imageGraphic1);
         this.position1 = new Vec2D(scrollingImage.position1);
         this.position2 = new Vec2D(scrollingImage.position2);
-        this.image2 = new Image(scrollingImage.image2);
+        this.imageGraphic2 = new ImageGraphic(scrollingImage.imageGraphic2);
+        graphicsList.add(imageGraphic2);
         this.size = new Vec2D(scrollingImage.size);
         this.horizontalScrolling = scrollingImage.horizontalScrolling;
         this.speed = scrollingImage.speed;
+        this.timeReference = scrollingImage.timeReference;
         this.lastUpdateTimeSeconds = scrollingImage.lastUpdateTimeSeconds;
     }
 
     @Override
     public SceneVisual copy() {
         return new ScrollingImage(this);
-    }
-
-    @Override
-    public List<Graphic<?>> getGraphics() {
-        return List.of(image1, image2);
     }
 
     @Override
@@ -90,16 +90,16 @@ final public class ScrollingImage extends SceneVisual {
             this.position2.x = position1.x;
             this.position2.y = position1.y - Math.signum(speed) * size.y;
         }
-        image1.setPosition(position1.x, position1.y);
-        image2.setPosition(position2.x, position2.y);
+        imageGraphic1.setPosition(position1.x, position1.y);
+        imageGraphic2.setPosition(position2.x, position2.y);
     }
 
     @Override
     public void setScale(float scaleX, float scaleY) {
         this.size.x = scaleX;
         this.size.y = scaleY;
-        image1.setScale(scaleX, scaleY);
-        image2.setScale(scaleX, scaleY);
+        imageGraphic1.setScale(scaleX, scaleY);
+        imageGraphic2.setScale(scaleX, scaleY);
     }
 
     @Override
@@ -110,6 +110,7 @@ final public class ScrollingImage extends SceneVisual {
         else {
             this.lastUpdateTimeSeconds = Engine.getSceneTime();
         }
+        this.setPosition((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
     }
 
     @Override
@@ -141,8 +142,8 @@ final public class ScrollingImage extends SceneVisual {
         }
         else {
             float screenHeight = (float) Engine.getNativeHeight();
-            position1.y += speed * deltaTime;
-            position2.y += speed * deltaTime;
+            position1.y += (float) (speed * deltaTime);
+            position2.y += (float) (speed * deltaTime);
             if (position1.y > screenHeight / 2 + size.y) {
                 position1.y -= 2 * size.y;
             }
@@ -156,8 +157,15 @@ final public class ScrollingImage extends SceneVisual {
                 position2.y += 2 * size.y;
             }
         }
-        image1.setPosition(position1.x, position1.y);
-        image2.setPosition(position2.x, position2.y);
+        imageGraphic1.setPosition(position1.x, position1.y);
+        imageGraphic2.setPosition(position2.x, position2.y);
         lastUpdateTimeSeconds = currentTimeSeconds;
+    }
+
+    @Override public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+        imageGraphic1.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
+        imageGraphic2.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
+        imageGraphic1.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+        imageGraphic2.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
     }
 }

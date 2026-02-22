@@ -2,7 +2,9 @@ package engine.scene.visual;
 
 import engine.assets.Texture;
 import engine.graphics.Graphic;
-import engine.graphics.image.Image;
+import engine.graphics.image.ImageGraphic;
+import engine.scene.visual.effects.ColorEffect;
+import engine.types.RGBAValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,25 +13,30 @@ import java.util.List;
 
 abstract public class SceneVisual {
 
-    private boolean visualShouldBeRemovedFlag = false;
+    private boolean visualShouldBeRemovedFlag;
 
-    private boolean reloadGraphicsFlag = false;
+    private boolean reloadGraphicsFlag;
     @Getter @Setter
     protected int sceneLayerIndex;
+    @Getter final protected List<Graphic<?>> graphicsList;
 
     final protected List<Integer> graphicalSubLayers;
 
     final private int maxGraphicalSubLayer;
 
-    public SceneVisual(int layer, List<Integer> graphicalSubLayers) {
+    final private List<ColorEffect> colorEffectList;
+
+    public SceneVisual(int layer, List<Graphic<?>> graphicsList, List<Integer> graphicalSubLayers) {
+        this.visualShouldBeRemovedFlag = false;
+        this.reloadGraphicsFlag = false;
         this.sceneLayerIndex = layer;
+        this.graphicsList = graphicsList;
         this.graphicalSubLayers = graphicalSubLayers;
         this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);
+        this.colorEffectList = new ArrayList<>();
     }
 
     abstract public SceneVisual copy();
-
-    abstract public List<Graphic<?>> getGraphics();
 
     final public List<Integer> getGraphicalSubLayers() {
         return graphicalSubLayers;
@@ -40,11 +47,10 @@ abstract public class SceneVisual {
     }
 
     final public List<Texture> getTextures() {
-        var graphics = this.getGraphics();
         List<Texture> textures = new ArrayList<>();
-        for (var graphic : graphics) {
-            if (graphic instanceof Image image) {
-                textures.add(image.getTexture());
+        for (var graphic : graphicsList) {
+            if (graphic instanceof ImageGraphic imageGraphic) {
+                textures.add(imageGraphic.getTexture());
             }
         }
         return textures;
@@ -67,11 +73,11 @@ abstract public class SceneVisual {
     }
 
     public void setScale(float scaleX, float scaleY) {
-        this.getGraphics().forEach(g -> g.setScale(scaleX, scaleY));
+        this.graphicsList.forEach(g -> g.setScale(scaleX, scaleY));
     }
 
     public void setPosition(float positionX, float positionY) {
-        this.getGraphics().forEach(g -> g.setPosition(positionX, positionY));
+        this.graphicsList.forEach(g -> g.setPosition(positionX, positionY));
     }
 
     public void initDisplay() {
@@ -80,6 +86,30 @@ abstract public class SceneVisual {
 
     public void update() {
 
+    }
+
+    abstract public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor);
+
+    public void addColorEffect(ColorEffect colorEffect) {
+        colorEffectList.add(colorEffect);
+        updateColorEffects();
+    }
+
+    public void clearColorEffects() {
+        colorEffectList.clear();
+        updateColorEffects();
+    }
+
+    private void updateColorEffects() {
+        RGBAValue colorCoefs = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+        RGBAValue addedColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
+        for (var colorEffect : colorEffectList) {
+            RGBAValue colorCoefsResult = colorCoefs.multiply(colorEffect.colorCoefs());
+            RGBAValue addedColorResult = addedColor.multiply(colorEffect.colorCoefs()).add(colorEffect.addedColor());
+            colorCoefs = colorCoefsResult;
+            addedColor = addedColorResult;
+        }
+        updateGraphicColor(colorCoefs, addedColor);
     }
 
     public static SceneVisual DEFAULT_EMPTY() {

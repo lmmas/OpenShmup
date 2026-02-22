@@ -9,6 +9,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import engine.types.Vec2D;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -26,12 +27,12 @@ public class TextField implements MenuItem {
 
     private boolean textInputActive;
 
-    public TextField(float sizeX, float sizeY, float positionX, float positionY, String startingText, TextStyle style, List<SceneVisual> otherVisuals) {
+    public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, List<SceneVisual> otherVisuals, String startingText) {
         this.stringBuffer = new StringBuffer(startingText);
-        this.textInputDisplay = new TextDisplay(2, true, positionX - sizeX / 2, positionY, startingText, style, TextAlignment.LEFT);
+        this.textInputDisplay = new TextDisplay(textLayer, true, position.x - size.x / 2, position.y, startingText, style, TextAlignment.LEFT);
         this.visuals = new ArrayList<>(otherVisuals);
         this.visuals.add(textInputDisplay);
-        Hitbox clickHitbox = new SimpleRectangleHitbox(positionX, positionY, sizeX, sizeY);
+        Hitbox clickHitbox = new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
         this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
         this.textInputActive = false;
     }

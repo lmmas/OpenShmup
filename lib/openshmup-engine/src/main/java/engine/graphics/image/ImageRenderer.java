@@ -16,9 +16,9 @@ import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
+final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.ImageVertex> {
 
-    protected Batch createBatchFromGraphic(Image graphic) {
+    protected Batch createBatchFromGraphic(ImageGraphic graphic) {
         return new ImageBatch(graphic.getShader(), graphic.getTexture());
     }
 
@@ -28,7 +28,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
         this.batchSize = 100;
     }
 
-    protected class ImageBatch extends Renderer<Image, Image.ImageVertex>.Batch {
+    protected class ImageBatch extends Renderer<ImageGraphic, ImageGraphic.ImageVertex>.Batch {
 
         protected ArrayList<Texture> textures;
 
@@ -75,7 +75,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
         }
 
         @Override
-        protected boolean canReceiveVertexFrom(Image graphic) {
+        protected boolean canReceiveVertexFrom(ImageGraphic graphic) {
             if (vertices.size() + 1 > batchSize)
                 return false;
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
@@ -103,7 +103,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
         public void uploadData() {
             dataBuffer.clear();
             for (int i = 0; i < vertices.size(); i++) {
-                Image.ImageVertex image = vertices.get(i);
+                ImageGraphic.ImageVertex image = vertices.get(i);
                 Vec2D imagePosition = image.getImagePosition();
                 Vec2D imageSize = image.getImageSize();
                 Vec2D texturePosition = image.getTexturePosition();
@@ -137,7 +137,7 @@ final public class ImageRenderer extends Renderer<Image, Image.ImageVertex> {
         }
 
         @Override
-        public void addVertex(Image.ImageVertex newVertex) {
+        public void addVertex(ImageGraphic.ImageVertex newVertex) {
             assert vertices.size() == textureIndexes.size() : "mismatching list sizes between vertices and texture indices";
             super.addVertex(newVertex);
             int textureIndex = textures.indexOf(newVertex.getTexture());

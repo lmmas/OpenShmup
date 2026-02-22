@@ -12,7 +12,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex> {
+final public class ColorRoundedRectangleRenderer extends Renderer<RoundedColorRectangle, RoundedColorRectangle.ColorRoundedRectangleVertex> {
 
     final static private int vertexFloatCount = 9;
 
@@ -22,11 +22,11 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
     }
 
     @Override
-    protected Batch createBatchFromGraphic(ColorRoundedRectangle graphic) {
+    protected Batch createBatchFromGraphic(RoundedColorRectangle graphic) {
         return new ColorRoundedRectangleBatch(graphic.getShader());
     }
 
-    public class ColorRoundedRectangleBatch extends Renderer<ColorRoundedRectangle, ColorRoundedRectangle.ColorRoundedRectangleVertex>.Batch {
+    public class ColorRoundedRectangleBatch extends Renderer<RoundedColorRectangle, RoundedColorRectangle.ColorRoundedRectangleVertex>.Batch {
 
         final private FloatBuffer dataBuffer;
 
@@ -39,7 +39,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         }
 
         @Override
-        protected boolean canReceiveVertexFrom(ColorRoundedRectangle graphic) {
+        protected boolean canReceiveVertexFrom(RoundedColorRectangle graphic) {
             if (vertices.size() >= batchSize) {
                 return false;
             }
@@ -63,7 +63,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<ColorRoundedRe
         @Override
         protected void uploadData() {
             dataBuffer.clear();
-            for (ColorRoundedRectangle.ColorRoundedRectangleVertex rectangle : vertices) {
+            for (RoundedColorRectangle.ColorRoundedRectangleVertex rectangle : vertices) {
                 Vec2D position = rectangle.getPosition();
                 Vec2D size = rectangle.getSize();
                 float roundingRadius = rectangle.getRoundingRadius();

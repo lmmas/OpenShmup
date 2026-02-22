@@ -13,29 +13,29 @@ import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle.ColorRoundedRectangleVertex> {
+final public class RoundedColorRectangle extends Graphic<RoundedColorRectangle.ColorRoundedRectangleVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/colorRoundedRectangle.glsl");
 
     private final ColorRoundedRectangleVertex vertex;
 
-    public ColorRoundedRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a, Shader shader) {
+    public RoundedColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a, Shader shader) {
         super(RenderType.COLOR_ROUNDED_RECTANGLE, shader, new ArrayList<>(1));
         this.vertex = new ColorRoundedRectangleVertex(sizeX, sizeY, positionX, positionY, roundingRadius, r, g, b, a);
         this.getVertexList().add(vertex);
     }
 
-    public ColorRoundedRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a) {
+    public RoundedColorRectangle(float sizeX, float sizeY, float positionX, float positionY, float roundingRadius, float r, float g, float b, float a) {
         this(sizeX, sizeY, positionX, positionY, roundingRadius, r, g, b, a, assetManager.getShader(defaultShader));
     }
 
-    public ColorRoundedRectangle(ColorRoundedRectangle colorRoundedRectangle) {
+    public RoundedColorRectangle(RoundedColorRectangle roundedColorRectangle) {
         this(
-            colorRoundedRectangle.vertex.size.x, colorRoundedRectangle.vertex.size.y,
-            colorRoundedRectangle.vertex.position.x, colorRoundedRectangle.vertex.position.y,
-            colorRoundedRectangle.vertex.roundingRadius,
-            colorRoundedRectangle.vertex.color.r, colorRoundedRectangle.vertex.color.g, colorRoundedRectangle.vertex.color.b, colorRoundedRectangle.vertex.color.a,
-            colorRoundedRectangle.shader
+            roundedColorRectangle.vertex.size.x, roundedColorRectangle.vertex.size.y,
+            roundedColorRectangle.vertex.position.x, roundedColorRectangle.vertex.position.y,
+            roundedColorRectangle.vertex.roundingRadius,
+            roundedColorRectangle.vertex.color.r, roundedColorRectangle.vertex.color.g, roundedColorRectangle.vertex.color.b, roundedColorRectangle.vertex.color.a,
+            roundedColorRectangle.shader
         );
     }
 
@@ -61,6 +61,14 @@ final public class ColorRoundedRectangle extends Graphic<ColorRoundedRectangle.C
     public void setScale(float scaleX, float scaleY) {
         vertex.size.x = scaleX;
         vertex.size.y = scaleY;
+        vertex.setDataHasChanged();
+    }
+
+    public void setColor(float r, float g, float b, float a) {
+        vertex.color.r = r;
+        vertex.color.g = g;
+        vertex.color.b = b;
+        vertex.color.a = a;
         vertex.setDataHasChanged();
     }
 

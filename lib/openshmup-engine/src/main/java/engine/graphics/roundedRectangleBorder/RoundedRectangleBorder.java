@@ -65,6 +65,14 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         vertex.setDataHasChanged();
     }
 
+    public void setColor(float r, float g, float b, float a) {
+        vertex.color.r = r;
+        vertex.color.g = g;
+        vertex.color.b = b;
+        vertex.color.a = a;
+        vertex.setDataHasChanged();
+    }
+
     public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorderVertex>.Vertex<RoundedRectangleBorderVertex> {
 
         private final Vec2D size;

@@ -1,11 +1,12 @@
 package editor;
 
-import editor.attribute.Attribute;
+import editor.attribute.*;
 import editor.editionData.*;
 import engine.Engine;
 import engine.menu.MenuScreen;
 import engine.menu.item.ActionButton;
 import engine.menu.item.ActionButtons;
+import engine.menu.item.MenuItem;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
@@ -14,12 +15,18 @@ import engine.types.Vec2D;
 
 import java.util.List;
 
+import static editor.MenuItems.Checkbox;
+import static editor.MenuItems.EditorTextField;
 import static editor.Style.*;
 
 final public class EditPanels {
 
+    private EditPanels() {}
+
+
+
     private static MenuScreen BaseEditPanel(String editPanelTitle) {
-        MenuScreen panel = new MenuScreen(3);
+        MenuScreen panel = new MenuScreen(4);
 
         SceneVisual backgroundRectangle = new BorderedRoundedRectangle(0, 1500f, 900f, Engine.getNativeWidth() / 2, Engine.getNativeHeight() / 2, menuButtonRoundingRadius, menuButtonBorderWidth, menuButtonColor.r, menuButtonColor.g, menuButtonColor.b, menuButtonColor.a, menuButtonBorderColor.r, menuButtonBorderColor.g, menuButtonColor.b, menuButtonBorderColor.a);
         panel.addVisual(backgroundRectangle);
@@ -32,6 +39,25 @@ final public class EditPanels {
         panel.addVisual(panelTitle);
 
         return panel;
+    }
+
+    public static List<MenuItem> createAttributeFields(Attribute attribute, int layer, Vec2D position) {
+        float coupleFieldSpacing = 200f;
+        return switch (attribute) {
+            case BooleanAttribute booleanAttribute -> List.of(Checkbox(layer, position, booleanAttribute.getValue()));
+            case DoubleAttribute doubleAttribute ->
+                List.of(EditorTextField(layer, position, Double.toString(doubleAttribute.getValue())));
+            case FloatAttribute floatAttribute ->
+                List.of(EditorTextField(layer, position, Float.toString(floatAttribute.getValue())));
+            case IntegerAttribute integerAttribute ->
+                List.of(EditorTextField(layer, position, Integer.toString(integerAttribute.getValue())));
+            case IVec2DAttribute iVec2DAttribute ->
+                List.of(EditorTextField(layer, position, Integer.toString(iVec2DAttribute.getX())), EditorTextField(layer, position.add(new Vec2D(coupleFieldSpacing, 0.0f)), Integer.toString(iVec2DAttribute.getY())));
+            case StringAttribute stringAttribute ->
+                List.of(EditorTextField(layer, position, stringAttribute.getValue()));
+            case Vec2DAttribute vec2DAttribute ->
+                List.of(EditorTextField(layer, position, Float.toString(vec2DAttribute.getX())), EditorTextField(layer, position.add(new Vec2D(coupleFieldSpacing, 0.0f)), Float.toString(vec2DAttribute.getY())));
+        };
     }
 
     public static MenuScreen AnimationEditPanel(AnimationEditionData animationData) {
@@ -53,7 +79,6 @@ final public class EditPanels {
             panel.addVisual(attributeText);
         }
 
-
         return panel;
     }
 
@@ -61,12 +86,16 @@ final public class EditPanels {
         MenuScreen panel = BaseEditPanel("Edit Scrolling Image");
 
         List<Attribute> attributesList = List.of(scrollingImageData.getIdAttribute(), scrollingImageData.getLayer(), scrollingImageData.getSize(), scrollingImageData.getFileName());
-
+        Vec2D attributeListTextStartPosition = new Vec2D(300f, 700f);
+        Vec2D attributeFieldStartPosition = new Vec2D(650f, 700f);
+        float attributListStride = 45f;
         for (int i = 0; i < attributesList.size(); i++) {
-            TextDisplay attributeText = new TextDisplay(1, false, 300f, 700f - 30f * i, attributesList.get(i).toString(), menuButtonLabelStyle, TextAlignment.LEFT);
+            Vec2D attributePosition = attributeListTextStartPosition.add(new Vec2D(0.0f, attributListStride * i));
+            TextDisplay attributeText = new TextDisplay(1, false, attributePosition.x, attributePosition.y, attributesList.get(i).getName() + ":", menuButtonLabelStyle, TextAlignment.LEFT);
             panel.addVisual(attributeText);
+            List<MenuItem> attributeFields = createAttributeFields(attributesList.get(i), 1, attributeFieldStartPosition.add(new Vec2D(0.0f, attributListStride * i)));
+            attributeFields.forEach(panel::addItem);
         }
-
         return panel;
     }
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public abstract class Attribute {
+public sealed abstract class Attribute permits BooleanAttribute, DoubleAttribute, FloatAttribute, IntegerAttribute, IVec2DAttribute, StringAttribute, Vec2DAttribute {
 
     protected String name;
 
@@ -19,4 +19,5 @@ public abstract class Attribute {
     abstract public String toString();
 
     abstract public void addToNode(ObjectNode node);
+
 }

@@ -1,7 +1,7 @@
 package engine.level.entity.extraComponent;
 
 import engine.Engine;
-import engine.graphics.colorRectangle.ColorRectangle;
+import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.level.Level;
 import engine.level.entity.Entity;
@@ -21,11 +21,11 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     private final SimpleRectangleHitbox simpleRectangleHitbox;
 
-    private final ColorRectangle debugDisplay;
+    private final ColorRectangleGraphic debugDisplay;
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangle(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
+        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
     }
 
     @Override
