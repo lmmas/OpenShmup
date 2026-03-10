@@ -1,4 +1,4 @@
 package editor.editionData;
 
-public sealed interface SpawnableEditionData permits DisplaySpawnInfoEditionData, EntitySpawnInfoEditionData {
+public sealed interface SpawnableEditionData extends EditionData permits DisplaySpawnInfoEditionData, EntitySpawnInfoEditionData {
 }

@@ -1,4 +1,4 @@
 package editor.editionData;
 
-public sealed interface ExtraComponentEditionData permits ShotEditionData {
+public sealed interface ExtraComponentEditionData extends EditionData permits ShotEditionData {
 }

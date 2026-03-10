@@ -5,8 +5,10 @@ import json.JsonFieldNames;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
-public final class AnimationEditionData implements EditionData, VisualEditionData {
+public final class AnimationEditionData implements VisualEditionData {
 
     private IntegerAttribute idAttribute;
 
@@ -14,7 +16,7 @@ public final class AnimationEditionData implements EditionData, VisualEditionDat
 
     private Vec2DAttribute size;
 
-    private SpritesheetInfoData spritesheetInfo;
+    private EditionDataAttribute<SpritesheetInfoData> spritesheetInfo;
 
     private DoubleAttribute framePeriodSeconds;
 
@@ -26,11 +28,19 @@ public final class AnimationEditionData implements EditionData, VisualEditionDat
         this.size = new Vec2DAttribute("Size", JsonFieldNames.Animation.size, sizeX, sizeY);
         this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", JsonFieldNames.Animation.framePeriodSeconds, framePeriodSeconds);
         this.looping = new BooleanAttribute("Looping", JsonFieldNames.Animation.looping, looping);
-        this.spritesheetInfo = spritesheetInfo;
+        this.spritesheetInfo = new EditionDataAttribute<SpritesheetInfoData>("Spritesheet info", JsonFieldNames.Animation.spritesheetInfo, spritesheetInfo);
     }
 
-    @Getter @Setter
-    public static class SpritesheetInfoData {
+    @Override
+    public int getId() {
+        return idAttribute.getValue();
+    }
+
+    @Override public List<Attribute> getAttributes() {
+        return List.of(idAttribute, layer, size, spritesheetInfo, framePeriodSeconds, looping);
+    }
+
+    @Getter @Setter final public static class SpritesheetInfoData implements EditionData {
 
         final private StringAttribute fileName;
 
@@ -54,10 +64,9 @@ public final class AnimationEditionData implements EditionData, VisualEditionDat
             this.startPosition = new IVec2DAttribute("Start position", JsonFieldNames.Animation.SpritesheetInfo.startingPosition, startPositionX, startPositionY);
             this.stride = new IVec2DAttribute("Stride", JsonFieldNames.Animation.SpritesheetInfo.stride, strideX, strideY);
         }
-    }
 
-    @Override
-    public int getId() {
-        return idAttribute.getValue();
+        @Override public List<Attribute> getAttributes() {
+            return List.of(fileName, frameCount, frameSize, startPosition, stride);
+        }
     }
 }

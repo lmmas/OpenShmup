@@ -1,6 +1,6 @@
 package editor.editionData;
 
-public sealed interface EntityEditionData permits ShipEditionData, ProjectileEditionData {
+public sealed interface EntityEditionData extends EditionData permits ShipEditionData, ProjectileEditionData {
 
     int getId();
 }

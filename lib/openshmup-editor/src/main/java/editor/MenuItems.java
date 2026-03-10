@@ -31,8 +31,8 @@ final public class MenuItems {
         return new BooleanField(size, position, checkMark, List.of(box), startingState);
     }
 
-    public static TextField EditorTextField(int layer, Vec2D position, String startingText) {
-        Vec2D size = new Vec2D(150f, 30f);
+    public static TextField EditorTextField(int layer, Vec2D position, float fieldWidthPixels, String startingText) {
+        Vec2D size = new Vec2D(fieldWidthPixels, 30f);
         float roundingRadius = 5f;
         float borderWidth = 2f;
         RGBAValue rectangleColor = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);

@@ -1,4 +1,4 @@
 package editor.editionData;
 
-public sealed interface TrajectoryEditionData permits FixedTrajectoryEditionData, PlayerControlledTrajectoryEditionData {
+public sealed interface TrajectoryEditionData extends EditionData permits FixedTrajectoryEditionData, PlayerControlledTrajectoryEditionData {
 }

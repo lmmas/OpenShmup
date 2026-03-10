@@ -1,6 +1,6 @@
 package editor.editionData;
 
-public sealed interface VisualEditionData permits AnimationEditionData, ScrollingImageEditionData {
+public sealed interface VisualEditionData extends EditionData permits AnimationEditionData, ScrollingImageEditionData {
 
     int getId();
 }

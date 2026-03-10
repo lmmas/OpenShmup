@@ -1,11 +1,14 @@
 package editor.editionData;
 
+import editor.attribute.Attribute;
 import editor.attribute.IntegerAttribute;
 import editor.attribute.StringAttribute;
 import json.JsonFieldNames;
 import lombok.Getter;
 
-@Getter final public class FixedTrajectoryEditionData implements EditionData, TrajectoryEditionData {
+import java.util.List;
+
+@Getter final public class FixedTrajectoryEditionData implements TrajectoryEditionData {
 
     private IntegerAttribute id;
 
@@ -17,5 +20,9 @@ import lombok.Getter;
         this.id = new IntegerAttribute("Trajectory ID", JsonFieldNames.FixedTrajectory.id, id);
         this.trajectoryFunctionX = new StringAttribute("Trajectory function X", JsonFieldNames.FixedTrajectory.functionX, trajectoryFunctionX);
         this.trajectoryFunctionY = new StringAttribute("Trajectory function Y", JsonFieldNames.FixedTrajectory.functionY, trajectoryFunctionY);
+    }
+
+    @Override public List<Attribute> getAttributes() {
+        return List.of(id, trajectoryFunctionX, trajectoryFunctionY);
     }
 }

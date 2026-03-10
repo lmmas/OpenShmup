@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public sealed abstract class Attribute permits BooleanAttribute, DoubleAttribute, FloatAttribute, IntegerAttribute, IVec2DAttribute, StringAttribute, Vec2DAttribute {
+public sealed abstract class Attribute permits BooleanAttribute, DoubleAttribute, EditionDataAttribute, FloatAttribute, IVec2DAttribute, IntegerAttribute, ListAttribute, StringAttribute, Vec2DAttribute {
 
     protected String name;
 

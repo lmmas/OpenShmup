@@ -5,8 +5,10 @@ import json.JsonFieldNames;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
-public final class ScrollingImageEditionData implements EditionData, VisualEditionData {
+public final class ScrollingImageEditionData implements VisualEditionData {
 
     private IntegerAttribute idAttribute;
 
@@ -25,12 +27,16 @@ public final class ScrollingImageEditionData implements EditionData, VisualEditi
         this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.ScrollingImage.layer, layer);
         this.size = new Vec2DAttribute("Size", JsonFieldNames.ScrollingImage.size, sizeX, sizeY);
         this.fileName = new StringAttribute("Image file name", JsonFieldNames.ScrollingImage.fileName, imageFileName);
-        this.speed = new FloatAttribute("Scrolling playerMovementSpeed", JsonFieldNames.ScrollingImage.speed, speed);
+        this.speed = new FloatAttribute("Scrolling speed", JsonFieldNames.ScrollingImage.speed, speed);
         this.horizontalScrolling = new BooleanAttribute("Horizontal scrolling", JsonFieldNames.ScrollingImage.horizontalScrolling, horizontalScrolling);
     }
 
     @Override
     public int getId() {
         return idAttribute.getValue();
+    }
+
+    @Override public List<Attribute> getAttributes() {
+        return List.of(idAttribute, layer, size, fileName, speed, horizontalScrolling);
     }
 }

@@ -29,7 +29,7 @@ public class ShotConverter implements ExtraComponentConverter {
         shotData.getShotPeriod().addToNode(node);
         shotData.getFirstShotTime().addToNode(node);
         var spawnablesNode = node.putArray(JsonFieldNames.Shot.spawn);
-        for (var spawnableData : shotData.getSpawnables()) {
+        for (var spawnableData : shotData.getSpawnables().getDataList()) {
             ObjectNode spawnableNode = spawnablesNode.addObject();
             spawnableNode = jsonDataConverter.spawnableEditionDataToJSON(spawnableData, spawnableNode);
         }

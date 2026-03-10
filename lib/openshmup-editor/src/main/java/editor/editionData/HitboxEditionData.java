@@ -1,4 +1,4 @@
 package editor.editionData;
 
-public sealed interface HitboxEditionData permits SimpleRectangleHitboxEditionData, CompositeHitboxEditionData {
+public sealed interface HitboxEditionData extends EditionData permits SimpleRectangleHitboxEditionData, CompositeHitboxEditionData {
 }

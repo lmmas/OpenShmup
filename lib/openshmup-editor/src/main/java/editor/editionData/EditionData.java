@@ -1,5 +1,10 @@
 package editor.editionData;
 
-public sealed interface EditionData permits AnimationEditionData, CompositeHitboxEditionData, DisplaySpawnInfoEditionData, EntitySpawnInfoEditionData, FixedTrajectoryEditionData, PlayerControlledTrajectoryEditionData, ProjectileEditionData, ScrollingImageEditionData, ShipEditionData, ShotEditionData, SimpleRectangleHitboxEditionData {
+import editor.attribute.Attribute;
 
+import java.util.List;
+
+public sealed interface EditionData permits AnimationEditionData.SpritesheetInfoData, EntityEditionData, ExtraComponentEditionData, HitboxEditionData, SpawnableEditionData, TrajectoryEditionData, VisualEditionData {
+
+    List<Attribute> getAttributes();
 }
