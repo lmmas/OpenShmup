@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static editor.Style.menuButtonLabelStyle;
+import static editor.Style.Text.menuButtonLabelStyle;
 import static engine.Engine.assetManager;
 
 final public class MenuItems {

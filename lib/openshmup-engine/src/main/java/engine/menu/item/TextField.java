@@ -15,7 +15,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextField implements MenuItem {
+final public class TextField implements MenuItem {
 
     @Getter final private List<SceneVisual> visuals;
 
@@ -29,7 +29,8 @@ public class TextField implements MenuItem {
 
     public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, List<SceneVisual> otherVisuals, String startingText) {
         this.stringBuffer = new StringBuffer(startingText);
-        this.textInputDisplay = new TextDisplay(textLayer, true, position.x - size.x / 2, position.y, startingText, style, TextAlignment.LEFT);
+        Vec2D textSartPosition = new Vec2D(position.x - size.x / 2, position.y);
+        this.textInputDisplay = new TextDisplay(textLayer, true, textSartPosition, startingText, style, TextAlignment.LEFT);
         this.visuals = new ArrayList<>(otherVisuals);
         this.visuals.add(textInputDisplay);
         Hitbox clickHitbox = new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
@@ -57,5 +58,9 @@ public class TextField implements MenuItem {
                 textInputActive = true;
             }
         }
+    }
+
+    public String getStringValue() {
+        return stringBuffer.toString();
     }
 }

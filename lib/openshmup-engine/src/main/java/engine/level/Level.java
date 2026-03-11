@@ -343,7 +343,7 @@ final public class Level implements EngineSystem {
 
         final private TextStyle levelTimeTextStyle = new TextStyle(debugFont, levelTimeTextColor, 20f);
 
-        final private TextDisplay levelTimeDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.1f * Engine.getNativeHeight(), "", levelTimeTextStyle, TextAlignment.CENTER);
+        final private TextDisplay levelTimeDisplay = new TextDisplay(0, true, new Vec2D(0.9f * Engine.getNativeWidth(), 0.1f * Engine.getNativeHeight()), "", levelTimeTextStyle, TextAlignment.CENTER);
 
 
         public LevelDebug(boolean debugModeEnabled) {

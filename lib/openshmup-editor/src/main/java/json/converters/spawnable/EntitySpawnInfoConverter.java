@@ -10,7 +10,7 @@ import json.SafeJsonNode;
 
 import java.util.List;
 
-public class EntitySpawnInfoConverter implements SpawnableConverter {
+final public class EntitySpawnInfoConverter implements SpawnableConverter {
 
     @Override
     public SpawnableEditionData fromJson(SafeJsonNode node) {

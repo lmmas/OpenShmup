@@ -26,7 +26,7 @@ final public class VisualFactories {
         boolean horizontalScrolling = node.safeGetBoolean(JsonFieldNames.ScrollingImage.horizontalScrolling);
         float speed = node.safeGetFloat(JsonFieldNames.ScrollingImage.speed);
 
-        return new ScrollingImage(texture, layer, size.x, size.y, speed, horizontalScrolling, TimeReference.LEVEL);
+        return new ScrollingImage(texture, layer, size, speed, horizontalScrolling, TimeReference.LEVEL);
     };
 
     final public static BiFunction<SafeJsonNode, Path, SceneVisual> animationFactory = (node, textureFolderPath) -> {
@@ -56,6 +56,6 @@ final public class VisualFactories {
             (float) stride.x / animationTextureWidth,
             (float) stride.y / animationTextureHeight);
 
-        return new Animation(layer, texture, spritesheetInfo, framePeriodSeconds, looping, size.x, size.y, TimeReference.LEVEL);
+        return new Animation(layer, texture, spritesheetInfo, framePeriodSeconds, looping, size, TimeReference.LEVEL);
     };
 }

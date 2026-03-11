@@ -1,5 +1,6 @@
 package editor;
 
+import engine.scene.visual.style.RoundedRectangleButtonStyle;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
@@ -25,13 +26,21 @@ final public class Style {
         final public static RGBAValue menuBackgroundColor = new RGBAValue(0.8f, 0.95f, 1.0f, 1.0f);
     }
 
+    public static class Text {
+
+        private Text() {}
+
+        final public static TextStyle menuButtonLabelStyle = new TextStyle(debugFont, Color.menuButtonTextColor, 17.0f);
+
+        final public static TextStyle menuScreenTitleStyle = new TextStyle(debugFont, Color.titleColor, 20);
+    }
+
     final public static Vec2D buttonSize = new Vec2D(600f, 150f);
 
     final public static float menuButtonRoundingRadius = 10f;
 
     final public static float menuButtonBorderWidth = 4f;
 
-    final public static TextStyle menuButtonLabelStyle = new TextStyle(debugFont, Color.menuButtonTextColor, 17.0f);
+    final public static RoundedRectangleButtonStyle menuButtonStyle = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
-    final public static TextStyle menuScreenTitleStyle = new TextStyle(debugFont, Color.titleColor, 20);
 }

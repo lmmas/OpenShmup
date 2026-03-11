@@ -6,6 +6,7 @@ import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
 import engine.types.RGBAValue;
+import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,14 @@ final public class Animation extends SceneVisual {
 
     private TimeReference timeReference;
 
-    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, float framePeriodSeconds, boolean looping, float sizeX, float sizeY, TimeReference timeReference) {
+    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, float framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
         super(layer, new ArrayList<>(1), List.of(0));
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
         this.frameIndex = 0;
         this.imageGraphic = new ImageGraphic(animationTexture, true,
-            sizeX, sizeY,
+            size.x, size.y,
             0.0f, 0.0f,
             info.frameSizeX(), info.frameSizeY(),
             0.0f, 0.0f,

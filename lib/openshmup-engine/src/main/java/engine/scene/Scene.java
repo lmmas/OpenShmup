@@ -161,7 +161,7 @@ public class Scene implements EngineSystem {
 
         final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
 
-        final private TextDisplay fpsDisplay = new TextDisplay(0, true, 0.9f * Engine.getNativeWidth(), 0.9f * Engine.getNativeHeight(), "", fpsDisplayTextStyle, TextAlignment.CENTER);
+        final private TextDisplay fpsDisplay = new TextDisplay(0, true, Engine.getNativeResolution().scalar(0.9f), "", fpsDisplayTextStyle, TextAlignment.CENTER);
 
         public void enable() {
         }

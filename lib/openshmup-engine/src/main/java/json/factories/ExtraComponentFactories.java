@@ -12,7 +12,7 @@ import json.TetraFunction;
 
 import java.util.List;
 
-public class ExtraComponentFactories {
+final public class ExtraComponentFactories {
 
     final public static TetraFunction<SafeJsonNode, GameDataManager, GameLoader, Boolean, ExtraComponent> shotFactory = (node, gameDataManager, gameFactory, isPlayer) -> {
         float shotPeriod = node.safeGetFloat(JsonFieldNames.Shot.shotPeriod);

@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
 
 import static engine.Engine.assetManager;
 
-public class HitboxFactories {
+final public class HitboxFactories {
 
     final public static BiFunction<SafeJsonNode, Path, Hitbox> simpleRectangleHitboxFactory = (node, path) -> {
         Vec2D size = node.safeGetVec2D(JsonFieldNames.SimpleRectangleHitbox.size);

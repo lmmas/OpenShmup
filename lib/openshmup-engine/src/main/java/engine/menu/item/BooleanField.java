@@ -13,7 +13,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooleanField implements MenuItem {
+final public class BooleanField implements MenuItem {
 
     @Getter
     private ArrayList<SceneVisual> visuals;
@@ -40,7 +40,7 @@ public class BooleanField implements MenuItem {
         }
     }
 
-    public boolean getBooleanVal() {
+    public boolean getBooleanValue() {
         return booleanVal;
     }
 

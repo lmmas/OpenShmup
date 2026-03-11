@@ -10,7 +10,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.function.Function;
 
-public class TrajectoryFactories {
+final public class TrajectoryFactories {
 
     final public static Function<SafeJsonNode, Trajectory> playerControlledTrajectoryFactory = node -> {
         float playerMovementSpeed = node.safeGetFloat(JsonFieldNames.PlayerControlledTrajectory.playerMovementSpeed);

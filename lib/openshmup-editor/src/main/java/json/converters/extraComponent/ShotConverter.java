@@ -11,7 +11,7 @@ import json.converters.JsonDataConverter;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ShotConverter implements ExtraComponentConverter {
+final public class ShotConverter implements ExtraComponentConverter {
 
     @Override
     public ExtraComponentEditionData fromJson(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {

@@ -9,7 +9,7 @@ import json.SafeJsonNode;
 
 import java.util.List;
 
-public class PlayerTrajectoryConverter implements TrajectoryConverter {
+final public class PlayerTrajectoryConverter implements TrajectoryConverter {
 
     @Override
     public TrajectoryEditionData fromJson(SafeJsonNode node) {

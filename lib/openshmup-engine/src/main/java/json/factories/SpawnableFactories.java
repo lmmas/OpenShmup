@@ -9,7 +9,7 @@ import json.SafeJsonNode;
 
 import java.util.function.Function;
 
-public class SpawnableFactories {
+final public class SpawnableFactories {
 
     final public static Function<SafeJsonNode, Spawnable> displaySpawnInfoFactory = node -> {
         int id = node.safeGetInt(JsonFieldNames.DisplaySpawnInfo.id);

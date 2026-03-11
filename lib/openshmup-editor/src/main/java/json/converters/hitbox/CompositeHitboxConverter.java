@@ -11,7 +11,7 @@ import json.SafeJsonNode;
 import java.nio.file.Path;
 import java.util.List;
 
-public class CompositeHitboxConverter implements HitboxConverter {
+final public class CompositeHitboxConverter implements HitboxConverter {
 
     @Override
     public HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {

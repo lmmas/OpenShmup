@@ -10,13 +10,16 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EditorGameDataManager {
+final public class EditorGameDataManager {
 
     private String gameFolderName;
 
     final public GamePaths paths;
+
     @Getter final private ArrayList<VisualEditionData> visualEditionDataList;
+
     @Getter final private ArrayList<TrajectoryEditionData> trajectoryEditionDataList;
+
     @Getter final private HashMap<Integer, EntityEditionData> entityEditionDataMap;
 
 

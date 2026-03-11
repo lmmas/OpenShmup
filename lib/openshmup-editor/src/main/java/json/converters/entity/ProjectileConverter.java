@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectileConverter implements EntityConverter {
+final public class ProjectileConverter implements EntityConverter {
 
     @Override
     public EntityEditionData fromJson(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {

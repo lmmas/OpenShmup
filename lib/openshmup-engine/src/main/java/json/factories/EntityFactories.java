@@ -18,7 +18,7 @@ import json.TriFunction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityFactories {
+final public class EntityFactories {
 
     final public static TriFunction<SafeJsonNode, GameLoader, GameDataManager, Entity> shipFactory = (node, gameFactory, gameData) -> {
         int id = node.safeGetInt(JsonFieldNames.Ship.id);

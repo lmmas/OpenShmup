@@ -37,22 +37,22 @@ final public class TextDisplay extends SceneVisual {
 
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, float positionX, float positionY, String displayedString, float r, float g, float b, float a, TextAlignment alignment) {
+    public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
         super(layer, new ArrayList<>(displayedString.length()), new ArrayList<>(displayedString.length()));
-        this.position = new Vec2D(positionX, positionY);
+        this.position = new Vec2D(position);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
         this.font = font;
         this.dynamicText = dynamicText;
         this.textLines = new ArrayList<>();
         this.normalizedLineWidthsList = new ArrayList<>();
-        this.textColor = new RGBAValue(r, g, b, a);
+        this.textColor = new RGBAValue(color);
         this.alignment = alignment;
         updateText();
     }
 
-    public TextDisplay(int layer, boolean dynamicText, float positionX, float positionY, String displayedString, TextStyle style, TextAlignment alignment) {
-        this(layer, assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), positionX, positionY, displayedString, style.textColor().r, style.textColor().b, style.textColor().b, style.textColor().a, alignment);
+    public TextDisplay(int layer, boolean dynamicText, Vec2D position, String displayedString, TextStyle style, TextAlignment alignment) {
+        this(layer, assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), position, displayedString, style.textColor(), alignment);
     }
 
     private void updateText() {
@@ -131,7 +131,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position.x, position.y, displayedString, textColor.r, textColor.g, textColor.b, textColor.a, alignment);
+        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position, displayedString, textColor, alignment);
     }
 
     @Override

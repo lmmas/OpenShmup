@@ -1,14 +1,13 @@
 package editor;
 
 import editor.editionData.AnimationEditionData;
-import editor.editionData.EditionData;
 import editor.editionData.ScrollingImageEditionData;
 import editor.editionData.VisualEditionData;
 import engine.Engine;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.item.ActionButton;
-import engine.menu.item.ActionButtons;
+import engine.menu.item.MenuItems;
 import engine.scene.Scene;
 import engine.scene.visual.ColorRectangleVisual;
 import engine.scene.visual.SceneVisual;
@@ -37,7 +36,7 @@ final public class Menus {
         private static MenuScreen PopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            ActionButton closeButton = ActionButtons.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, "Close", menuButtonLabelStyle, () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            ActionButton closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addItem(closeButton);
             popupMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f));
 
@@ -48,7 +47,7 @@ final public class Menus {
                     Engine.switchCurrentScene(new Scene());
                     Engine.switchCurrentMenu(Menus.EditGameMenu(game));
                 };
-                popupMenu.addItem(ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, game.getGameName(), menuButtonLabelStyle, onclick));
+                popupMenu.addItem(MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonStyle, game.getGameName(), onclick));
             }
             return popupMenu;
         }
@@ -58,10 +57,10 @@ final public class Menus {
         Menu mainMenu = new Menu();
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         int backgroundLayer = 0;
-        SceneVisual menuBackground = new ColorRectangleVisual(0, resolution.x, resolution.y, resolution.x / 2, resolution.y / 2, menuBackgroundColor.r, menuBackgroundColor.g, menuBackgroundColor.b, menuBackgroundColor.a);
+        SceneVisual menuBackground = new ColorRectangleVisual(0, resolution, resolution.scalar(0.5f), menuBackgroundColor);
 
         TextStyle menuTitleTextStyle = new TextStyle(debugFont, Color.titleColor, 50);
-        SceneVisual menuTitle = new TextDisplay(1, false, resolution.x / 2, 800, "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
+        SceneVisual menuTitle = new TextDisplay(1, false, new Vec2D(resolution.x / 2, 800), "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
         Runnable editGameAction = () -> {
             try {
@@ -72,8 +71,8 @@ final public class Menus {
             MenuScreen popupScreen = Screens.PopupScreen();
             mainMenu.addMenuScreen(popupScreen);
         };
-        ActionButton button1 = ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, "Edit game", menuButtonLabelStyle, editGameAction);
-        ActionButton button2 = ActionButtons.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, "Quit", menuButtonLabelStyle, terminateProgram);
+        ActionButton button1 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonStyle, "Edit game", editGameAction);
+        ActionButton button2 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonStyle, "Quit", terminateProgram);
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
         titleScreen.addItem(button1);
         titleScreen.addItem(button2);
@@ -91,13 +90,13 @@ final public class Menus {
         SceneVisual menuBackground = new ScreenFilter(0, menuBackgroundColor);
         editMenuScreen.addVisual(menuBackground);
 
-        TextDisplay screenTitle = new TextDisplay(1, false, (float) Engine.getNativeWidth() / 2, 970f, "Edit visuals", menuScreenTitleStyle, TextAlignment.CENTER);
+        TextDisplay screenTitle = new TextDisplay(1, false, new Vec2D((float) Engine.getNativeWidth() / 2, 970f), "Edit visuals", Text.menuScreenTitleStyle, TextAlignment.CENTER);
         editMenuScreen.addVisual(screenTitle);
 
         List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         int visualListIndex = 0;
         for (var visualData : visualEditionDataList) {
-            Runnable onClick = () -> menu.addMenuScreen(new EditPanel((EditionData) visualData).getMenuScreen());
+            Runnable onClick = () -> menu.addMenuScreen(new EditPanel(visualData).getMenuScreen());
             String typeString = "";
             if (visualData instanceof AnimationEditionData) {
                 typeString = "Animation";
@@ -107,7 +106,7 @@ final public class Menus {
             }
             String menuButtonLabel = visualData.getId() + ": " + typeString;
 
-            ActionButton visualSelectButton = ActionButtons.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, menuButtonLabel, menuButtonLabelStyle, onClick);
+            ActionButton visualSelectButton = MenuItems.RoundedRectangleButton(2, new Vec2D(300f, 50f), new Vec2D((float) Engine.getNativeWidth() / 2, 900f - (visualListIndex * (50f + 15f))), menuButtonStyle, menuButtonLabel, onClick);
             editMenuScreen.addItem(visualSelectButton);
             visualListIndex++;
         }

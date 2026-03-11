@@ -21,11 +21,11 @@ final public class RGBAValue {
     }
 
     public RGBAValue add(RGBAValue other) {
-        return new RGBAValue(this.r + other.r, this.g + this.g, this.b + this.b, this.a + this.a);
+        return new RGBAValue(this.r + other.r, this.g + other.g, this.b + other.b, this.a + other.a);
     }
 
     public RGBAValue multiply(RGBAValue other) {
-        return new RGBAValue(this.r * other.r, this.g * this.g, this.b * this.b, this.a * this.a);
+        return new RGBAValue(this.r * other.r, this.g * other.g, this.b * other.b, this.a * other.a);
     }
 
     public RGBAValue scalar(float scalar) {

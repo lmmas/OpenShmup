@@ -9,7 +9,7 @@ import json.SafeJsonNode;
 
 import java.nio.file.Path;
 
-public class SimpleRectangleHitboxConverter implements HitboxConverter {
+final public class SimpleRectangleHitboxConverter implements HitboxConverter {
 
     @Override
     public HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {

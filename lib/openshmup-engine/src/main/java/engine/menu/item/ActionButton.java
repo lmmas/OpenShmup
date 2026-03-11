@@ -9,7 +9,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class ActionButton implements MenuItem {
+final public class ActionButton implements MenuItem {
 
     @Getter final private List<SceneVisual> visuals;
 
