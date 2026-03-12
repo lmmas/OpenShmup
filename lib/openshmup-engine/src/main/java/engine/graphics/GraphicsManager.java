@@ -150,4 +150,8 @@ final public class GraphicsManager implements EngineSystem {
     @Override public void update() {
         drawGraphics();
     }
+
+    @Override public int getUpdateIndex() {
+        return 10;
+    }
 }

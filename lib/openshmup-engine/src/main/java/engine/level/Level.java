@@ -104,7 +104,7 @@ final public class Level implements EngineSystem {
 
     public void start() {
         loadAssets();
-        scene.start();
+        scene.startTimer();
         timer.start();
     }
 
@@ -181,6 +181,10 @@ final public class Level implements EngineSystem {
         }
         entitiesToRemove.clear();
         levelUI.update();
+    }
+
+    @Override public int getUpdateIndex() {
+        return 7;
     }
 
     public void addSpawnable(Spawnable spawnable) {

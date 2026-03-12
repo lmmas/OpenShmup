@@ -30,6 +30,10 @@ public class Menu implements EngineSystem {
         displayedMenuScreens.getLast().getMenuItems().forEach(MenuItem::handleInputs);
     }
 
+    @Override public int getUpdateIndex() {
+        return 8;
+    }
+
     private void addMenuScreenToScene(MenuScreen menuScreen) {
         assert scene != null : "no scene attached to this menu";
         menuScreen.getMenuItems().stream().flatMap(menuItem -> menuItem.getVisuals().stream()).forEach(visual ->

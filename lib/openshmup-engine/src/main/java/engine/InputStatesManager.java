@@ -72,6 +72,10 @@ final public class InputStatesManager implements EngineSystem {
         }
     }
 
+    @Override public int getUpdateIndex() {
+        return 0;
+    }
+
     public List<Boolean> getGameControlStates() {
         ArrayList<Boolean> controlStatesCopy = new ArrayList<>(controlStatesList.size());
         controlStatesCopy.addAll(controlStatesList);

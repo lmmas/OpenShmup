@@ -46,7 +46,7 @@ public class Scene implements EngineSystem {
         this.debugModeEnabled = false;
     }
 
-    public void start() {
+    public void startTimer() {
         this.timer.start();
     }
 
@@ -79,6 +79,10 @@ public class Scene implements EngineSystem {
         visualsToRemove.clear();
         sceneDebug.update();
         lastDrawTime = sceneTime;
+    }
+
+    @Override public int getUpdateIndex() {
+        return 9;
     }
 
 

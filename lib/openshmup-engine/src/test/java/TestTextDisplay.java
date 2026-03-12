@@ -4,7 +4,6 @@ import engine.scene.Scene;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.RGBAValue;
-import engine.types.Vec2D;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -15,8 +14,9 @@ public class TestTextDisplay {
 
     public static void main(String[] args) throws IOException {
 
-        Engine myEngine = new Engine();
-        Engine.setNativeResolution(540, 1080);
+        Engine.init();
+        Engine.setNativeResolution(1080, 1080);
+        Engine.initGraphicsManager();
 
         Scene testScene = new Scene();
         Engine.switchCurrentScene(testScene);
@@ -24,7 +24,8 @@ public class TestTextDisplay {
 
             Font myFont = Font.createFromTTF(Paths.get("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf"));
             myFont.getBitmap().loadInGPU();
-            TextDisplay myTextDisplay = new TextDisplay(2, myFont, false, 24.0f / Engine.getNativeHeight(), new Vec2D(0.5f, 0.5f), "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!", new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f), TextAlignment.CENTER);
+            String displayedString = "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!";
+            TextDisplay myTextDisplay = new TextDisplay(0, myFont, false, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f), TextAlignment.CENTER);
             testScene.addVisual(myTextDisplay);
 
         } catch (IOException e) {
@@ -32,6 +33,6 @@ public class TestTextDisplay {
         }
         window.show();
 
-        myEngine.run();
+        Engine.run();
     }
 }

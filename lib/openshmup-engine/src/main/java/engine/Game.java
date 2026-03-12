@@ -1,7 +1,6 @@
 package engine;
 
 import engine.gameData.GameDataManager;
-import engine.graphics.GraphicsManager;
 import engine.level.Level;
 import engine.menu.Menu;
 import engine.scene.Scene;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.List;
 
 final public class Game extends Engine {
 
@@ -26,15 +24,18 @@ final public class Game extends Engine {
         if (args.length != 1) {
             throw new IllegalArgumentException("invalid engine arguments");
         }
-        new Game(args[0]).run();
+        Game.init(args[0]);
+        Game.run();
     }
 
-    public Game(String gameFolderName) throws IOException {
-        super();
-        levelTime = 0.0d;
+    private Game() {}
 
-        graphicsManager.set(new GraphicsManager());
-        inputStatesManager.set(new InputStatesManager());
+    public static void init(String gameFolderName) throws IOException {
+        Engine.init();
+        Engine.initInputStatesManager();
+        Engine.initGraphicsManager();
+
+        levelTime = 0.0d;
         gameDataManager = new GameDataManager(gameFolderName);
         gameDataManager.loadGameConfig();
         gameDataManager.loadGameContents();
@@ -45,29 +46,29 @@ final public class Game extends Engine {
         window.show();
     }
 
-    @Override
-    public void run() {
-        gameInit();
-        loop();
-        terminate();
+    public static void run() {
+        gameStart();
+        Engine.loop();
+        Engine.terminate();
     }
 
-    public static void gameInit() {
+    public static void gameStart() {
         gameDataManager.getTimeline(0).resetTime();
         Scene levelScene = new Scene();
         Menu gameMenu = new Menu();
-        gameMenu.setScene(levelScene);
         switchCurrentScene(levelScene);
         switchCurrentMenu(gameMenu);
-        currentLevel.set(new Level(levelScene, gameDataManager.getTimeline(0)));
-        switchCurrentScene(levelScene);
-        getCurrentScene().start();
+        currentLevel.set(new Level(currentScene.get(), gameDataManager.getTimeline(0)));
+        setCurrentLevelActive(true);
+        getCurrentScene().startTimer();
         getCurrentLevel().start();
-
-        Engine.activeSystemsList = List.of(inputStatesManager, currentLevel, currentMenu, currentScene, graphicsManager);
     }
 
     public static Level getCurrentLevel() {
         return currentLevel.get();
+    }
+
+    public static void setCurrentLevelActive(boolean active) {
+        setEngineSystemActive(currentLevel, active);
     }
 }

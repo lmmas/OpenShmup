@@ -2,9 +2,6 @@ package editor;
 
 import engine.Engine;
 import engine.GlobalVars;
-import engine.InputStatesManager;
-import engine.graphics.GraphicsManager;
-import engine.menu.Menu;
 import engine.scene.Scene;
 import lombok.Getter;
 
@@ -24,21 +21,20 @@ final public class Editor extends Engine {
         if (args.length != 0) {
             throw new IllegalArgumentException("invalid editor arguments");
         }
-        new Editor().run();
+        Editor.init();
+        Engine.run();
     }
 
-    public Editor() throws IOException {
-        super();
-        setNativeResolution(1920, 1080);
-        graphicsManager.set(new GraphicsManager());
-        inputStatesManager.set(new InputStatesManager());
-        Menu mainMenu = Menus.MainMenu();
+    public static void init() throws IOException {
+
+        Engine.init();
+        Engine.setNativeResolution(1920, 1080);
+        Engine.initInputStatesManager();
+        Engine.initGraphicsManager();
         switchCurrentScene(new Scene());
-        switchCurrentMenu(mainMenu);
+        switchCurrentMenu(Menus.MainMenu());
 
-        activeSystemsList = List.of(inputStatesManager, currentMenu, currentScene, graphicsManager);
         window.show();
-
     }
 
     public static void loadGames() throws IOException {

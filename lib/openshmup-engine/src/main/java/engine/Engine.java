@@ -19,7 +19,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -29,7 +30,7 @@ public class Engine {
 
     private static boolean programShouldTerminate;
 
-    static public Window window;
+    public static Window window;
 
     static private IVec2D nativeResolution;
     @Setter
@@ -49,9 +50,11 @@ public class Engine {
 
     final protected static Reference<Menu> currentMenu = new Reference<>(null);
 
-    protected static List<Reference<? extends EngineSystem>> activeSystemsList;
+    private static ArrayList<Reference<? extends EngineSystem>> activeSystemsList = new ArrayList<>();
 
-    public Engine() throws IOException {
+    protected Engine() {}
+
+    public static void init() throws IOException {
         programShouldTerminate = false;
         Engine.inLoopScript = null;
         sceneTime = 0.0d;
@@ -62,7 +65,7 @@ public class Engine {
         assetManager = new AssetManager();
     }
 
-    private void detectRootFolder() {
+    private static void detectRootFolder() {
         try {
             Path rootFolderAbsolutePath = Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
             GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
@@ -70,10 +73,9 @@ public class Engine {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-
     }
 
-    private void OpenGLInitialization() {
+    private static void OpenGLInitialization() {
         GLFWErrorCallback.createPrint(System.err).set();
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -106,14 +108,18 @@ public class Engine {
         programShouldTerminate = true;
     }
 
-    protected void loop() {
+    protected static void loop() {
         while (!programShouldTerminate) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
             if (inLoopScript != null) {
                 inLoopScript.run();
             }
-            activeSystemsList.forEach(ref -> ref.get().update());
+            for (var systemRef : activeSystemsList) {
+                EngineSystem system = systemRef.get();
+                assert system != null : "system is null";
+                system.update();
+            }
             glfwSwapBuffers(window.getGlfwWindow());
             glfwPollEvents();
             if (glfwWindowShouldClose(window.getGlfwWindow())) {
@@ -122,22 +128,33 @@ public class Engine {
         }
     }
 
-    protected void terminate() {
+    protected static void terminate() {
         Callbacks.glfwFreeCallbacks(window.getGlfwWindow());
         glfwDestroyWindow(window.getGlfwWindow());
         glfwTerminate();
         debugProc.free();
     }
 
-    public void run() {
+    public static void run() {
         loop();
         terminate();
+    }
+
+    public static void initGraphicsManager() {
+        graphicsManager.set(new GraphicsManager());
+        setGraphicsManagerActive(true);
+    }
+
+    public static void initInputStatesManager() {
+        inputStatesManager.set(new InputStatesManager());
+        setInputStatesManagerActive(true);
     }
 
     public static void switchCurrentScene(Scene scene) {
         graphicsManager.get().clearLayers();
         currentScene.set(scene);
-        scene.start();
+        setCurrentSceneActive(true);
+        scene.startTimer();
     }
 
     public static int getNativeWidth() {
@@ -178,6 +195,39 @@ public class Engine {
         currentMenu.set(menu);
         if (menu != null) {
             menu.setScene(getCurrentScene());
+            setCurrentMenuActive(true);
         }
     }
+
+    protected static void setEngineSystemActive(Reference<? extends EngineSystem> engineSystemRef, boolean active) {
+        boolean alreadyActive = activeSystemsList.contains(engineSystemRef);
+        if (active && !alreadyActive) {
+            activeSystemsList.add(engineSystemRef);
+            updateActiveSystemsOrder();
+        }
+        if (!active && alreadyActive) {
+            activeSystemsList.remove(engineSystemRef);
+        }
+    }
+
+    public static void setInputStatesManagerActive(boolean active) {
+        setEngineSystemActive(inputStatesManager, active);
+    }
+
+    public static void setGraphicsManagerActive(boolean active) {
+        setEngineSystemActive(graphicsManager, active);
+    }
+
+    public static void setCurrentSceneActive(boolean active) {
+        setEngineSystemActive(currentScene, active);
+    }
+
+    public static void setCurrentMenuActive(boolean active) {
+        setEngineSystemActive(currentMenu, active);
+    }
+
+    private static void updateActiveSystemsOrder() {
+        activeSystemsList.sort(Comparator.comparingInt(ref -> ref.get().getUpdateIndex()));
+    }
+
 }
