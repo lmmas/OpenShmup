@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Locale;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -55,6 +56,7 @@ public class Engine {
     protected Engine() {}
 
     public static void init() throws IOException {
+        Locale.setDefault(Locale.ENGLISH);
         programShouldTerminate = false;
         Engine.inLoopScript = null;
         sceneTime = 0.0d;

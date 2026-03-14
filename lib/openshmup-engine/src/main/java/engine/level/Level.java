@@ -35,8 +35,10 @@ import lombok.Getter;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import static engine.Engine.assetManager;
 import static engine.Engine.getInputStatesManager;
@@ -442,7 +444,7 @@ final public class Level implements EngineSystem {
 
         public void update() {
             if (debugModeEnabled) {
-                DecimalFormat df = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
+                DecimalFormat df = new DecimalFormat("#.00");
                 df.setRoundingMode(RoundingMode.HALF_DOWN);
                 double levelTime = Game.getLevelTime();
                 levelTimeDisplay.setDisplayedString(df.format(levelTime) + " s");
