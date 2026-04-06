@@ -30,12 +30,15 @@ final public class ProjectileConverter implements EntityConverter {
         if (node.hasField(JsonFieldNames.Projectile.defaultTrajectoryId)) {
             defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Projectile.defaultTrajectoryId);
         }
-        ArrayList<ExtraComponentEditionData> extraComponents = new ArrayList<>();
-        if (node.hasField(JsonFieldNames.Projectile.shot)) {
-            SafeJsonNode shotNode = node.safeGetObject(JsonFieldNames.Projectile.shot);
-            extraComponents.add(jsonDataConverter.extraComponentEditionDataFromJSON(shotNode, jsonDataConverter, textureFolderPath));
+        ArrayList<ShotEditionData> shots = new ArrayList<>();
+        if (node.hasField(JsonFieldNames.Ship.shots)) {
+            SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);
+            List<SafeJsonNode> shotNodes = shotsArray.safeGetObjectListFromArray();
+            for (var extraComponentNode : shotNodes) {
+                shots.add(jsonDataConverter.shotEditionDataFromJSON(extraComponentNode, jsonDataConverter, textureFolderPath));
+            }
         }
-        return new ProjectileEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, extraComponents);
+        return new ProjectileEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots);
     }
 
     @Override

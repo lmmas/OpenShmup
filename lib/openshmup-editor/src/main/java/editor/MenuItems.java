@@ -40,4 +40,6 @@ final public class MenuItems {
         BorderedRoundedRectangle borderedRoundedRectangle = new BorderedRoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
         return new TextField(layer + 1, size, position, menuButtonLabelStyle, List.of(borderedRoundedRectangle), startingText);
     }
+
+
 }

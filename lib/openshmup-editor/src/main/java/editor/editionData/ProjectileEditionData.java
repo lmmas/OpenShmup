@@ -22,9 +22,9 @@ import java.util.List;
 
     private ListAttribute<SpawnableEditionData> deathspawn;
 
-    private ListAttribute<ExtraComponentEditionData> extraComponents;
+    private ListAttribute<ShotEditionData> shots;
 
-    public ProjectileEditionData(int id, boolean evil, float sizeX, float sizeY, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ExtraComponentEditionData> extraComponents) {
+    public ProjectileEditionData(int id, boolean evil, float sizeX, float sizeY, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
         this.idAttribute = new IntegerAttribute("Entity ID", JsonFieldNames.Projectile.id, id);
         this.evil = new BooleanAttribute("evil", JsonFieldNames.Projectile.evil, evil);
         this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size, sizeX, sizeY);
@@ -32,7 +32,7 @@ import java.util.List;
         this.hitbox = new EditionDataAttribute<>("hitbox", JsonFieldNames.Projectile.hitbox, hitbox);
         this.trajectoryId = new IntegerAttribute("Trajectory ID", JsonFieldNames.Projectile.defaultTrajectoryId, trajectoryId);
         this.deathspawn = new ListAttribute<>("Death spawn", JsonFieldNames.Projectile.deathSpawn, deathspawn);
-        this.extraComponents = new ListAttribute<>("Extra Components", "", extraComponents);
+        this.shots = new ListAttribute<>("Shot", "", shots);
     }
 
     @Override
@@ -41,6 +41,6 @@ import java.util.List;
     }
 
     @Override public List<Attribute> getAttributes() {
-        return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, deathspawn, extraComponents);
+        return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, deathspawn, shots);
     }
 }

@@ -65,10 +65,7 @@ final public class RoundedColorRectangle extends Graphic<RoundedColorRectangle.C
     }
 
     public void setColor(float r, float g, float b, float a) {
-        vertex.color.r = r;
-        vertex.color.g = g;
-        vertex.color.b = b;
-        vertex.color.a = a;
+        vertex.color = new RGBAValue(r, g, b, a);
         vertex.setDataHasChanged();
     }
 
@@ -80,7 +77,7 @@ final public class RoundedColorRectangle extends Graphic<RoundedColorRectangle.C
         @Getter
         private final float roundingRadius;
 
-        private final RGBAValue color;
+        private RGBAValue color;
 
         @Override
         public ColorRoundedRectangleVertex copy() {

@@ -100,7 +100,7 @@ final public class JsonFieldNames {
 
         final public static String defaultTrajectoryId = "defaultTrajectoryId";
 
-        final public static String shot = "shot";
+        final public static String shots = "shots";
 
         final public static String hp = "hp";
     }
@@ -121,7 +121,7 @@ final public class JsonFieldNames {
 
         final public static String defaultTrajectoryId = "defaultTrajectoryId";
 
-        final public static String shot = "shot";
+        final public static String shots = "shots";
     }
 
     public static class DisplaySpawnInfo {

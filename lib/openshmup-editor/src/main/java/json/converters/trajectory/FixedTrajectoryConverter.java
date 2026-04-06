@@ -23,7 +23,7 @@ final public class FixedTrajectoryConverter implements TrajectoryConverter {
     public ObjectNode toJson(TrajectoryEditionData trajectoryData, ObjectNode node) {
         FixedTrajectoryEditionData fixedTrajectoryData = (FixedTrajectoryEditionData) trajectoryData;
 
-        List<Attribute> attributes = List.of(fixedTrajectoryData.getId(), fixedTrajectoryData.getTrajectoryFunctionX(), fixedTrajectoryData.getTrajectoryFunctionY());
+        List<Attribute> attributes = List.of(fixedTrajectoryData.getIdAttribute(), fixedTrajectoryData.getTrajectoryFunctionX(), fixedTrajectoryData.getTrajectoryFunctionY());
         attributes.forEach(attribute -> attribute.addToNode(node));
         return node;
     }

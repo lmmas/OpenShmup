@@ -19,6 +19,14 @@ import java.util.List;
         this.playerMovementSpeed = new FloatAttribute("Player movement speed (pix/s)", JsonFieldNames.PlayerControlledTrajectory.playerMovementSpeed, playerMovementSpeed);
     }
 
+    public IntegerAttribute getIdAttribute() {
+        return id;
+    }
+
+    @Override public int getId() {
+        return id.getValue();
+    }
+
     @Override public List<Attribute> getAttributes() {
         return List.of(id, playerMovementSpeed);
     }

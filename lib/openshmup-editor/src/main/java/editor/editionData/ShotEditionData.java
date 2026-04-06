@@ -18,7 +18,7 @@ import java.util.List;
 
     public ShotEditionData(float shotPeriod, float firstShotTime, List<SpawnableEditionData> spawnables) {
         this.shotPeriod = new FloatAttribute("Shot period", JsonFieldNames.Shot.shotPeriod, shotPeriod);
-        this.firstShotTime = new FloatAttribute("First shot time", JsonFieldNames.Shot.firstShotTime, firstShotTime);
+        this.firstShotTime = new FloatAttribute("First shots time", JsonFieldNames.Shot.firstShotTime, firstShotTime);
         this.spawnables = new ListAttribute<SpawnableEditionData>("Spawnables", JsonFieldNames.Shot.spawn, spawnables);
     }
 

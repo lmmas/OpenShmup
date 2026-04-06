@@ -22,7 +22,7 @@ final public class PlayerTrajectoryConverter implements TrajectoryConverter {
     public ObjectNode toJson(TrajectoryEditionData trajectoryData, ObjectNode node) {
         PlayerControlledTrajectoryEditionData playerControlledTrajectoryData = (PlayerControlledTrajectoryEditionData) trajectoryData;
 
-        List<Attribute> attributes = List.of(playerControlledTrajectoryData.getId(), playerControlledTrajectoryData.getPlayerMovementSpeed());
+        List<Attribute> attributes = List.of(playerControlledTrajectoryData.getIdAttribute(), playerControlledTrajectoryData.getPlayerMovementSpeed());
         attributes.forEach(attribute -> attribute.addToNode(node));
 
         return node;

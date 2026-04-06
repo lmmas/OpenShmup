@@ -40,9 +40,11 @@ final public class EntityFactories {
             trajectory = Trajectory.DEFAULT_EMPTY();
         }
         ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
-        if (node.hasField(JsonFieldNames.Ship.shot)) {
-            SafeJsonNode shotNode = node.safeGetObject(JsonFieldNames.Ship.shot);
-            extraComponents.add(gameFactory.extraComponentFromJson(shotNode, gameData, id == 0));
+        if (node.hasField(JsonFieldNames.Ship.shots)) {
+            SafeJsonNode shotsNode = node.safeGetArray(JsonFieldNames.Ship.shots);
+            for (SafeJsonNode shotNode : shotsNode.safeGetObjectListFromArray()) {
+                extraComponents.add(gameFactory.extraComponentFromJson(shotNode, gameData, id == 0));
+            }
         }
         int hp = node.safeGetInt(JsonFieldNames.Ship.hp);
         return new Ship(0f, 0f, size.x, size.y, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
@@ -68,9 +70,11 @@ final public class EntityFactories {
             trajectory = Trajectory.DEFAULT_EMPTY();
         }
         ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
-        if (node.hasField(JsonFieldNames.Projectile.shot)) {
-            SafeJsonNode shotNode = node.safeGetObject(JsonFieldNames.Projectile.shot);
-            extraComponents.add(gameFactory.extraComponentFromJson(shotNode, gameData, id == 0));
+        if (node.hasField(JsonFieldNames.Projectile.shots)) {
+            SafeJsonNode shotsNode = node.safeGetArray(JsonFieldNames.Projectile.shots);
+            for (SafeJsonNode shotNode : shotsNode.safeGetObjectListFromArray()) {
+                extraComponents.add(gameFactory.extraComponentFromJson(shotNode, gameData, id == 0));
+            }
         }
         return new Projectile(0f, 0f, size.x, size.y, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
     };

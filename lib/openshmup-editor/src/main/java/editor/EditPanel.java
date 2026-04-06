@@ -10,8 +10,10 @@ import engine.menu.item.MenuItem;
 import engine.menu.item.TextField;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
+import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import lombok.Getter;
 
@@ -54,12 +56,19 @@ final public class EditPanel {
 
     private void buildEditPanel() {
         this.menuScreen = new MenuScreen(4);
-
-        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(0, new Vec2D(1500f, 900f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor);
+        SceneVisual backgroundColor = new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f);
+        menuScreen.addVisual(backgroundColor);
+        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(1500f, 900f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
         menuScreen.addVisual(backgroundRectangle);
 
+        Vec2D applyButtonSize = new Vec2D(150, 50);
+        Vec2D applyButtonPosition = new Vec2D(1465, 125);
+        ActionButton applyButton = engine.menu.item.MenuItems.RoundedRectangleButton(3, applyButtonSize, applyButtonPosition, menuButtonStyle2, "Apply", (() -> {}));
+        menuScreen.addItem(applyButton);
+
         Vec2D closeButtonSize = new Vec2D(150, 50);
-        ActionButton closeButton = engine.menu.item.MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle, "Close", (() -> Engine.getCurrentMenu().removeMenuScreen(menuScreen)));
+        Vec2D closeButtonPosition = new Vec2D(1625, 125);
+        ActionButton closeButton = engine.menu.item.MenuItems.RoundedRectangleButton(3, closeButtonSize, closeButtonPosition, menuButtonStyle2, "Close", (() -> Engine.getCurrentMenu().removeMenuScreen(menuScreen)));
         menuScreen.addItem(closeButton);
 
         String panelTitleString = getPanelTitle();
@@ -197,7 +206,7 @@ final public class EditPanel {
                     doubleAttribute.setValue(value);
                 }
 
-                case EditionDataAttribute editionDataAttribute -> {
+                case EditionDataAttribute<?> editionDataAttribute -> {
                     assert false : "invalid attribute type";
                 }
 
@@ -225,7 +234,7 @@ final public class EditPanel {
                     iVec2DAttribute.setY(yValue);
                 }
 
-                case ListAttribute listAttribute -> {
+                case ListAttribute<?> listAttribute -> {
 
                 }
 

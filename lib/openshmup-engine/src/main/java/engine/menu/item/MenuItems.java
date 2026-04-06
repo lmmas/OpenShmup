@@ -14,6 +14,7 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 final public class MenuItems {
 
@@ -40,7 +41,7 @@ final public class MenuItems {
         return RoundedRectangleButton(layer, size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, style.textStyle(), onClick);
     }
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, TextStyle textStyle, List<String> labels) {
+    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, TextStyle textStyle, List<String> labels, Consumer<Integer> onChange) {
         List<List<SceneVisual>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
@@ -51,6 +52,10 @@ final public class MenuItems {
             ));
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition.x, buttonPosition.y, size.x, size.y));
         }
-        return new SelectorButtons(buttonVisuals, hitboxes);
+        return new SelectorButtons(buttonVisuals, hitboxes, onChange);
+    }
+
+    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle style, List<String> labels, Consumer<Integer> onChange) {
+        return StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), style.textStyle(), labels, onChange);
     }
 }

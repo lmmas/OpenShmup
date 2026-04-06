@@ -11,30 +11,32 @@
             "size": [100, 100]
         },
         "defaultTrajectoryId": 0,
-        "shot": {
-            "shotPeriod": 0.05,
-            "firstShotTime": 0.1,
-            "spawn": [
-                {
-                    "type": "entity",
-                    "id": 1,
-                    "trajectory": 2,
-                    "startingPosition": [25, 0]
-                },
-                {
-                    "type": "entity",
-                    "id": 1,
-                    "trajectory": 3,
-                    "startingPosition": [25, 0]
-                },
-                {
-                    "type": "entity",
-                    "id": 1,
-                    "trajectory": 4,
-                    "startingPosition": [25, 0]
-                }
-            ]
-        },
+        "shots": [
+            {
+                "shotPeriod": 0.05,
+                "firstShotTime": 0.1,
+                "spawn": [
+                    {
+                        "type": "entity",
+                        "id": 1,
+                        "trajectory": 2,
+                        "startingPosition": [25, 0]
+                    },
+                    {
+                        "type": "entity",
+                        "id": 1,
+                        "trajectory": 3,
+                        "startingPosition": [25, 0]
+                    },
+                    {
+                        "type": "entity",
+                        "id": 1,
+                        "trajectory": 4,
+                        "startingPosition": [25, 0]
+                    }
+                ]
+            }
+        ],
         "deathSpawn": [
             {
                 "type": "display",
@@ -66,18 +68,20 @@
             "type": "simpleRectangle",
             "size": [50, 50]
         },
-        "shot": {
-            "shotPeriod": 1.0,
-            "firstShotTime": 2,
-            "spawn": [
-                {
-                    "type": "entity",
-                    "id": 3,
-                    "trajectory": 1,
-                    "startingPosition": [0, -30]
-                }
-            ]
-        },
+        "shots": [
+            {
+                "shotPeriod": 1.0,
+                "firstShotTime": 2,
+                "spawn": [
+                    {
+                        "type": "entity",
+                        "id": 3,
+                        "trajectory": 1,
+                        "startingPosition": [0, -30]
+                    }
+                ]
+            }
+        ],
         "deathSpawn": [
             {
                 "type": "display",

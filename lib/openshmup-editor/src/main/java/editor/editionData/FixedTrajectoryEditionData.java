@@ -22,6 +22,14 @@ import java.util.List;
         this.trajectoryFunctionY = new StringAttribute("Trajectory function Y", JsonFieldNames.FixedTrajectory.functionY, trajectoryFunctionY);
     }
 
+    public IntegerAttribute getIdAttribute() {
+        return id;
+    }
+
+    @Override public int getId() {
+        return id.getValue();
+    }
+
     @Override public List<Attribute> getAttributes() {
         return List.of(id, trajectoryFunctionX, trajectoryFunctionY);
     }

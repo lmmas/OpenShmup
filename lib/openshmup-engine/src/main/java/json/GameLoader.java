@@ -69,7 +69,7 @@ final public class GameLoader {
         spawnableFactories.put("entity", entitySpawnInfoFactory);
 
         this.extraComponentFactories = new HashMap<>(1);
-        extraComponentFactories.put("shot", shotFactory);
+        extraComponentFactories.put("shots", shotFactory);
 
         this.entityFactories = new HashMap<>(2);
         entityFactories.put("ship", shipFactory);
@@ -113,7 +113,7 @@ final public class GameLoader {
     }
 
     public ExtraComponent extraComponentFromJson(SafeJsonNode node, GameDataManager gameData, boolean isPlayer) {
-        String type = "shot";
+        String type = "shots";
         var factory = extraComponentFactories.get(type);
         if (factory == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": extra component type is not supported");

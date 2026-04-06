@@ -66,10 +66,7 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
     }
 
     public void setColor(float r, float g, float b, float a) {
-        vertex.color.r = r;
-        vertex.color.g = g;
-        vertex.color.b = b;
-        vertex.color.a = a;
+        vertex.color = new RGBAValue(r, g, b, a);
         vertex.setDataHasChanged();
     }
 
@@ -83,7 +80,7 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         @Getter
         private final float borderWidth;
 
-        private final RGBAValue color;
+        private RGBAValue color;
 
         @Override
         public RoundedRectangleBorderVertex copy() {

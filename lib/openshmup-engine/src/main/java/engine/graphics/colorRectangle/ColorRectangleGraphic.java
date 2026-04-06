@@ -67,10 +67,7 @@ final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.C
     }
 
     public void setColor(float r, float g, float b, float a) {
-        vertex.color.r = r;
-        vertex.color.g = g;
-        vertex.color.b = b;
-        vertex.color.a = a;
+        vertex.color = new RGBAValue(r, g, b, a);
         vertex.setDataHasChanged();
     }
 
@@ -80,7 +77,7 @@ final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.C
 
         private final Vec2D position;
 
-        private final RGBAValue color;
+        private RGBAValue color;
 
         @Override
         public ColorRectangleVertex copy() {

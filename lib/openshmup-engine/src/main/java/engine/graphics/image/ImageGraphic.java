@@ -121,18 +121,12 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
     }
 
     public void setColorCoefs(float r, float g, float b, float a) {
-        vertex.textureColorCoefs.r = r;
-        vertex.textureColorCoefs.g = g;
-        vertex.textureColorCoefs.b = b;
-        vertex.textureColorCoefs.a = a;
+        vertex.textureColorCoefs = new RGBAValue(r, g, b, a);
         vertex.setDataHasChanged();
     }
 
     public void setAddedColor(float r, float g, float b, float a) {
-        vertex.addedColor.r = r;
-        vertex.addedColor.g = g;
-        vertex.addedColor.b = b;
-        vertex.addedColor.a = a;
+        vertex.addedColor = new RGBAValue(r, g, b, a);
         vertex.setDataHasChanged();
     }
 
@@ -148,9 +142,9 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
 
         private final Vec2D texturePosition;
 
-        private final RGBAValue textureColorCoefs;
+        private RGBAValue textureColorCoefs;
 
-        private final RGBAValue addedColor;
+        private RGBAValue addedColor;
 
         public ImageVertex(
             float imageSizeX, float imageSizeY,

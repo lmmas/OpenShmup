@@ -35,6 +35,8 @@ final public class EditorGameDataManager {
         JsonDataConverter jsonDataConverter = new JsonDataConverter();
         try {
             jsonDataConverter.loadVisuals(this);
+            jsonDataConverter.loadTrajectories(this);
+            jsonDataConverter.loadEntities(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

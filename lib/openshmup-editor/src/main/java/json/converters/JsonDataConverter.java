@@ -64,7 +64,7 @@ public class JsonDataConverter {
         this.spawnableConverters.put("entity", new EntitySpawnInfoConverter());
 
         this.extraComponentConverters = new HashMap<>(2);
-        this.extraComponentConverters.put("shot", new ShotConverter());
+        this.extraComponentConverters.put("shots", new ShotConverter());
 
         this.entityConverters = new HashMap<>(2);
         this.entityConverters.put("ship", new ShipConverter());
@@ -177,6 +177,10 @@ public class JsonDataConverter {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": extra component type is not supported");
         }
         return converter.fromJson(node, jsonDataConverter, textureFolderPath);
+    }
+
+    public ShotEditionData shotEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
+        return (ShotEditionData) extraComponentConverters.get("shots").fromJson(node, jsonDataConverter, textureFolderPath);
     }
 
     public EntityEditionData entityEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {

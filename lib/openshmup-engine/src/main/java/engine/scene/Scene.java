@@ -89,6 +89,7 @@ public class Scene implements EngineSystem {
     final public void addVisual(SceneVisual visual, int sceneLayerIndex) {
         int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
         SceneLayer sceneLayer = layers.get(sceneLayerIndex);
+        assert (sceneLayer == null) || !sceneLayer.getVisuals().contains(visual) : "visual already in layer";
         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
 
         //determining how many graphical layers need to be inserted
@@ -100,6 +101,7 @@ public class Scene implements EngineSystem {
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
         else {
+            assert sceneLayer != null;
             sceneLayerGraphicalSubLayerCount = sceneLayer.getGraphicalSubLayerCount();
             if (visualMaxGraphicalSubLayer >= sceneLayerGraphicalSubLayerCount) {
                 graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerGraphicalSubLayerCount + 1;

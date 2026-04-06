@@ -22,22 +22,23 @@ final public class ShipConverter implements EntityConverter {
         HitboxEditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Ship.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
-        List<SpawnableEditionData> deathSpawn = spawnableNodes.stream().map(
-            jsonDataConverter::spawnableEditionDataFromJSON
-        ).toList();
+        List<SpawnableEditionData> deathSpawn = spawnableNodes.stream().map(jsonDataConverter::spawnableEditionDataFromJSON).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Ship.spriteVisualId);
         Integer defaultTrajectoryID = null;
         if (node.hasField(JsonFieldNames.Ship.defaultTrajectoryId)) {
             defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
         }
-        ArrayList<ExtraComponentEditionData> extraComponents = new ArrayList<>();
-        if (node.hasField(JsonFieldNames.Ship.shot)) {
-            SafeJsonNode shotNode = node.safeGetObject(JsonFieldNames.Ship.shot);
-            extraComponents.add(jsonDataConverter.extraComponentEditionDataFromJSON(shotNode, jsonDataConverter, textureFolderPath));
+        ArrayList<ShotEditionData> shots = new ArrayList<>();
+        if (node.hasField(JsonFieldNames.Ship.shots)) {
+            SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);
+            List<SafeJsonNode> shotNodes = shotsArray.safeGetObjectListFromArray();
+            for (var extraComponentNode : shotNodes) {
+                shots.add(jsonDataConverter.shotEditionDataFromJSON(extraComponentNode, jsonDataConverter, textureFolderPath));
+            }
         }
 
         int hp = node.safeGetInt(JsonFieldNames.Ship.hp);
-        return new ShipEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, extraComponents, hp);
+        return new ShipEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots, hp);
     }
 
     @Override public ObjectNode toJson(EntityEditionData entityData, ObjectNode node) {

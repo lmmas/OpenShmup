@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 final public class SelectorButtons implements MenuItem {
 
@@ -15,13 +16,23 @@ final public class SelectorButtons implements MenuItem {
     @Getter
     private int selectedValue;
 
-    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes) {
+    final private Consumer<Integer> onChange;
+
+    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, Consumer<Integer> onChange) {
+        this.onChange = onChange;
+        this.selectedValue = 0;
         assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
         int buttonCount = buttonVisuals.size();
         ArrayList<Runnable> onClicks = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             final int buttonValue = i;
-            onClicks.add(() -> selectedValue = buttonValue);
+            onClicks.add(() -> {
+                boolean valueChanged = selectedValue != buttonValue;
+                selectedValue = buttonValue;
+                if (valueChanged) {
+                    this.onChange.accept(selectedValue);
+                }
+            });
         }
         this.actionButtons = new ArrayList<>(buttonCount);
         this.visuals = new ArrayList<>();
