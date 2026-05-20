@@ -21,11 +21,11 @@ final public class CompositeHitbox implements Hitbox {
 
     private ArrayList<Vec2D> rectangleRelativeSizes;
 
-    public CompositeHitbox(Texture texture, float sizeX, float sizeY) {
-        this.position = new Vec2D(0.0f, 0.0f);
-        this.size = new Vec2D(sizeX, sizeY);
-        int imageWidth = texture.getWidth();
-        int imageHeight = texture.getHeight();
+    public CompositeHitbox(Texture texture, Vec2D size) {
+        this.position = Vec2D.ZERO;
+        this.size = new Vec2D(size);
+        int imageWidth = texture.getResolution().x;
+        int imageHeight = texture.getResolution().y;
         int textureChannelCount = texture.getChannelCount();
         ByteBuffer image = texture.getImageBuffer();
         byte[] bytes = new byte[image.capacity()];
@@ -139,7 +139,7 @@ final public class CompositeHitbox implements Hitbox {
         }
         this.rectangleList = new ArrayList<>(rectangleRelativePositions.size());
         for (int i = 0; i < rectangleRelativePositions.size(); i++) {
-            rectangleList.add(new SimpleRectangleHitbox(0.0f, 0.0f, 0.0f, 0.0f));
+            rectangleList.add(new SimpleRectangleHitbox(Vec2D.ZERO, Vec2D.ZERO));
         }
         setSize(size);
     }

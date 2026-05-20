@@ -1,5 +1,6 @@
 package engine.assets;
 
+import engine.types.IVec2D;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
@@ -13,10 +14,7 @@ import static org.lwjgl.stb.STBImage.*;
 final public class Texture {
 
     private Integer textureID;
-    @Getter
-    private final int width;
-    @Getter
-    private final int height;
+    @Getter final private IVec2D resolution;
     @Getter
     private final int channelCount;
     @Getter
@@ -24,10 +22,9 @@ final public class Texture {
     @Getter
     private boolean loadedInGPU;
 
-    Texture(int width, int height, int channelCount, ByteBuffer imageBuffer) {
+    Texture(IVec2D resolution, int channelCount, ByteBuffer imageBuffer) {
         this.textureID = null;
-        this.width = width;
-        this.height = height;
+        this.resolution = resolution;
         this.channelCount = channelCount;
         this.imageBuffer = imageBuffer;
         this.loadedInGPU = false;
@@ -42,7 +39,7 @@ final public class Texture {
         if (imageBuffer == null)
             throw new IOException("Could not load texture file \"" + filepath + "\"" + stbi_failure_reason());
         //assert channelCountArray[0] == 3 || channelCountArray[0] == 4: "Invalid number of channels :" + channelCountArray[0];
-        return new Texture(widthArray[0], heightArray[0], channelCountArray[0], imageBuffer);
+        return new Texture(new IVec2D(widthArray[0], heightArray[0]), channelCountArray[0], imageBuffer);
     }
 
     public void loadInGPU() {
@@ -59,15 +56,15 @@ final public class Texture {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_RED);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_RED);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_A, GL_RED);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, this.width, this.height,
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, this.resolution.x, this.resolution.y,
                 0, GL_RED, GL_UNSIGNED_BYTE, imageBuffer);
         }
         else if (channelCount == 3) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this.width, this.height,
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this.resolution.x, this.resolution.y,
                 0, GL_RGB, GL_UNSIGNED_BYTE, imageBuffer);
         }
         else if (channelCount == 4) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height,
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.resolution.x, this.resolution.y,
                 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer);
         }
         stbi_image_free(imageBuffer);
@@ -75,12 +72,12 @@ final public class Texture {
     }
 
     public void flipImageBuffer() {
-        assert imageBuffer != null : "trying to flip umage buffer while it is null";
+        assert imageBuffer != null : "trying to flip image buffer while it is null";
         ByteBuffer flippedBuffer = BufferUtils.createByteBuffer(imageBuffer.capacity());
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                byte b = imageBuffer.get((height - 1 - y) * width + x);
-                flippedBuffer.put(y * width + x, b);
+        for (int y = 0; y < resolution.y; y++) {
+            for (int x = 0; x < resolution.x; x++) {
+                byte b = imageBuffer.get((resolution.y - 1 - y) * resolution.x + x);
+                flippedBuffer.put(y * resolution.x + x, b);
             }
         }
         this.imageBuffer = flippedBuffer;

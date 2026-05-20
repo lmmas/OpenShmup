@@ -38,7 +38,7 @@ final public class ProjectileConverter implements EntityConverter {
                 shots.add(jsonDataConverter.shotEditionDataFromJSON(extraComponentNode, jsonDataConverter, textureFolderPath));
             }
         }
-        return new ProjectileEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots);
+        return new ProjectileEditionData(id, evil, size, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots);
     }
 
     @Override

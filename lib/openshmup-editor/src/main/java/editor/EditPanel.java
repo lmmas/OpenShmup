@@ -13,6 +13,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
+import engine.types.IVec2D;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
 import lombok.Getter;
@@ -140,13 +141,13 @@ final public class EditPanel {
                     TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Text.menuButtonLabelStyle, TextAlignment.LEFT);
                     menuScreen.addVisual(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
-                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getX()));
+                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().x));
                     menuScreen.addItem(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
                     TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Text.menuButtonLabelStyle, TextAlignment.LEFT);
                     menuScreen.addVisual(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
-                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getY()));
+                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().y));
                     menuScreen.addItem(textField2);
                     attributeItemMap.put(attribute, List.of(textField1, textField2));
                     attributePosition = attributePosition.add(attributeStride);
@@ -170,13 +171,13 @@ final public class EditPanel {
                     TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Text.menuButtonLabelStyle, TextAlignment.LEFT);
                     menuScreen.addVisual(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
-                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getX()));
+                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().x));
                     menuScreen.addItem(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
                     TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Text.menuButtonLabelStyle, TextAlignment.LEFT);
                     menuScreen.addVisual(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
-                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getY()));
+                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().y));
                     menuScreen.addItem(textField2);
                     attributeItemMap.put(attribute, List.of(textField1, textField2));
                     attributePosition = attributePosition.add(attributeStride);
@@ -228,8 +229,7 @@ final public class EditPanel {
                     TextField textField2 = (TextField) items.get(1);
                     int xValue = Integer.parseInt(textField1.getStringValue());
                     int yValue = Integer.parseInt(textField2.getStringValue());
-                    iVec2DAttribute.setX(xValue);
-                    iVec2DAttribute.setY(yValue);
+                    iVec2DAttribute.setValue(new IVec2D(xValue, yValue));
                 }
 
                 case ListAttribute<?> listAttribute -> {
@@ -248,8 +248,7 @@ final public class EditPanel {
                     TextField textField2 = (TextField) items.get(1);
                     float xValue = Float.parseFloat(textField1.getStringValue());
                     float yValue = Float.parseFloat(textField2.getStringValue());
-                    vec2DAttribute.setX(xValue);
-                    vec2DAttribute.setY(yValue);
+                    vec2DAttribute.setValue(new Vec2D(xValue, yValue));
                 }
             }
         }

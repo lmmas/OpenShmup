@@ -32,9 +32,9 @@ final public class RGBAValue {
         return new RGBAValue(this.r * scalar, this.g * scalar, this.b * scalar, this.a * scalar);
     }
 
-    final public static RGBAValue ZEROES = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
+    final public static RGBAValue ZERO = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
 
-    final public static RGBAValue ONES = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
+    final public static RGBAValue ONE = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
 
     final public static RGBAValue SOLID_WHITE = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
 

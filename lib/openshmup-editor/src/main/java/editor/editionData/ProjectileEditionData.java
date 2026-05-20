@@ -1,6 +1,7 @@
 package editor.editionData;
 
 import editor.attribute.*;
+import engine.types.Vec2D;
 import json.JsonFieldNames;
 import lombok.Getter;
 
@@ -24,10 +25,10 @@ import java.util.List;
 
     private ListAttribute<ShotEditionData> shots;
 
-    public ProjectileEditionData(int id, boolean evil, float sizeX, float sizeY, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
+    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
         this.idAttribute = new IntegerAttribute("Entity ID", JsonFieldNames.Projectile.id, id);
         this.evil = new BooleanAttribute("evil", JsonFieldNames.Projectile.evil, evil);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size, sizeX, sizeY);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size, size);
         this.spriteId = new IntegerAttribute("Sprite visual ID", JsonFieldNames.Projectile.spriteVisualId, spriteId);
         this.hitbox = new EditionDataAttribute<>("hitbox", JsonFieldNames.Projectile.hitbox, hitbox);
         this.trajectoryId = new IntegerAttribute("Trajectory ID", JsonFieldNames.Projectile.defaultTrajectoryId, trajectoryId);

@@ -41,16 +41,16 @@ final public class ScrollingImage extends SceneVisual {
             position1,
             Vec2D.ONE,
             Vec2D.ZERO,
-            RGBAValue.ONES,
-            RGBAValue.ZEROES);
+            RGBAValue.ONE,
+            RGBAValue.ZERO);
         graphicsList.add(imageGraphic1);
         this.imageGraphic2 = new ImageGraphic(texture, true,
             size,
             position2,
             Vec2D.ONE,
             Vec2D.ZERO,
-            RGBAValue.ONES,
-            RGBAValue.ZEROES);
+            RGBAValue.ONE,
+            RGBAValue.ZERO);
         graphicsList.add(imageGraphic2);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;

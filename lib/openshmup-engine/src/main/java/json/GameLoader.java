@@ -170,7 +170,7 @@ final public class GameLoader {
     public GameConfig gameConfigFromJson(SafeJsonNode node, GamePaths paths) {
         GameConfig gameConfig = new GameConfig();
         IVec2D resolution = node.safeGetIVec2D("resolution");
-        gameConfig.setNativeResolution(resolution.x, resolution.y);
+        gameConfig.setNativeResolution(resolution);
 
         SafeJsonNode levelUINode = node.safeGetObject("levelUI");
 

@@ -91,8 +91,8 @@ abstract public class Entity {
         return new Vec2D(trajectoryReferencePosition);
     }
 
-    public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY) {
-        trajectoryReferencePosition = new Vec2D(startingPositionX, startingPositionY);
+    public void setTrajectoryStartingPosition(Vec2D startingPosition) {
+        trajectoryReferencePosition = startingPosition;
     }
 
     public void setOrientation(float orientationRadians) {

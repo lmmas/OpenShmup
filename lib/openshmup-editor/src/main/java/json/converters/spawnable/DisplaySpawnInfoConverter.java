@@ -16,7 +16,7 @@ final public class DisplaySpawnInfoConverter implements SpawnableConverter {
     public SpawnableEditionData fromJson(SafeJsonNode node) {
         int id = node.safeGetInt(JsonFieldNames.DisplaySpawnInfo.id);
         Vec2D position = node.safeGetVec2D(JsonFieldNames.DisplaySpawnInfo.position);
-        return new DisplaySpawnInfoEditionData(id, position.x, position.y);
+        return new DisplaySpawnInfoEditionData(id, position);
     }
 
     @Override

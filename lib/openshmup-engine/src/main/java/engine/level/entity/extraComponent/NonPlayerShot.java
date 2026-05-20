@@ -47,7 +47,7 @@ final public class NonPlayerShot implements ExtraComponent {
         if (currentTimeSeconds >= nextShotTimeSeconds) {
             Vec2D position = entity.getPosition();
             for (var spawnable : spawnables) {
-                level.addSpawnable(spawnable.copyWithOffset(position.x, position.y));
+                level.addSpawnable(spawnable.copyWithOffset(position));
             }
             nextShotTimeSeconds = nextShotTimeSeconds + shotPeriodSeconds;
         }

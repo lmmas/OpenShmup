@@ -17,7 +17,7 @@ final public class EntitySpawnInfoConverter implements SpawnableConverter {
         int id = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.id);
         Vec2D startingPositionVec = node.safeGetVec2D(JsonFieldNames.EntitySpawnInfo.startingPosition);
         int trajectoryId = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.trajectory);
-        return new EntitySpawnInfoEditionData(id, startingPositionVec.x, startingPositionVec.y, trajectoryId);
+        return new EntitySpawnInfoEditionData(id, startingPositionVec, trajectoryId);
     }
 
     @Override

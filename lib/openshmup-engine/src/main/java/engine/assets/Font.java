@@ -1,5 +1,6 @@
 package engine.assets;
 
+import engine.types.IVec2D;
 import engine.types.Vec2D;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
@@ -102,7 +103,7 @@ final public class Font {
             FontCharInfo fontCharInfo = new FontCharInfo(codepoint, normalizedQuadSize, normalizedQuadPositionOffset, normalizedAdvance, bitmapTextureSize, bitmapTexturePosition);
             charInfoMap.put(codepoint, fontCharInfo);
         }
-        Texture fontTexture = new Texture(bitmapWidth, bitmapHeight, 1, bitmap);
+        Texture fontTexture = new Texture(new IVec2D(bitmapWidth, bitmapHeight), 1, bitmap);
         fontTexture.flipImageBuffer();
         return new Font(filepath, fontTexture, capHeightPixels, normalizedAscent, normalizedDescent, normalizedLineGap, normalizedLineHeight, charInfoMap);
     }

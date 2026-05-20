@@ -33,11 +33,11 @@ public class AnimationConverter implements VisualConverter {
         AnimationEditionData.SpritesheetInfoData spritesheetInfo = new AnimationEditionData.SpritesheetInfoData(
             textureFileName,
             frameCount,
-            frameSize.x, frameSize.y,
-            startingPosition.x, startingPosition.y,
-            stride.x, stride.y);
+            frameSize,
+            startingPosition,
+            stride);
 
-        return new AnimationEditionData(id, layer, size.x, size.y, framePeriodSeconds, looping, spritesheetInfo);
+        return new AnimationEditionData(id, layer, size, framePeriodSeconds, looping, spritesheetInfo);
     }
 
     @Override

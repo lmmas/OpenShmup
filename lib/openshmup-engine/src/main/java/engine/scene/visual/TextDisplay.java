@@ -182,8 +182,8 @@ final public class TextDisplay extends SceneVisual {
                 Vec2D.ZERO,
                 bitmapTextureSize,
                 bitmapTexturePosition,
-                RGBAValue.ONES,
-                RGBAValue.ZEROES);
+                RGBAValue.ONE,
+                RGBAValue.ZERO);
         }
 
         public void setPosition(Vec2D position) {

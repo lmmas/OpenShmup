@@ -5,6 +5,7 @@ import engine.gameData.GameDataManager;
 import engine.level.spawnable.EntitySpawnInfo;
 import engine.level.spawnable.SceneDisplaySpawnInfo;
 import engine.level.spawnable.Spawnable;
+import engine.types.Vec2D;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -84,13 +85,13 @@ final public class LevelTimeline {
         nextSpawnTime = spawnList.higherKey(-1.0f);
     }
 
-    public void addEntity(float time, int id, float startingPositionX, float startingPositionY, int trajectoryId) {
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, trajectoryId);
+    public void addEntity(float time, int id, Vec2D startingPosition, int trajectoryId) {
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPosition, trajectoryId);
         addSpawnable(time, entitySpawnInfo);
     }
 
-    public void addEntity(float time, int id, float startingPositionX, float startingPositionY) {
-        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPositionX, startingPositionY, -1);
+    public void addEntity(float time, int id, Vec2D startingPosition) {
+        EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPosition, -1);
         addSpawnable(time, entitySpawnInfo);
     }
 

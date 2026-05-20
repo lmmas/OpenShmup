@@ -16,15 +16,15 @@ final public class SimpleRectangleHitbox implements Hitbox {
 
     public float downBound;
 
-    public SimpleRectangleHitbox(float positionX, float positionY, float sizeX, float sizeY) {
-        this.position = new Vec2D(positionX, positionY);
-        this.size = new Vec2D(sizeX, sizeY);
+    public SimpleRectangleHitbox(Vec2D position, Vec2D size) {
+        this.position = position;
+        this.size = size;
         updateBounds();
     }
 
     @Override
     public SimpleRectangleHitbox copy() {
-        return new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
+        return new SimpleRectangleHitbox(position, size);
     }
 
     @Override

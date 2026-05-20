@@ -24,7 +24,7 @@ final public class MenuItems {
         return new ActionButton(List.of(
             new ColorRectangleVisual(layer, size, position, color),
             new TextDisplay(layer + 1, false, position, label, textStyle, TextAlignment.CENTER)),
-            new SimpleRectangleHitbox(position.x, position.y, size.x, size.y),
+            new SimpleRectangleHitbox(position, size),
             onClick);
     }
 
@@ -33,7 +33,7 @@ final public class MenuItems {
             List.of(
                 new BorderedRoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
                 new TextDisplay(layer + 1, false, position, label, textStyle, TextAlignment.CENTER)),
-            new SimpleRectangleHitbox(position.x, position.y, size.x, size.y),
+            new SimpleRectangleHitbox(position, size),
             onClick);
     }
 
@@ -54,7 +54,7 @@ final public class MenuItems {
                 rectangle,
                 new TextDisplay(layer + 1, false, buttonPosition, labels.get(i), unselectedStyle.textStyle(), TextAlignment.CENTER)
             ));
-            hitboxes.add(new SimpleRectangleHitbox(buttonPosition.x, buttonPosition.y, size.x, size.y));
+            hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }
         BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {
             int oldValue = selector.getSelectedValue();

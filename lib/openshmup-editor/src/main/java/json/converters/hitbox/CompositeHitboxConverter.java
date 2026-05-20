@@ -17,7 +17,7 @@ final public class CompositeHitboxConverter implements HitboxConverter {
     public HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
         String textureFileName = node.safeGetString(JsonFieldNames.CompositeHitbox.fileName);
         Vec2D size = node.safeGetVec2D(JsonFieldNames.CompositeHitbox.size);
-        return new CompositeHitboxEditionData(size.x, size.y, textureFileName);
+        return new CompositeHitboxEditionData(size, textureFileName);
     }
 
     @Override

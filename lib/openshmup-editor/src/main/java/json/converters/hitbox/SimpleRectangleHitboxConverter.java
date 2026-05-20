@@ -14,7 +14,7 @@ final public class SimpleRectangleHitboxConverter implements HitboxConverter {
     @Override
     public HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
         Vec2D size = node.safeGetVec2D(JsonFieldNames.SimpleRectangleHitbox.size);
-        return new SimpleRectangleHitboxEditionData(size.x, size.y);
+        return new SimpleRectangleHitboxEditionData(size);
     }
 
     @Override

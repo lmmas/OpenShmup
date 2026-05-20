@@ -1,8 +1,10 @@
 package engine.level.spawnable;
 
+import engine.types.Vec2D;
+
 public interface Spawnable {
 
     Spawnable copy();
 
-    Spawnable copyWithOffset(float offsetX, float offsetY);
+    Spawnable copyWithOffset(Vec2D offset);
 }

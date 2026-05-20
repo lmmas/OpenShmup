@@ -2,12 +2,13 @@ package engine.gameData;
 
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import lombok.Setter;
 
 import java.nio.file.Path;
 
 final public class GameConfig {
 
-    private IVec2D nativeResolution = new IVec2D(0, 0);
+    @Setter private IVec2D nativeResolution = new IVec2D(0, 0);
 
     public IVec2D getNativeResolution() {
         return new IVec2D(nativeResolution);
@@ -19,10 +20,6 @@ final public class GameConfig {
 
     public int getNativeHeight() {
         return nativeResolution.y;
-    }
-
-    public void setNativeResolution(int nativeWidth, int nativeHeight) {
-        this.nativeResolution = new IVec2D(nativeWidth, nativeHeight);
     }
 
     public int playerEntityId = 0;

@@ -25,8 +25,8 @@ final public class ImageDisplay extends SceneVisual {
             position,
             Vec2D.ONE,
             Vec2D.ZERO,
-            RGBAValue.ONES,
-            RGBAValue.ZEROES);
+            RGBAValue.ONE,
+            RGBAValue.ZERO);
         graphicsList.add(imageGraphic);
     }
 

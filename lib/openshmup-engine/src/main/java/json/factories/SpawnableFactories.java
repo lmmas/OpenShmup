@@ -14,13 +14,13 @@ final public class SpawnableFactories {
     final public static Function<SafeJsonNode, Spawnable> displaySpawnInfoFactory = node -> {
         int id = node.safeGetInt(JsonFieldNames.DisplaySpawnInfo.id);
         Vec2D positionVec = node.safeGetVec2D(JsonFieldNames.DisplaySpawnInfo.position);
-        return new SceneDisplaySpawnInfo(id, positionVec.x, positionVec.y);
+        return new SceneDisplaySpawnInfo(id, positionVec);
     };
 
     final public static Function<SafeJsonNode, Spawnable> entitySpawnInfoFactory = node -> {
         int id = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.id);
         Vec2D startingPositionVec = node.safeGetVec2D(JsonFieldNames.EntitySpawnInfo.startingPosition);
         int trajectoryId = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.trajectory);
-        return new EntitySpawnInfo(id, startingPositionVec.x, startingPositionVec.y, trajectoryId);
+        return new EntitySpawnInfo(id, startingPositionVec, trajectoryId);
     };
 }

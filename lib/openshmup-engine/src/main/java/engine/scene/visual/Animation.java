@@ -36,10 +36,10 @@ final public class Animation extends SceneVisual {
         this.imageGraphic = new ImageGraphic(animationTexture, true,
             size,
             Vec2D.ZERO,
-            new Vec2D(info.frameSizeX(), info.frameSizeY()),
+            info.frameSize(),
             Vec2D.ZERO,
-            RGBAValue.ONES,
-            RGBAValue.ZEROES);
+            RGBAValue.ONE,
+            RGBAValue.ZERO);
         updateTexturePosition();
         graphicsList.add(imageGraphic);
         this.timeReference = timeReference;
@@ -58,9 +58,8 @@ final public class Animation extends SceneVisual {
     }
 
     private void updateTexturePosition() {
-        float texturePositionX = frameIndex * info.strideX() + info.startPosX();
-        float texturePositionY = frameIndex * info.strideY() + info.startPosY();
-        imageGraphic.setTexturePosition(new Vec2D(texturePositionX, texturePositionY));
+        Vec2D texturePosition = (info.stride().scalar(frameIndex)).add(info.startPos());
+        imageGraphic.setTexturePosition(texturePosition);
     }
 
     @Override

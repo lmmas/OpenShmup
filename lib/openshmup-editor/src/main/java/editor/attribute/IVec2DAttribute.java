@@ -1,6 +1,7 @@
 package editor.attribute;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import engine.types.IVec2D;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,24 +9,21 @@ import lombok.Setter;
 @Setter
 final public class IVec2DAttribute extends Attribute {
 
-    private int x;
+    private IVec2D value;
 
-    private int y;
-
-    public IVec2DAttribute(String name, String jsonFieldName, int x, int y) {
+    public IVec2DAttribute(String name, String jsonFieldName, IVec2D value) {
         super(name, jsonFieldName);
-        this.x = x;
-        this.y = y;
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return name + ": " + x + ", " + y;
+        return name + ": " + value.x + ", " + value.y;
     }
 
     @Override public void addToNode(ObjectNode node) {
         var arrayNode = node.putArray(jsonFieldName);
-        arrayNode.add(x);
-        arrayNode.add(y);
+        arrayNode.add(value.x);
+        arrayNode.add(value.y);
     }
 }

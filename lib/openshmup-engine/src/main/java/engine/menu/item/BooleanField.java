@@ -32,7 +32,7 @@ final public class BooleanField implements MenuItem {
         this.visuals.addAll(otherVisuals);
         this.visuals.add(toggleVisual);
         this.invisibilityEffect = ColorEffect.Invisibility();
-        Hitbox hitbox = new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
+        Hitbox hitbox = new SimpleRectangleHitbox(position, size);
         this.hitboxClickDetector = new HitboxClickDetector(hitbox);
         this.booleanVal = startingValue;
         if (!booleanVal) {

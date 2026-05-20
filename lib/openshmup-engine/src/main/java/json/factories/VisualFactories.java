@@ -45,16 +45,12 @@ final public class VisualFactories {
         boolean looping = node.safeGetBoolean(JsonFieldNames.Animation.looping);
 
         Texture texture = assetManager.getTexture(textureFilepath);
-        int animationTextureWidth = texture.getWidth();
-        int animationTextureHeight = texture.getHeight();
+        IVec2D animationResolution = texture.getResolution();
 
         SpritesheetInfo spritesheetInfo = new SpritesheetInfo(textureFilepath, frameCount,
-            (float) frameSize.x / animationTextureWidth,
-            (float) frameSize.y / animationTextureHeight,
-            (float) startingPosition.x / animationTextureWidth,
-            (float) startingPosition.y / animationTextureHeight,
-            (float) stride.x / animationTextureWidth,
-            (float) stride.y / animationTextureHeight);
+            new Vec2D((float) frameSize.x / animationResolution.x, (float) frameSize.y / animationResolution.y),
+            new Vec2D((float) startingPosition.x / animationResolution.x, (float) startingPosition.y / animationResolution.y),
+            new Vec2D((float) stride.x / animationResolution.x, (float) stride.y / animationResolution.y));
 
         return new Animation(layer, texture, spritesheetInfo, framePeriodSeconds, looping, size, TimeReference.LEVEL);
     };

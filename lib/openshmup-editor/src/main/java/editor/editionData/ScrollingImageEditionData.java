@@ -1,6 +1,7 @@
 package editor.editionData;
 
 import editor.attribute.*;
+import engine.types.Vec2D;
 import json.JsonFieldNames;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +23,10 @@ public final class ScrollingImageEditionData implements VisualEditionData {
 
     private BooleanAttribute horizontalScrolling;
 
-    public ScrollingImageEditionData(int id, int layer, float sizeX, float sizeY, String imageFileName, float speed, boolean horizontalScrolling) {
+    public ScrollingImageEditionData(int id, int layer, Vec2D size, String imageFileName, float speed, boolean horizontalScrolling) {
         this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.ScrollingImage.id, id);
         this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.ScrollingImage.layer, layer);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.ScrollingImage.size, sizeX, sizeY);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.ScrollingImage.size, size);
         this.fileName = new StringAttribute("Image file name", JsonFieldNames.ScrollingImage.fileName, imageFileName);
         this.speed = new FloatAttribute("Scrolling speed", JsonFieldNames.ScrollingImage.speed, speed);
         this.horizontalScrolling = new BooleanAttribute("Horizontal scrolling", JsonFieldNames.ScrollingImage.horizontalScrolling, horizontalScrolling);

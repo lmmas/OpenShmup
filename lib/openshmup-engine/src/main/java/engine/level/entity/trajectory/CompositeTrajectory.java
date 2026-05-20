@@ -35,7 +35,7 @@ final public class CompositeTrajectory implements Trajectory {
             if (currentTime >= bounds[trajectoryIndex]) {
                 trajectoryIndex++;
                 Vec2D currentPosition = entity.getPosition();
-                entity.setTrajectoryStartingPosition(currentPosition.x, currentPosition.y);
+                entity.setTrajectoryStartingPosition(currentPosition);
             }
         }
         trajectories[trajectoryIndex].update(entity, level);

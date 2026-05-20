@@ -33,7 +33,7 @@ final public class TextField implements MenuItem {
         this.textInputDisplay = new TextDisplay(textLayer, true, textSartPosition, startingText, style, TextAlignment.LEFT);
         this.visuals = new ArrayList<>(otherVisuals);
         this.visuals.add(textInputDisplay);
-        Hitbox clickHitbox = new SimpleRectangleHitbox(position.x, position.y, size.x, size.y);
+        Hitbox clickHitbox = new SimpleRectangleHitbox(position, size);
         this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
         this.textInputActive = false;
     }

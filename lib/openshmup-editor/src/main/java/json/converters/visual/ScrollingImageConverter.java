@@ -23,7 +23,7 @@ public class ScrollingImageConverter implements VisualConverter {
         boolean horizontalScrolling = node.safeGetBoolean(JsonFieldNames.ScrollingImage.horizontalScrolling);
         float speed = node.safeGetFloat(JsonFieldNames.ScrollingImage.speed);
 
-        return new ScrollingImageEditionData(id, layer, size.x, size.y, imageFilename, speed, horizontalScrolling);
+        return new ScrollingImageEditionData(id, layer, size, imageFilename, speed, horizontalScrolling);
     }
 
     @Override

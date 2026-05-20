@@ -1,6 +1,8 @@
 package editor.editionData;
 
 import editor.attribute.*;
+import engine.types.IVec2D;
+import engine.types.Vec2D;
 import json.JsonFieldNames;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +24,10 @@ public final class AnimationEditionData implements VisualEditionData {
 
     private BooleanAttribute looping;
 
-    public AnimationEditionData(int id, int layer, float sizeX, float sizeY, double framePeriodSeconds, boolean looping, SpritesheetInfoData spritesheetInfo) {
+    public AnimationEditionData(int id, int layer, Vec2D size, double framePeriodSeconds, boolean looping, SpritesheetInfoData spritesheetInfo) {
         this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.Animation.id, id);
         this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.Animation.layer, layer);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.Animation.size, sizeX, sizeY);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.Animation.size, size);
         this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", JsonFieldNames.Animation.framePeriodSeconds, framePeriodSeconds);
         this.looping = new BooleanAttribute("Looping", JsonFieldNames.Animation.looping, looping);
         this.spritesheetInfo = new EditionDataAttribute<SpritesheetInfoData>("Spritesheet info", JsonFieldNames.Animation.spritesheetInfo, spritesheetInfo);
@@ -55,14 +57,14 @@ public final class AnimationEditionData implements VisualEditionData {
         public SpritesheetInfoData(
             String fileName,
             int frameCount,
-            int frameSizeX, int frameSizeY,
-            int startPositionX, int startPositionY,
-            int strideX, int strideY) {
+            IVec2D framesize,
+            IVec2D startPosition,
+            IVec2D stride) {
             this.fileName = new StringAttribute("File name", JsonFieldNames.Animation.SpritesheetInfo.fileName, fileName);
             this.frameCount = new IntegerAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameCount, frameCount);
-            this.frameSize = new IVec2DAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameSize, frameSizeX, frameSizeY);
-            this.startPosition = new IVec2DAttribute("Start position", JsonFieldNames.Animation.SpritesheetInfo.startingPosition, startPositionX, startPositionY);
-            this.stride = new IVec2DAttribute("Stride", JsonFieldNames.Animation.SpritesheetInfo.stride, strideX, strideY);
+            this.frameSize = new IVec2DAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameSize, framesize);
+            this.startPosition = new IVec2DAttribute("Start position", JsonFieldNames.Animation.SpritesheetInfo.startingPosition, startPosition);
+            this.stride = new IVec2DAttribute("Stride", JsonFieldNames.Animation.SpritesheetInfo.stride, stride);
         }
 
         @Override public List<Attribute> getAttributes() {

@@ -38,7 +38,7 @@ final public class ShipConverter implements EntityConverter {
         }
 
         int hp = node.safeGetInt(JsonFieldNames.Ship.hp);
-        return new ShipEditionData(id, evil, size.x, size.y, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots, hp);
+        return new ShipEditionData(id, evil, size, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots, hp);
     }
 
     @Override public ObjectNode toJson(EntityEditionData entityData, ObjectNode node) {

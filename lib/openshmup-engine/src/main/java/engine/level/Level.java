@@ -253,7 +253,7 @@ final public class Level implements EngineSystem {
             if (entitySpawn.trajectoryId() != -1) {
                 newEntity.setTrajectory(gameDataManager.getTrajectory(entitySpawn.trajectoryId()));
             }
-            newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition());
             newEntity.setPosition(entitySpawn.startingPosition());
             addEntity(newEntity);
             if (entitySpawn.id() == gameDataManager.config.playerEntityId) {
@@ -325,7 +325,7 @@ final public class Level implements EngineSystem {
 
     private void handleEntityDeath(Entity entity) {
         Vec2D entityPosition = entity.getPosition();
-        entity.getDeathSpawn().forEach(spawnable -> addSpawnable(spawnable.copyWithOffset(entityPosition.x, entityPosition.y)));
+        entity.getDeathSpawn().forEach(spawnable -> addSpawnable(spawnable.copyWithOffset(entityPosition)));
         entitiesToRemove.add(entity);
     }
 

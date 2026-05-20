@@ -40,8 +40,8 @@ abstract public class SceneVisual {
         this.graphicalSubLayers = graphicalSubLayers;
         this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);
         this.colorEffectList = new ArrayList<>();
-        this.colorCoefs = RGBAValue.ONES;
-        this.addedColor = RGBAValue.ZEROES;
+        this.colorCoefs = RGBAValue.ONE;
+        this.addedColor = RGBAValue.ZERO;
     }
 
     abstract public SceneVisual copy();
@@ -109,8 +109,8 @@ abstract public class SceneVisual {
     }
 
     private void updateColorEffects() {
-        this.colorCoefs = RGBAValue.ONES;
-        this.addedColor = RGBAValue.ZEROES;
+        this.colorCoefs = RGBAValue.ONE;
+        this.addedColor = RGBAValue.ZERO;
         for (var colorEffect : colorEffectList) {
             RGBAValue colorCoefsResult = this.colorCoefs.multiply(colorEffect.colorCoefs());
             RGBAValue addedColorResult = this.addedColor.multiply(colorEffect.colorCoefs()).add(colorEffect.addedColor());
