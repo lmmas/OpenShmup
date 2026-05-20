@@ -125,7 +125,7 @@ public class Scene implements EngineSystem {
         if (visualMaxGraphicalSubLayer >= sceneLayer.getGraphicalSubLayerCount()) {
             sceneLayer.setGraphicalSubLayerCount(visualMaxGraphicalSubLayer + 1);
         }
-        visual.initDisplay();
+        visual.init();
     }
 
     public void addVisual(SceneVisual visual) {

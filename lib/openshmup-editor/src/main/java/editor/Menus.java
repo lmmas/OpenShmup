@@ -22,8 +22,9 @@ import engine.types.Vec2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
+import static editor.MenuItems.EditorSelector;
 import static editor.Style.*;
 import static editor.Style.Color.menuBackgroundColor;
 import static engine.GlobalVars.Paths.debugFont;
@@ -173,11 +174,12 @@ final public class Menus {
         Vec2D selectorButtonSize = new Vec2D(200, 50f);
         Vec2D selectorStartPosition = new Vec2D(Engine.getNativeWidth() * 0.5f - 1.5f * selectorButtonStride.x, 950);
         final Reference<ItemGroup> currentList = new Reference<>(null);
-        Consumer<Integer> onChange = (Integer selectedValue) -> {
+        BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {
+
             if (currentList.get() != null) {
                 menu.removeItemGroupFromCurrentScreen(currentList.get());
             }
-            ItemGroup newCurrentList = switch (selectedValue) {
+            ItemGroup newCurrentList = switch (newValue) {
                 case 0 -> visualList;
                 case 1 -> trajectoryList;
                 case 2 -> entityList;
@@ -187,7 +189,7 @@ final public class Menus {
             menu.addItemGroupToCurrentScreen(newCurrentList);
             currentList.set(newCurrentList);
         };
-        SelectorButtons objectSelector = MenuItems.StandardSelectorButtons(1, 4, selectorButtonSize, selectorStartPosition, selectorButtonStride, menuButtonStyle1, labels, onChange);
+        SelectorButtons objectSelector = EditorSelector(1, 4, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange);
         mainScreen.addItem(objectSelector);
         currentList.set(visualList);
         mainScreen.addItemGroup(currentList.get());

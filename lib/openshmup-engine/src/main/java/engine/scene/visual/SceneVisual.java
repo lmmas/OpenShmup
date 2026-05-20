@@ -26,6 +26,10 @@ abstract public class SceneVisual {
 
     final private List<ColorEffect> colorEffectList;
 
+    protected RGBAValue colorCoefs;
+
+    protected RGBAValue addedColor;
+
     public SceneVisual(int layer, List<Graphic<?>> graphicsList, List<Integer> graphicalSubLayers) {
         this.visualShouldBeRemovedFlag = false;
         this.reloadGraphicsFlag = false;
@@ -34,6 +38,8 @@ abstract public class SceneVisual {
         this.graphicalSubLayers = graphicalSubLayers;
         this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);
         this.colorEffectList = new ArrayList<>();
+        this.colorCoefs = RGBAValue.ONES;
+        this.addedColor = RGBAValue.ZEROES;
     }
 
     abstract public SceneVisual copy();
@@ -80,7 +86,7 @@ abstract public class SceneVisual {
         this.graphicsList.forEach(g -> g.setPosition(positionX, positionY));
     }
 
-    public void initDisplay() {
+    public void init() {
 
     }
 
@@ -88,7 +94,7 @@ abstract public class SceneVisual {
 
     }
 
-    abstract public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor);
+    abstract public void updateGraphicsColor();
 
     public void addColorEffect(ColorEffect colorEffect) {
         colorEffectList.add(colorEffect);
@@ -101,18 +107,15 @@ abstract public class SceneVisual {
     }
 
     private void updateColorEffects() {
-        RGBAValue colorCoefs = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
-        RGBAValue addedColor = new RGBAValue(0.0f, 0.0f, 0.0f, 0.0f);
+        this.colorCoefs = RGBAValue.ONES;
+        this.addedColor = RGBAValue.ZEROES;
         for (var colorEffect : colorEffectList) {
-            RGBAValue colorCoefsResult = colorCoefs.multiply(colorEffect.colorCoefs());
-            RGBAValue addedColorResult = addedColor.multiply(colorEffect.colorCoefs()).add(colorEffect.addedColor());
-            colorCoefs = colorCoefsResult;
-            addedColor = addedColorResult;
+            RGBAValue colorCoefsResult = this.colorCoefs.multiply(colorEffect.colorCoefs());
+            RGBAValue addedColorResult = this.addedColor.multiply(colorEffect.colorCoefs()).add(colorEffect.addedColor());
+            this.colorCoefs = colorCoefsResult;
+            this.addedColor = addedColorResult;
         }
-        updateGraphicColor(colorCoefs, addedColor);
+        updateGraphicsColor();
     }
 
-    public static SceneVisual DEFAULT_EMPTY() {
-        return EmptyVisual.getInstance();
-    }
 }

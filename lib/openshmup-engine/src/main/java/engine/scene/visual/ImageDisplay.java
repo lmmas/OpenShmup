@@ -2,7 +2,6 @@ package engine.scene.visual;
 
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
-import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ final public class ImageDisplay extends SceneVisual {
         return new ImageDisplay(this.sceneLayerIndex, imageGraphic);
     }
 
-    @Override public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+    @Override public void updateGraphicsColor() {
         imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
         imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
     }

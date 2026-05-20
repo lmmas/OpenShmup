@@ -14,7 +14,7 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 final public class MenuItems {
 
@@ -41,21 +41,35 @@ final public class MenuItems {
         return RoundedRectangleButton(layer, size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, style.textStyle(), onClick);
     }
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, TextStyle textStyle, List<String> labels, Consumer<Integer> onChange) {
+    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle unselectedStyle, RoundedRectangleButtonStyle selectedStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange) {
         List<List<SceneVisual>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
+            BorderedRoundedRectangle rectangle = new BorderedRoundedRectangle(layer, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
+            if (i == 0) {
+                rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
+            }
             buttonVisuals.add(List.of(
-                new BorderedRoundedRectangle(layer, size, buttonPosition, roundingRadius, borderWidth, rectangleColor, borderColor),
-                new TextDisplay(layer + 1, false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
+                rectangle,
+                new TextDisplay(layer + 1, false, buttonPosition, labels.get(i), unselectedStyle.textStyle(), TextAlignment.CENTER)
             ));
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition.x, buttonPosition.y, size.x, size.y));
         }
-        return new SelectorButtons(buttonVisuals, hitboxes, onChange);
-    }
+        BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {
+            int oldValue = selector.getSelectedValue();
+            assert oldValue != newValue : "selector old value can't be equal to new value";
+            BorderedRoundedRectangle unselectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(oldValue).getVisuals().getFirst();
+            unselectedButtonRectangle.setRectangleBaseColor(unselectedStyle.rectangleColor());
+            TextDisplay unselectedButtonText = (TextDisplay) selector.getActionButtons().get(oldValue).getVisuals().get(1);
+            unselectedButtonText.setTextColor(unselectedStyle.textStyle().textColor());
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle style, List<String> labels, Consumer<Integer> onChange) {
-        return StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), style.textStyle(), labels, onChange);
+            BorderedRoundedRectangle selectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(newValue).getVisuals().getFirst();
+            selectedButtonRectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
+            TextDisplay selectedButtonText = (TextDisplay) selector.getActionButtons().get(newValue).getVisuals().get(1);
+            selectedButtonText.setTextColor(selectedStyle.textStyle().textColor());
+            onChange.accept(selector, newValue);
+        };
+        return new SelectorButtons(buttonVisuals, hitboxes, onChangeWithStyleChange);
     }
 }

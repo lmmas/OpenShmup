@@ -26,8 +26,8 @@ final public class TextDisplay extends SceneVisual {
     private final Font font;
 
     private final float textHeight;
-
-    private final RGBAValue textColor;
+    @Getter @Setter
+    private RGBAValue textColor;
 
     private final TextAlignment alignment;
 
@@ -154,7 +154,7 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
-    @Override public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+    @Override public void updateGraphicsColor() {
         for (Graphic<?> graphic : graphicsList) {
             ImageGraphic imageGraphic = (ImageGraphic) graphic;
             imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);

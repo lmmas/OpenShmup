@@ -21,6 +21,8 @@ final public class Style {
 
         final public static RGBAValue blue1 = new RGBAValue(0.8f, 0.95f, 1.0f, 1.0f);
 
+        final public static RGBAValue grey1 = new RGBAValue(0.9f, 0.9f, 0.9f, 1.0f);
+
         final public static RGBAValue menuButtonColor = SOLID_WHITE;
 
         final public static RGBAValue menuButtonBorderColor = SOLID_BLACK;
@@ -51,4 +53,5 @@ final public class Style {
 
     final public static RoundedRectangleButtonStyle menuButtonStyle2 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
+    final public static RoundedRectangleButtonStyle menuButtonStyle3 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.grey1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 }

@@ -47,7 +47,7 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     @Override
-    public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+    public void updateGraphicsColor() {
         RGBAValue newRectangleColor = originalColor.multiply(colorCoefs).add(addedColor);
         colorRectangleGraphic.setColor(newRectangleColor.r, newRectangleColor.g, newRectangleColor.g, newRectangleColor.a);
     }

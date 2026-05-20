@@ -6,19 +6,20 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 final public class SelectorButtons implements MenuItem {
 
+    @Getter
     final private List<ActionButton> actionButtons;
 
     final private List<SceneVisual> visuals;
     @Getter
     private int selectedValue;
 
-    final private Consumer<Integer> onChange;
+    final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, Consumer<Integer> onChange) {
+    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange) {
         this.onChange = onChange;
         this.selectedValue = 0;
         assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
@@ -28,10 +29,10 @@ final public class SelectorButtons implements MenuItem {
             final int buttonValue = i;
             onClicks.add(() -> {
                 boolean valueChanged = selectedValue != buttonValue;
-                selectedValue = buttonValue;
                 if (valueChanged) {
-                    this.onChange.accept(selectedValue);
+                    this.onChange.accept(this, buttonValue);
                 }
+                selectedValue = buttonValue;
             });
         }
         this.actionButtons = new ArrayList<>(buttonCount);

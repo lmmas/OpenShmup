@@ -5,7 +5,6 @@ import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
-import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -103,7 +102,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public void initDisplay() {
+    public void init() {
         if (this.timeReference == TimeReference.LEVEL) {
             this.lastUpdateTimeSeconds = Game.getLevelTime();
         }
@@ -162,7 +161,7 @@ final public class ScrollingImage extends SceneVisual {
         lastUpdateTimeSeconds = currentTimeSeconds;
     }
 
-    @Override public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+    @Override public void updateGraphicsColor() {
         imageGraphic1.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
         imageGraphic2.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
         imageGraphic1.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);

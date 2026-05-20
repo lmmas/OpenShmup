@@ -42,14 +42,12 @@ final public class EditPanel {
 
     private String getPanelTitle() {
         return switch (editionData) {
-            case AnimationEditionData ignored -> "Edit Animation";
+            case VisualEditionData ignored -> "Edit Visual";
             case AnimationEditionData.SpritesheetInfoData ignored -> throw new RuntimeException();
-            case ScrollingImageEditionData ignored -> "Edit Scrolling Image";
             case HitboxEditionData ignored -> "Edit Hitbox";
             case TrajectoryEditionData ignored -> "Edit Trajectory";
             case ShotEditionData ignored -> "Edit Shot";
-            case ShipEditionData ignored -> "Edit Ship";
-            case ProjectileEditionData ignored -> "Edit Projectile";
+            case EntityEditionData ignored -> "Edit Entity";
             case SpawnableEditionData ignored -> "Edit Spawn Info";
         };
     }

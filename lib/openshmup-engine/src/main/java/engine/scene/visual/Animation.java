@@ -5,7 +5,6 @@ import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
-import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public void initDisplay() {
+    public void init() {
         if (this.timeReference == TimeReference.LEVEL) {
             this.timeOfLastFrame = Game.getLevelTime();
         }
@@ -104,7 +103,7 @@ final public class Animation extends SceneVisual {
     }
 
     @Override
-    public void updateGraphicColor(RGBAValue colorCoefs, RGBAValue addedColor) {
+    public void updateGraphicsColor() {
         imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.g, colorCoefs.a);
         imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
     }
