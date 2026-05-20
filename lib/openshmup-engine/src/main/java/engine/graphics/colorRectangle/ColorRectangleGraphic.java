@@ -5,6 +5,8 @@ import engine.graphics.Graphic;
 import engine.graphics.RenderType;
 import engine.types.RGBAValue;
 import engine.types.Vec2D;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,35 +20,30 @@ final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.C
 
     private final ColorRectangleVertex vertex;
 
-    public ColorRectangleGraphic(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a, Shader shader) {
+    public ColorRectangleGraphic(Vec2D size, Vec2D position, RGBAValue color, Shader shader) {
         super(RenderType.COLOR_RECTANGLE, shader, new ArrayList<>(1));
-        this.vertex = new ColorRectangleVertex(sizeX, sizeY, positionX, positionY, r, g, b, a);
+        this.vertex = new ColorRectangleVertex(size, position, color);
         this.getVertexList().add(vertex);
     }
 
-    public ColorRectangleGraphic(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
-        this(sizeX, sizeY, positionX, positionY, r, g, b, a, assetManager.getShader(defaultShader));
+    public ColorRectangleGraphic(Vec2D size, Vec2D position, RGBAValue color) {
+        this(size, position, color, assetManager.getShader(defaultShader));
     }
 
     public ColorRectangleGraphic(ColorRectangleGraphic colorRectangleGraphic) {
-        this(
-            colorRectangleGraphic.vertex.size.x, colorRectangleGraphic.vertex.size.y,
-            colorRectangleGraphic.vertex.position.x, colorRectangleGraphic.vertex.position.y,
-            colorRectangleGraphic.vertex.color.r, colorRectangleGraphic.vertex.color.g, colorRectangleGraphic.vertex.color.b, colorRectangleGraphic.vertex.color.a,
-            colorRectangleGraphic.shader
-        );
+        this(colorRectangleGraphic.vertex.size, colorRectangleGraphic.vertex.position, colorRectangleGraphic.vertex.color, colorRectangleGraphic.shader);
     }
 
     public Vec2D getPosition() {
-        return new Vec2D(vertex.position);
+        return vertex.position;
     }
 
     public Vec2D getScale() {
-        return new Vec2D(vertex.size);
+        return vertex.size;
     }
 
     public RGBAValue getColor() {
-        return new RGBAValue(vertex.color);
+        return vertex.color;
     }
 
     @Override
@@ -54,52 +51,33 @@ final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.C
         vertex.setShouldBeRemoved();
     }
 
-    public void setPosition(float positionX, float positionY) {
-        vertex.position.x = positionX;
-        vertex.position.y = positionY;
+    public void setPosition(Vec2D position) {
+        vertex.position = position;
         vertex.setDataHasChanged();
     }
 
-    public void setScale(float scaleX, float scaleY) {
-        vertex.size.x = scaleX;
-        vertex.size.y = scaleY;
+    public void setScale(Vec2D scale) {
+        vertex.size = scale;
         vertex.setDataHasChanged();
     }
 
-    public void setColor(float r, float g, float b, float a) {
-        vertex.color = new RGBAValue(r, g, b, a);
+    public void setColor(RGBAValue color) {
+        vertex.color = color;
         vertex.setDataHasChanged();
     }
 
+    @Getter @AllArgsConstructor
     public class ColorRectangleVertex extends Graphic<ColorRectangleVertex>.Vertex<ColorRectangleVertex> {
 
-        private final Vec2D size;
+        private Vec2D size;
 
-        private final Vec2D position;
+        private Vec2D position;
 
         private RGBAValue color;
 
         @Override
         public ColorRectangleVertex copy() {
-            return new ColorRectangleVertex(size.x, size.y, position.x, position.y, color.r, color.g, color.b, color.a);
-        }
-
-        public Vec2D getPosition() {
-            return new Vec2D(position);
-        }
-
-        public Vec2D getSize() {
-            return new Vec2D(size);
-        }
-
-        public RGBAValue getColor() {
-            return new RGBAValue(color);
-        }
-
-        public ColorRectangleVertex(float sizeX, float sizeY, float positionX, float positionY, float r, float g, float b, float a) {
-            this.size = new Vec2D(sizeX, sizeY);
-            this.position = new Vec2D(positionX, positionY);
-            this.color = new RGBAValue(r, g, b, a);
+            return new ColorRectangleVertex(size, position, color);
         }
     }
 }

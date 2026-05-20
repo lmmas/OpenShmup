@@ -25,7 +25,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y, simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y, color.r, color.g, color.b, color.a, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
+        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size, simpleRectangleHitbox.position, color, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
     }
 
     @Override
@@ -50,7 +50,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     @Override
     public void update(Entity entity, Level level) {
-        debugDisplay.setPosition(simpleRectangleHitbox.position.x, simpleRectangleHitbox.position.y);
-        debugDisplay.setScale(simpleRectangleHitbox.size.x, simpleRectangleHitbox.size.y);
+        debugDisplay.setPosition(simpleRectangleHitbox.position);
+        debugDisplay.setScale(simpleRectangleHitbox.size);
     }
 }

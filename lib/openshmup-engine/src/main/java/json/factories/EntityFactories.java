@@ -47,7 +47,7 @@ final public class EntityFactories {
             }
         }
         int hp = node.safeGetInt(JsonFieldNames.Ship.hp);
-        return new Ship(0f, 0f, size.x, size.y, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
+        return new Ship(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
     };
 
     final public static TriFunction<SafeJsonNode, GameLoader, GameDataManager, Entity> projectileFactory = (node, gameFactory, gameData) -> {
@@ -76,6 +76,6 @@ final public class EntityFactories {
                 extraComponents.add(gameFactory.extraComponentFromJson(shotNode, gameData, id == 0));
             }
         }
-        return new Projectile(0f, 0f, size.x, size.y, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
+        return new Projectile(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
     };
 }

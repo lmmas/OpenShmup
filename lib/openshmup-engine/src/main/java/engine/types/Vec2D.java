@@ -5,9 +5,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 final public class Vec2D {
 
-    public float x;
+    final public float x;
 
-    public float y;
+    final public float y;
+
+    final public static Vec2D ZERO = new Vec2D(0.0f, 0.0f);
+
+    final public static Vec2D ONE = new Vec2D(1.0f, 1.0f);
 
     public Vec2D(Vec2D vec) {
         this.x = vec.x;

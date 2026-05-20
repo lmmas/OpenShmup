@@ -5,6 +5,7 @@ import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
 import engine.types.RGBAValue;
+import engine.types.Vec2D;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,8 @@ abstract public class SceneVisual {
     private boolean reloadGraphicsFlag;
     @Getter @Setter
     protected int sceneLayerIndex;
-    @Getter final protected List<Graphic<?>> graphicsList;
+    @Getter final
+    protected List<Graphic<?>> graphicsList;
 
     final protected List<Integer> graphicalSubLayers;
 
@@ -78,12 +80,12 @@ abstract public class SceneVisual {
         this.reloadGraphicsFlag = reloadGraphics;
     }
 
-    public void setScale(float scaleX, float scaleY) {
-        this.graphicsList.forEach(g -> g.setScale(scaleX, scaleY));
+    public void setScale(Vec2D scale) {
+        this.graphicsList.forEach(g -> g.setScale(scale));
     }
 
-    public void setPosition(float positionX, float positionY) {
-        this.graphicsList.forEach(g -> g.setPosition(positionX, positionY));
+    public void setPosition(Vec2D position) {
+        this.graphicsList.forEach(g -> g.setPosition(position));
     }
 
     public void init() {

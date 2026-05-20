@@ -3,6 +3,7 @@ package editor;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.scene.Scene;
+import engine.types.IVec2D;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ final public class Editor extends Engine {
     public static void init() throws IOException {
 
         Engine.init();
-        Engine.setNativeResolution(1920, 1080);
+        Engine.setNativeResolution(new IVec2D(1920, 1080));
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
         switchCurrentScene(new Scene());

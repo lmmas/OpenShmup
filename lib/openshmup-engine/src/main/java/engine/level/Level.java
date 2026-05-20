@@ -205,7 +205,7 @@ final public class Level implements EngineSystem {
     private void spawnDisplays() {
         for (var displaySpawn : displaysToSpawn) {
             SceneVisual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
-            newDisplay.setPosition(displaySpawn.position().x, displaySpawn.position().y);
+            newDisplay.setPosition(displaySpawn.position());
             scene.addVisual(newDisplay);
         }
         displaysToSpawn.clear();
@@ -254,7 +254,7 @@ final public class Level implements EngineSystem {
                 newEntity.setTrajectory(gameDataManager.getTrajectory(entitySpawn.trajectoryId()));
             }
             newEntity.setTrajectoryStartingPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
-            newEntity.setPosition(entitySpawn.startingPosition().x, entitySpawn.startingPosition().y);
+            newEntity.setPosition(entitySpawn.startingPosition());
             addEntity(newEntity);
             if (entitySpawn.id() == gameDataManager.config.playerEntityId) {
                 levelUI.setPlayerShip((Ship) newEntity);

@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 final public class GameConfig {
 
-    final private IVec2D nativeResolution = new IVec2D(0, 0);
+    private IVec2D nativeResolution = new IVec2D(0, 0);
 
     public IVec2D getNativeResolution() {
         return new IVec2D(nativeResolution);
@@ -22,8 +22,7 @@ final public class GameConfig {
     }
 
     public void setNativeResolution(int nativeWidth, int nativeHeight) {
-        this.nativeResolution.x = nativeWidth;
-        this.nativeResolution.y = nativeHeight;
+        this.nativeResolution = new IVec2D(nativeWidth, nativeHeight);
     }
 
     public int playerEntityId = 0;

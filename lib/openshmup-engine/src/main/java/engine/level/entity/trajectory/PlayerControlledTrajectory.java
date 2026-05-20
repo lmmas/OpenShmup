@@ -48,7 +48,7 @@ final public class PlayerControlledTrajectory implements Trajectory {
         if (positionY > resolution.y) {
             positionY = resolution.y;
         }
-        entity.setPosition(positionX, positionY);
+        entity.setPosition(new Vec2D(positionX, positionY));
         lastUpdateTimeSeconds = currentTime;
     }
 

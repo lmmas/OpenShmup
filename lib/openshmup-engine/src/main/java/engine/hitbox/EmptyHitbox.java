@@ -23,12 +23,12 @@ final public class EmptyHitbox implements Hitbox {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
+    public void setPosition(Vec2D position) {
 
     }
 
     @Override
-    public void setSize(float sizeX, float sizeY) {
+    public void setSize(Vec2D size) {
 
     }
 

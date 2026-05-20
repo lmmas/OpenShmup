@@ -23,7 +23,7 @@ final public class GameMenus {
         ActionButton blueButton = MenuItems.ColorRectangleButton(1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         pauseMenu.addItem(blueButton);
 
-        pauseMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.7f));
+        pauseMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.7f)));
         return pauseMenu;
     }
 }

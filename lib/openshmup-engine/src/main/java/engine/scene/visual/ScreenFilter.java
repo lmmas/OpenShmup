@@ -3,6 +3,7 @@ package engine.scene.visual;
 import engine.Engine;
 import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import engine.types.RGBAValue;
+import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,11 @@ final public class ScreenFilter extends SceneVisual {
 
     final private RGBAValue originalColor;
 
-    public ScreenFilter(int layer, float r, float g, float b, float a) {
-        super(layer, new ArrayList<>(1), List.of(0));
-        this.colorRectangleGraphic = new ColorRectangleGraphic(Engine.getNativeWidth(), Engine.getNativeHeight(), (float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2, r, g, b, a);
-        graphicsList.add(colorRectangleGraphic);
-        this.originalColor = new RGBAValue(r, g, b, a);
-    }
-
     public ScreenFilter(int layer, RGBAValue color) {
-        this(layer, color.r, color.g, color.b, color.a);
+        super(layer, new ArrayList<>(1), List.of(0));
+        this.colorRectangleGraphic = new ColorRectangleGraphic(Engine.getNativeResolution().scalar(1.0f), Engine.getNativeResolution().scalar(0.5f), color);
+        graphicsList.add(colorRectangleGraphic);
+        this.originalColor = color;
     }
 
     public ScreenFilter(ScreenFilter screenFilter) {
@@ -37,18 +34,18 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
+    public void setPosition(Vec2D position) {
 
     }
 
     @Override
-    public void setScale(float scaleX, float scaleY) {
+    public void setScale(Vec2D scale) {
 
     }
 
     @Override
     public void updateGraphicsColor() {
         RGBAValue newRectangleColor = originalColor.multiply(colorCoefs).add(addedColor);
-        colorRectangleGraphic.setColor(newRectangleColor.r, newRectangleColor.g, newRectangleColor.g, newRectangleColor.a);
+        colorRectangleGraphic.setColor(newRectangleColor);
     }
 }

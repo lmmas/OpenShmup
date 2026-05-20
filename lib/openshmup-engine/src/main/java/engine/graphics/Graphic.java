@@ -31,9 +31,9 @@ public abstract class Graphic<T extends Graphic<T>.Vertex<T>> {
 
     abstract public Vec2D getScale();
 
-    abstract public void setPosition(float positionX, float positionY);
+    abstract public void setPosition(Vec2D position);
 
-    abstract public void setScale(float scaleX, float scaleY);
+    abstract public void setScale(Vec2D scale);
 
     abstract public void remove();
 

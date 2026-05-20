@@ -3,6 +3,7 @@ import engine.assets.Font;
 import engine.scene.Scene;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
+import engine.types.IVec2D;
 import engine.types.RGBAValue;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class TestTextDisplay {
     public static void main(String[] args) throws IOException {
 
         Engine.init();
-        Engine.setNativeResolution(1080, 1080);
+        Engine.setNativeResolution(new IVec2D(1080, 1080));
         Engine.initGraphicsManager();
 
         Scene testScene = new Scene();

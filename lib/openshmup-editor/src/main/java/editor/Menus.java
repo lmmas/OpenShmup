@@ -16,6 +16,7 @@ import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
 
@@ -43,7 +44,7 @@ final public class Menus {
             Vec2D closeButtonSize = new Vec2D(150, 50);
             ActionButton closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addItem(closeButton);
-            popupMenu.addVisual(new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f));
+            popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)));
 
             Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
             for (int i = 0; i < Editor.getLoadedGames().size(); i++) {

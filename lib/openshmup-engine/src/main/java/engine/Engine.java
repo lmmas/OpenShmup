@@ -171,10 +171,9 @@ public class Engine {
         return new IVec2D(nativeResolution);
     }
 
-    public static void setNativeResolution(int width, int height) {
-        nativeResolution.x = width;
-        nativeResolution.y = height;
-        window.setResolution(width, height);
+    public static void setNativeResolution(IVec2D newNativeResolution) {
+        nativeResolution = newNativeResolution;
+        window.setResolution(newNativeResolution);
     }
 
     public static InputStatesManager getInputStatesManager() {

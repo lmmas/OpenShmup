@@ -4,9 +4,9 @@ import engine.types.Vec2D;
 
 final public class SimpleRectangleHitbox implements Hitbox {
 
-    final public Vec2D position;
+    public Vec2D position;
 
-    final public Vec2D size;
+    public Vec2D size;
 
     public float leftBound;
 
@@ -33,16 +33,14 @@ final public class SimpleRectangleHitbox implements Hitbox {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
-        this.position.x = positionX;
-        this.position.y = positionY;
+    public void setPosition(Vec2D position) {
+        this.position = position;
         updateBounds();
     }
 
     @Override
-    public void setSize(float sizeX, float sizeY) {
-        this.size.x = sizeX;
-        this.size.y = sizeY;
+    public void setSize(Vec2D size) {
+        this.size = size;
         updateBounds();
     }
 

@@ -25,7 +25,7 @@ final public class InputStatesManager implements EngineSystem {
 
     final private double[] cursorPositionYBuffer;
 
-    final private Vec2D cursorPosition;
+    private Vec2D cursorPosition;
 
     private TextInputHandler textInputHandler;
 
@@ -64,8 +64,8 @@ final public class InputStatesManager implements EngineSystem {
         }
 
         glfwGetCursorPos(glfwWindow, cursorPositionXBuffer, cursorPositionYBuffer);
-        cursorPosition.x = (float) (cursorPositionXBuffer[0] / window.getWidth() * Engine.getNativeWidth());
-        cursorPosition.y = (1.0f - (float) (cursorPositionYBuffer[0] / window.getHeight())) * Engine.getNativeHeight();
+        cursorPosition = new Vec2D((float) (cursorPositionXBuffer[0] / window.getWidth() * Engine.getNativeWidth()),
+            (1.0f - (float) (cursorPositionYBuffer[0] / window.getHeight())) * Engine.getNativeHeight());
 
         if (textInputHandler != null) {
             textInputHandler.update();

@@ -19,13 +19,13 @@ final public class TextDisplay extends SceneVisual {
 
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
-    final private Vec2D position;
+    private Vec2D position;
     @Setter @Getter
     private String displayedString;
 
     private final Font font;
 
-    private final float textHeight;
+    private float textHeight;
     @Getter @Setter
     private RGBAValue textColor;
 
@@ -115,7 +115,7 @@ final public class TextDisplay extends SceneVisual {
             float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float) lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
             for (TextCharacter character : currentLine) {
                 Vec2D characterPositionOffset = character.fontCharInfo.normalizedQuadPositionOffset();
-                character.setPosition(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight);
+                character.setPosition(new Vec2D(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight));
                 characterBaselineX += character.fontCharInfo.normalizedAdvance() * textHeight;
             }
         }
@@ -124,7 +124,7 @@ final public class TextDisplay extends SceneVisual {
     public void updateTextColor() {
         for (ArrayList<TextCharacter> line : textLines) {
             for (TextCharacter character : line) {
-                character.setColor(textColor.r, textColor.g, textColor.b, textColor.a);
+                character.setColor(textColor);
             }
         }
     }
@@ -135,14 +135,13 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
-        position.x = positionX;
-        position.y = positionY;
+    public void setPosition(Vec2D position) {
+        this.position = position;
         updateTextPosition();
     }
 
     @Override
-    public void setScale(float scaleX, float scaleY) {
+    public void setScale(Vec2D scale) {
 
     }
 
@@ -157,8 +156,8 @@ final public class TextDisplay extends SceneVisual {
     @Override public void updateGraphicsColor() {
         for (Graphic<?> graphic : graphicsList) {
             ImageGraphic imageGraphic = (ImageGraphic) graphic;
-            imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
-            imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+            imageGraphic.setColorCoefs(colorCoefs);
+            imageGraphic.setAddedColor(addedColor);
         }
     }
 
@@ -179,24 +178,24 @@ final public class TextDisplay extends SceneVisual {
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
             Vec2D imageSize = charSize.scalar(textHeight);
             this.imageGraphic = new ImageGraphic(font.getBitmap(), TextDisplay.this.dynamicText,
-                imageSize.x, imageSize.y,
-                0.0f, 0.0f,
-                bitmapTextureSize.x, bitmapTextureSize.y,
-                bitmapTexturePosition.x, bitmapTexturePosition.y,
-                1.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 0.0f, 0.0f);
+                imageSize,
+                Vec2D.ZERO,
+                bitmapTextureSize,
+                bitmapTexturePosition,
+                RGBAValue.ONES,
+                RGBAValue.ZEROES);
         }
 
-        public void setPosition(float positionX, float positionY) {
-            imageGraphic.setPosition(positionX, positionY);
+        public void setPosition(Vec2D position) {
+            imageGraphic.setPosition(position);
         }
 
-        public void setSize(float sizeX, float sizeY) {
-            imageGraphic.setScale(sizeX, sizeY);
+        public void setSize(Vec2D size) {
+            imageGraphic.setScale(size);
         }
 
-        public void setColor(float r, float g, float b, float a) {
-            imageGraphic.setColorCoefs(r, g, b, a);
+        public void setColor(RGBAValue color) {
+            imageGraphic.setColorCoefs(color);
         }
 
     }

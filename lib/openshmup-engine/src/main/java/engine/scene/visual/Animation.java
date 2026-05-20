@@ -5,6 +5,7 @@ import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -33,12 +34,12 @@ final public class Animation extends SceneVisual {
         this.looping = looping;
         this.frameIndex = 0;
         this.imageGraphic = new ImageGraphic(animationTexture, true,
-            size.x, size.y,
-            0.0f, 0.0f,
-            info.frameSizeX(), info.frameSizeY(),
-            0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.0f, 0.0f, 0.0f);
+            size,
+            Vec2D.ZERO,
+            new Vec2D(info.frameSizeX(), info.frameSizeY()),
+            Vec2D.ZERO,
+            RGBAValue.ONES,
+            RGBAValue.ZEROES);
         updateTexturePosition();
         graphicsList.add(imageGraphic);
         this.timeReference = timeReference;
@@ -59,7 +60,7 @@ final public class Animation extends SceneVisual {
     private void updateTexturePosition() {
         float texturePositionX = frameIndex * info.strideX() + info.startPosX();
         float texturePositionY = frameIndex * info.strideY() + info.startPosY();
-        imageGraphic.setTexturePosition(texturePositionX, texturePositionY);
+        imageGraphic.setTexturePosition(new Vec2D(texturePositionX, texturePositionY));
     }
 
     @Override
@@ -104,7 +105,7 @@ final public class Animation extends SceneVisual {
 
     @Override
     public void updateGraphicsColor() {
-        imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.g, colorCoefs.a);
-        imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+        imageGraphic.setColorCoefs(colorCoefs);
+        imageGraphic.setAddedColor(addedColor);
     }
 }

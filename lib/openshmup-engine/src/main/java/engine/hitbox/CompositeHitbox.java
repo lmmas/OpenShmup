@@ -141,7 +141,7 @@ final public class CompositeHitbox implements Hitbox {
         for (int i = 0; i < rectangleRelativePositions.size(); i++) {
             rectangleList.add(new SimpleRectangleHitbox(0.0f, 0.0f, 0.0f, 0.0f));
         }
-        setSize(size.x, size.y);
+        setSize(size);
     }
 
     @Override
@@ -150,22 +150,20 @@ final public class CompositeHitbox implements Hitbox {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
-        Vec2D bottomLeftCornerPosition = new Vec2D(positionX - size.x / 2, positionY - size.y / 2);
+    public void setPosition(Vec2D position) {
+        Vec2D bottomLeftCornerPosition = position.add(size.scalar(-0.5f));
         for (int i = 0; i < rectangleRelativePositions.size(); i++) {
             rectangleList.get(i).setPosition(
-                bottomLeftCornerPosition.x + size.x * rectangleRelativePositions.get(i).x,
-                bottomLeftCornerPosition.y + size.y * rectangleRelativePositions.get(i).y
-            );
+                bottomLeftCornerPosition.add(size.multiply(rectangleRelativePositions.get(i))));
         }
     }
 
     @Override
-    public void setSize(float sizeX, float sizeY) {
+    public void setSize(Vec2D size) {
         for (int i = 0; i < rectangleList.size(); i++) {
-            rectangleList.get(i).setSize(sizeX * rectangleRelativeSizes.get(i).x, sizeY * rectangleRelativeSizes.get(i).y);
+            rectangleList.get(i).setSize(size.multiply(rectangleRelativeSizes.get(i)));
         }
-        setPosition(position.x, position.y);
+        setPosition(position);
     }
 
     @Override

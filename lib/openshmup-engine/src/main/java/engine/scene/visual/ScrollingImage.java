@@ -5,6 +5,7 @@ import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -14,17 +15,17 @@ final public class ScrollingImage extends SceneVisual {
 
     private final ImageGraphic imageGraphic1;
 
-    final private Vec2D position1;
+    private Vec2D position1;
 
     private final ImageGraphic imageGraphic2;
 
-    final private Vec2D position2;
+    private Vec2D position2;
 
-    final private Vec2D size;
+    private Vec2D size;
 
     boolean horizontalScrolling;
 
-    private final float speed;
+    private float speed;
 
     private double lastUpdateTimeSeconds;
 
@@ -36,20 +37,20 @@ final public class ScrollingImage extends SceneVisual {
         this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
         this.position2 = new Vec2D(0.0f, 0.0f);
         this.imageGraphic1 = new ImageGraphic(texture, true,
-            size.x, size.y,
-            position1.x, position1.y,
-            1.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.0f, 0.0f, 0.0f);
+            size,
+            position1,
+            Vec2D.ONE,
+            Vec2D.ZERO,
+            RGBAValue.ONES,
+            RGBAValue.ZEROES);
         graphicsList.add(imageGraphic1);
         this.imageGraphic2 = new ImageGraphic(texture, true,
-            size.x, size.y,
-            position2.x, position2.y,
-            1.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.0f, 0.0f, 0.0f);
+            size,
+            position2,
+            Vec2D.ONE,
+            Vec2D.ZERO,
+            RGBAValue.ONES,
+            RGBAValue.ZEROES);
         graphicsList.add(imageGraphic2);
         this.speed = speed;
         this.horizontalScrolling = horizontalScrolling;
@@ -78,27 +79,23 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public void setPosition(float positionX, float positionY) {
-        position1.x = positionX;
-        position1.y = positionY;
+    public void setPosition(Vec2D position) {
+        position1 = position;
         if (horizontalScrolling) {
-            this.position2.x = this.position1.x - Math.signum(speed) * size.x;
-            this.position2.y = position1.y;
+            this.position2 = new Vec2D(this.position1.x - Math.signum(speed) * size.x, position1.y);
         }
         else {
-            this.position2.x = position1.x;
-            this.position2.y = position1.y - Math.signum(speed) * size.y;
+            this.position2 = new Vec2D(position1.x, position1.y - Math.signum(speed) * size.y);
         }
-        imageGraphic1.setPosition(position1.x, position1.y);
-        imageGraphic2.setPosition(position2.x, position2.y);
+        imageGraphic1.setPosition(position1);
+        imageGraphic2.setPosition(position2);
     }
 
     @Override
-    public void setScale(float scaleX, float scaleY) {
-        this.size.x = scaleX;
-        this.size.y = scaleY;
-        imageGraphic1.setScale(scaleX, scaleY);
-        imageGraphic2.setScale(scaleX, scaleY);
+    public void setScale(Vec2D scale) {
+        this.size = scale;
+        imageGraphic1.setScale(scale);
+        imageGraphic2.setScale(scale);
     }
 
     @Override
@@ -109,7 +106,7 @@ final public class ScrollingImage extends SceneVisual {
         else {
             this.lastUpdateTimeSeconds = Engine.getSceneTime();
         }
-        this.setPosition((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
+        this.setPosition(Engine.getNativeResolution().scalar(0.5f));
     }
 
     @Override
@@ -123,48 +120,52 @@ final public class ScrollingImage extends SceneVisual {
         }
         double deltaTime = currentTimeSeconds - lastUpdateTimeSeconds;
         if (horizontalScrolling) {
-            position1.x += (float) (speed * deltaTime);
-            position2.x += (float) (speed * deltaTime);
+            float newPosition1X = position1.x + (float) (speed * deltaTime);
+            float newPosition2X = position2.x + (float) (speed * deltaTime);
             float screenWidth = (float) Engine.getNativeWidth();
             if (position1.x > screenWidth / 2 + size.x) {
-                position1.x -= 2 * size.x;
+                newPosition1X -= 2 * size.x;
             }
             if (position1.x < screenWidth / 2 - size.x) {
-                position1.x += 2 * size.x;
+                newPosition1X += 2 * size.x;
             }
             if (position2.x > screenWidth / 2 + size.x) {
-                position2.x -= 2 * size.x;
+                newPosition2X -= 2 * size.x;
             }
             if (position2.x < screenWidth / 2 - size.x) {
-                position2.x += 2 * size.x;
+                newPosition2X += 2 * size.x;
             }
+            position1 = new Vec2D(newPosition1X, position1.y);
+            position2 = new Vec2D(newPosition2X, position2.y);
         }
         else {
             float screenHeight = (float) Engine.getNativeHeight();
-            position1.y += (float) (speed * deltaTime);
-            position2.y += (float) (speed * deltaTime);
+            float newPosition1Y = position1.y + (float) (speed * deltaTime);
+            float newPosition2Y = position2.y + (float) (speed * deltaTime);
             if (position1.y > screenHeight / 2 + size.y) {
-                position1.y -= 2 * size.y;
+                newPosition1Y -= 2 * size.y;
             }
             if (position1.y < screenHeight / 2 - size.y) {
-                position1.y += 2 * size.y;
+                newPosition1Y += 2 * size.y;
             }
             if (position2.y > screenHeight / 2 + size.y) {
-                position2.y -= 2 * size.y;
+                newPosition2Y -= 2 * size.y;
             }
             if (position2.y < screenHeight / 2 - size.y) {
-                position2.y += 2 * size.y;
+                newPosition2Y += 2 * size.y;
             }
+            position1 = new Vec2D(position1.x, newPosition1Y);
+            position2 = new Vec2D(position2.x, newPosition2Y);
         }
-        imageGraphic1.setPosition(position1.x, position1.y);
-        imageGraphic2.setPosition(position2.x, position2.y);
+        imageGraphic1.setPosition(position1);
+        imageGraphic2.setPosition(position2);
         lastUpdateTimeSeconds = currentTimeSeconds;
     }
 
     @Override public void updateGraphicsColor() {
-        imageGraphic1.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
-        imageGraphic2.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
-        imageGraphic1.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
-        imageGraphic2.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+        imageGraphic1.setColorCoefs(colorCoefs);
+        imageGraphic2.setColorCoefs(colorCoefs);
+        imageGraphic1.setAddedColor(addedColor);
+        imageGraphic2.setAddedColor(addedColor);
     }
 }

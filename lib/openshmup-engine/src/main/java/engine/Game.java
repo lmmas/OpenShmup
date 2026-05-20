@@ -42,7 +42,7 @@ final public class Game extends Engine {
         playerSettings = new PlayerSettings();
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
-        Engine.setNativeResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
+        Engine.setNativeResolution(gameDataManager.config.getNativeResolution());
         window.show();
     }
 

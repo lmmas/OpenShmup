@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 final public class Window {
 
-    final private IVec2D resolution = new IVec2D(1920, 1080);
+    private IVec2D resolution = new IVec2D(1920, 1080);
     @Getter
     private final long glfwWindow;
 
@@ -25,14 +25,12 @@ final public class Window {
         return resolution.y;
     }
 
-    public void setResolution(int width, int height) {
-        glfwSetWindowSize(glfwWindow, width, height);
-        glViewport(0, 0, width, height);
+    public void setResolution(IVec2D newResolution) {
+        glfwSetWindowSize(glfwWindow, newResolution.x, newResolution.y);
+        glViewport(0, 0, newResolution.x, newResolution.y);
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         assert vidmode != null : "glfwGetVideoMode failure";
-        resolution.x = width;
-        resolution.y = height;
-        glfwSetWindowPos(glfwWindow, (vidmode.width() - resolution.x) / 2, (vidmode.height() - resolution.y) / 2 - 25);
+        glfwSetWindowPos(glfwWindow, (vidmode.width() - newResolution.x) / 2, (vidmode.height() - newResolution.y) / 2 - 25);
     }
 
     public void show() {

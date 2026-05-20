@@ -8,9 +8,9 @@ public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRecta
 
     boolean containsPoint(Vec2D position);
 
-    void setPosition(float positionX, float positionY);
+    void setPosition(Vec2D position);
 
-    void setSize(float sizeX, float sizeY);
+    void setSize(Vec2D size);
 
     void setOrientation(float orientationRadians);
 

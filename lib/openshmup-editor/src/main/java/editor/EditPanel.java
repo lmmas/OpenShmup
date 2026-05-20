@@ -54,7 +54,7 @@ final public class EditPanel {
 
     private void buildEditPanel() {
         this.menuScreen = new MenuScreen(4);
-        SceneVisual backgroundColor = new ScreenFilter(0, 0.0f, 0.0f, 0.0f, 0.5f);
+        SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         menuScreen.addVisual(backgroundColor);
         SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(1500f, 900f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
         menuScreen.addVisual(backgroundRectangle);

@@ -21,11 +21,11 @@ abstract public class Entity {
     @Getter
     protected boolean evil;
 
-    final protected Vec2D position;
+    protected Vec2D position;
 
-    final protected Vec2D trajectoryReferencePosition;
+    protected Vec2D trajectoryReferencePosition;
 
-    final protected Vec2D size;
+    protected Vec2D size;
     @Getter
     protected float orientationRadians;
     @Getter @Setter
@@ -47,12 +47,12 @@ abstract public class Entity {
 
     protected Level level;
 
-    public Entity(EntityType type, float trajectoryReferencePosX, float trajectoryReferencePosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(EntityType type, Vec2D trajectoryReferencePos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.type = type;
         this.level = null;
-        this.trajectoryReferencePosition = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
-        this.position = new Vec2D(trajectoryReferencePosX, trajectoryReferencePosY);
-        this.size = new Vec2D(sizeX, sizeY);
+        this.trajectoryReferencePosition = trajectoryReferencePos;
+        this.position = trajectoryReferencePos;
+        this.size = size;
         this.hitbox = hitbox;
         this.orientationRadians = orientationRadians;
         this.sprite = sprite;
@@ -65,28 +65,26 @@ abstract public class Entity {
         this.deathSpawn = deathSpawn;
         this.extraComponents = extraComponents;
         setOrientation(orientationRadians);
-        setSize(sizeX, sizeY);
-        setPosition(trajectoryReferencePosX, trajectoryReferencePosY);
+        setSize(size);
+        setPosition(trajectoryReferencePos);
     }
 
     abstract public Entity copy();
 
-    public void setSize(float sizeX, float sizeY) {
-        this.size.x = sizeX;
-        this.size.y = sizeY;
-        sprite.setScale(sizeX, sizeY);
-        hitbox.setSize(sizeX, sizeY);
+    public void setSize(Vec2D size) {
+        this.size = size;
+        sprite.setScale(size);
+        hitbox.setSize(size);
     }
 
     public Vec2D getPosition() {
         return new Vec2D(position);
     }
 
-    public void setPosition(float positionX, float positionY) {
-        position.x = positionX;
-        position.y = positionY;
-        sprite.setPosition(positionX, positionY);
-        hitbox.setPosition(positionX, positionY);
+    public void setPosition(Vec2D position) {
+        this.position = position;
+        sprite.setPosition(position);
+        hitbox.setPosition(position);
     }
 
     public Vec2D getTrajectoryReferencePosition() {
@@ -94,8 +92,7 @@ abstract public class Entity {
     }
 
     public void setTrajectoryStartingPosition(float startingPositionX, float startingPositionY) {
-        trajectoryReferencePosition.x = startingPositionX;
-        trajectoryReferencePosition.y = startingPositionY;
+        trajectoryReferencePosition = new Vec2D(startingPositionX, startingPositionY);
     }
 
     public void setOrientation(float orientationRadians) {

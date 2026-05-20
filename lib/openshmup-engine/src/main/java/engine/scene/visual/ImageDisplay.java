@@ -2,6 +2,7 @@ package engine.scene.visual;
 
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
+import engine.types.RGBAValue;
 import engine.types.Vec2D;
 
 import java.util.ArrayList;
@@ -17,20 +18,16 @@ final public class ImageDisplay extends SceneVisual {
         graphicsList.add(imageGraphic);
     }
 
-    public ImageDisplay(int layer, Texture texture, float sizeX, float sizeY, float positionX, float positionY) {
+    public ImageDisplay(int layer, Texture texture, Vec2D size, Vec2D position) {
         super(layer, new ArrayList<>(1), List.of(0));
         this.imageGraphic = new ImageGraphic(texture, false,
-            sizeX, sizeY,
-            positionX, positionY,
-            1.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.0f, 0.0f, 0.0f);
+            size,
+            position,
+            Vec2D.ONE,
+            Vec2D.ZERO,
+            RGBAValue.ONES,
+            RGBAValue.ZEROES);
         graphicsList.add(imageGraphic);
-    }
-
-    public ImageDisplay(int layer, Texture texture, Vec2D size, Vec2D position) {
-        this(layer, texture, size.x, size.y, position.x, position.y);
     }
 
     @Override
@@ -39,8 +36,8 @@ final public class ImageDisplay extends SceneVisual {
     }
 
     @Override public void updateGraphicsColor() {
-        imageGraphic.setColorCoefs(colorCoefs.r, colorCoefs.g, colorCoefs.b, colorCoefs.a);
-        imageGraphic.setAddedColor(addedColor.r, addedColor.g, addedColor.b, addedColor.a);
+        imageGraphic.setColorCoefs(colorCoefs);
+        imageGraphic.setAddedColor(addedColor);
     }
 
 }

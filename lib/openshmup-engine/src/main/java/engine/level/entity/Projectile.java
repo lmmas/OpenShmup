@@ -5,14 +5,15 @@ import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;
+import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
 final public class Projectile extends Entity {
 
-    public Projectile(float startingPosX, float startingPosY, float sizeX, float sizeY, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
-        super(EntityType.PROJECTILE, startingPosX, startingPosY, sizeX, sizeY, orientationRadians, evil, entityId, sprite, trajectory, hitbox, deathSpawn, extraComponents);
+    public Projectile(Vec2D startingPos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+        super(EntityType.PROJECTILE, startingPos, size, orientationRadians, evil, entityId, sprite, trajectory, hitbox, deathSpawn, extraComponents);
     }
 
     @Override
@@ -21,6 +22,6 @@ final public class Projectile extends Entity {
         for (ExtraComponent component : extraComponents) {
             newExtracomponents.add(component.copyIfNotReusable());
         }
-        return new Projectile(trajectoryReferencePosition.x, trajectoryReferencePosition.y, size.x, size.y, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), deathSpawn, newExtracomponents);
+        return new Projectile(trajectoryReferencePosition, size, orientationRadians, evil, entityId, sprite.copy(), trajectory.copyIfNotReusable(), hitbox.copy(), deathSpawn, newExtracomponents);
     }
 }

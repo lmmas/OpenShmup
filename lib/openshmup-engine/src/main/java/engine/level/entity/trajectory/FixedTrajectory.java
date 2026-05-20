@@ -25,14 +25,12 @@ final public class FixedTrajectory implements Trajectory {
     }
 
     public void update(Entity entity, Level level) {
-        float newPosX = trajectoryFunctionX.apply(entity.getLifetimeSeconds());
-        float newPosY = trajectoryFunctionY.apply(entity.getLifetimeSeconds());
+        Vec2D newPosition = new Vec2D(trajectoryFunctionX.apply(entity.getLifetimeSeconds()), trajectoryFunctionY.apply(entity.getLifetimeSeconds()));
         if (relativeTrajectory) {
             Vec2D startingPosition = entity.getTrajectoryReferencePosition();
-            newPosX += startingPosition.x;
-            newPosY += startingPosition.y;
+            newPosition = newPosition.add(startingPosition);
         }
-        entity.setPosition(newPosX, newPosY);
+        entity.setPosition(newPosition);
     }
 
     @Override
