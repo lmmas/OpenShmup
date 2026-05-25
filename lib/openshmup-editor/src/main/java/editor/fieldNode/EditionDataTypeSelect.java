@@ -1,11 +1,11 @@
 package editor.fieldNode;
 
-import editor.MenuItems;
 import editor.Style;
+import editor.Widgets;
 import editor.editionData.*;
-import engine.menu.ItemGroup;
 import engine.menu.Menu;
-import engine.menu.item.SelectorButtons;
+import engine.menu.MenuElementGroup;
+import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.Vec2D;
@@ -128,7 +128,7 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
         this.menu = null;
         this.typeSelectText = new TextDisplay(1, false, startPosition, "Type:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
         Vec2D fieldPosition = startPosition.add(new Vec2D(200f, 0f));
-        this.selectorButtons = MenuItems.EditorSelector(2, dataList.size(), buttonSize, fieldPosition, buttonStride, typeLabels, onChange, selectedValue);
+        this.selectorButtons = Widgets.EditorSelector(2, dataList.size(), buttonSize, fieldPosition, buttonStride, typeLabels, onChange, selectedValue);
         this.selectorButtons.setSelectedValue(selectedValue);
     }
 
@@ -178,18 +178,18 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
     }
 
     @Override
-    public ItemGroup getAllActiveItems() {
-        ItemGroup allActiveItems = new ItemGroup();
+    public MenuElementGroup getAllActiveElements() {
+        MenuElementGroup allActiveElements = new MenuElementGroup();
         if (this.isActive) {
-            allActiveItems.items().add(selectorButtons);
-            allActiveItems.otherVisuals().add(typeSelectText);
+            allActiveElements.widgets().add(selectorButtons);
+            allActiveElements.visuals().add(typeSelectText);
             for (EditionDataFields<D> fields : editionDataFieldsList) {
-                ItemGroup editionDataFieldsElements = fields.getAllActiveItems();
-                allActiveItems.items().addAll(editionDataFieldsElements.items());
-                allActiveItems.otherVisuals().addAll(editionDataFieldsElements.otherVisuals());
+                MenuElementGroup editionDataFieldsElements = fields.getAllActiveElements();
+                allActiveElements.widgets().addAll(editionDataFieldsElements.widgets());
+                allActiveElements.visuals().addAll(editionDataFieldsElements.visuals());
             }
         }
-        return allActiveItems;
+        return allActiveElements;
     }
 
     @Override

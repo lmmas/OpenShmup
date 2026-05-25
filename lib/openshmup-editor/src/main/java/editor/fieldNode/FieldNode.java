@@ -1,13 +1,13 @@
 package editor.fieldNode;
 
-import engine.menu.ItemGroup;
 import engine.menu.Menu;
+import engine.menu.MenuElementGroup;
 
 public interface FieldNode {
 
     void setMenu(Menu menu);
 
-    ItemGroup getAllActiveItems();
+    MenuElementGroup getAllActiveElements();
 
     void setActive(boolean active);
 

@@ -1,4 +1,4 @@
-package engine.menu.item;
+package engine.menu.widget;
 
 import engine.Engine;
 import engine.InputStatesManager;
@@ -15,7 +15,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-final public class TextField implements MenuItem {
+final public class TextField implements Widget {
 
     @Getter final private List<SceneVisual> visuals;
 

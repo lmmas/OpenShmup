@@ -3,8 +3,8 @@ package editor;
 import engine.Engine;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
-import engine.menu.item.ActionButton;
-import engine.menu.item.MenuItems;
+import engine.menu.widget.ActionButton;
+import engine.menu.widget.Widgets;
 import engine.scene.Scene;
 import engine.scene.visual.ColorRectangleVisual;
 import engine.scene.visual.SceneVisual;
@@ -33,8 +33,8 @@ final public class Menus {
         private static MenuScreen PopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            ActionButton closeButton = MenuItems.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
-            popupMenu.addItem(closeButton);
+            ActionButton closeButton = Widgets.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            popupMenu.addWidget(closeButton);
             popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)));
 
             Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
@@ -44,7 +44,7 @@ final public class Menus {
                     Engine.switchCurrentScene(new Scene());
                     Engine.switchCurrentMenu(new EditionMenu(game).getMenu());
                 };
-                popupMenu.addItem(MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonStyle1, game.getGameName(), onclick));
+                popupMenu.addWidget(Widgets.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonStyle1, game.getGameName(), onclick));
             }
             return popupMenu;
         }
@@ -69,11 +69,11 @@ final public class Menus {
             MenuScreen popupScreen = Screens.PopupScreen();
             mainMenu.addMenuScreen(popupScreen);
         };
-        ActionButton button1 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonStyle1, "Edit game", editGameAction);
-        ActionButton button2 = MenuItems.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonStyle1, "Quit", terminateProgram);
+        ActionButton button1 = Widgets.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 500), menuButtonStyle1, "Edit game", editGameAction);
+        ActionButton button2 = Widgets.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 300), menuButtonStyle1, "Quit", terminateProgram);
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
-        titleScreen.addItem(button1);
-        titleScreen.addItem(button2);
+        titleScreen.addWidget(button1);
+        titleScreen.addWidget(button2);
         titleScreen.addVisual(menuBackground);
         titleScreen.addVisual(menuTitle);
 

@@ -1,4 +1,4 @@
-package engine.menu.item;
+package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
 import engine.hitbox.SimpleRectangleHitbox;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-final public class MenuItems {
+final public class Widgets {
 
-    private MenuItems() {}
+    private Widgets() {}
 
     public static ActionButton ColorRectangleButton(int layer, Vec2D size, Vec2D position, RGBAValue color, String label, TextStyle textStyle, Runnable onClick) {
         return new ActionButton(List.of(

@@ -1,6 +1,6 @@
 package engine.menu;
 
-import engine.menu.item.MenuItem;
+import engine.menu.widget.Widget;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
     private int backgroundLayer;
 
-    final private ArrayList<MenuItem> menuItems;
+    final private ArrayList<Widget> widgets;
 
     final private ArrayList<SceneVisual> otherVisuals;
     @Setter
@@ -19,19 +19,19 @@ import java.util.ArrayList;
 
     public MenuScreen(int backgroundLayer) {
         this.backgroundLayer = backgroundLayer;
-        this.menuItems = new ArrayList<>();
+        this.widgets = new ArrayList<>();
         this.otherVisuals = new ArrayList<>();
         this.isOpen = false;
     }
 
-    public void addItem(MenuItem menuItem) {
-        assert !menuItems.contains(menuItem) : "item is already present in item list of the screen";
-        menuItems.add(menuItem);
+    public void addWidget(Widget widget) {
+        assert !widgets.contains(widget) : "item is already present in item list of the screen";
+        widgets.add(widget);
     }
 
-    public void removeItem(MenuItem menuItem) {
-        assert menuItems.contains(menuItem) : "item is not present in item list of the screen";
-        menuItems.remove(menuItem);
+    public void removeWidget(Widget widget) {
+        assert widgets.contains(widget) : "item is not present in item list of the screen";
+        widgets.remove(widget);
     }
 
     public void addVisual(SceneVisual visual) {
@@ -44,13 +44,13 @@ import java.util.ArrayList;
         otherVisuals.remove(visual);
     }
 
-    public void addItemGroup(ItemGroup itemGroup) {
-        itemGroup.items().forEach(this::addItem);
-        itemGroup.otherVisuals().forEach(this::addVisual);
+    public void addElementGroup(MenuElementGroup elementGroup) {
+        elementGroup.widgets().forEach(this::addWidget);
+        elementGroup.visuals().forEach(this::addVisual);
     }
 
-    public void removeItemGroup(ItemGroup itemGroup) {
-        itemGroup.items().forEach(this::removeItem);
-        itemGroup.otherVisuals().forEach(this::removeVisual);
+    public void removeElementGroup(MenuElementGroup elementGroup) {
+        elementGroup.widgets().forEach(this::removeWidget);
+        elementGroup.visuals().forEach(this::removeVisual);
     }
 }

@@ -1,8 +1,8 @@
 package editor;
 
-import engine.menu.item.BooleanField;
-import engine.menu.item.SelectorButtons;
-import engine.menu.item.TextField;
+import engine.menu.widget.BooleanField;
+import engine.menu.widget.SelectorButtons;
+import engine.menu.widget.TextField;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.ImageDisplay;
 import engine.types.RGBAValue;
@@ -18,9 +18,9 @@ import static editor.Style.menuButtonStyle1;
 import static editor.Style.menuButtonStyle3;
 import static engine.Engine.assetManager;
 
-final public class MenuItems {
+final public class Widgets {
 
-    private MenuItems() {}
+    private Widgets() {}
 
     final private static Path checkboxTexturePath = Paths.get("lib/openshmup-editor/src/main/resources/textures/checkbox.png");
 
@@ -46,7 +46,7 @@ final public class MenuItems {
     }
 
     public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
-        return engine.menu.item.MenuItems.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange, startingValue);
+        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange, startingValue);
     }
 
 

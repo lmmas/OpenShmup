@@ -4,13 +4,13 @@ import editor.editionData.*;
 import editor.fieldNode.EditionDataTypeSelect;
 import editor.fieldNode.FieldNode;
 import engine.Engine;
-import engine.menu.ItemGroup;
 import engine.menu.Menu;
+import engine.menu.MenuElementGroup;
 import engine.menu.MenuScreen;
-import engine.menu.item.ActionButton;
-import engine.menu.item.MenuItem;
-import engine.menu.item.MenuItems;
-import engine.menu.item.SelectorButtons;
+import engine.menu.widget.ActionButton;
+import engine.menu.widget.SelectorButtons;
+import engine.menu.widget.Widget;
+import engine.menu.widget.Widgets;
 import engine.scene.Scene;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static editor.MenuItems.EditorSelector;
 import static editor.Menus.MainMenu;
 import static editor.Style.Color.menuBackgroundColor;
 import static editor.Style.*;
+import static editor.Widgets.EditorSelector;
 
 final public class EditionMenu {
 
@@ -61,14 +61,14 @@ final public class EditionMenu {
             Engine.switchCurrentScene(new Scene());
             Engine.switchCurrentMenu(MainMenu());
         };
-        ActionButton returnToMainMenuButton = engine.menu.item.MenuItems.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
-        mainScreen.addItem(returnToMainMenuButton);
+        ActionButton returnToMainMenuButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
+        mainScreen.addWidget(returnToMainMenuButton);
 
         Vec2D listButtonSize = new Vec2D(300f, 50f);
         float listButtonSpacing = 15f;
 
         List<VisualEditionData> visualEditionDataList = gameData.getVisualEditionDataList();
-        ArrayList<MenuItem> visualListItems = new ArrayList<>(visualEditionDataList.size());
+        ArrayList<Widget> visualListItems = new ArrayList<>(visualEditionDataList.size());
         for (int i = 0; i < visualEditionDataList.size(); i++) {
             var visualData = visualEditionDataList.get(i);
             int finalI = i;
@@ -83,13 +83,13 @@ final public class EditionMenu {
             String menuButtonLabel = visualData.getId() + ": " + typeString;
 
             Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = engine.menu.item.MenuItems.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
+            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
             visualListItems.add(visualSelectButton);
         }
-        ItemGroup visualList = new ItemGroup(visualListItems, List.of());
+        MenuElementGroup visualList = new MenuElementGroup(visualListItems, List.of());
 
         List<TrajectoryEditionData> trajectoryEditionDataList = gameData.getTrajectoryEditionDataList();
-        ArrayList<MenuItem> trajectoryListItems = new ArrayList<>(trajectoryEditionDataList.size());
+        ArrayList<Widget> trajectoryListItems = new ArrayList<>(trajectoryEditionDataList.size());
         for (int i = 0; i < trajectoryEditionDataList.size(); i++) {
             var trajectoryData = trajectoryEditionDataList.get(i);
             int finalI = i;
@@ -104,13 +104,13 @@ final public class EditionMenu {
             String menuButtonLabel = trajectoryData.getId() + ": " + typeString;
 
             Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = engine.menu.item.MenuItems.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
+            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
             trajectoryListItems.add(visualSelectButton);
         }
-        ItemGroup trajectoryList = new ItemGroup(trajectoryListItems, List.of());
+        MenuElementGroup trajectoryList = new MenuElementGroup(trajectoryListItems, List.of());
 
         List<EntityEditionData> entityEditionDataList = gameData.getEntityEditionDataList();
-        List<MenuItem> entityListItems = new ArrayList<>(entityEditionDataList.size());
+        List<Widget> entityListItems = new ArrayList<>(entityEditionDataList.size());
         for (int i = 0; i < entityEditionDataList.size(); i++) {
             var entityData = entityEditionDataList.get(i);
             int finalI = i;
@@ -125,24 +125,24 @@ final public class EditionMenu {
             String menuButtonLabel = entityData.getId() + ": " + typeString;
 
             Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = MenuItems.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
+            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
             entityListItems.add(visualSelectButton);
         }
-        ItemGroup entityList = new ItemGroup(entityListItems, List.of());
+        MenuElementGroup entityList = new MenuElementGroup(entityListItems, List.of());
 
-        ItemGroup timelineSpawnList = new ItemGroup();
+        MenuElementGroup timelineSpawnList = new MenuElementGroup();
 
         List<String> labels = List.of("Visuals", "Trajectories", "Entities", "Timeline");
         Vec2D selectorButtonStride = new Vec2D(250f, 0f);
         Vec2D selectorButtonSize = new Vec2D(200, 50f);
         Vec2D selectorStartPosition = new Vec2D(Engine.getNativeWidth() * 0.5f - 1.5f * selectorButtonStride.x, 950);
-        final Reference<ItemGroup> currentList = new Reference<>(null);
+        final Reference<MenuElementGroup> currentList = new Reference<>(null);
         BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {
 
             if (currentList.get() != null) {
                 menu.removeFromCurrentScreen(currentList.get());
             }
-            ItemGroup newCurrentList = switch (newValue) {
+            MenuElementGroup newCurrentList = switch (newValue) {
                 case 0 -> visualList;
                 case 1 -> trajectoryList;
                 case 2 -> entityList;
@@ -153,9 +153,9 @@ final public class EditionMenu {
             currentList.set(newCurrentList);
         };
         SelectorButtons categorySelector = EditorSelector(1, 4, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange, 0);
-        mainScreen.addItem(categorySelector);
+        mainScreen.addWidget(categorySelector);
         currentList.set(visualList);
-        mainScreen.addItemGroup(currentList.get());
+        mainScreen.addElementGroup(currentList.get());
         menu.addMenuScreen(mainScreen);
     }
 
@@ -169,8 +169,8 @@ final public class EditionMenu {
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
         Vec2D closeButtonPosition = new Vec2D(1625, 125);
-        ActionButton closeButton = MenuItems.RoundedRectangleButton(3, closeButtonSize, closeButtonPosition, menuButtonStyle2, "Close", (() -> this.menu.removeMenuScreen(editPanel)));
-        this.editPanel.addItem(closeButton);
+        ActionButton closeButton = Widgets.RoundedRectangleButton(3, closeButtonSize, closeButtonPosition, menuButtonStyle2, "Close", (() -> this.menu.removeMenuScreen(editPanel)));
+        this.editPanel.addWidget(closeButton);
 
         String panelTitleString = "Test";
         TextDisplay panelTitle = new TextDisplay(1, false, new Vec2D((float) Engine.getNativeWidth() / 2, 950f), panelTitleString, Text.menuButtonLabelStyle, TextAlignment.CENTER);
@@ -181,8 +181,8 @@ final public class EditionMenu {
         this.editPanelRoot = editionDataTypeSelect;
 
         editPanelRoot.setActive(true);
-        ItemGroup allActiveItems = editPanelRoot.getAllActiveItems();
-        this.editPanel.addItemGroup(allActiveItems);
+        MenuElementGroup allActiveItems = editPanelRoot.getAllActiveElements();
+        this.editPanel.addElementGroup(allActiveItems);
         editPanelRoot.setMenu(menu);
 
         Vec2D applyButtonSize = new Vec2D(150, 50);
@@ -192,8 +192,8 @@ final public class EditionMenu {
             D selectedEditionData = editionDataTypeSelect.getSelectedEditionData();
             dataList.set(index, selectedEditionData);
         };
-        ActionButton applyButton = MenuItems.RoundedRectangleButton(3, applyButtonSize, applyButtonPosition, menuButtonStyle2, "Apply", applyChanges);
-        this.editPanel.addItem(applyButton);
+        ActionButton applyButton = Widgets.RoundedRectangleButton(3, applyButtonSize, applyButtonPosition, menuButtonStyle2, "Apply", applyChanges);
+        this.editPanel.addWidget(applyButton);
 
         this.menu.addMenuScreen(this.editPanel);
     }

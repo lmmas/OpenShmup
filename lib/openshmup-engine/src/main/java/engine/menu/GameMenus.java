@@ -1,7 +1,7 @@
 package engine.menu;
 
-import engine.menu.item.ActionButton;
-import engine.menu.item.MenuItems;
+import engine.menu.widget.ActionButton;
+import engine.menu.widget.Widgets;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.style.TextStyle;
 import engine.types.RGBAValue;
@@ -20,8 +20,8 @@ final public class GameMenus {
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
         Vec2D buttonSize = new Vec2D(300, 150);
-        ActionButton blueButton = MenuItems.ColorRectangleButton(1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
-        pauseMenu.addItem(blueButton);
+        ActionButton blueButton = Widgets.ColorRectangleButton(1, buttonSize, new Vec2D(500f, 500f), buttonColor, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        pauseMenu.addWidget(blueButton);
 
         pauseMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.7f)));
         return pauseMenu;

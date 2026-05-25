@@ -1,4 +1,4 @@
-package engine.menu.item;
+package engine.menu.widget;
 
 import engine.Engine;
 import engine.InputStatesManager;
@@ -13,7 +13,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-final public class BooleanField implements MenuItem {
+final public class BooleanField implements Widget {
 
     @Getter
     private ArrayList<SceneVisual> visuals;

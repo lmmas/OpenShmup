@@ -1,4 +1,4 @@
-package engine.menu.item;
+package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-final public class SelectorButtons implements MenuItem {
+final public class SelectorButtons implements Widget {
 
     @Getter
     final private List<ActionButton> actionButtons;

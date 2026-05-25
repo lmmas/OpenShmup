@@ -3,11 +3,11 @@ package editor.fieldNode;
 import editor.Style;
 import editor.attribute.*;
 import editor.editionData.*;
-import engine.menu.ItemGroup;
 import engine.menu.Menu;
-import engine.menu.item.BooleanField;
-import engine.menu.item.MenuItem;
-import engine.menu.item.TextField;
+import engine.menu.MenuElementGroup;
+import engine.menu.widget.BooleanField;
+import engine.menu.widget.TextField;
+import engine.menu.widget.Widget;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.IVec2D;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static editor.MenuItems.Checkbox;
-import static editor.MenuItems.EditorTextField;
+import static editor.Widgets.Checkbox;
+import static editor.Widgets.EditorTextField;
 
 final public class EditionDataFields<D extends EditionData> implements FieldNode {
 
@@ -29,7 +29,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     @Setter @Getter
     private D editionData;
 
-    final private HashMap<Attribute, List<MenuItem>> attributeItemMap;
+    final private HashMap<Attribute, List<Widget>> attributeWidgetsMap;
 
     final private HashMap<EditionDataAttribute<?>, EditionDataTypeSelect<?>> editionDataTypeSelectMap;
 
@@ -37,19 +37,19 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
 
     private Menu menu;
 
-    final private ItemGroup itemGroup;
+    final private MenuElementGroup elementGroup;
 
     private boolean isActive;
 
     public EditionDataFields(D editionData, Vec2D startPosition) {
         this.editionData = editionData;
-        this.attributeItemMap = new HashMap<>();
+        this.attributeWidgetsMap = new HashMap<>();
         this.editionDataTypeSelectMap = new HashMap<>();
         this.children = new ArrayList<>();
         this.menu = null;
-        this.itemGroup = new ItemGroup();
+        this.elementGroup = new MenuElementGroup();
         this.isActive = false;
-        this.buildItems(startPosition);
+        this.buildFields(startPosition);
         this.loadFieldsFromAttributes();
     }
 
@@ -66,7 +66,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
         }
     }
 
-    private void buildItems(Vec2D startPosition) {
+    private void buildFields(Vec2D startPosition) {
         List<Attribute> attributeList = editionData.getAttributes();
         int layer = 1;
         float coupleFieldSpacing = 250f;
@@ -76,22 +76,22 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
         Vec2D attributePosition = startPosition;
         for (Attribute attribute : attributeList) {
             TextDisplay attributeText = new TextDisplay(layer, false, attributePosition, attribute.getName() + ":", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-            itemGroup.otherVisuals().add(attributeText);
+            elementGroup.visuals().add(attributeText);
             Vec2D fieldPosition = attributePosition.add(fieldMargin);
             switch (attribute) {
                 case BooleanAttribute booleanAttribute -> {
                     Vec2D fieldOffset = new Vec2D(16f, 0f);
                     BooleanField checkbox = Checkbox(layer, fieldPosition.add(fieldOffset), booleanAttribute.getValue());
-                    itemGroup.items().add(checkbox);
-                    attributeItemMap.put(attribute, List.of(checkbox));
+                    elementGroup.widgets().add(checkbox);
+                    attributeWidgetsMap.put(attribute, List.of(checkbox));
                 }
 
                 case DoubleAttribute doubleAttribute -> {
                     float fieldWidthPixels = 150f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(doubleAttribute.getValue()));
-                    itemGroup.items().add(textField);
-                    attributeItemMap.put(attribute, List.of(textField));
+                    elementGroup.widgets().add(textField);
+                    attributeWidgetsMap.put(attribute, List.of(textField));
                 }
 
                 case EditionDataAttribute<?> editionDataAttribute -> {
@@ -125,33 +125,33 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     float fieldWidthPixels = 150f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(floatAttribute.getValue()));
-                    itemGroup.items().add(textField);
-                    attributeItemMap.put(attribute, List.of(textField));
+                    elementGroup.widgets().add(textField);
+                    attributeWidgetsMap.put(attribute, List.of(textField));
                 }
 
                 case IntegerAttribute integerAttribute -> {
                     float fieldWidthPixels = 100f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, Integer.toString(integerAttribute.getValue()));
-                    itemGroup.items().add(textField);
-                    attributeItemMap.put(attribute, List.of(textField));
+                    elementGroup.widgets().add(textField);
+                    attributeWidgetsMap.put(attribute, List.of(textField));
                 }
 
                 case IVec2DAttribute iVec2DAttribute -> {
                     float fieldWidthPixels = 150f;
                     float fieldLabelOffset = 50f;
                     TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-                    itemGroup.otherVisuals().add(fieldLabel1);
+                    elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
                     TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().x));
-                    itemGroup.items().add(textField1);
+                    elementGroup.widgets().add(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
                     TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-                    itemGroup.otherVisuals().add(fieldDisplay2);
+                    elementGroup.visuals().add(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
                     TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().y));
-                    itemGroup.items().add(textField2);
-                    attributeItemMap.put(attribute, List.of(textField1, textField2));
+                    elementGroup.widgets().add(textField2);
+                    attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
 
                 case ListAttribute<?> ignored -> {
@@ -162,25 +162,25 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     float fieldWidthPixels = 300f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, stringAttribute.getValue());
-                    itemGroup.items().add(textField);
-                    attributeItemMap.put(attribute, List.of(textField));
+                    elementGroup.widgets().add(textField);
+                    attributeWidgetsMap.put(attribute, List.of(textField));
                 }
 
                 case Vec2DAttribute vec2DAttribute -> {
                     float fieldWidthPixels = 150f;
                     float fieldLabelOffset = 50f;
                     TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-                    itemGroup.otherVisuals().add(fieldLabel1);
+                    elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
                     TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().x));
-                    itemGroup.items().add(textField1);
+                    elementGroup.widgets().add(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
                     TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-                    itemGroup.otherVisuals().add(fieldDisplay2);
+                    elementGroup.visuals().add(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
                     TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().y));
-                    itemGroup.items().add(textField2);
-                    attributeItemMap.put(attribute, List.of(textField1, textField2));
+                    elementGroup.widgets().add(textField2);
+                    attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
             }
             attributePosition = attributePosition.add(new Vec2D(0.0f, -getSpacing(attribute)));
@@ -188,9 +188,9 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     }
 
     private void loadFieldsFromAttributes() {
-        for (var entry : attributeItemMap.entrySet()) {
+        for (var entry : attributeWidgetsMap.entrySet()) {
             Attribute attribute = entry.getKey();
-            List<MenuItem> items = entry.getValue();
+            List<Widget> items = entry.getValue();
             switch (attribute) {
                 case BooleanAttribute booleanAttribute -> {
                     assert items.size() == 1 && items.getFirst() instanceof BooleanField : "incorrect fields assigned to attribute";
@@ -269,18 +269,18 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     }
 
     @Override
-    public ItemGroup getAllActiveItems() {
-        ItemGroup allActiveItems = new ItemGroup();
+    public MenuElementGroup getAllActiveElements() {
+        MenuElementGroup allActiveElements = new MenuElementGroup();
         if (this.isActive) {
-            allActiveItems.items().addAll(itemGroup.items());
-            allActiveItems.otherVisuals().addAll(itemGroup.otherVisuals());
+            allActiveElements.widgets().addAll(elementGroup.widgets());
+            allActiveElements.visuals().addAll(elementGroup.visuals());
             for (FieldNode node : children) {
-                ItemGroup editionDataFieldsElements = node.getAllActiveItems();
-                allActiveItems.items().addAll(editionDataFieldsElements.items());
-                allActiveItems.otherVisuals().addAll(editionDataFieldsElements.otherVisuals());
+                MenuElementGroup editionDataFieldsElements = node.getAllActiveElements();
+                allActiveElements.widgets().addAll(editionDataFieldsElements.widgets());
+                allActiveElements.visuals().addAll(editionDataFieldsElements.visuals());
             }
         }
-        return allActiveItems;
+        return allActiveElements;
     }
 
     @Override
@@ -289,10 +289,10 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
             this.isActive = active;
             if (menu != null) {
                 if (active) {
-                    menu.addToCurrentScreen(this.itemGroup);
+                    menu.addToCurrentScreen(this.elementGroup);
                 }
                 else {
-                    menu.removeFromCurrentScreen(this.itemGroup);
+                    menu.removeFromCurrentScreen(this.elementGroup);
                 }
             }
             children.forEach(node -> node.setActive(active));
@@ -302,9 +302,9 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     @Override
     public void applyChanges() {
         children.forEach(FieldNode::applyChanges);
-        for (var entry : attributeItemMap.entrySet()) {
+        for (var entry : attributeWidgetsMap.entrySet()) {
             Attribute attribute = entry.getKey();
-            List<MenuItem> items = entry.getValue();
+            List<Widget> items = entry.getValue();
 
             switch (attribute) {
                 case BooleanAttribute booleanAttribute -> {
