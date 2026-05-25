@@ -8,14 +8,13 @@ import json.SafeJsonNode;
 import json.converters.entity.EntityConverter;
 import json.converters.entity.ProjectileConverter;
 import json.converters.entity.ShipConverter;
-import json.converters.extraComponent.ExtraComponentConverter;
 import json.converters.extraComponent.ShotConverter;
 import json.converters.hitbox.CompositeHitboxConverter;
 import json.converters.hitbox.HitboxConverter;
 import json.converters.hitbox.SimpleRectangleHitboxConverter;
-import json.converters.spawnable.DisplaySpawnInfoConverter;
-import json.converters.spawnable.EntitySpawnInfoConverter;
-import json.converters.spawnable.SpawnableConverter;
+import json.converters.spawn.DisplaySpawnInfoConverter;
+import json.converters.spawn.EntitySpawnInfoConverter;
+import json.converters.spawn.SpawnConverter;
 import json.converters.trajectory.FixedTrajectoryConverter;
 import json.converters.trajectory.PlayerTrajectoryConverter;
 import json.converters.trajectory.TrajectoryConverter;
@@ -28,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static editor.editionData.EditionData.Types;
+
 public class JsonDataConverter {
 
     final private Map<String, VisualConverter> visualConverters;
@@ -36,9 +37,9 @@ public class JsonDataConverter {
 
     final private Map<String, HitboxConverter> hitboxConverters;
 
-    final private Map<String, SpawnableConverter> spawnableConverters;
+    final private Map<String, SpawnConverter> spawnConverters;
 
-    final private Map<String, ExtraComponentConverter> extraComponentConverters;
+    final private ShotConverter shotConverter;
 
     final private Map<String, EntityConverter> entityConverters;
 
@@ -48,27 +49,26 @@ public class JsonDataConverter {
         this.objectMapper = new ObjectMapper();
 
         this.visualConverters = new HashMap<>(2);
-        this.visualConverters.put("animation", new AnimationConverter());
-        this.visualConverters.put("scrollingImage", new ScrollingImageConverter());
+        this.visualConverters.put(Types.Visual.animation.name(), new AnimationConverter());
+        this.visualConverters.put(Types.Visual.scrollingImage.name(), new ScrollingImageConverter());
 
         this.trajectoryConverters = new HashMap<>(2);
-        this.trajectoryConverters.put("fixed", new FixedTrajectoryConverter());
-        this.trajectoryConverters.put("player", new PlayerTrajectoryConverter());
+        this.trajectoryConverters.put(Types.Trajectory.fixed.name(), new FixedTrajectoryConverter());
+        this.trajectoryConverters.put(Types.Trajectory.player.name(), new PlayerTrajectoryConverter());
 
         this.hitboxConverters = new HashMap<>(2);
-        this.hitboxConverters.put("simpleRectangle", new SimpleRectangleHitboxConverter());
-        this.hitboxConverters.put("composite", new CompositeHitboxConverter());
+        this.hitboxConverters.put(Types.Hitbox.rectangle.name(), new SimpleRectangleHitboxConverter());
+        this.hitboxConverters.put(Types.Hitbox.custom.name(), new CompositeHitboxConverter());
 
-        this.spawnableConverters = new HashMap<>(2);
-        this.spawnableConverters.put("display", new DisplaySpawnInfoConverter());
-        this.spawnableConverters.put("entity", new EntitySpawnInfoConverter());
+        this.spawnConverters = new HashMap<>(2);
+        this.spawnConverters.put(Types.Spawn.display.name(), new DisplaySpawnInfoConverter());
+        this.spawnConverters.put(Types.Spawn.entity.name(), new EntitySpawnInfoConverter());
 
-        this.extraComponentConverters = new HashMap<>(2);
-        this.extraComponentConverters.put("shots", new ShotConverter());
+        this.shotConverter = new ShotConverter();
 
         this.entityConverters = new HashMap<>(2);
-        this.entityConverters.put("ship", new ShipConverter());
-        this.entityConverters.put("projectile", new ProjectileConverter());
+        this.entityConverters.put(Types.Entity.ship.name(), new ShipConverter());
+        this.entityConverters.put(Types.Entity.projectile.name(), new ProjectileConverter());
     }
 
     public VisualEditionData visualEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
@@ -116,71 +116,47 @@ public class JsonDataConverter {
         return converter.fromJson(node, textureFolderPath);
     }
 
-    public SpawnableEditionData spawnableEditionDataFromJSON(SafeJsonNode node) {
+    public SpawnEditionData spawnEditionDataFromJSON(SafeJsonNode node) {
         String type = node.safeGetString("type");
-        SpawnableConverter converter = spawnableConverters.get(type);
+        SpawnConverter converter = spawnConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawnable type is not supported");
         }
         return converter.fromJson(node);
     }
 
-    public ObjectNode spawnableEditionDataToJSON(SpawnableEditionData spawnableData, ObjectNode node) {
-        String typeStr = switch (spawnableData) {
-            case DisplaySpawnInfoEditionData ignored -> "display";
-            case EntitySpawnInfoEditionData ignored -> "entity";
-        };
+    public ObjectNode spawnEditionDataToJSON(SpawnEditionData spawnData, ObjectNode node) {
+        String typeStr = spawnData.getType().name();
         node.put("type", typeStr);
-        return spawnableConverters.get(typeStr).toJson(spawnableData, node);
+        return spawnConverters.get(typeStr).toJson(spawnData, node);
     }
 
     public ObjectNode visualToJSON(VisualEditionData visualData, ObjectNode node) {
-        String typeStr = switch (visualData) {
-            case ScrollingImageEditionData ignored -> "scollingImage";
-            case AnimationEditionData ignored -> "animation";
-        };
+        String typeStr = visualData.getType().name();
         node.put("type", typeStr);
         return visualConverters.get(typeStr).toJson(visualData, node);
     }
 
     public ObjectNode hitboxToJSON(HitboxEditionData hitboxData, ObjectNode node) {
-        String typeStr = switch (hitboxData) {
-            case SimpleRectangleHitboxEditionData ignored -> "simpleRectangle";
-            case CompositeHitboxEditionData ignored -> "composite";
-        };
+        String typeStr = hitboxData.getType().name();
         node.put("type", typeStr);
         return hitboxConverters.get(typeStr).toJson(hitboxData, node);
     }
 
     public ObjectNode trajectoryToJSON(TrajectoryEditionData trajectoryData, ObjectNode node) {
-        String typeStr = switch (trajectoryData) {
-            case FixedTrajectoryEditionData ignored -> "fixed";
-            case PlayerControlledTrajectoryEditionData ignored -> "player";
-        };
+        String typeStr = trajectoryData.getType().name();
         node.put("type", typeStr);
         return trajectoryConverters.get(typeStr).toJson(trajectoryData, node);
     }
 
     public ObjectNode entityToJSON(EntityEditionData entityData, ObjectNode node) {
-        String typeStr = switch (entityData) {
-            case ShipEditionData ignored -> "ship";
-            case ProjectileEditionData ignored -> "projectile";
-        };
+        String typeStr = entityData.getType().name();
         node.put("type", typeStr);
         return entityConverters.get(typeStr).toJson(entityData, node);
     }
 
-    public ExtraComponentEditionData extraComponentEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
-        String type = node.safeGetString("type");
-        ExtraComponentConverter converter = extraComponentConverters.get(type);
-        if (converter == null) {
-            throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": extra component type is not supported");
-        }
-        return converter.fromJson(node, jsonDataConverter, textureFolderPath);
-    }
-
     public ShotEditionData shotEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
-        return (ShotEditionData) extraComponentConverters.get("shots").fromJson(node, jsonDataConverter, textureFolderPath);
+        return (ShotEditionData) shotConverter.fromJson(node, jsonDataConverter, textureFolderPath);
     }
 
     public EntityEditionData entityEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {

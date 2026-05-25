@@ -103,8 +103,8 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                                 new EditionDataTypeSelect<VisualEditionData>(visualEditionData, fieldPosition);
                             case TrajectoryEditionData trajectoryEditionData ->
                                 new EditionDataTypeSelect<TrajectoryEditionData>(trajectoryEditionData, fieldPosition);
-                            case SpawnableEditionData spawnableEditionData ->
-                                new EditionDataTypeSelect<SpawnableEditionData>(spawnableEditionData, fieldPosition);
+                            case SpawnEditionData spawnableEditionData ->
+                                new EditionDataTypeSelect<SpawnEditionData>(spawnableEditionData, fieldPosition);
                             case HitboxEditionData hitboxEditionData ->
                                 new EditionDataTypeSelect<HitboxEditionData>(hitboxEditionData, fieldPosition);
                             case EntityEditionData entityEditionData ->
@@ -261,13 +261,11 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
             }
         }
     }
-
     @Override
     public void setMenu(Menu menu) {
         this.menu = menu;
         children.forEach(fieldNode -> fieldNode.setMenu(menu));
     }
-
     @Override
     public MenuElementGroup getAllActiveElements() {
         MenuElementGroup allActiveElements = new MenuElementGroup();
@@ -282,7 +280,6 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
         }
         return allActiveElements;
     }
-
     @Override
     public void setActive(boolean active) {
         if (active != this.isActive) {
@@ -298,7 +295,6 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
             children.forEach(node -> node.setActive(active));
         }
     }
-
     @Override
     public void applyChanges() {
         children.forEach(FieldNode::applyChanges);

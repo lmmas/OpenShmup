@@ -9,23 +9,30 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter final public class DisplaySpawnInfoEditionData implements SpawnableEditionData {
+@Getter final public class DisplaySpawnEditionData implements SpawnEditionData {
 
     final private IntegerAttribute visualID;
 
     final private Vec2DAttribute position;
 
-    private DisplaySpawnInfoEditionData() {
+    private DisplaySpawnEditionData() {
         this.visualID = new IntegerAttribute("Visual ID", JsonFieldNames.DisplaySpawnInfo.id);
         this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.DisplaySpawnInfo.position);
     }
 
-    public DisplaySpawnInfoEditionData(int visualID, Vec2D position) {
+    public DisplaySpawnEditionData(int visualID, Vec2D position) {
         this();
         this.visualID.setValue(visualID);
         this.position.setValue(position);
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.SPAWN;
+    }
+    @Override
+    public Type getType() {
+        return Types.Spawn.display;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(visualID, position);
@@ -37,8 +44,8 @@ import java.util.List;
         this.position.setValue(Vec2D.ZERO);
     }
 
-    public static DisplaySpawnInfoEditionData DEFAULT() {
-        DisplaySpawnInfoEditionData data = new DisplaySpawnInfoEditionData();
+    public static DisplaySpawnEditionData DEFAULT() {
+        DisplaySpawnEditionData data = new DisplaySpawnEditionData();
         data.setToDefault();
         return data;
     }

@@ -2,7 +2,7 @@ package json.converters.hitbox;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import editor.attribute.Attribute;
-import editor.editionData.CompositeHitboxEditionData;
+import editor.editionData.CustomHitboxEditionData;
 import editor.editionData.HitboxEditionData;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
@@ -17,14 +17,14 @@ final public class CompositeHitboxConverter implements HitboxConverter {
     public HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
         String textureFileName = node.safeGetString(JsonFieldNames.CompositeHitbox.fileName);
         Vec2D size = node.safeGetVec2D(JsonFieldNames.CompositeHitbox.size);
-        return new CompositeHitboxEditionData(size, textureFileName);
+        return new CustomHitboxEditionData(size, textureFileName);
     }
 
     @Override
     public ObjectNode toJson(HitboxEditionData hitboxData, ObjectNode node) {
-        CompositeHitboxEditionData compositeHitboxEditionData = (CompositeHitboxEditionData) hitboxData;
+        CustomHitboxEditionData customHitboxEditionData = (CustomHitboxEditionData) hitboxData;
 
-        List<Attribute> attributes = List.of(compositeHitboxEditionData.getSize(), compositeHitboxEditionData.getFileName());
+        List<Attribute> attributes = List.of(customHitboxEditionData.getSize(), customHitboxEditionData.getFileName());
         attributes.forEach(attribute -> attribute.addToNode(node));
 
         return node;

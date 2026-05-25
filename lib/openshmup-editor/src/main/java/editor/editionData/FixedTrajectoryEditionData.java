@@ -32,17 +32,22 @@ import java.util.List;
     public IntegerAttribute getIdAttribute() {
         return id;
     }
-
     @Override
     public int getId() {
         return id.getValue();
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.TRAJECTORY;
+    }
+    @Override
+    public Type getType() {
+        return Types.Trajectory.fixed;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(id, trajectoryFunctionX, trajectoryFunctionY);
     }
-
     @Override
     public void setToDefault() {
         this.id.setValue(0);

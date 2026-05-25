@@ -1,11 +1,11 @@
 package editor.editionData;
 
-public sealed interface HitboxEditionData extends EditionData permits SimpleRectangleHitboxEditionData, CompositeHitboxEditionData {
+public sealed interface HitboxEditionData extends EditionData permits RectangleHitboxEditionData, CustomHitboxEditionData {
 
     static String getType(HitboxEditionData data) {
         return switch (data) {
-            case SimpleRectangleHitboxEditionData ignored -> "simpleRectangle";
-            case CompositeHitboxEditionData ignored -> "composite";
+            case RectangleHitboxEditionData ignored -> "simpleRectangle";
+            case CustomHitboxEditionData ignored -> "composite";
         };
     }
 }

@@ -7,7 +7,7 @@
         "size": [100, 100],
         "spriteVisualId": 3,
         "hitbox": {
-            "type": "simpleRectangle",
+            "type": "rectangle",
             "size": [100, 100]
         },
         "defaultTrajectoryId": 0,
@@ -52,7 +52,7 @@
         "size": [10, 10],
         "spriteVisualId": 4,
         "hitbox": {
-            "type": "simpleRectangle",
+            "type": "rectangle",
             "size": [10, 10]
         },
         "deathSpawn": []
@@ -65,7 +65,7 @@
         "size": [50, 50],
         "spriteVisualId": 5,
         "hitbox": {
-            "type": "simpleRectangle",
+            "type": "rectangle",
             "size": [50, 50]
         },
         "shots": [
@@ -97,7 +97,7 @@
         "size": [10, 10],
         "spriteVisualId": 6,
         "hitbox": {
-            "type": "simpleRectangle",
+            "type": "rectangle",
             "size": [10, 10]
         },
         "deathSpawn": []

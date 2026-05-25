@@ -39,7 +39,7 @@ final public class EditionDataAttribute<D extends EditionData> extends Attribute
             case TrajectoryEditionData ignored -> true;
             case EntityEditionData ignored -> true;
             case HitboxEditionData ignored -> true;
-            case SpawnableEditionData ignored -> true;
+            case SpawnEditionData ignored -> true;
             case ShotEditionData ignored -> false;
             case AnimationEditionData.SpritesheetInfoData ignored -> false;
         };

@@ -22,7 +22,7 @@ final public class ShipConverter implements EntityConverter {
         HitboxEditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Ship.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
-        List<SpawnableEditionData> deathSpawn = spawnableNodes.stream().map(jsonDataConverter::spawnableEditionDataFromJSON).toList();
+        List<SpawnEditionData> deathSpawn = spawnableNodes.stream().map(jsonDataConverter::spawnEditionDataFromJSON).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Ship.spriteVisualId);
         Integer defaultTrajectoryID = null;
         if (node.hasField(JsonFieldNames.Ship.defaultTrajectoryId)) {

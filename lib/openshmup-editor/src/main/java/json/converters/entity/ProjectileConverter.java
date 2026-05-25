@@ -22,8 +22,8 @@ final public class ProjectileConverter implements EntityConverter {
         HitboxEditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Projectile.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
-        List<SpawnableEditionData> deathSpawn = spawnableNodes.stream().map(
-            jsonDataConverter::spawnableEditionDataFromJSON
+        List<SpawnEditionData> deathSpawn = spawnableNodes.stream().map(
+            jsonDataConverter::spawnEditionDataFromJSON
         ).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Projectile.spriteVisualId);
         Integer defaultTrajectoryID = null;

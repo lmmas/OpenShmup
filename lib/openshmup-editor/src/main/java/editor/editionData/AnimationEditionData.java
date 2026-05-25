@@ -43,10 +43,17 @@ public final class AnimationEditionData implements VisualEditionData {
         this.spritesheetInfo.setData(spritesheetInfo);
     }
     @Override
+    public Category getCategory() {
+        return Category.VISUAL;
+    }
+    @Override
+    public Type getType() {
+        return Types.Visual.animation;
+    }
+    @Override
     public int getId() {
         return idAttribute.getValue();
     }
-
     @Override
     public List<Attribute> getAttributes() {
         return List.of(idAttribute, layer, size, spritesheetInfo, framePeriodSeconds, looping);
@@ -96,7 +103,14 @@ public final class AnimationEditionData implements VisualEditionData {
             this.startPosition.setValue(startPosition);
             this.stride.setValue(stride);
         }
-
+        @Override
+        public Category getCategory() {
+            return Category.NONE;
+        }
+        @Override
+        public Type getType() {
+            return Types.spritesheetInfo;
+        }
         @Override
         public List<Attribute> getAttributes() {
             return List.of(fileName, frameCount, frameSize, startPosition, stride);

@@ -33,7 +33,14 @@ import java.util.List;
     public int getId() {
         return id.getValue();
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.TRAJECTORY;
+    }
+    @Override
+    public Type getType() {
+        return Types.Trajectory.player;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(id, playerMovementSpeed);

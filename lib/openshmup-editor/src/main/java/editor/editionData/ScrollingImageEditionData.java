@@ -45,7 +45,14 @@ public final class ScrollingImageEditionData implements VisualEditionData {
     public int getId() {
         return idAttribute.getValue();
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.VISUAL;
+    }
+    @Override
+    public Type getType() {
+        return Types.Visual.scrollingImage;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(idAttribute, layer, size, fileName, speed, horizontalScrolling);

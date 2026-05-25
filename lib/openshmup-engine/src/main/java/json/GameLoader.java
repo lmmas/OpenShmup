@@ -61,8 +61,8 @@ final public class GameLoader {
         trajectoryFactories.put("player", playerControlledTrajectoryFactory);
 
         this.hitboxFactories = new HashMap<>(2);
-        hitboxFactories.put("simpleRectangle", simpleRectangleHitboxFactory);
-        hitboxFactories.put("composite", compositeHitboxFactory);
+        hitboxFactories.put("rectangle", simpleRectangleHitboxFactory);
+        hitboxFactories.put("custom", compositeHitboxFactory);
 
         this.spawnableFactories = new HashMap<>(2);
         spawnableFactories.put("display", displaySpawnInfoFactory);

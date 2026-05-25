@@ -21,7 +21,7 @@ import java.util.List;
 
     final private IntegerAttribute trajectoryId;
 
-    final private ListAttribute<SpawnableEditionData> deathspawn;
+    final private ListAttribute<SpawnEditionData> deathspawn;
 
     final private ListAttribute<ShotEditionData> shots;
 
@@ -36,7 +36,7 @@ import java.util.List;
         this.shots = new ListAttribute<>("Shot", "");
     }
 
-    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
+    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnEditionData> deathspawn, List<ShotEditionData> shots) {
         this();
         this.idAttribute.setValue(id);
         this.evil.setValue(evil);
@@ -51,19 +51,25 @@ import java.util.List;
     public int getId() {
         return idAttribute.getValue();
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.ENTITY;
+    }
+    @Override
+    public Type getType() {
+        return Types.Entity.projectile;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, deathspawn, shots);
     }
-
     @Override
     public void setToDefault() {
         this.idAttribute.setValue(0);
         this.evil.setValue(true);
         this.size.setValue(Vec2D.ZERO);
         this.spriteId.setValue(0);
-        this.hitbox.setData(SimpleRectangleHitboxEditionData.DEFAULT());
+        this.hitbox.setData(RectangleHitboxEditionData.DEFAULT());
         this.trajectoryId.setValue(0);
         this.deathspawn.setDataList(List.of());
         this.shots.setDataList(List.of());

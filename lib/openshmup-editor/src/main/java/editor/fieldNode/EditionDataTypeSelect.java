@@ -12,40 +12,35 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
 
-    final private static List<String> visualTypes = List.of("scrollingImage", "animation");
+    final private static Map<EditionData.Category, List<EditionData.Type>> typesMap = Map.of(
+        EditionData.Category.VISUAL, List.of(EditionData.Types.Visual.scrollingImage, EditionData.Types.Visual.animation),
+        EditionData.Category.TRAJECTORY, List.of(EditionData.Types.Trajectory.fixed, EditionData.Types.Trajectory.player),
+        EditionData.Category.ENTITY, List.of(EditionData.Types.Entity.projectile, EditionData.Types.Entity.ship),
+        EditionData.Category.SPAWN, List.of(EditionData.Types.Spawn.display, EditionData.Types.Spawn.entity),
+        EditionData.Category.HITBOX, List.of(EditionData.Types.Hitbox.rectangle, EditionData.Types.Hitbox.custom)
+    );
 
-    final private static List<String> visualTypeLabels = List.of("Scrolling Image", "Animation");
+    final private static Map<EditionData.Category, List<String>> labelsMap = Map.of(
+        EditionData.Category.VISUAL, List.of("Scrolling Image", "Animation"),
+        EditionData.Category.TRAJECTORY, List.of("Fixed", "Player"),
+        EditionData.Category.ENTITY, List.of("Projectile", "Ship"),
+        EditionData.Category.SPAWN, List.of("Display", "Entity"),
+        EditionData.Category.HITBOX, List.of("Rectangle", "Custom")
+    );
 
-    final private static List<Supplier<VisualEditionData>> visualDefaultConstructors = List.of(ScrollingImageEditionData::DEFAULT, AnimationEditionData::DEFAULT);
-
-    final private static List<String> trajectoryTypes = List.of("fixed", "player");
-
-    final private static List<String> trajectoryTypeLabels = List.of("Fixed", "Player");
-
-    final private static List<Supplier<TrajectoryEditionData>> trajectoryDefaultConstructors = List.of(FixedTrajectoryEditionData::DEFAULT, PlayerControlledTrajectoryEditionData::DEFAULT);
-
-    final private static List<String> spawnableTypes = List.of("display", "entity");
-
-    final private static List<String> spawnableTypeLabels = List.of("Display", "Entity");
-
-    final private static List<Supplier<SpawnableEditionData>> spawnableDefaultConstructors = List.of(DisplaySpawnInfoEditionData::DEFAULT, EntitySpawnInfoEditionData::DEFAULT);
-
-    final private static List<String> hitboxTypes = List.of("simpleRectangle", "composite");
-
-    final private static List<String> hitboxTypeLabels = List.of("Rectangle", "Custom");
-
-    final private static List<Supplier<HitboxEditionData>> hitboxDefaultConstructors = List.of(SimpleRectangleHitboxEditionData::DEFAULT, CompositeHitboxEditionData::DEFAULT);
-
-    final private static List<String> entityTypes = List.of("projectile", "ship");
-
-    final private static List<String> entityTypeLabels = List.of("Projectile", "Ship");
-
-    final private static List<Supplier<EntityEditionData>> entityDefaultConstructors = List.of(ProjectileEditionData::DEFAULT, ShipEditionData::DEFAULT);
+    final private static Map<EditionData.Category, List<Supplier<EditionData>>> constructorsMap = Map.of(
+        EditionData.Category.VISUAL, List.of(ScrollingImageEditionData::DEFAULT, AnimationEditionData::DEFAULT),
+        EditionData.Category.TRAJECTORY, List.of(FixedTrajectoryEditionData::DEFAULT, PlayerControlledTrajectoryEditionData::DEFAULT),
+        EditionData.Category.ENTITY, List.of(ProjectileEditionData::DEFAULT, ShipEditionData::DEFAULT),
+        EditionData.Category.SPAWN, List.of(DisplaySpawnEditionData::DEFAULT, EntitySpawnEditionData::DEFAULT),
+        EditionData.Category.HITBOX, List.of(RectangleHitboxEditionData::DEFAULT, CustomHitboxEditionData::DEFAULT)
+    );
 
     final public static float selectorSpacing = 70f;
 
@@ -53,7 +48,11 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
 
     final public static Vec2D buttonStride = new Vec2D(280f, 0f);
 
+    final private EditionData.Category category;
+
     final private List<EditionDataFields<D>> editionDataFieldsList;
+
+    private final List<EditionData.Type> types;
 
     private boolean isActive;
 
@@ -64,53 +63,23 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
     final private TextDisplay typeSelectText;
 
     public EditionDataTypeSelect(D editionData, Vec2D startPosition) {
-        List<String> types;
-        List<String> typeLabels;
-        List<Supplier<D>> defaultConstructors;
-        String editionDataType;
+        this.category = editionData.getCategory();
+        assert category != EditionData.Category.NONE : "Invalid editionData type";
+        EditionData.Type editionDataType = editionData.getType();
         int selectedValue = 0;
-        switch (editionData) {
-            case VisualEditionData visualEditionData -> {
-                types = visualTypes;
-                typeLabels = visualTypeLabels;
-                defaultConstructors = visualDefaultConstructors.stream().map(c -> (Supplier<D>) c).toList();
-                editionDataType = VisualEditionData.getType(visualEditionData);
-            }
-            case TrajectoryEditionData trajectoryEditionData -> {
-                types = trajectoryTypes;
-                typeLabels = trajectoryTypeLabels;
-                defaultConstructors = trajectoryDefaultConstructors.stream().map(c -> (Supplier<D>) c).toList();
-                editionDataType = TrajectoryEditionData.getType(trajectoryEditionData);
-            }
-            case SpawnableEditionData spawnableEditionData -> {
-                types = spawnableTypes;
-                typeLabels = spawnableTypeLabels;
-                defaultConstructors = spawnableDefaultConstructors.stream().map(c -> (Supplier<D>) c).toList();
-                editionDataType = SpawnableEditionData.getType(spawnableEditionData);
-            }
-            case HitboxEditionData hitboxEditionData -> {
-                types = hitboxTypes;
-                typeLabels = hitboxTypeLabels;
-                defaultConstructors = hitboxDefaultConstructors.stream().map(c -> (Supplier<D>) c).toList();
-                editionDataType = HitboxEditionData.getType(hitboxEditionData);
-            }
-            case EntityEditionData entityEditionData -> {
-                types = entityTypes;
-                typeLabels = entityTypeLabels;
-                defaultConstructors = entityDefaultConstructors.stream().map(c -> (Supplier<D>) c).toList();
-                editionDataType = EntityEditionData.getType(entityEditionData);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + editionData);
-        }
+        this.types = typesMap.get(this.category);
+        List<String> typeLabels = labelsMap.get(this.category);
+        List<Supplier<EditionData>> defaultConstructors = constructorsMap.get(this.category);
+
         List<D> dataList = new ArrayList<>(types.size());
         for (int i = 0; i < types.size(); i++) {
             D data;
-            if (editionDataType.equals(types.get(i))) {
+            if (editionDataType == types.get(i)) {
                 data = editionData;
                 selectedValue = i;
             }
             else {
-                data = defaultConstructors.get(i).get();
+                data = (D) defaultConstructors.get(i).get();
             }
             dataList.add(data);
         }
@@ -137,33 +106,10 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
     }
 
     public void setData(EditionData editionData) {
-        List<String> types;
-        String type;
-        switch (editionData) {
-            case VisualEditionData visualEditionData -> {
-                types = visualTypes;
-                type = VisualEditionData.getType(visualEditionData);
-            }
-            case TrajectoryEditionData trajectoryEditionData -> {
-                types = trajectoryTypes;
-                type = TrajectoryEditionData.getType(trajectoryEditionData);
-            }
-            case SpawnableEditionData spawnableEditionData -> {
-                types = spawnableTypes;
-                type = SpawnableEditionData.getType(spawnableEditionData);
-            }
-            case HitboxEditionData hitboxEditionData -> {
-                types = hitboxTypes;
-                type = HitboxEditionData.getType(hitboxEditionData);
-            }
-            case EntityEditionData entityEditionData -> {
-                types = entityTypes;
-                type = EntityEditionData.getType(entityEditionData);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + editionData);
-        }
-        for (int i = 0; i < types.size(); i++) {
-            if (type.equals(types.get(i))) {
+        assert editionData.getCategory() == this.category : "Invalid editionData type";
+        EditionData.Type type = editionData.getType();
+        for (int i = 0; i < this.types.size(); i++) {
+            if (type == this.types.get(i)) {
                 editionDataFieldsList.get(i).setEditionData((D) editionData);
             }
         }

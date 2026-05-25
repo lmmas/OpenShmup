@@ -9,7 +9,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter final public class EntitySpawnInfoEditionData implements SpawnableEditionData {
+@Getter final public class EntitySpawnEditionData implements SpawnEditionData {
 
     final private IntegerAttribute entityID;
 
@@ -17,24 +17,30 @@ import java.util.List;
 
     final private IntegerAttribute trajectoryID;
 
-    private EntitySpawnInfoEditionData() {
+    private EntitySpawnEditionData() {
         this.entityID = new IntegerAttribute("Visual ID", JsonFieldNames.EntitySpawnInfo.id);
         this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.EntitySpawnInfo.startingPosition);
         this.trajectoryID = new IntegerAttribute("Trajectory ID", JsonFieldNames.EntitySpawnInfo.trajectory);
     }
 
-    public EntitySpawnInfoEditionData(int entityID, Vec2D position, Integer trajectoryID) {
+    public EntitySpawnEditionData(int entityID, Vec2D position, Integer trajectoryID) {
         this();
         this.entityID.setValue(entityID);
         this.position.setValue(position);
         this.trajectoryID.setValue(trajectoryID);
     }
-
+    @Override
+    public Category getCategory() {
+        return Category.SPAWN;
+    }
+    @Override
+    public Type getType() {
+        return Types.Spawn.entity;
+    }
     @Override
     public List<Attribute> getAttributes() {
         return List.of(entityID, position, trajectoryID);
     }
-
     @Override
     public void setToDefault() {
         this.entityID.setValue(0);
@@ -42,8 +48,8 @@ import java.util.List;
         this.trajectoryID.setValue(0);
     }
 
-    public static EntitySpawnInfoEditionData DEFAULT() {
-        EntitySpawnInfoEditionData data = new EntitySpawnInfoEditionData();
+    public static EntitySpawnEditionData DEFAULT() {
+        EntitySpawnEditionData data = new EntitySpawnEditionData();
         data.setToDefault();
         return data;
     }
