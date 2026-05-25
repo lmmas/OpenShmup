@@ -8,19 +8,15 @@ import json.converters.JsonDataConverter;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 final public class EditorGameDataManager {
 
     private String gameFolderName;
 
     final public GamePaths paths;
-
     @Getter final private ArrayList<VisualEditionData> visualEditionDataList;
-
     @Getter final private ArrayList<TrajectoryEditionData> trajectoryEditionDataList;
-
-    @Getter final private HashMap<Integer, EntityEditionData> entityEditionDataMap;
+    @Getter final private ArrayList<EntityEditionData> entityEditionDataList;
 
 
     public EditorGameDataManager(String gameFolderName) {
@@ -28,7 +24,7 @@ final public class EditorGameDataManager {
         this.paths = new GamePaths(gameFolderName);
         this.visualEditionDataList = new ArrayList<>();
         this.trajectoryEditionDataList = new ArrayList<>();
-        this.entityEditionDataMap = new HashMap<>();
+        this.entityEditionDataList = new ArrayList<>();
     }
 
     public void loadGameContents() {
@@ -57,7 +53,7 @@ final public class EditorGameDataManager {
     }
 
     public void addEntity(EntityEditionData newEntityData) {
-        assert !entityEditionDataMap.containsKey(newEntityData.getId()) : "entity ID already taken";
-        entityEditionDataMap.put(newEntityData.getId(), newEntityData);
+        assert !entityEditionDataList.contains(newEntityData) : "entity already defined";
+        entityEditionDataList.add(newEntityData);
     }
 }

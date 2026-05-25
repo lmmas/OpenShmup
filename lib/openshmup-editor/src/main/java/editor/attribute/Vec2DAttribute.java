@@ -11,6 +11,11 @@ final public class Vec2DAttribute extends Attribute {
 
     private Vec2D value;
 
+    public Vec2DAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = Vec2D.ZERO;
+    }
+
     public Vec2DAttribute(String name, String jsonFieldName, Vec2D value) {
         super(name, jsonFieldName);
         this.value = value;

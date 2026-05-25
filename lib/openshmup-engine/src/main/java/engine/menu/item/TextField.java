@@ -63,4 +63,10 @@ final public class TextField implements MenuItem {
     public String getStringValue() {
         return stringBuffer.toString();
     }
+
+    public void setStringValue(String value) {
+        stringBuffer.setLength(0);
+        stringBuffer.append(value);
+        textInputDisplay.setDisplayedString(value);
+    }
 }

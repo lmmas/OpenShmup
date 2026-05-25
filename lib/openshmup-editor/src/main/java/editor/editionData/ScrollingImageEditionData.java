@@ -11,33 +11,59 @@ import java.util.List;
 @Getter @Setter
 public final class ScrollingImageEditionData implements VisualEditionData {
 
-    private IntegerAttribute idAttribute;
+    final private IntegerAttribute idAttribute;
 
-    private IntegerAttribute layer;
+    final private IntegerAttribute layer;
 
-    private Vec2DAttribute size;
+    final private Vec2DAttribute size;
 
-    private StringAttribute fileName;
+    final private StringAttribute fileName;
 
-    private FloatAttribute speed;
+    final private FloatAttribute speed;
 
-    private BooleanAttribute horizontalScrolling;
+    final private BooleanAttribute horizontalScrolling;
 
-    public ScrollingImageEditionData(int id, int layer, Vec2D size, String imageFileName, float speed, boolean horizontalScrolling) {
-        this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.ScrollingImage.id, id);
-        this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.ScrollingImage.layer, layer);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.ScrollingImage.size, size);
-        this.fileName = new StringAttribute("Image file name", JsonFieldNames.ScrollingImage.fileName, imageFileName);
-        this.speed = new FloatAttribute("Scrolling speed", JsonFieldNames.ScrollingImage.speed, speed);
-        this.horizontalScrolling = new BooleanAttribute("Horizontal scrolling", JsonFieldNames.ScrollingImage.horizontalScrolling, horizontalScrolling);
+    private ScrollingImageEditionData() {
+        this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.ScrollingImage.id);
+        this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.ScrollingImage.layer);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.ScrollingImage.size);
+        this.fileName = new StringAttribute("Image file name", JsonFieldNames.ScrollingImage.fileName);
+        this.speed = new FloatAttribute("Scrolling speed", JsonFieldNames.ScrollingImage.speed);
+        this.horizontalScrolling = new BooleanAttribute("Horizontal scrolling", JsonFieldNames.ScrollingImage.horizontalScrolling);
     }
 
+    public ScrollingImageEditionData(int id, int layer, Vec2D size, String imageFileName, float speed, boolean horizontalScrolling) {
+        this();
+        this.idAttribute.setValue(id);
+        this.layer.setValue(layer);
+        this.size.setValue(size);
+        this.fileName.setValue(imageFileName);
+        this.speed.setValue(speed);
+        this.horizontalScrolling.setValue(horizontalScrolling);
+    }
     @Override
     public int getId() {
         return idAttribute.getValue();
     }
 
-    @Override public List<Attribute> getAttributes() {
+    @Override
+    public List<Attribute> getAttributes() {
         return List.of(idAttribute, layer, size, fileName, speed, horizontalScrolling);
+    }
+
+    @Override
+    public void setToDefault() {
+        this.idAttribute.setValue(0);
+        this.layer.setValue(0);
+        this.size.setValue(Vec2D.ZERO);
+        this.fileName.setValue("");
+        this.speed.setValue(100.0f);
+        this.horizontalScrolling.setValue(false);
+    }
+
+    public static ScrollingImageEditionData DEFAULT() {
+        ScrollingImageEditionData data = new ScrollingImageEditionData();
+        data.setToDefault();
+        return data;
     }
 }

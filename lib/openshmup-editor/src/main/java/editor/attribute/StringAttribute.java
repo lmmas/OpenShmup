@@ -10,6 +10,11 @@ final public class StringAttribute extends Attribute {
 
     private String value;
 
+    public StringAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = "";
+    }
+
     public StringAttribute(String name, String jsonFieldName, String value) {
         super(name, jsonFieldName);
         this.value = value;

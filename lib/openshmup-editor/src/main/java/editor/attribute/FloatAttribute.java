@@ -10,6 +10,11 @@ final public class FloatAttribute extends Attribute {
 
     private float value;
 
+    public FloatAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = 0.0f;
+    }
+
     public FloatAttribute(String name, String jsonFieldName, float value) {
         super(name, jsonFieldName);
         this.value = value;

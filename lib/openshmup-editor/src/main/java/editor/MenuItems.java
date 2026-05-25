@@ -45,8 +45,8 @@ final public class MenuItems {
         return new TextField(layer + 1, size, position, menuButtonLabelStyle, List.of(borderedRoundedRectangle), startingText);
     }
 
-    public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange) {
-        return engine.menu.item.MenuItems.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange);
+    public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
+        return engine.menu.item.MenuItems.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange, startingValue);
     }
 
 

@@ -12,34 +12,60 @@ import java.util.List;
 @Getter @Setter
 public final class AnimationEditionData implements VisualEditionData {
 
-    private IntegerAttribute idAttribute;
+    final private IntegerAttribute idAttribute;
 
-    private IntegerAttribute layer;
+    final private IntegerAttribute layer;
 
-    private Vec2DAttribute size;
+    final private Vec2DAttribute size;
 
-    private EditionDataAttribute<SpritesheetInfoData> spritesheetInfo;
+    final private EditionDataAttribute<SpritesheetInfoData> spritesheetInfo;
 
-    private DoubleAttribute framePeriodSeconds;
+    final private DoubleAttribute framePeriodSeconds;
 
-    private BooleanAttribute looping;
+    final private BooleanAttribute looping;
 
-    public AnimationEditionData(int id, int layer, Vec2D size, double framePeriodSeconds, boolean looping, SpritesheetInfoData spritesheetInfo) {
-        this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.Animation.id, id);
-        this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.Animation.layer, layer);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.Animation.size, size);
-        this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", JsonFieldNames.Animation.framePeriodSeconds, framePeriodSeconds);
-        this.looping = new BooleanAttribute("Looping", JsonFieldNames.Animation.looping, looping);
-        this.spritesheetInfo = new EditionDataAttribute<SpritesheetInfoData>("Spritesheet info", JsonFieldNames.Animation.spritesheetInfo, spritesheetInfo);
+    private AnimationEditionData() {
+        this.idAttribute = new IntegerAttribute("Visual ID", JsonFieldNames.Animation.id);
+        this.layer = new IntegerAttribute("Scene layer", JsonFieldNames.Animation.layer);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.Animation.size);
+        this.framePeriodSeconds = new DoubleAttribute("Frame period (seconds)", JsonFieldNames.Animation.framePeriodSeconds);
+        this.looping = new BooleanAttribute("Looping", JsonFieldNames.Animation.looping);
+        this.spritesheetInfo = new EditionDataAttribute<SpritesheetInfoData>("Spritesheet info", JsonFieldNames.Animation.spritesheetInfo, new SpritesheetInfoData());
     }
 
+    public AnimationEditionData(int id, int layer, Vec2D size, double framePeriodSeconds, boolean looping, SpritesheetInfoData spritesheetInfo) {
+        this();
+        this.idAttribute.setValue(id);
+        this.layer.setValue(layer);
+        this.size.setValue(size);
+        this.framePeriodSeconds.setValue(framePeriodSeconds);
+        this.looping.setValue(looping);
+        this.spritesheetInfo.setData(spritesheetInfo);
+    }
     @Override
     public int getId() {
         return idAttribute.getValue();
     }
 
-    @Override public List<Attribute> getAttributes() {
+    @Override
+    public List<Attribute> getAttributes() {
         return List.of(idAttribute, layer, size, spritesheetInfo, framePeriodSeconds, looping);
+    }
+
+    @Override
+    public void setToDefault() {
+        this.idAttribute.setValue(0);
+        this.layer.setValue(0);
+        this.size.setValue(Vec2D.ZERO);
+        this.framePeriodSeconds.setValue(1.0f);
+        this.looping.setValue(false);
+        this.spritesheetInfo.getData().setToDefault();
+    }
+
+    public static AnimationEditionData DEFAULT() {
+        AnimationEditionData data = new AnimationEditionData();
+        data.setToDefault();
+        return data;
     }
 
     @Getter @Setter final public static class SpritesheetInfoData implements EditionData {
@@ -54,21 +80,40 @@ public final class AnimationEditionData implements VisualEditionData {
 
         final private IVec2DAttribute stride;
 
-        public SpritesheetInfoData(
-            String fileName,
-            int frameCount,
-            IVec2D framesize,
-            IVec2D startPosition,
-            IVec2D stride) {
-            this.fileName = new StringAttribute("File name", JsonFieldNames.Animation.SpritesheetInfo.fileName, fileName);
-            this.frameCount = new IntegerAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameCount, frameCount);
-            this.frameSize = new IVec2DAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameSize, framesize);
-            this.startPosition = new IVec2DAttribute("Start position", JsonFieldNames.Animation.SpritesheetInfo.startingPosition, startPosition);
-            this.stride = new IVec2DAttribute("Stride", JsonFieldNames.Animation.SpritesheetInfo.stride, stride);
+        public SpritesheetInfoData() {
+            this.fileName = new StringAttribute("File name", JsonFieldNames.Animation.SpritesheetInfo.fileName);
+            this.frameCount = new IntegerAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameCount);
+            this.frameSize = new IVec2DAttribute("Frame count", JsonFieldNames.Animation.SpritesheetInfo.frameSize);
+            this.startPosition = new IVec2DAttribute("Start position", JsonFieldNames.Animation.SpritesheetInfo.startingPosition);
+            this.stride = new IVec2DAttribute("Stride", JsonFieldNames.Animation.SpritesheetInfo.stride);
         }
 
-        @Override public List<Attribute> getAttributes() {
+        public SpritesheetInfoData(String fileName, int frameCount, IVec2D framesize, IVec2D startPosition, IVec2D stride) {
+            this();
+            this.fileName.setValue(fileName);
+            this.frameCount.setValue(frameCount);
+            this.frameSize.setValue(framesize);
+            this.startPosition.setValue(startPosition);
+            this.stride.setValue(stride);
+        }
+
+        @Override
+        public List<Attribute> getAttributes() {
             return List.of(fileName, frameCount, frameSize, startPosition, stride);
+        }
+
+        @Override
+        public void setToDefault() {
+            this.fileName.setValue("");
+            this.frameCount.setValue(0);
+            this.frameSize.setValue(IVec2D.ZERO);
+            this.stride.setValue(IVec2D.ZERO);
+        }
+
+        public static SpritesheetInfoData DEFAULT() {
+            SpritesheetInfoData data = new SpritesheetInfoData();
+            data.setToDefault();
+            return data;
         }
     }
 }

@@ -41,13 +41,13 @@ final public class MenuItems {
         return RoundedRectangleButton(layer, size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, style.textStyle(), onClick);
     }
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle unselectedStyle, RoundedRectangleButtonStyle selectedStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange) {
+    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle unselectedStyle, RoundedRectangleButtonStyle selectedStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
         List<List<SceneVisual>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
             BorderedRoundedRectangle rectangle = new BorderedRoundedRectangle(layer, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
-            if (i == 0) {
+            if (i == startingValue) {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonVisuals.add(List.of(
@@ -70,6 +70,6 @@ final public class MenuItems {
             selectedButtonText.setTextColor(selectedStyle.textStyle().textColor());
             onChange.accept(selector, newValue);
         };
-        return new SelectorButtons(buttonVisuals, hitboxes, onChangeWithStyleChange);
+        return new SelectorButtons(buttonVisuals, hitboxes, onChangeWithStyleChange, startingValue);
     }
 }

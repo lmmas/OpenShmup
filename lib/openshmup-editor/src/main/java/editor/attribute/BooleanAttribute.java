@@ -8,6 +8,11 @@ final public class BooleanAttribute extends Attribute {
 
     private boolean value;
 
+    public BooleanAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = false;
+    }
+
     public BooleanAttribute(String name, String jsonFieldName, boolean value) {
         super(name, jsonFieldName);
         this.value = value;

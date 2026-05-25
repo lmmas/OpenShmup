@@ -10,6 +10,11 @@ final public class DoubleAttribute extends Attribute {
 
     private double value;
 
+    public DoubleAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = 0.0d;
+    }
+
     public DoubleAttribute(String name, String jsonFieldName, double value) {
         super(name, jsonFieldName);
         this.value = value;

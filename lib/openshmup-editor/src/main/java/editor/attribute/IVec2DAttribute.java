@@ -11,6 +11,11 @@ final public class IVec2DAttribute extends Attribute {
 
     private IVec2D value;
 
+    public IVec2DAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = IVec2D.ZERO;
+    }
+
     public IVec2DAttribute(String name, String jsonFieldName, IVec2D value) {
         super(name, jsonFieldName);
         this.value = value;

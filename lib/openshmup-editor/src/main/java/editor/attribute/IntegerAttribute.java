@@ -9,6 +9,11 @@ final public class IntegerAttribute extends Attribute {
 
     private Integer value;
 
+    public IntegerAttribute(String name, String jsonFieldName) {
+        super(name, jsonFieldName);
+        this.value = 0;
+    }
+
     public IntegerAttribute(String name, String jsonFieldName, Integer value) {
         super(name, jsonFieldName);
         this.value = value;

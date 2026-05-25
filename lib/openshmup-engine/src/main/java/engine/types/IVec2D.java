@@ -27,4 +27,6 @@ final public class IVec2D {
     public Vec2D scalar(float scalar) {
         return new Vec2D(this.x * scalar, this.y * scalar);
     }
+
+    final public static IVec2D ZERO = new IVec2D(0, 0);
 }

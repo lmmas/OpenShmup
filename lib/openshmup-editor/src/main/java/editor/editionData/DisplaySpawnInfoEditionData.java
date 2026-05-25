@@ -11,16 +11,35 @@ import java.util.List;
 
 @Getter final public class DisplaySpawnInfoEditionData implements SpawnableEditionData {
 
-    private IntegerAttribute visualID;
+    final private IntegerAttribute visualID;
 
-    private Vec2DAttribute position;
+    final private Vec2DAttribute position;
 
-    public DisplaySpawnInfoEditionData(int visualID, Vec2D position) {
-        this.visualID = new IntegerAttribute("Visual ID", JsonFieldNames.DisplaySpawnInfo.id, visualID);
-        this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.DisplaySpawnInfo.position, position);
+    private DisplaySpawnInfoEditionData() {
+        this.visualID = new IntegerAttribute("Visual ID", JsonFieldNames.DisplaySpawnInfo.id);
+        this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.DisplaySpawnInfo.position);
     }
 
-    @Override public List<Attribute> getAttributes() {
+    public DisplaySpawnInfoEditionData(int visualID, Vec2D position) {
+        this();
+        this.visualID.setValue(visualID);
+        this.position.setValue(position);
+    }
+
+    @Override
+    public List<Attribute> getAttributes() {
         return List.of(visualID, position);
+    }
+
+    @Override
+    public void setToDefault() {
+        this.visualID.setValue(0);
+        this.position.setValue(Vec2D.ZERO);
+    }
+
+    public static DisplaySpawnInfoEditionData DEFAULT() {
+        DisplaySpawnInfoEditionData data = new DisplaySpawnInfoEditionData();
+        data.setToDefault();
+        return data;
     }
 }

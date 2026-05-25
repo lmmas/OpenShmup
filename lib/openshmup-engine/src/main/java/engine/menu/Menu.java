@@ -3,6 +3,7 @@ package engine.menu;
 import engine.EngineSystem;
 import engine.menu.item.MenuItem;
 import engine.scene.Scene;
+import engine.scene.visual.SceneVisual;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,20 @@ public class Menu implements EngineSystem {
 
     final private ArrayList<MenuScreen> displayedMenuScreens;
 
-    final private ArrayList<ItemGroup> itemsToAdd;
+    final private ArrayList<MenuItem> itemsToAdd;
 
-    final private ArrayList<ItemGroup> itemsToRemove;
+    final private ArrayList<SceneVisual> visualsToAdd;
+
+    final private ArrayList<MenuItem> itemsToRemove;
+
+    final private ArrayList<SceneVisual> visualsToRemove;
 
     public Menu() {
         this.displayedMenuScreens = new ArrayList<>();
         this.itemsToAdd = new ArrayList<>();
+        this.visualsToAdd = new ArrayList<>();
         this.itemsToRemove = new ArrayList<>();
+        this.visualsToRemove = new ArrayList<>();
     }
 
     @Override public void update() {
@@ -31,26 +38,34 @@ public class Menu implements EngineSystem {
         MenuScreen currentMenuScreen = displayedMenuScreens.getLast();
         currentMenuScreen.getMenuItems().forEach(MenuItem::handleInputs);
         if (!itemsToAdd.isEmpty()) {
-            for (ItemGroup itemGroup : itemsToAdd) {
-                currentMenuScreen.addItemGroup(itemGroup);
-                if (scene != null) {
-                    itemGroup.items().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-                        .forEach(visual -> scene.addVisual(visual));
-                    itemGroup.otherVisuals().forEach(visual -> scene.addVisual(visual));
-                }
+            itemsToAdd.forEach(currentMenuScreen::addItem);
+            if (scene != null) {
+                itemsToAdd.stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+                    .forEach(visual -> scene.addVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
             itemsToAdd.clear();
         }
-        if (!itemsToRemove.isEmpty()) {
-            for (ItemGroup itemGroup : itemsToRemove) {
-                currentMenuScreen.removeItemGroup(itemGroup);
-                if (scene != null) {
-                    itemGroup.items().stream().flatMap(menuItem -> menuItem.getVisuals().stream())
-                        .forEach(visual -> scene.removeVisual(visual));
-                    itemGroup.otherVisuals().forEach(visual -> scene.removeVisual(visual));
-                }
+        if (!visualsToAdd.isEmpty()) {
+            visualsToAdd.forEach(currentMenuScreen::addVisual);
+            if (scene != null) {
+                visualsToAdd.forEach(visual -> scene.addVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
+            visualsToAdd.clear();
+        }
+        if (!itemsToRemove.isEmpty()) {
+            itemsToRemove.forEach(currentMenuScreen::removeItem);
+                if (scene != null) {
+                    itemsToRemove.stream().flatMap(menuItem -> menuItem.getVisuals().stream())
+                        .forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+                }
             itemsToRemove.clear();
+        }
+        if (!visualsToRemove.isEmpty()) {
+            visualsToRemove.forEach(currentMenuScreen::removeVisual);
+            if (scene != null) {
+                visualsToRemove.forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+            }
+            visualsToRemove.clear();
         }
     }
 
@@ -100,11 +115,29 @@ public class Menu implements EngineSystem {
         }
     }
 
-    public void addItemGroupToCurrentScreen(ItemGroup itemGroup) {
-        itemsToAdd.add(itemGroup);
+    public void addToCurrentScreen(MenuItem menuItem) {
+        itemsToAdd.add(menuItem);
     }
 
-    public void removeItemGroupFromCurrentScreen(ItemGroup itemGroup) {
-        itemsToRemove.add(itemGroup);
+    public void addToCurrentScreen(SceneVisual visual) {
+        visualsToAdd.add(visual);
+    }
+
+    public void addToCurrentScreen(ItemGroup itemGroup) {
+        itemsToAdd.addAll(itemGroup.items());
+        visualsToAdd.addAll(itemGroup.otherVisuals());
+    }
+
+    public void removeFromCurrentScreen(MenuItem menuItem) {
+        itemsToRemove.add(menuItem);
+    }
+
+    public void removeFromCurrentScreen(SceneVisual visual) {
+        visualsToRemove.add(visual);
+    }
+
+    public void removeFromCurrentScreen(ItemGroup itemGroup) {
+        itemsToRemove.addAll(itemGroup.items());
+        visualsToRemove.addAll(itemGroup.otherVisuals());
     }
 }

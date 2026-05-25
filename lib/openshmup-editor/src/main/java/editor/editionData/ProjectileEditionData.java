@@ -9,39 +9,69 @@ import java.util.List;
 
 @Getter final public class ProjectileEditionData implements EntityEditionData {
 
-    private IntegerAttribute idAttribute;
+    final private IntegerAttribute idAttribute;
 
-    private BooleanAttribute evil;
+    final private BooleanAttribute evil;
 
-    private Vec2DAttribute size;
+    final private Vec2DAttribute size;
 
-    private IntegerAttribute spriteId;
+    final private IntegerAttribute spriteId;
 
-    private EditionDataAttribute<HitboxEditionData> hitbox;
+    final private EditionDataAttribute<HitboxEditionData> hitbox;
 
-    private IntegerAttribute trajectoryId;
+    final private IntegerAttribute trajectoryId;
 
-    private ListAttribute<SpawnableEditionData> deathspawn;
+    final private ListAttribute<SpawnableEditionData> deathspawn;
 
-    private ListAttribute<ShotEditionData> shots;
+    final private ListAttribute<ShotEditionData> shots;
 
-    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
-        this.idAttribute = new IntegerAttribute("Entity ID", JsonFieldNames.Projectile.id, id);
-        this.evil = new BooleanAttribute("evil", JsonFieldNames.Projectile.evil, evil);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size, size);
-        this.spriteId = new IntegerAttribute("Sprite visual ID", JsonFieldNames.Projectile.spriteVisualId, spriteId);
-        this.hitbox = new EditionDataAttribute<>("hitbox", JsonFieldNames.Projectile.hitbox, hitbox);
-        this.trajectoryId = new IntegerAttribute("Trajectory ID", JsonFieldNames.Projectile.defaultTrajectoryId, trajectoryId);
-        this.deathspawn = new ListAttribute<>("Death spawn", JsonFieldNames.Projectile.deathSpawn, deathspawn);
-        this.shots = new ListAttribute<>("Shot", "", shots);
+    private ProjectileEditionData() {
+        this.idAttribute = new IntegerAttribute("Entity ID", JsonFieldNames.Projectile.id);
+        this.evil = new BooleanAttribute("evil", JsonFieldNames.Projectile.evil);
+        this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size);
+        this.spriteId = new IntegerAttribute("Sprite visual ID", JsonFieldNames.Projectile.spriteVisualId);
+        this.hitbox = new EditionDataAttribute<>("hitbox", JsonFieldNames.Projectile.hitbox);
+        this.trajectoryId = new IntegerAttribute("Trajectory ID", JsonFieldNames.Projectile.defaultTrajectoryId);
+        this.deathspawn = new ListAttribute<>("Death spawn", JsonFieldNames.Projectile.deathSpawn);
+        this.shots = new ListAttribute<>("Shot", "");
     }
 
+    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnableEditionData> deathspawn, List<ShotEditionData> shots) {
+        this();
+        this.idAttribute.setValue(id);
+        this.evil.setValue(evil);
+        this.size.setValue(size);
+        this.spriteId.setValue(spriteId);
+        this.hitbox.setData(hitbox);
+        this.trajectoryId.setValue(trajectoryId);
+        this.deathspawn.setDataList(deathspawn);
+        this.shots.setDataList(shots);
+    }
     @Override
     public int getId() {
         return idAttribute.getValue();
     }
 
-    @Override public List<Attribute> getAttributes() {
+    @Override
+    public List<Attribute> getAttributes() {
         return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, deathspawn, shots);
+    }
+
+    @Override
+    public void setToDefault() {
+        this.idAttribute.setValue(0);
+        this.evil.setValue(true);
+        this.size.setValue(Vec2D.ZERO);
+        this.spriteId.setValue(0);
+        this.hitbox.setData(SimpleRectangleHitboxEditionData.DEFAULT());
+        this.trajectoryId.setValue(0);
+        this.deathspawn.setDataList(List.of());
+        this.shots.setDataList(List.of());
+    }
+
+    public static ProjectileEditionData DEFAULT() {
+        ProjectileEditionData data = new ProjectileEditionData();
+        data.setToDefault();
+        return data;
     }
 }

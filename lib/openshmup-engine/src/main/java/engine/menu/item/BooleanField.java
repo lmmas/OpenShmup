@@ -44,17 +44,23 @@ final public class BooleanField implements MenuItem {
         return booleanVal;
     }
 
-    @Override
-    public void handleInputs() {
-        InputStatesManager inputStatesManager = Engine.getInputStatesManager();
-        if (hitboxClickDetector.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
-            booleanVal = !booleanVal;
+    public void setValue(boolean value) {
+        if (this.booleanVal != value) {
+            this.booleanVal = value;
             if (booleanVal) {
                 toggleVisual.clearColorEffects();
             }
             else {
                 toggleVisual.addColorEffect(invisibilityEffect);
             }
+        }
+    }
+
+    @Override
+    public void handleInputs() {
+        InputStatesManager inputStatesManager = Engine.getInputStatesManager();
+        if (hitboxClickDetector.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
+            setValue(!booleanVal);
         }
     }
 }

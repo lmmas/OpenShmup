@@ -3,6 +3,7 @@ package engine.menu.item;
 import engine.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,14 @@ final public class SelectorButtons implements MenuItem {
     final private List<ActionButton> actionButtons;
 
     final private List<SceneVisual> visuals;
-    @Getter
+    @Getter @Setter
     private int selectedValue;
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange) {
+    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
         this.onChange = onChange;
-        this.selectedValue = 0;
+        this.selectedValue = startingValue;
         assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
         int buttonCount = buttonVisuals.size();
         ArrayList<Runnable> onClicks = new ArrayList<>(buttonCount);
