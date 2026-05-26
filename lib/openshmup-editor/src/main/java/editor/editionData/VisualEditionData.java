@@ -4,10 +4,4 @@ public sealed interface VisualEditionData extends EditionData permits AnimationE
 
     int getId();
 
-    static String getType(VisualEditionData data) {
-        return switch (data) {
-            case AnimationEditionData ignored -> "animation";
-            case ScrollingImageEditionData ignored -> "scrollingImage";
-        };
-    }
 }

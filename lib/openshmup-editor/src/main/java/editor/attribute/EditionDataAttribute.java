@@ -7,13 +7,13 @@ final public class EditionDataAttribute<D extends EditionData> extends Attribute
 
     private D editionData;
 
-    public EditionDataAttribute(String name, String jsonFieldName) {
-        super(name, jsonFieldName);
+    public EditionDataAttribute(EditionData.Key key) {
+        super(key);
         this.editionData = null;
     }
 
-    public EditionDataAttribute(String name, String jsonFieldName, D editionData) {
-        super(name, jsonFieldName);
+    public EditionDataAttribute(EditionData.Key key, D editionData) {
+        super(key);
         this.editionData = editionData;
     }
 
@@ -24,13 +24,9 @@ final public class EditionDataAttribute<D extends EditionData> extends Attribute
     public void setData(EditionData data) {
         this.editionData = (D) data;
     }
-
-    @Override public String toString() {
-        return "";
-    }
-
-    @Override public void addToNode(ObjectNode node) {
-        var arrayNode = node.putArray(jsonFieldName);
+    @Override
+    public void addToNode(ObjectNode node) {
+        var arrayNode = node.putArray(key.name());
     }
 
     public boolean hasTypeSelect() {

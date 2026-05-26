@@ -101,7 +101,7 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
 
             private Entity() {}
 
-            public enum Projectile {
+            public enum Projectile implements Key {
                 id,
                 evil,
                 size,
@@ -112,7 +112,7 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
                 shots,
             }
 
-            public enum Ship {
+            public enum Ship implements Key {
                 id,
                 evil,
                 size,
@@ -129,12 +129,12 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
 
             private Spawn() {}
 
-            public enum DisplaySpawn {
+            public enum DisplaySpawn implements Key {
                 id,
                 position
             }
 
-            public enum EntitySpawn {
+            public enum EntitySpawn implements Key {
                 id,
                 startingPosition,
                 trajectory
@@ -145,11 +145,11 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
 
             private Hitbox() {}
 
-            public enum RectangleHitbox {
+            public enum RectangleHitbox implements Key {
                 size
             }
 
-            public enum CustomHitbox {
+            public enum CustomHitbox implements Key {
                 fileName,
                 size
             }

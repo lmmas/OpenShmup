@@ -4,10 +4,4 @@ public sealed interface TrajectoryEditionData extends EditionData permits FixedT
 
     int getId();
 
-    static String getType(TrajectoryEditionData data) {
-        return switch (data) {
-            case FixedTrajectoryEditionData ignored -> "fixed";
-            case PlayerControlledTrajectoryEditionData ignored -> "player";
-        };
-    }
 }

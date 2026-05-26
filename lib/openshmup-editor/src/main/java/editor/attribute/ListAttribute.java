@@ -7,27 +7,22 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter @Setter
 final public class ListAttribute<D extends EditionData> extends Attribute {
 
-    @Getter @Setter
     private List<D> dataList;
 
-    public ListAttribute(String name, String jsonFieldName) {
-        super(name, jsonFieldName);
+    public ListAttribute(EditionData.Key key) {
+        super(key);
         this.dataList = List.of();
     }
-
-    public ListAttribute(String name, String jsonFieldName, List<D> dataList) {
-        super(name, jsonFieldName);
+    public ListAttribute(EditionData.Key key, List<D> dataList) {
+        super(key);
         this.dataList = dataList;
     }
-
-    @Override public String toString() {
-        return "";
-    }
-
-    @Override public void addToNode(ObjectNode node) {
-        var arrayNode = node.putArray(jsonFieldName);
+    @Override
+    public void addToNode(ObjectNode node) {
+        var arrayNode = node.putArray(key.name());
         //dataList.forEach(data ->);
     }
 }

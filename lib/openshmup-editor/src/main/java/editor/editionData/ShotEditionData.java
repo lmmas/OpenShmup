@@ -3,7 +3,6 @@ package editor.editionData;
 import editor.attribute.Attribute;
 import editor.attribute.FloatAttribute;
 import editor.attribute.ListAttribute;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -17,9 +16,9 @@ import java.util.List;
     final private ListAttribute<SpawnEditionData> spawnables;
 
     private ShotEditionData() {
-        this.shotPeriod = new FloatAttribute("Shot period", JsonFieldNames.Shot.shotPeriod);
-        this.firstShotTime = new FloatAttribute("First shots time", JsonFieldNames.Shot.firstShotTime);
-        this.spawnables = new ListAttribute<SpawnEditionData>("Spawnables", JsonFieldNames.Shot.spawn);
+        this.shotPeriod = new FloatAttribute(Keys.Shot.shotPeriod);
+        this.firstShotTime = new FloatAttribute(Keys.Shot.firstShotTime);
+        this.spawnables = new ListAttribute<SpawnEditionData>(Keys.Shot.spawn);
     }
 
     public ShotEditionData(float shotPeriod, float firstShotTime, List<SpawnEditionData> spawnables) {

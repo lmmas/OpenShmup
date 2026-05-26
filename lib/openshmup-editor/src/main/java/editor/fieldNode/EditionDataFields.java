@@ -1,5 +1,6 @@
 package editor.fieldNode;
 
+import editor.AttributeLabels;
 import editor.Style;
 import editor.attribute.*;
 import editor.editionData.*;
@@ -75,8 +76,8 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
 
         Vec2D attributePosition = startPosition;
         for (Attribute attribute : attributeList) {
-            TextDisplay attributeText = new TextDisplay(layer, false, attributePosition, attribute.getName() + ":", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-            elementGroup.visuals().add(attributeText);
+            TextDisplay attributeLabel = new TextDisplay(layer, false, attributePosition, AttributeLabels.get(attribute.getKey()) + ":", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+            elementGroup.visuals().add(attributeLabel);
             Vec2D fieldPosition = attributePosition.add(fieldMargin);
             switch (attribute) {
                 case BooleanAttribute booleanAttribute -> {

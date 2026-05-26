@@ -2,7 +2,6 @@ package editor.editionData;
 
 import editor.attribute.*;
 import engine.types.Vec2D;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -26,14 +25,14 @@ import java.util.List;
     final private ListAttribute<ShotEditionData> shots;
 
     private ProjectileEditionData() {
-        this.idAttribute = new IntegerAttribute("Entity ID", JsonFieldNames.Projectile.id);
-        this.evil = new BooleanAttribute("evil", JsonFieldNames.Projectile.evil);
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.Projectile.size);
-        this.spriteId = new IntegerAttribute("Sprite visual ID", JsonFieldNames.Projectile.spriteVisualId);
-        this.hitbox = new EditionDataAttribute<>("hitbox", JsonFieldNames.Projectile.hitbox);
-        this.trajectoryId = new IntegerAttribute("Trajectory ID", JsonFieldNames.Projectile.defaultTrajectoryId);
-        this.deathspawn = new ListAttribute<>("Death spawn", JsonFieldNames.Projectile.deathSpawn);
-        this.shots = new ListAttribute<>("Shot", "");
+        this.idAttribute = new IntegerAttribute(Keys.Entity.Projectile.id);
+        this.evil = new BooleanAttribute(Keys.Entity.Projectile.evil);
+        this.size = new Vec2DAttribute(Keys.Entity.Projectile.size);
+        this.spriteId = new IntegerAttribute(Keys.Entity.Projectile.spriteVisualId);
+        this.hitbox = new EditionDataAttribute<>(Keys.Entity.Projectile.hitbox);
+        this.trajectoryId = new IntegerAttribute(Keys.Entity.Projectile.defaultTrajectoryId);
+        this.deathspawn = new ListAttribute<>(Keys.Entity.Projectile.deathSpawn);
+        this.shots = new ListAttribute<>(Keys.Entity.Projectile.shots);
     }
 
     public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnEditionData> deathspawn, List<ShotEditionData> shots) {

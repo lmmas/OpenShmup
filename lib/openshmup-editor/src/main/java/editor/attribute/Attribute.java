@@ -1,22 +1,19 @@
 package editor.attribute;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import editor.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public sealed abstract class Attribute permits BooleanAttribute, DoubleAttribute, EditionDataAttribute, FloatAttribute, IVec2DAttribute, IntegerAttribute, ListAttribute, StringAttribute, Vec2DAttribute {
 
-    protected String name;
+    protected EditionData.Key key;
 
-    protected String jsonFieldName;
+    public Attribute(EditionData.Key key) {
 
-    public Attribute(String name, String jsonFieldName) {
-        this.name = name;
-        this.jsonFieldName = jsonFieldName;
+        this.key = key;
     }
-
-    abstract public String toString();
 
     abstract public void addToNode(ObjectNode node);
 

@@ -4,7 +4,6 @@ import editor.attribute.Attribute;
 import editor.attribute.IntegerAttribute;
 import editor.attribute.Vec2DAttribute;
 import engine.types.Vec2D;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,8 +15,8 @@ import java.util.List;
     final private Vec2DAttribute position;
 
     private DisplaySpawnEditionData() {
-        this.visualID = new IntegerAttribute("Visual ID", JsonFieldNames.DisplaySpawnInfo.id);
-        this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.DisplaySpawnInfo.position);
+        this.visualID = new IntegerAttribute(Keys.Spawn.DisplaySpawn.id);
+        this.position = new Vec2DAttribute(Keys.Spawn.DisplaySpawn.position);
     }
 
     public DisplaySpawnEditionData(int visualID, Vec2D position) {

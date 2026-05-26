@@ -4,7 +4,6 @@ import editor.attribute.Attribute;
 import editor.attribute.StringAttribute;
 import editor.attribute.Vec2DAttribute;
 import engine.types.Vec2D;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,8 +15,8 @@ import java.util.List;
     final private StringAttribute fileName;
 
     private CustomHitboxEditionData() {
-        this.size = new Vec2DAttribute("Size", JsonFieldNames.CompositeHitbox.size);
-        this.fileName = new StringAttribute("Texture file name", JsonFieldNames.CompositeHitbox.fileName);
+        this.size = new Vec2DAttribute(Keys.Hitbox.CustomHitbox.size);
+        this.fileName = new StringAttribute(Keys.Hitbox.CustomHitbox.fileName);
     }
 
     public CustomHitboxEditionData(Vec2D size, String fileName) {

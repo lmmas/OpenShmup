@@ -3,7 +3,6 @@ package editor.editionData;
 import editor.attribute.Attribute;
 import editor.attribute.Vec2DAttribute;
 import engine.types.Vec2D;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
     final private Vec2DAttribute size;
 
     private RectangleHitboxEditionData() {
-        this.size = new Vec2DAttribute("Size (pixels)", JsonFieldNames.SimpleRectangleHitbox.size);
+        this.size = new Vec2DAttribute(Keys.Hitbox.RectangleHitbox.size);
     }
 
     public RectangleHitboxEditionData(Vec2D size) {

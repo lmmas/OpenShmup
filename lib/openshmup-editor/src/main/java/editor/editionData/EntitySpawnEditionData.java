@@ -4,7 +4,6 @@ import editor.attribute.Attribute;
 import editor.attribute.IntegerAttribute;
 import editor.attribute.Vec2DAttribute;
 import engine.types.Vec2D;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -18,9 +17,9 @@ import java.util.List;
     final private IntegerAttribute trajectoryID;
 
     private EntitySpawnEditionData() {
-        this.entityID = new IntegerAttribute("Visual ID", JsonFieldNames.EntitySpawnInfo.id);
-        this.position = new Vec2DAttribute("Spawning position", JsonFieldNames.EntitySpawnInfo.startingPosition);
-        this.trajectoryID = new IntegerAttribute("Trajectory ID", JsonFieldNames.EntitySpawnInfo.trajectory);
+        this.entityID = new IntegerAttribute(Keys.Spawn.EntitySpawn.id);
+        this.position = new Vec2DAttribute(Keys.Spawn.EntitySpawn.startingPosition);
+        this.trajectoryID = new IntegerAttribute(Keys.Spawn.EntitySpawn.trajectory);
     }
 
     public EntitySpawnEditionData(int entityID, Vec2D position, Integer trajectoryID) {

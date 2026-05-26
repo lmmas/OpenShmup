@@ -3,7 +3,6 @@ package editor.editionData;
 import editor.attribute.Attribute;
 import editor.attribute.IntegerAttribute;
 import editor.attribute.StringAttribute;
-import json.JsonFieldNames;
 import lombok.Getter;
 
 import java.util.List;
@@ -17,9 +16,9 @@ import java.util.List;
     final private StringAttribute trajectoryFunctionY;
 
     private FixedTrajectoryEditionData() {
-        this.id = new IntegerAttribute("Trajectory ID", JsonFieldNames.FixedTrajectory.id);
-        this.trajectoryFunctionX = new StringAttribute("Trajectory function X", JsonFieldNames.FixedTrajectory.functionX);
-        this.trajectoryFunctionY = new StringAttribute("Trajectory function Y", JsonFieldNames.FixedTrajectory.functionY);
+        this.id = new IntegerAttribute(Keys.Trajectory.FixedTrajectory.id);
+        this.trajectoryFunctionX = new StringAttribute(Keys.Trajectory.FixedTrajectory.functionX);
+        this.trajectoryFunctionY = new StringAttribute(Keys.Trajectory.FixedTrajectory.functionY);
     }
 
     public FixedTrajectoryEditionData(int id, String trajectoryFunctionX, String trajectoryFunctionY) {
