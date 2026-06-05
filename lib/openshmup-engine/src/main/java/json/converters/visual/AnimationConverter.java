@@ -12,7 +12,7 @@ import json.editionData.VisualEditionData;
 import java.nio.file.Path;
 import java.util.List;
 
-public class AnimationConverter implements VisualConverter {
+final public class AnimationConverter implements VisualConverter {
 
     @Override
     public VisualEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {

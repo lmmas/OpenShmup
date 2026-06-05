@@ -149,14 +149,16 @@ final public class GameLoader {
                     newTimeline.addSpawnable(time, spawnable);
                 }
             }
-            else if (type.equals("interval")) {
+            else if (type.equals("repeat")) {
                 float startTime = childNode.safeGetFloat("startTime");
-                float endTime = childNode.safeGetFloat("endTime");
+                int spawnCount = childNode.safeGetInt("spawnCount");
                 float interval = childNode.safeGetFloat("interval");
-                for (float i = startTime; i <= endTime; i += interval) {
+                float spawnTime = startTime;
+                for (float i = 0; i < spawnCount; i++) {
                     for (var spawnable : newSpawnables) {
-                        newTimeline.addSpawnable(i, spawnable);
+                        newTimeline.addSpawnable(spawnTime, spawnable);
                     }
+                    spawnTime += interval;
                 }
             }
             else {

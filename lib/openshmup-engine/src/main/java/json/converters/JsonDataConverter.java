@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static json.editionData.EditionData.Types;
 
-public class JsonDataConverter {
+final public class JsonDataConverter {
 
     final private Map<String, VisualConverter> visualConverters;
 
@@ -72,7 +72,7 @@ public class JsonDataConverter {
     }
 
     public VisualEditionData visualEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
-        String type = node.safeGetString("type");
+        String type = node.safeGetString(EditionData.Keys.type.name());
         VisualConverter converter = visualConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": visual type is not supported");
@@ -90,7 +90,7 @@ public class JsonDataConverter {
     }
 
     public TrajectoryEditionData trajectoryEditionDataFromJSON(SafeJsonNode node) {
-        String type = node.safeGetString("type");
+        String type = node.safeGetString(EditionData.Keys.type.name());
         TrajectoryConverter converter = trajectoryConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": trajectory type is not supported");
@@ -108,7 +108,7 @@ public class JsonDataConverter {
     }
 
     public HitboxEditionData hitboxEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
-        String type = node.safeGetString("type");
+        String type = node.safeGetString(EditionData.Keys.type.name());
         HitboxConverter converter = hitboxConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": hitbox type is not supported");
@@ -117,7 +117,7 @@ public class JsonDataConverter {
     }
 
     public SpawnEditionData spawnEditionDataFromJSON(SafeJsonNode node) {
-        String type = node.safeGetString("type");
+        String type = node.safeGetString(EditionData.Keys.type.name());
         SpawnConverter converter = spawnConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawnable type is not supported");
@@ -127,40 +127,40 @@ public class JsonDataConverter {
 
     public ObjectNode spawnEditionDataToJSON(SpawnEditionData spawnData, ObjectNode node) {
         String typeStr = spawnData.getType().name();
-        node.put("type", typeStr);
+        node.put(EditionData.Keys.type.name(), typeStr);
         return spawnConverters.get(typeStr).toJson(spawnData, node);
     }
 
     public ObjectNode visualToJSON(VisualEditionData visualData, ObjectNode node) {
         String typeStr = visualData.getType().name();
-        node.put("type", typeStr);
+        node.put(EditionData.Keys.type.name(), typeStr);
         return visualConverters.get(typeStr).toJson(visualData, node);
     }
 
     public ObjectNode hitboxToJSON(HitboxEditionData hitboxData, ObjectNode node) {
         String typeStr = hitboxData.getType().name();
-        node.put("type", typeStr);
+        node.put(EditionData.Keys.type.name(), typeStr);
         return hitboxConverters.get(typeStr).toJson(hitboxData, node);
     }
 
     public ObjectNode trajectoryToJSON(TrajectoryEditionData trajectoryData, ObjectNode node) {
         String typeStr = trajectoryData.getType().name();
-        node.put("type", typeStr);
+        node.put(EditionData.Keys.type.name(), typeStr);
         return trajectoryConverters.get(typeStr).toJson(trajectoryData, node);
     }
 
     public ObjectNode entityToJSON(EntityEditionData entityData, ObjectNode node) {
         String typeStr = entityData.getType().name();
-        node.put("type", typeStr);
+        node.put(EditionData.Keys.type.name(), typeStr);
         return entityConverters.get(typeStr).toJson(entityData, node);
     }
 
     public ShotEditionData shotEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
-        return (ShotEditionData) shotConverter.fromJson(node, jsonDataConverter, textureFolderPath);
+        return shotConverter.fromJson(node, jsonDataConverter, textureFolderPath);
     }
 
     public EntityEditionData entityEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
-        String type = node.safeGetString("type");
+        String type = node.safeGetString(EditionData.Keys.type.name());
         EntityConverter converter = entityConverters.get(type);
         if (converter == null) {
             throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": entity type is not supported");

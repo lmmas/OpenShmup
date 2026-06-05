@@ -4,7 +4,7 @@ import json.attribute.Attribute;
 
 import java.util.List;
 
-public sealed interface EditionData permits AnimationEditionData.SpritesheetInfoData, EntityEditionData, ShotEditionData, HitboxEditionData, SpawnEditionData, TrajectoryEditionData, VisualEditionData {
+public sealed interface EditionData permits AnimationEditionData.SpritesheetInfoData, EntityEditionData, HitboxEditionData, ShotEditionData, SpawnEditionData, SpawnInfoEditionData, TrajectoryEditionData, VisualEditionData {
 
     EditionData.Category getCategory();
 
@@ -15,7 +15,7 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
     void setToDefault();
 
     enum Category {
-        NONE, VISUAL, TRAJECTORY, ENTITY, SPAWN, HITBOX
+        NONE, VISUAL, TRAJECTORY, ENTITY, SPAWN, SPAWN_INFO, HITBOX
     }
 
     interface Type {
@@ -43,6 +43,10 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
             display, entity
         }
 
+        public enum SpawnInfo implements Type {
+            single, repeat
+        }
+
         public enum Hitbox implements Type {
             rectangle, custom
         }
@@ -54,12 +58,10 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
     }
 
     //WARNING: changing any of these enum names will change the values of Strings used in serialization/deserialization
-    final class Keys {
-
-        private Keys() {}
+    enum Keys implements Key {
+        type;
 
         final public static class Visual {
-
             private Visual() {}
 
             public enum ScrollingImage implements Key {
@@ -82,7 +84,6 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
         }
 
         final public static class Trajectory {
-
             private Trajectory() {}
 
             public enum FixedTrajectory implements Key {
@@ -98,7 +99,6 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
         }
 
         final public static class Entity {
-
             private Entity() {}
 
             public enum Projectile implements Key {
@@ -125,8 +125,24 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
             }
         }
 
-        final public static class Spawn {
+        final public static class SpawnInfo {
 
+            private SpawnInfo() {}
+
+            public enum Single implements Key {
+                spawnTime,
+                spawns
+            }
+
+            public enum Repeat implements Key {
+                startTime,
+                spawnCount,
+                interval,
+                spawns
+            }
+        }
+
+        final public static class Spawn {
             private Spawn() {}
 
             public enum DisplaySpawn implements Key {
@@ -142,7 +158,6 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
         }
 
         final public static class Hitbox {
-
             private Hitbox() {}
 
             public enum RectangleHitbox implements Key {

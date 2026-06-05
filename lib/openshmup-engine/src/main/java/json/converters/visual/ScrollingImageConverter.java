@@ -11,7 +11,7 @@ import json.editionData.VisualEditionData;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ScrollingImageConverter implements VisualConverter {
+final public class ScrollingImageConverter implements VisualConverter {
 
     @Override
     public VisualEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
