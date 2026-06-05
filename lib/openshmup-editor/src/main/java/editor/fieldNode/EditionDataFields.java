@@ -2,8 +2,6 @@ package editor.fieldNode;
 
 import editor.AttributeLabels;
 import editor.Style;
-import editor.attribute.*;
-import editor.editionData.*;
 import engine.menu.Menu;
 import engine.menu.MenuElementGroup;
 import engine.menu.widget.BooleanField;
@@ -13,6 +11,8 @@ import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import json.attribute.*;
+import json.editionData.*;
 import lombok.Getter;
 import lombok.Setter;
 

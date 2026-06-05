@@ -194,7 +194,7 @@ final public class GameLoader {
         for (var visualNode : visualNodesList) {
             int id = visualNode.safeGetInt("id");
             SceneVisual newVisual = visualFromJson(visualNode, gameData.paths.gameTextureFolder);
-            gameData.addCustomVisual(id, newVisual);
+            gameData.addVisual(id, newVisual);
         }
     }
 

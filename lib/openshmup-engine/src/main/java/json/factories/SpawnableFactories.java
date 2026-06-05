@@ -1,7 +1,7 @@
 package json.factories;
 
+import engine.level.spawnable.DisplaySpawnInfo;
 import engine.level.spawnable.EntitySpawnInfo;
-import engine.level.spawnable.SceneDisplaySpawnInfo;
 import engine.level.spawnable.Spawnable;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
@@ -14,7 +14,7 @@ final public class SpawnableFactories {
     final public static Function<SafeJsonNode, Spawnable> displaySpawnInfoFactory = node -> {
         int id = node.safeGetInt(JsonFieldNames.DisplaySpawnInfo.id);
         Vec2D positionVec = node.safeGetVec2D(JsonFieldNames.DisplaySpawnInfo.position);
-        return new SceneDisplaySpawnInfo(id, positionVec);
+        return new DisplaySpawnInfo(id, positionVec);
     };
 
     final public static Function<SafeJsonNode, Spawnable> entitySpawnInfoFactory = node -> {

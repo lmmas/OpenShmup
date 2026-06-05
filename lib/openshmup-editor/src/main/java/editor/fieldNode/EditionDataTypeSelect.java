@@ -2,13 +2,13 @@ package editor.fieldNode;
 
 import editor.Style;
 import editor.Widgets;
-import editor.editionData.*;
 import engine.menu.Menu;
 import engine.menu.MenuElementGroup;
 import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.Vec2D;
+import json.editionData.*;
 
 import java.util.ArrayList;
 import java.util.List;

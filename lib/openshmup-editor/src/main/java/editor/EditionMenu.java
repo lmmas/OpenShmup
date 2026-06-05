@@ -1,6 +1,5 @@
 package editor;
 
-import editor.editionData.*;
 import editor.fieldNode.EditionDataTypeSelect;
 import editor.fieldNode.FieldNode;
 import engine.Engine;
@@ -20,6 +19,8 @@ import engine.scene.visual.style.TextAlignment;
 import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
+import json.GameEditionDataManager;
+import json.editionData.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -35,13 +36,13 @@ final public class EditionMenu {
 
     @Getter final private Menu menu;
 
-    final private EditorGameDataManager gameData;
+    final private GameEditionDataManager gameData;
 
     private MenuScreen editPanel;
 
     private FieldNode editPanelRoot;
 
-    public EditionMenu(EditorGameDataManager gameData) {
+    public EditionMenu(GameEditionDataManager gameData) {
         this.gameData = gameData;
         this.menu = new Menu();
         this.editPanel = null;

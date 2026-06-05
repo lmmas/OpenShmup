@@ -19,7 +19,7 @@ final public class Animation extends SceneVisual {
 
     final private boolean looping;
 
-    private final float framePeriodSeconds;
+    private final double framePeriodSeconds;
 
     private int frameIndex;
 
@@ -27,7 +27,7 @@ final public class Animation extends SceneVisual {
 
     private TimeReference timeReference;
 
-    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, float framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
+    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, double framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
         super(layer, new ArrayList<>(1), List.of(0));
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;

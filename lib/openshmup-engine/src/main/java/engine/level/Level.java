@@ -17,8 +17,8 @@ import engine.level.entity.EntityType;
 import engine.level.entity.Ship;
 import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.extraComponent.HitboxDebugRectangle;
+import engine.level.spawnable.DisplaySpawnInfo;
 import engine.level.spawnable.EntitySpawnInfo;
-import engine.level.spawnable.SceneDisplaySpawnInfo;
 import engine.level.spawnable.Spawnable;
 import engine.menu.GameMenus;
 import engine.menu.Menu;
@@ -58,7 +58,7 @@ final public class Level implements EngineSystem {
 
     final private HashSet<Entity> entitiesToRemove;
 
-    final private HashSet<SceneDisplaySpawnInfo> displaysToSpawn;
+    final private HashSet<DisplaySpawnInfo> displaysToSpawn;
 
     private List<Boolean> controlStates;
 
@@ -192,13 +192,13 @@ final public class Level implements EngineSystem {
     public void addSpawnable(Spawnable spawnable) {
         switch (spawnable) {
             case EntitySpawnInfo entitySpawnInfo -> addEntitySpawn(entitySpawnInfo);
-            case SceneDisplaySpawnInfo displaySpawnInfo -> addDisplaySpawn(displaySpawnInfo);
+            case DisplaySpawnInfo displaySpawnInfo -> addDisplaySpawn(displaySpawnInfo);
             default -> {
             }
         }
     }
 
-    private void addDisplaySpawn(SceneDisplaySpawnInfo displaySpawnInfo) {
+    private void addDisplaySpawn(DisplaySpawnInfo displaySpawnInfo) {
         displaysToSpawn.add(displaySpawnInfo);
     }
 

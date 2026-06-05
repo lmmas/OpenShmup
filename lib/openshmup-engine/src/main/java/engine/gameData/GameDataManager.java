@@ -65,7 +65,7 @@ final public class GameDataManager {
         }
     }
 
-    public void addCustomVisual(int id, SceneVisual visual) {
+    public void addVisual(int id, SceneVisual visual) {
         visuals.put(id, visual);
     }
 

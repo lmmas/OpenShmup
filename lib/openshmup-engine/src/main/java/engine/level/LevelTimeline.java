@@ -2,8 +2,8 @@ package engine.level;
 
 import engine.assets.Texture;
 import engine.gameData.GameDataManager;
+import engine.level.spawnable.DisplaySpawnInfo;
 import engine.level.spawnable.EntitySpawnInfo;
-import engine.level.spawnable.SceneDisplaySpawnInfo;
 import engine.level.spawnable.Spawnable;
 import engine.types.Vec2D;
 import lombok.Getter;
@@ -67,8 +67,8 @@ final public class LevelTimeline {
         HashSet<Texture> allTextures = new HashSet<>();
         HashSet<Spawnable> allSpawnables = getAllSpawnables();
         for (var spawnable : allSpawnables) {
-            if (spawnable instanceof SceneDisplaySpawnInfo sceneDisplaySpawnInfo) {
-                List<Texture> textures = gameDataManager.getTexturesOfDisplay(sceneDisplaySpawnInfo.id());
+            if (spawnable instanceof DisplaySpawnInfo displaySpawnInfo) {
+                List<Texture> textures = gameDataManager.getTexturesOfDisplay(displaySpawnInfo.id());
                 allTextures.addAll(textures);
             }
             if (spawnable instanceof EntitySpawnInfo entitySpawnInfo) {
