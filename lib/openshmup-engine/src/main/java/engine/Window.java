@@ -31,6 +31,7 @@ final public class Window {
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         assert vidmode != null : "glfwGetVideoMode failure";
         glfwSetWindowPos(glfwWindow, (vidmode.width() - newResolution.x) / 2, (vidmode.height() - newResolution.y) / 2 - 25);
+        this.resolution = newResolution;
     }
 
     public void show() {

@@ -26,10 +26,7 @@ final public class ProjectileConverter implements EntityConverter {
             jsonDataConverter::spawnEditionDataFromJSON
         ).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Projectile.spriteVisualId);
-        Integer defaultTrajectoryID = null;
-        if (node.hasField(JsonFieldNames.Projectile.defaultTrajectoryId)) {
-            defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Projectile.defaultTrajectoryId);
-        }
+        int defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
         ArrayList<ShotEditionData> shots = new ArrayList<>();
         if (node.hasField(JsonFieldNames.Ship.shots)) {
             SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);

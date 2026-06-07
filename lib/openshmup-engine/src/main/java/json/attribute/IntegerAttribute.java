@@ -15,7 +15,7 @@ final public class IntegerAttribute extends Attribute {
         this.value = 0;
     }
 
-    public IntegerAttribute(EditionData.Key key, Integer value) {
+    public IntegerAttribute(EditionData.Key key, int value) {
         super(key);
         this.value = value;
     }

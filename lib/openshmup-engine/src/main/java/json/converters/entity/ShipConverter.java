@@ -24,10 +24,7 @@ final public class ShipConverter implements EntityConverter {
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
         List<SpawnEditionData> deathSpawn = spawnableNodes.stream().map(jsonDataConverter::spawnEditionDataFromJSON).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Ship.spriteVisualId);
-        Integer defaultTrajectoryID = null;
-        if (node.hasField(JsonFieldNames.Ship.defaultTrajectoryId)) {
-            defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
-        }
+        int defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
         ArrayList<ShotEditionData> shots = new ArrayList<>();
         if (node.hasField(JsonFieldNames.Ship.shots)) {
             SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);

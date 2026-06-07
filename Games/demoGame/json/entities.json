@@ -56,6 +56,7 @@
             "type": "rectangle",
             "size": [10, 26]
         },
+        "defaultTrajectoryId": 1,
         "deathSpawn": []
     },
     {
@@ -69,6 +70,7 @@
             "type": "rectangle",
             "size": [50, 50]
         },
+        "defaultTrajectoryId": 1,
         "shots": [
             {
                 "type": "shot",
@@ -102,6 +104,7 @@
             "type": "rectangle",
             "size": [10, 10]
         },
+        "defaultTrajectoryId": 1,
         "deathSpawn": []
     },
     {
@@ -115,6 +118,7 @@
             "type": "rectangle",
             "size": [50, 50]
         },
+        "defaultTrajectoryId": 1,
         "deathSpawn": [
             {
                 "type": "display",
