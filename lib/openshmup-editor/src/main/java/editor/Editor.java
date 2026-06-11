@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
-final public class Editor extends Engine {
+final public class Editor {
     @Getter
     private static List<GameEditionDataManager> loadedGames = null;
 
@@ -33,10 +33,10 @@ final public class Editor extends Engine {
         Engine.setNativeResolution(new IVec2D(1920, 1080));
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
-        switchCurrentScene(new Scene());
-        switchCurrentMenu(Menus.MainMenu());
+        Engine.switchCurrentScene(new Scene());
+        Engine.switchCurrentMenu(Menus.MainMenu());
 
-        window.show();
+        Engine.window.show();
     }
 
     public static void loadGames() throws IOException {

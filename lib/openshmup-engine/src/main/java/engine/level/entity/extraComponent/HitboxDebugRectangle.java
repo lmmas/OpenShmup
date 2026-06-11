@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static engine.Engine.assetManager;
-import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class HitboxDebugRectangle implements ExtraComponent {
 
@@ -25,7 +24,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
         this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size, simpleRectangleHitbox.position, color, assetManager.getShader(rootFolderAbsolutePath.resolve(hitboxDebugShader)));
+        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size, simpleRectangleHitbox.position, color, assetManager.getShader(hitboxDebugShader));
     }
 
     @Override

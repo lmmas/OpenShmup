@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-public class LevelUI {
+final public class LevelUI {
 
     final private Scene scene;
 

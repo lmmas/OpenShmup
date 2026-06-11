@@ -13,9 +13,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static editor.Style.Text.menuButtonLabelStyle;
-import static editor.Style.menuButtonStyle1;
-import static editor.Style.menuButtonStyle3;
+import static editor.Style.Text.menuTextStyle;
+import static editor.Style.*;
 import static engine.Engine.assetManager;
 
 final public class Widgets {
@@ -42,12 +41,15 @@ final public class Widgets {
         RGBAValue rectangleColor = RGBAValue.SOLID_WHITE;
         RGBAValue borderColor = RGBAValue.SOLID_BLACK;
         BorderedRoundedRectangle borderedRoundedRectangle = new BorderedRoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
-        return new TextField(layer + 1, size, position, menuButtonLabelStyle, List.of(borderedRoundedRectangle), startingText);
+        return new TextField(layer + 1, size, position, menuTextStyle, List.of(borderedRoundedRectangle), startingText);
     }
 
     public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
         return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange, startingValue);
     }
 
+    public static SelectorButtons TypeSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
+        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, typeButtonSelected, typeButtonUnselected, labels, onChange, startingValue);
+    }
 
 }

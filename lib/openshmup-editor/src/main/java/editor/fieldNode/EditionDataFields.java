@@ -70,13 +70,13 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     private void buildFields(Vec2D startPosition) {
         List<Attribute> attributeList = editionData.getAttributes();
         int layer = 1;
-        float coupleFieldSpacing = 250f;
-        Vec2D fieldMargin = new Vec2D(500f, 0f);
+        float coupleFieldSpacing = 35f;
+        Vec2D fieldMargin = new Vec2D(320f, 0f);
 
 
         Vec2D attributePosition = startPosition;
         for (Attribute attribute : attributeList) {
-            TextDisplay attributeLabel = new TextDisplay(layer, false, attributePosition, AttributeLabels.get(attribute.getKey()) + ":", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+            TextDisplay attributeLabel = new TextDisplay(layer, false, attributePosition, AttributeLabels.get(attribute.getKey()) + ":", Style.Text.menuTextStyle, TextAlignment.LEFT);
             elementGroup.visuals().add(attributeLabel);
             Vec2D fieldPosition = attributePosition.add(fieldMargin);
             switch (attribute) {
@@ -88,7 +88,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                 }
 
                 case DoubleAttribute doubleAttribute -> {
-                    float fieldWidthPixels = 150f;
+                    float fieldWidthPixels = 120f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(doubleAttribute.getValue()));
                     elementGroup.widgets().add(textField);
@@ -123,7 +123,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                 }
 
                 case FloatAttribute floatAttribute -> {
-                    float fieldWidthPixels = 150f;
+                    float fieldWidthPixels = 120f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
                     TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(floatAttribute.getValue()));
                     elementGroup.widgets().add(textField);
@@ -139,17 +139,17 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                 }
 
                 case IVec2DAttribute iVec2DAttribute -> {
-                    float fieldWidthPixels = 150f;
-                    float fieldLabelOffset = 50f;
-                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+                    float fieldWidthPixels = 100f;
+                    float fieldLabelOffset = 25f;
+                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
                     TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().x));
                     elementGroup.widgets().add(textField1);
-                    Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
-                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+                    Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + fieldWidthPixels + coupleFieldSpacing, fieldPosition.y);
+                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldDisplay2);
-                    Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
+                    Vec2D field2Offset = new Vec2D(fieldLabelOffset + fieldWidthPixels + coupleFieldSpacing + fieldWidthPixels / 2, 0f);
                     TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().y));
                     elementGroup.widgets().add(textField2);
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
@@ -168,23 +168,23 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                 }
 
                 case Vec2DAttribute vec2DAttribute -> {
-                    float fieldWidthPixels = 150f;
-                    float fieldLabelOffset = 50f;
-                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+                    float fieldWidthPixels = 120f;
+                    float fieldLabelOffset = 25f;
+                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
                     TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().x));
                     elementGroup.widgets().add(textField1);
-                    Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + coupleFieldSpacing, fieldPosition.y);
-                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
+                    Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + fieldWidthPixels + coupleFieldSpacing, fieldPosition.y);
+                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldDisplay2);
-                    Vec2D field2Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset + coupleFieldSpacing, 0f);
+                    Vec2D field2Offset = new Vec2D(fieldLabelOffset + fieldWidthPixels + coupleFieldSpacing + fieldWidthPixels / 2, 0f);
                     TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().y));
                     elementGroup.widgets().add(textField2);
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
             }
-            attributePosition = attributePosition.add(new Vec2D(0.0f, -getSpacing(attribute)));
+            attributePosition = attributePosition.add(0.0f, -getSpacing(attribute));
         }
     }
 

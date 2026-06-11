@@ -162,10 +162,11 @@ final public class EditionMenu {
 
     private <D extends EditionData> void openEditPanel(List<D> dataList, int index) {
         D editionData = dataList.get(index);
+        assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO : "Incorrect editionData type: " + editionData.getType().name();
         this.editPanel = new MenuScreen(4);
         SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         this.editPanel.addVisual(backgroundColor);
-        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(1500f, 900f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
+        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
         this.editPanel.addVisual(backgroundRectangle);
 
         Vec2D closeButtonSize = new Vec2D(150, 50);
@@ -173,11 +174,17 @@ final public class EditionMenu {
         ActionButton closeButton = Widgets.RoundedRectangleButton(3, closeButtonSize, closeButtonPosition, menuButtonStyle2, "Close", (() -> this.menu.removeMenuScreen(editPanel)));
         this.editPanel.addWidget(closeButton);
 
-        String panelTitleString = "Test";
+        String panelTitleString = switch (editionData.getCategory()) {
+            case VISUAL -> "Edit Visual";
+            case TRAJECTORY -> "Edit Trajectory";
+            case ENTITY -> "Edit Entity";
+            case SPAWN_INFO -> "Edit Timeline entry";
+            default -> "";
+        };
         TextDisplay panelTitle = new TextDisplay(1, false, new Vec2D((float) Engine.getNativeWidth() / 2, 950f), panelTitleString, Text.menuButtonLabelStyle, TextAlignment.CENTER);
         this.editPanel.addVisual(panelTitle);
 
-        Vec2D startPosition = new Vec2D(300f, 800f);
+        Vec2D startPosition = new Vec2D(120f, 830f);
         EditionDataTypeSelect<D> editionDataTypeSelect = new EditionDataTypeSelect<>(editionData, startPosition);
         this.editPanelRoot = editionDataTypeSelect;
 

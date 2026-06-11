@@ -7,9 +7,9 @@ import engine.types.Vec2D;
 
 import java.nio.file.Path;
 
-import static engine.GlobalVars.Paths.debugFont;
 import static engine.types.RGBAValue.SOLID_BLACK;
 import static engine.types.RGBAValue.SOLID_WHITE;
+import static java.nio.file.Paths.get;
 
 final public class Style {
 
@@ -36,9 +36,11 @@ final public class Style {
 
         private Text() {}
 
-        final public static Path menuFontPath = debugFont;
+        final public static Path menuFontPath = get("lib/openshmup-engine/src/main/resources/fonts/Inter_28pt-Regular.ttf");
 
-        final public static TextStyle menuButtonLabelStyle = new TextStyle(menuFontPath, SOLID_BLACK, 17f);
+        final public static TextStyle menuButtonLabelStyle = new TextStyle(menuFontPath, SOLID_BLACK, 20f);
+
+        final public static TextStyle menuTextStyle = new TextStyle(menuFontPath, SOLID_BLACK, 16f);
 
         final public static TextStyle menuScreenTitleStyle = new TextStyle(menuFontPath, SOLID_BLACK, 24f);
     }
@@ -54,4 +56,9 @@ final public class Style {
     final public static RoundedRectangleButtonStyle menuButtonStyle2 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
     final public static RoundedRectangleButtonStyle menuButtonStyle3 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.grey1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
+
+    final public static RoundedRectangleButtonStyle typeButtonSelected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuTextStyle);
+
+    final public static RoundedRectangleButtonStyle typeButtonUnselected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
+
 }

@@ -56,12 +56,12 @@ final public class Font {
         int[] descentBuf = new int[]{0};
         int[] lineGapBuf = new int[]{0};
         stbtt_GetFontVMetrics(fontinfo, ascentBuf, descentBuf, lineGapBuf);
-        int[] x0H = new int[1];
-        int[] x1H = new int[1];
-        int[] y0H = new int[1];
-        int[] y1H = new int[1];
-        stbtt_GetCodepointBox(fontinfo, 'M', x0H, y0H, x1H, y1H);
-        int capHeightNativeValue = y1H[0] - y0H[0];
+        int[] x0M = new int[1];
+        int[] x1M = new int[1];
+        int[] y0M = new int[1];
+        int[] y1M = new int[1];
+        stbtt_GetCodepointBox(fontinfo, 'M', x0M, y0M, x1M, y1M);
+        int capHeightNativeValue = y1M[0] - y0M[0];
         float normalizedAscent = (float) ascentBuf[0] / capHeightNativeValue;
         float normalizedDescent = (float) descentBuf[0] / capHeightNativeValue;
         float normalizedLineGap = (float) lineGapBuf[0] / capHeightNativeValue;
@@ -71,9 +71,9 @@ final public class Font {
         int endCodepoint = 126;
 
         int charCount = endCodepoint - startCodepoint + 1;
-        int bitmapWidth = 512;
-        int bitmapHeight = 512;
-        float capHeightPixels = 50.0f;
+        int bitmapWidth = 1024;
+        int bitmapHeight = 1024;
+        float capHeightPixels = 96.0f;
 
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
         STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(charCount);

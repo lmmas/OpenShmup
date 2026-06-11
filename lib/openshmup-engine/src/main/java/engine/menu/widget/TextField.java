@@ -29,8 +29,9 @@ final public class TextField implements Widget {
 
     public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, List<SceneVisual> otherVisuals, String startingText) {
         this.stringBuffer = new StringBuffer(startingText);
-        Vec2D textSartPosition = new Vec2D(position.x - size.x / 2, position.y);
-        this.textInputDisplay = new TextDisplay(textLayer, true, textSartPosition, startingText, style, TextAlignment.LEFT);
+        float textStartMargin = 6f;
+        Vec2D textPosition = new Vec2D(position.x - (size.x / 2) + textStartMargin, position.y);
+        this.textInputDisplay = new TextDisplay(textLayer, true, textPosition, startingText, style, TextAlignment.LEFT);
         this.visuals = new ArrayList<>(otherVisuals);
         this.visuals.add(textInputDisplay);
         Hitbox clickHitbox = new SimpleRectangleHitbox(position, size);

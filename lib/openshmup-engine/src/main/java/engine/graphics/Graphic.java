@@ -39,13 +39,14 @@ public abstract class Graphic<T extends Graphic<T>.Vertex<T>> {
 
     abstract public class Vertex<V extends Vertex<V>> {
 
-        protected boolean dataHasChangedFlag = true;
+        private boolean dataHasChangedFlag;
 
-        protected boolean shouldBeRemovedFlag = false;
+        private boolean shouldBeRemovedFlag;
 
         public abstract V copy();
 
         public Vertex() {
+            this.dataHasChangedFlag = true;
             this.shouldBeRemovedFlag = false;
         }
 

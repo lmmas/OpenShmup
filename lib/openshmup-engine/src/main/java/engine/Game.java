@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import java.io.IOException;
 
-final public class Game extends Engine {
+final public class Game {
 
     public static GameDataManager gameDataManager;
 
@@ -43,7 +43,7 @@ final public class Game extends Engine {
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
         Engine.setNativeResolution(gameDataManager.config.getNativeResolution());
-        window.show();
+        Engine.window.show();
     }
 
     public static void run() {
@@ -56,11 +56,11 @@ final public class Game extends Engine {
         gameDataManager.getTimeline(0).resetTime();
         Scene levelScene = new Scene();
         Menu gameMenu = new Menu();
-        switchCurrentScene(levelScene);
-        switchCurrentMenu(gameMenu);
-        currentLevel.set(new Level(currentScene.get(), gameDataManager.getTimeline(0)));
+        Engine.switchCurrentScene(levelScene);
+        Engine.switchCurrentMenu(gameMenu);
+        currentLevel.set(new Level(Engine.getCurrentScene(), gameDataManager.getTimeline(0)));
         setCurrentLevelActive(true);
-        getCurrentScene().startTimer();
+        Engine.getCurrentScene().startTimer();
         getCurrentLevel().start();
     }
 
@@ -69,6 +69,6 @@ final public class Game extends Engine {
     }
 
     public static void setCurrentLevelActive(boolean active) {
-        setEngineSystemActive(currentLevel, active);
+        Engine.setEngineSystemActive(currentLevel, active);
     }
 }

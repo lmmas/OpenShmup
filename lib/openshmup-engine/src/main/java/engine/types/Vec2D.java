@@ -18,8 +18,16 @@ final public class Vec2D {
         this.y = vec.y;
     }
 
+    public Vec2D add(float xOffset, float yOffset) {
+        return new Vec2D(this.x + xOffset, this.y + yOffset);
+    }
+
     public Vec2D add(Vec2D other) {
         return new Vec2D(this.x + other.x, this.y + other.y);
+    }
+
+    public Vec2D multiply(float xCoef, float yCoef) {
+        return new Vec2D(this.x * xCoef, this.y * yCoef);
     }
 
     public Vec2D multiply(Vec2D other) {

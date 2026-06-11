@@ -27,7 +27,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Engine {
+final public class Engine {
 
     private static boolean programShouldTerminate;
 
@@ -39,21 +39,21 @@ public class Engine {
     @Getter @Setter
     private static double sceneTime;
 
-    protected static Callback debugProc;
+    private static Callback debugProc;
 
     public static AssetManager assetManager;
 
-    final protected static Reference<InputStatesManager> inputStatesManager = new Reference<>(null);
+    final private static Reference<InputStatesManager> inputStatesManager = new Reference<>(null);
 
-    final protected static Reference<GraphicsManager> graphicsManager = new Reference<>(null);
+    final private static Reference<GraphicsManager> graphicsManager = new Reference<>(null);
 
-    final protected static Reference<Scene> currentScene = new Reference<>(null);
+    final private static Reference<Scene> currentScene = new Reference<>(null);
 
-    final protected static Reference<Menu> currentMenu = new Reference<>(null);
+    final private static Reference<Menu> currentMenu = new Reference<>(null);
 
-    private static ArrayList<Reference<? extends EngineSystem>> activeSystemsList = new ArrayList<>();
+    final private static ArrayList<Reference<? extends EngineSystem>> activeSystemsList = new ArrayList<>();
 
-    protected Engine() {}
+    private Engine() {}
 
     public static void init() throws IOException {
         Locale.setDefault(Locale.ENGLISH);
@@ -110,7 +110,7 @@ public class Engine {
         programShouldTerminate = true;
     }
 
-    protected static void loop() {
+    public static void loop() {
         while (!programShouldTerminate) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             DebugMethods.checkForOpenGLErrors();
@@ -130,7 +130,7 @@ public class Engine {
         }
     }
 
-    protected static void terminate() {
+    public static void terminate() {
         Callbacks.glfwFreeCallbacks(window.getGlfwWindow());
         glfwDestroyWindow(window.getGlfwWindow());
         glfwTerminate();
@@ -200,7 +200,7 @@ public class Engine {
         }
     }
 
-    protected static void setEngineSystemActive(Reference<? extends EngineSystem> engineSystemRef, boolean active) {
+    public static void setEngineSystemActive(Reference<? extends EngineSystem> engineSystemRef, boolean active) {
         boolean alreadyActive = activeSystemsList.contains(engineSystemRef);
         if (active && !alreadyActive) {
             activeSystemsList.add(engineSystemRef);

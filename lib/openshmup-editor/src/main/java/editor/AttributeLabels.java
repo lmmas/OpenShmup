@@ -13,7 +13,7 @@ final public class AttributeLabels {
     private AttributeLabels() {}
 
     final private static Map<EditionData.Key, String> labelMap = Stream.of(new Object[][]{
-        {Visual.ScrollingImage.id, "Visual ID yay"},
+        {Visual.ScrollingImage.id, "Visual ID"},
         {Visual.ScrollingImage.layer, "Scene layer"},
         {Visual.ScrollingImage.size, "Size"},
         {Visual.ScrollingImage.fileName, "Image file name"},
@@ -22,14 +22,14 @@ final public class AttributeLabels {
         {Visual.Animation.id, "Visual ID"},
         {Visual.Animation.layer, "Scene layer"},
         {Visual.Animation.size, "Size"},
-        {Visual.Animation.spritesheetInfo, "Frame period (seconds)"},
-        {Visual.Animation.framePeriodSeconds, "Looping"},
-        {Visual.Animation.looping, "Spritesheet info"},
+        {Visual.Animation.framePeriodSeconds, "Frame period (seconds)"},
+        {Visual.Animation.looping, "Looping"},
+        {Visual.Animation.spritesheetInfo, "Spritesheet info"},
         {Trajectory.FixedTrajectory.id, "Trajectory ID"},
         {Trajectory.FixedTrajectory.functionX, "Trajectory function X"},
         {Trajectory.FixedTrajectory.functionY, "Trajectory function Y"},
         {Trajectory.PlayerControlledTrajectory.id, "Trajectory ID"},
-        {Trajectory.PlayerControlledTrajectory.playerMovementSpeed, "Player movement speed (pix/s)"},
+        {Trajectory.PlayerControlledTrajectory.playerMovementSpeed, "Player movement speed (px/s)"},
         {Entity.Projectile.id, "Entity ID"},
         {Entity.Projectile.evil, "Evil"},
         {Entity.Projectile.size, "Size"},

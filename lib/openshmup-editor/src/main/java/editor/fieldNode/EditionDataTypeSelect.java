@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
+final public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
 
     final private static Map<EditionData.Category, List<EditionData.Type>> typesMap = Map.of(
         EditionData.Category.VISUAL, List.of(EditionData.Types.Visual.scrollingImage, EditionData.Types.Visual.animation),
@@ -28,7 +28,7 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
 
     final private static Map<EditionData.Category, List<String>> labelsMap = Map.of(
         EditionData.Category.VISUAL, List.of("Scrolling Image", "Animation"),
-        EditionData.Category.TRAJECTORY, List.of("Fixed", "Player"),
+        EditionData.Category.TRAJECTORY, List.of("Fixed", "Player Controlled"),
         EditionData.Category.ENTITY, List.of("Projectile", "Ship"),
         EditionData.Category.SPAWN, List.of("Display", "Entity"),
         EditionData.Category.HITBOX, List.of("Rectangle", "Custom")
@@ -85,7 +85,7 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
         }
         this.editionDataFieldsList = new ArrayList<>(dataList.size());
         for (D data : dataList) {
-            editionDataFieldsList.add(new EditionDataFields<D>(data, startPosition.add(new Vec2D(0f, -60f))));
+            editionDataFieldsList.add(new EditionDataFields<D>(data, startPosition.add(0f, -60f)));
         }
         this.isActive = false;
         BiConsumer<SelectorButtons, Integer> onChange = (selector, newValue) -> {
@@ -95,9 +95,11 @@ public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
             }
         };
         this.menu = null;
-        this.typeSelectText = new TextDisplay(1, false, startPosition, "Type:", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
-        Vec2D fieldPosition = startPosition.add(new Vec2D(200f, 0f));
-        this.selectorButtons = Widgets.EditorSelector(2, dataList.size(), buttonSize, fieldPosition, buttonStride, typeLabels, onChange, selectedValue);
+        this.typeSelectText = new TextDisplay(1, false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+        Vec2D fieldPosition = startPosition.add(200f, 0f);
+        Vec2D selectorButtonsSize = new Vec2D(200f, buttonSize.y);
+        Vec2D selectorButtonsStride = new Vec2D(220f, 0.0f);
+        this.selectorButtons = Widgets.TypeSelectorButtons(2, dataList.size(), selectorButtonsSize, fieldPosition, selectorButtonsStride, typeLabels, onChange, selectedValue);
         this.selectorButtons.setSelectedValue(selectedValue);
     }
 
