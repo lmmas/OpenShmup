@@ -6,7 +6,7 @@ import java.util.List;
 
 public sealed interface EditionData permits AnimationEditionData.SpritesheetInfoData, EntityEditionData, HitboxEditionData, ShotEditionData, SpawnEditionData, SpawnInfoEditionData, TrajectoryEditionData, VisualEditionData {
 
-    EditionData.Category getCategory();
+    Category getCategory();
 
     Type getType();
 
@@ -183,5 +183,9 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
             firstShotTime,
             spawn
         }
+    }
+
+    static boolean hasTypeSelect(EditionData data) {
+        return data.getCategory() != Category.NONE;
     }
 }

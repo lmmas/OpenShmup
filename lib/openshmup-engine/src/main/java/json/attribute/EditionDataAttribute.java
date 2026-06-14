@@ -1,7 +1,7 @@
 package json.attribute;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import json.editionData.*;
+import json.editionData.EditionData;
 
 final public class EditionDataAttribute<D extends EditionData> extends Attribute {
 
@@ -30,15 +30,6 @@ final public class EditionDataAttribute<D extends EditionData> extends Attribute
     }
 
     public boolean hasTypeSelect() {
-        return switch (editionData) {
-            case VisualEditionData ignored -> true;
-            case TrajectoryEditionData ignored -> true;
-            case EntityEditionData ignored -> true;
-            case HitboxEditionData ignored -> true;
-            case SpawnEditionData ignored -> true;
-            case SpawnInfoEditionData ignored -> true;
-            case ShotEditionData ignored -> false;
-            case AnimationEditionData.SpritesheetInfoData ignored -> false;
-        };
+        return EditionData.hasTypeSelect(editionData);
     }
 }

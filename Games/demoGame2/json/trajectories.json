@@ -8,24 +8,72 @@
         "id": 1,
         "type": "fixed",
         "functionX": "0.0",
-        "functionY": "0.0"
+        "functionY": "-400 * t"
     },
     {
         "id": 2,
         "type": "fixed",
-        "functionX": "500 * t",
-        "functionY": "0.0 + 15 * sin(20*t)"
+        "functionX": "0.0",
+        "functionY": "1000 * t"
     },
     {
         "id": 3,
         "type": "fixed",
-        "functionX": "500 * t",
-        "functionY": "-150 * t + 15 * sin(20*t)"
+        "functionX": "-300 * t",
+        "functionY": "1000 * t"
     },
     {
         "id": 4,
         "type": "fixed",
-        "functionX": "500 * t",
-        "functionY": "150 * t + 15 * sin(20*t)"
+        "functionX": "300 * t",
+        "functionY": "1000 * t"
+    },
+    {
+        "id": 12,
+        "type": "fixed",
+        "functionX": "100 * cos(2 * t)",
+        "functionY": "-200 * t"
+    },
+    {
+        "id": 13,
+        "type": "fixed",
+        "functionX": "0.0",
+        "functionY": "-200 * t"
+    },
+    {
+        "id": 5,
+        "type": "fixed",
+        "functionX": "200 * sin(t)",
+        "functionY": "450 * 5 ^(-1.0 * t) - 450"
+    },
+    {
+        "id": 6,
+        "type": "fixed",
+        "functionX": "-360.0 * t",
+        "functionY": "-900 * t"
+    },
+    {
+        "id": 7,
+        "type": "fixed",
+        "functionX": "-120.0 * t",
+        "functionY": "-900 * t"
+    },
+    {
+        "id": 8,
+        "type": "fixed",
+        "functionX": "120.0 * t",
+        "functionY": "-900 * t"
+    },
+    {
+        "id": 9,
+        "type": "fixed",
+        "functionX": "360.0 * t",
+        "functionY": "-900 * t"
+    },
+    {
+        "id": 10,
+        "type": "fixed",
+        "functionX": "0.0",
+        "functionY": "-600 * t"
     }
 ]

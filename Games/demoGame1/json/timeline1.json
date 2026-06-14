@@ -1,0 +1,23 @@
+{
+    "duration": 3000.0,
+    "spawns": [
+        {
+            "type": "single",
+            "time": 0.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 0,
+                    "startingPosition": [100, 330],
+                    "trajectory": 0
+                },
+                {
+                    "type": "display",
+                    "id": 1,
+                    "position": [500, 281],
+                    "trajectory": 1
+                }
+            ]
+        }
+    ]
+}

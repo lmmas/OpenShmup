@@ -63,7 +63,7 @@ import java.util.List;
         return idAttribute.getValue();
     }
     @Override public List<Attribute> getAttributes() {
-        return List.of(idAttribute, hp, evil, size, spriteId, hitbox, trajectoryId, deathspawn, shots);
+        return List.of(idAttribute, hp, evil, size, spriteId, hitbox, trajectoryId, shots, deathspawn);
     }
 
     @Override public void setToDefault() {

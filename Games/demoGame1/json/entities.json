@@ -4,36 +4,35 @@
         "evil": false,
         "type": "ship",
         "hp": 5,
-        "size": [50, 75],
+        "size": [100, 100],
         "spriteVisualId": 3,
         "hitbox": {
-            "type": "custom",
-            "size": [50, 75],
-            "fileName": "shipHitbox.png"
+            "type": "rectangle",
+            "size": [100, 100]
         },
         "defaultTrajectoryId": 0,
         "shots": [
             {
-                "shotPeriod": 0.1,
-                "firstShotTime": 0.5,
+                "shotPeriod": 0.05,
+                "firstShotTime": 0.1,
                 "spawn": [
                     {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 2,
-                        "startingPosition": [0, 30]
+                        "startingPosition": [25, 0]
                     },
                     {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 3,
-                        "startingPosition": [0, 30]
+                        "startingPosition": [25, 0]
                     },
                     {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 4,
-                        "startingPosition": [0, 30]
+                        "startingPosition": [25, 0]
                     }
                 ]
             }
@@ -50,11 +49,11 @@
         "id": 1,
         "type": "projectile",
         "evil": false,
-        "size": [10, 26],
+        "size": [10, 10],
         "spriteVisualId": 4,
         "hitbox": {
             "type": "rectangle",
-            "size": [10, 26]
+            "size": [10, 10]
         },
         "defaultTrajectoryId": 1,
         "deathSpawn": []
@@ -73,9 +72,8 @@
         "defaultTrajectoryId": 1,
         "shots": [
             {
-                "type": "shot",
-                "shotPeriod": 0.5,
-                "firstShotTime": 1.5,
+                "shotPeriod": 1.0,
+                "firstShotTime": 2,
                 "spawn": [
                     {
                         "type": "entity",
@@ -106,25 +104,5 @@
         },
         "defaultTrajectoryId": 1,
         "deathSpawn": []
-    },
-    {
-        "id": 4,
-        "type": "ship",
-        "hp": 5,
-        "evil": true,
-        "size": [50, 50],
-        "spriteVisualId": 7,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [50, 50]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": [
-            {
-                "type": "display",
-                "id": 2,
-                "position": [0, 0]
-            }
-        ]
     }
 ]

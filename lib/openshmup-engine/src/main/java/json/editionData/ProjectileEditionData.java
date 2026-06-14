@@ -60,7 +60,7 @@ import java.util.List;
     }
     @Override
     public List<Attribute> getAttributes() {
-        return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, deathspawn, shots);
+        return List.of(idAttribute, evil, size, spriteId, hitbox, trajectoryId, shots, deathspawn);
     }
     @Override
     public void setToDefault() {

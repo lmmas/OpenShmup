@@ -16,10 +16,12 @@ final public class ListAttribute<D extends EditionData> extends Attribute {
         super(key);
         this.dataList = List.of();
     }
+
     public ListAttribute(EditionData.Key key, List<D> dataList) {
         super(key);
         this.dataList = dataList;
     }
+
     @Override
     public void addToNode(ObjectNode node) {
         var arrayNode = node.putArray(key.name());

@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 final public class Game {
 
@@ -32,6 +34,10 @@ final public class Game {
 
     public static void init(String gameFolderName) throws IOException {
         Engine.init();
+        Path gameFolderPath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("Games").resolve(gameFolderName);
+        if (!Files.isDirectory(gameFolderPath)) {
+            throw new IllegalArgumentException("Game folder not found at path: " + gameFolderPath);
+        }
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
 

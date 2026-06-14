@@ -3,10 +3,10 @@
         "id": 1,
         "layer": 0,
         "type": "scrollingImage",
-        "fileName": "bg1.png",
-        "size": [1000,562],
-        "speed": -200,
-        "horizontalScrolling": true
+        "fileName": "background.png",
+        "size": [1000, 1200],
+        "speed": -300,
+        "horizontalScrolling": false
     },
     {
         "id": 2,
@@ -21,37 +21,37 @@
         },
         "framePeriodSeconds": 0.07,
         "looping": false,
-        "size": [50, 50]
+        "size": [60, 60]
     },
     {
         "id": 3,
         "layer": 2,
         "type": "animation",
         "spritesheetInfo": {
-            "fileName": "Spaceships.png",
-            "frameCount": 1,
-            "frameSize": [64, 64],
-            "startingPosition": [128, 64],
-            "stride": [0, 0]
+            "fileName": "ship.png",
+            "frameCount": 5,
+            "frameSize": [16, 24],
+            "startingPosition": [0, 24],
+            "stride": [16, 0]
         },
         "framePeriodSeconds": 0.25,
         "looping": true,
-        "size": [100, 100]
+        "size": [50, 75]
     },
     {
         "id": 4,
         "layer": 2,
         "type": "animation",
         "spritesheetInfo": {
-            "fileName": "laser-bolts-blue.png",
-            "frameCount": 1,
-            "frameSize": [5, 5],
-            "startingPosition": [6, 20],
+            "fileName": "laser-bolts.png",
+            "frameCount": 2,
+            "frameSize": [5, 13],
+            "startingPosition": [6, 1],
             "stride": [14, 0]
         },
         "framePeriodSeconds": 0.25,
         "looping": true,
-        "size": [10, 10]
+        "size": [10, 26]
     },
     {
         "id": 5,
@@ -82,5 +82,20 @@
         "framePeriodSeconds": 0.25,
         "looping": true,
         "size": [10, 10]
+    },
+    {
+        "id": 7,
+        "layer": 4,
+        "type": "animation",
+        "spritesheetInfo": {
+            "fileName": "oga-swm-extra-enemies-2-alpha.png",
+            "frameCount": 6,
+            "frameSize": [16, 16],
+            "startingPosition": [1, 81],
+            "stride": [18, 0]
+        },
+        "framePeriodSeconds": 0.05,
+        "looping": true,
+        "size": [50, 50]
     }
 ]

@@ -7,6 +7,7 @@ import engine.menu.MenuElementGroup;
 import engine.menu.widget.BooleanField;
 import engine.menu.widget.TextField;
 import engine.menu.widget.Widget;
+import engine.menu.widget.Widgets;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.IVec2D;
@@ -20,6 +21,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static editor.Widgets.Checkbox;
 import static editor.Widgets.EditorTextField;
@@ -36,6 +38,10 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
 
     final private List<FieldNode> children;
 
+    final private List<ListFields> listFieldsList;
+
+    private Integer selectedListIndex;
+
     private Menu menu;
 
     final private MenuElementGroup elementGroup;
@@ -46,6 +52,8 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
         this.editionData = editionData;
         this.attributeWidgetsMap = new HashMap<>();
         this.editionDataTypeSelectMap = new HashMap<>();
+        this.listFieldsList = new ArrayList<>();
+        this.selectedListIndex = null;
         this.children = new ArrayList<>();
         this.menu = null;
         this.elementGroup = new MenuElementGroup();
@@ -155,8 +163,25 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
 
-                case ListAttribute<?> ignored -> {
-
+                case ListAttribute<? extends EditionData> listAttribute -> {
+                    Vec2D listStartPosition = startPosition.add(850f, 0f);
+                    ArrayList<EditionData> listCopy = new ArrayList<>(listAttribute.getDataList());
+                    ListFields listFields = new ListFields(layer, listCopy, listStartPosition);
+                    int fieldsListIndex = listFieldsList.size();
+                    listFieldsList.add(listFields);
+                    Vec2D openListButtonSize = new Vec2D(80f, 40f);
+                    Vec2D fieldOffset = new Vec2D(openListButtonSize.x / 2, 0f);
+                    Runnable onClick = () -> {
+                        if (!Objects.equals(selectedListIndex, fieldsListIndex)) {
+                            if (selectedListIndex != null) {
+                                listFieldsList.get(selectedListIndex).setActive(false);
+                            }
+                            listFieldsList.get(fieldsListIndex).setActive(isActive);
+                            selectedListIndex = fieldsListIndex;
+                        }
+                    };
+                    Widget openListButton = Widgets.RoundedRectangleButton(layer, openListButtonSize, fieldPosition.add(fieldOffset), Style.editionSelectorUnselected, "Open", onClick);
+                    elementGroup.widgets().add(openListButton);
                 }
 
                 case StringAttribute stringAttribute -> {
@@ -266,6 +291,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     public void setMenu(Menu menu) {
         this.menu = menu;
         children.forEach(fieldNode -> fieldNode.setMenu(menu));
+        listFieldsList.forEach(listFields -> listFields.setMenu(menu));
     }
     @Override
     public MenuElementGroup getAllActiveElements() {
@@ -294,6 +320,9 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                 }
             }
             children.forEach(node -> node.setActive(active));
+            if (selectedListIndex != null) {
+                listFieldsList.get(selectedListIndex).setActive(active);
+            }
         }
     }
     @Override
@@ -347,7 +376,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     iVec2DAttribute.setValue(new IVec2D(xValue, yValue));
                 }
 
-                case ListAttribute<?> ignored -> {
+                case ListAttribute<?> listAttribute -> {
                     //already taken care of
                 }
 

@@ -14,6 +14,7 @@ import engine.types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 final public class Widgets {
@@ -41,13 +42,14 @@ final public class Widgets {
         return RoundedRectangleButton(layer, size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, style.textStyle(), onClick);
     }
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle unselectedStyle, RoundedRectangleButtonStyle selectedStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
+    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleButtonStyle unselectedStyle, RoundedRectangleButtonStyle selectedStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+        assert labels.size() == buttonCount : "Incorrect label count";
         List<List<SceneVisual>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
             BorderedRoundedRectangle rectangle = new BorderedRoundedRectangle(layer, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
-            if (i == startingValue) {
+            if (startingValue != null && i == startingValue) {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonVisuals.add(List.of(
@@ -57,18 +59,22 @@ final public class Widgets {
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }
         BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {
-            int oldValue = selector.getSelectedValue();
-            assert oldValue != newValue : "selector old value can't be equal to new value";
-            BorderedRoundedRectangle unselectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(oldValue).getVisuals().getFirst();
-            unselectedButtonRectangle.setRectangleBaseColor(unselectedStyle.rectangleColor());
-            TextDisplay unselectedButtonText = (TextDisplay) selector.getActionButtons().get(oldValue).getVisuals().get(1);
-            unselectedButtonText.setTextColor(unselectedStyle.textStyle().textColor());
+            Integer oldValue = selector.getSelectedValue();
+            assert !Objects.equals(oldValue, newValue) : "selector old value can't be equal to new value";
+            if (oldValue != null) {
+                BorderedRoundedRectangle unselectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(oldValue).getVisuals().getFirst();
+                unselectedButtonRectangle.setRectangleBaseColor(unselectedStyle.rectangleColor());
+                TextDisplay unselectedButtonText = (TextDisplay) selector.getActionButtons().get(oldValue).getVisuals().get(1);
+                unselectedButtonText.setTextColor(unselectedStyle.textStyle().textColor());
+            }
 
-            BorderedRoundedRectangle selectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(newValue).getVisuals().getFirst();
-            selectedButtonRectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
-            TextDisplay selectedButtonText = (TextDisplay) selector.getActionButtons().get(newValue).getVisuals().get(1);
-            selectedButtonText.setTextColor(selectedStyle.textStyle().textColor());
-            onChange.accept(selector, newValue);
+            if (newValue != null) {
+                BorderedRoundedRectangle selectedButtonRectangle = (BorderedRoundedRectangle) selector.getActionButtons().get(newValue).getVisuals().getFirst();
+                selectedButtonRectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
+                TextDisplay selectedButtonText = (TextDisplay) selector.getActionButtons().get(newValue).getVisuals().get(1);
+                selectedButtonText.setTextColor(selectedStyle.textStyle().textColor());
+                onChange.accept(selector, newValue);
+            }
         };
         return new SelectorButtons(buttonVisuals, hitboxes, onChangeWithStyleChange, startingValue);
     }

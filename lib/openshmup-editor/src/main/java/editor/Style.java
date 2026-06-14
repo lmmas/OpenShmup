@@ -57,8 +57,8 @@ final public class Style {
 
     final public static RoundedRectangleButtonStyle menuButtonStyle3 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.grey1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
-    final public static RoundedRectangleButtonStyle typeButtonSelected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuTextStyle);
+    final public static RoundedRectangleButtonStyle editionSelectorSelected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuTextStyle);
 
-    final public static RoundedRectangleButtonStyle typeButtonUnselected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
+    final public static RoundedRectangleButtonStyle editionSelectorUnselected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
 
 }

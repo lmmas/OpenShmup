@@ -16,11 +16,11 @@ final public class SelectorButtons implements Widget {
 
     final private List<SceneVisual> visuals;
     @Getter @Setter
-    private int selectedValue;
+    private Integer selectedValue;
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, int startingValue) {
+    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         this.onChange = onChange;
         this.selectedValue = startingValue;
         assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
@@ -29,8 +29,7 @@ final public class SelectorButtons implements Widget {
         for (int i = 0; i < buttonCount; i++) {
             final int buttonValue = i;
             onClicks.add(() -> {
-                boolean valueChanged = selectedValue != buttonValue;
-                if (valueChanged) {
+                if (selectedValue == null || buttonValue != selectedValue) {
                     this.onChange.accept(this, buttonValue);
                 }
                 selectedValue = buttonValue;
