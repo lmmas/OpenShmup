@@ -15,16 +15,16 @@ final public class RepeatSpawnInfoEditionData implements SpawnInfoEditionData {
 
     final private DoubleAttribute interval;
 
-    final private ListAttribute<SpawnEditionData> spawns;
+    final private ListAttribute spawns;
 
     public RepeatSpawnInfoEditionData() {
         this.startTime = new DoubleAttribute(Keys.SpawnInfo.Repeat.startTime);
         this.spawnCount = new IntegerAttribute(Keys.SpawnInfo.Repeat.spawnCount);
         this.interval = new DoubleAttribute(Keys.SpawnInfo.Repeat.interval);
-        this.spawns = new ListAttribute<>(Keys.SpawnInfo.Repeat.spawns);
+        this.spawns = new ListAttribute(Keys.SpawnInfo.Repeat.spawns);
     }
 
-    public RepeatSpawnInfoEditionData(double startTime, int spawnCount, double interval, List<SpawnEditionData> spawnList) {
+    public RepeatSpawnInfoEditionData(double startTime, int spawnCount, double interval, List<EditionData> spawnList) {
         this();
         this.startTime.setValue(startTime);
         this.spawnCount.setValue(spawnCount);

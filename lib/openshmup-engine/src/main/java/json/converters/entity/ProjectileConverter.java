@@ -5,7 +5,10 @@ import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
 import json.converters.JsonDataConverter;
-import json.editionData.*;
+import json.editionData.EditionData;
+import json.editionData.EntityEditionData;
+import json.editionData.HitboxEditionData;
+import json.editionData.ProjectileEditionData;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,12 +25,12 @@ final public class ProjectileConverter implements EntityConverter {
         HitboxEditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Projectile.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
-        List<SpawnEditionData> deathSpawn = spawnableNodes.stream().map(
+        List<EditionData> deathSpawn = spawnableNodes.stream().map(
             jsonDataConverter::spawnEditionDataFromJSON
         ).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Projectile.spriteVisualId);
         int defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
-        ArrayList<ShotEditionData> shots = new ArrayList<>();
+        ArrayList<EditionData> shots = new ArrayList<>();
         if (node.hasField(JsonFieldNames.Ship.shots)) {
             SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);
             List<SafeJsonNode> shotNodes = shotsArray.safeGetObjectListFromArray();

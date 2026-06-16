@@ -116,7 +116,7 @@ final public class JsonDataConverter {
         return converter.fromJson(node, textureFolderPath);
     }
 
-    public SpawnEditionData spawnEditionDataFromJSON(SafeJsonNode node) {
+    public EditionData spawnEditionDataFromJSON(SafeJsonNode node) {
         String type = node.safeGetString(EditionData.Keys.type.name());
         SpawnConverter converter = spawnConverters.get(type);
         if (converter == null) {

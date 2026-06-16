@@ -16,13 +16,13 @@ import java.util.List;
 
     final private IntegerAttribute spriteId;
 
-    final private EditionDataAttribute<HitboxEditionData> hitbox;
+    final private EditionDataAttribute hitbox;
 
     final private IntegerAttribute trajectoryId;
 
-    final private ListAttribute<SpawnEditionData> deathspawn;
+    final private ListAttribute deathspawn;
 
-    final private ListAttribute<ShotEditionData> shots;
+    final private ListAttribute shots;
 
     final private IntegerAttribute hp;
 
@@ -31,14 +31,14 @@ import java.util.List;
         this.evil = new BooleanAttribute(Keys.Entity.Ship.evil);
         this.size = new Vec2DAttribute(Keys.Entity.Ship.size);
         this.spriteId = new IntegerAttribute(Keys.Entity.Ship.spriteVisualId);
-        this.hitbox = new EditionDataAttribute<>(Keys.Entity.Ship.hitbox);
+        this.hitbox = new EditionDataAttribute(Keys.Entity.Ship.hitbox);
         this.trajectoryId = new IntegerAttribute(Keys.Entity.Ship.defaultTrajectoryId);
-        this.deathspawn = new ListAttribute<>(Keys.Entity.Ship.deathSpawn);
-        this.shots = new ListAttribute<>(Keys.Entity.Ship.shots);
+        this.deathspawn = new ListAttribute(Keys.Entity.Ship.deathSpawn);
+        this.shots = new ListAttribute(Keys.Entity.Ship.shots);
         this.hp = new IntegerAttribute(Keys.Entity.Ship.hp);
     }
 
-    public ShipEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnEditionData> deathspawn, List<ShotEditionData> shots, int hp) {
+    public ShipEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<EditionData> deathspawn, List<EditionData> shots, int hp) {
         this();
         this.idAttribute.setValue(id);
         this.evil.setValue(evil);

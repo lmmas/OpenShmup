@@ -3,26 +3,26 @@ package json.attribute;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 
-final public class EditionDataAttribute<D extends EditionData> extends Attribute {
+final public class EditionDataAttribute extends Attribute {
 
-    private D editionData;
+    private EditionData editionData;
 
     public EditionDataAttribute(EditionData.Key key) {
         super(key);
         this.editionData = null;
     }
 
-    public EditionDataAttribute(EditionData.Key key, D editionData) {
+    public EditionDataAttribute(EditionData.Key key, EditionData editionData) {
         super(key);
         this.editionData = editionData;
     }
 
-    public D getData() {
+    public EditionData getData() {
         return editionData;
     }
 
     public void setData(EditionData data) {
-        this.editionData = (D) data;
+        this.editionData = data;
     }
     @Override
     public void addToNode(ObjectNode node) {

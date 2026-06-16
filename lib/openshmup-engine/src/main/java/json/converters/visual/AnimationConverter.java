@@ -46,7 +46,7 @@ final public class AnimationConverter implements VisualConverter {
         animationEditionData.getIdAttribute().addToNode(node);
         animationEditionData.getLayer().addToNode(node);
         animationEditionData.getSize().addToNode(node);
-        AnimationEditionData.SpritesheetInfoData spritesheetInfoData = animationEditionData.getSpritesheetInfo().getData();
+        AnimationEditionData.SpritesheetInfoData spritesheetInfoData = (AnimationEditionData.SpritesheetInfoData) animationEditionData.getSpritesheetInfo().getData();
 
         ObjectNode spritesheetInfoNode = node.putObject("spritesheetInfo");
         List<Attribute> attributes = List.of(spritesheetInfoData.getFileName(), spritesheetInfoData.getFrameCount(), spritesheetInfoData.getFrameSize(), spritesheetInfoData.getStartPosition(), spritesheetInfoData.getStride());

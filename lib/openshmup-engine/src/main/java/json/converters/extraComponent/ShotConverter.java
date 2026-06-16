@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
 import json.converters.JsonDataConverter;
+import json.editionData.EditionData;
 import json.editionData.ShotEditionData;
 import json.editionData.SpawnEditionData;
 
@@ -17,7 +18,7 @@ final public class ShotConverter {
         float firstShotTime = node.safeGetFloat(JsonFieldNames.Shot.firstShotTime);
         SafeJsonNode spawnsNode = node.safeGetArray(JsonFieldNames.Shot.spawn);
         List<SafeJsonNode> spawnableNodes = spawnsNode.safeGetObjectListFromArray();
-        List<SpawnEditionData> spawnableList = spawnableNodes.stream().map(jsonDataConverter::spawnEditionDataFromJSON).toList();
+        List<EditionData> spawnableList = spawnableNodes.stream().map(jsonDataConverter::spawnEditionDataFromJSON).toList();
         return new ShotEditionData(shotPeriod, firstShotTime, spawnableList);
     }
 
@@ -27,7 +28,7 @@ final public class ShotConverter {
         var spawnablesNode = node.putArray(JsonFieldNames.Shot.spawn);
         for (var spawnableData : shotData.getSpawnables().getDataList()) {
             ObjectNode spawnableNode = spawnablesNode.addObject();
-            spawnableNode = jsonDataConverter.spawnEditionDataToJSON(spawnableData, spawnableNode);
+            spawnableNode = jsonDataConverter.spawnEditionDataToJSON((SpawnEditionData) spawnableData, spawnableNode);
         }
         return node;
     }

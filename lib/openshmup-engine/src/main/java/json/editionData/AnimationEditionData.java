@@ -17,7 +17,7 @@ public final class AnimationEditionData implements VisualEditionData {
 
     final private Vec2DAttribute size;
 
-    final private EditionDataAttribute<SpritesheetInfoData> spritesheetInfo;
+    final private EditionDataAttribute spritesheetInfo;
 
     final private DoubleAttribute framePeriodSeconds;
 
@@ -29,7 +29,7 @@ public final class AnimationEditionData implements VisualEditionData {
         this.size = new Vec2DAttribute(Keys.Visual.Animation.size);
         this.framePeriodSeconds = new DoubleAttribute(Keys.Visual.Animation.framePeriodSeconds);
         this.looping = new BooleanAttribute(Keys.Visual.Animation.looping);
-        this.spritesheetInfo = new EditionDataAttribute<SpritesheetInfoData>(Keys.Visual.Animation.spritesheetInfo, new SpritesheetInfoData());
+        this.spritesheetInfo = new EditionDataAttribute(Keys.Visual.Animation.spritesheetInfo, new SpritesheetInfoData());
     }
 
     public AnimationEditionData(int id, int layer, Vec2D size, double framePeriodSeconds, boolean looping, SpritesheetInfoData spritesheetInfo) {

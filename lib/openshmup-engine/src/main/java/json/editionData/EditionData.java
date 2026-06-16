@@ -14,12 +14,52 @@ public sealed interface EditionData permits AnimationEditionData.SpritesheetInfo
 
     void setToDefault();
 
+    static void checkForCategory(EditionData data, Category category) {
+        assert data.getCategory() == category : "incorrect EditionData category: " + data.getCategory().name();
+    }
+
+    static void checkForType(EditionData data, Type type) {
+        assert data.getType() == type : "incorrect EditionData type: " + data.getType().name();
+    }
+
+    static void checkForType(EditionData data, Category category, Type type) {
+        assert data.getCategory() == category && data.getType() == type : "Incorrect EdiditonData type: " + data.getCategory().name() + ", " + data.getType().name();
+    }
+
+    static int getVisualId(EditionData data) {
+        checkForCategory(data, Category.VISUAL);
+        VisualEditionData visualData = (VisualEditionData) data;
+        return switch (visualData) {
+            case ScrollingImageEditionData scrollingImageData -> scrollingImageData.getIdAttribute().getValue();
+            case AnimationEditionData animationData -> animationData.getIdAttribute().getValue();
+        };
+    }
+
+    static int getTrajectoryId(EditionData data) {
+        checkForCategory(data, Category.TRAJECTORY);
+        TrajectoryEditionData trajectoryData = (TrajectoryEditionData) data;
+        return switch (trajectoryData) {
+            case FixedTrajectoryEditionData fixedTrajectoryEditionData ->
+                fixedTrajectoryEditionData.getIdAttribute().getValue();
+            case PlayerControlledTrajectoryEditionData playerControlledTrajectoryData ->
+                playerControlledTrajectoryData.getIdAttribute().getValue();
+        };
+    }
+
+    static int getEntityId(EditionData data) {
+        checkForCategory(data, Category.ENTITY);
+        EntityEditionData entityData = (EntityEditionData) data;
+        return switch (entityData) {
+            case ProjectileEditionData projectileData -> projectileData.getIdAttribute().getValue();
+            case ShipEditionData shipData -> shipData.getIdAttribute().getValue();
+        };
+    }
+
     enum Category {
         NONE, VISUAL, TRAJECTORY, ENTITY, SPAWN, SPAWN_INFO, HITBOX
     }
 
     interface Type {
-
         String name();
     }
 

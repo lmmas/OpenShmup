@@ -2,6 +2,7 @@ package json;
 
 import engine.gameData.GamePaths;
 import json.converters.JsonDataConverter;
+import json.editionData.EditionData;
 import json.editionData.EntityEditionData;
 import json.editionData.TrajectoryEditionData;
 import json.editionData.VisualEditionData;
@@ -14,9 +15,9 @@ final public class GameEditionDataManager {
     private String gameFolderName;
 
     final public GamePaths paths;
-    @Getter final private ArrayList<VisualEditionData> visualEditionDataList;
-    @Getter final private ArrayList<TrajectoryEditionData> trajectoryEditionDataList;
-    @Getter final private ArrayList<EntityEditionData> entityEditionDataList;
+    @Getter final private ArrayList<EditionData> visualEditionDataList;
+    @Getter final private ArrayList<EditionData> trajectoryEditionDataList;
+    @Getter final private ArrayList<EditionData> entityEditionDataList;
 
 
     public GameEditionDataManager(String gameFolderName) {

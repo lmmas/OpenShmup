@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-final public class EditionDataTypeSelect<D extends EditionData> implements FieldNode {
+final public class EditionDataTypeSelect implements FieldNode {
 
     final private static Map<EditionData.Category, List<EditionData.Type>> typesMap = Map.of(
         EditionData.Category.VISUAL, List.of(EditionData.Types.Visual.scrollingImage, EditionData.Types.Visual.animation),
@@ -50,7 +50,7 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
 
     final private EditionData.Category category;
 
-    final private List<EditionDataFields<D>> editionDataFieldsList;
+    final private List<EditionDataFields> editionDataFieldsList;
 
     private final List<EditionData.Type> types;
 
@@ -62,7 +62,7 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
 
     final private TextDisplay typeSelectText;
 
-    public EditionDataTypeSelect(D editionData, Vec2D startPosition) {
+    public EditionDataTypeSelect(EditionData editionData, Vec2D startPosition) {
         this.category = editionData.getCategory();
         assert category != EditionData.Category.NONE : "Invalid editionData type";
         EditionData.Type editionDataType = editionData.getType();
@@ -71,21 +71,21 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
         List<String> typeLabels = labelsMap.get(this.category);
         List<Supplier<EditionData>> defaultConstructors = constructorsMap.get(this.category);
 
-        List<D> dataList = new ArrayList<>(types.size());
+        List<EditionData> dataList = new ArrayList<>(types.size());
         for (int i = 0; i < types.size(); i++) {
-            D data;
+            EditionData data;
             if (editionDataType == types.get(i)) {
                 data = editionData;
                 selectedValue = i;
             }
             else {
-                data = (D) defaultConstructors.get(i).get();
+                data = defaultConstructors.get(i).get();
             }
             dataList.add(data);
         }
         this.editionDataFieldsList = new ArrayList<>(dataList.size());
-        for (D data : dataList) {
-            editionDataFieldsList.add(new EditionDataFields<D>(data, startPosition.add(0f, -60f)));
+        for (EditionData data : dataList) {
+            editionDataFieldsList.add(new EditionDataFields(data, startPosition.add(0f, -60f)));
         }
         this.isActive = false;
         BiConsumer<SelectorButtons, Integer> onChange = (selector, newValue) -> {
@@ -103,16 +103,16 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
         this.selectorButtons.setSelectedValue(selectedValue);
     }
 
-    public D getSelectedEditionData() {
+    public EditionData getSelectedEditionData() {
         return editionDataFieldsList.get(selectorButtons.getSelectedValue()).getEditionData();
     }
 
     public void setData(EditionData editionData) {
-        assert editionData.getCategory() == this.category : "Invalid editionData type";
+        EditionData.checkForCategory(editionData, this.category);
         EditionData.Type type = editionData.getType();
         for (int i = 0; i < this.types.size(); i++) {
             if (type == this.types.get(i)) {
-                editionDataFieldsList.get(i).setEditionData((D) editionData);
+                editionDataFieldsList.get(i).setEditionData(editionData);
             }
         }
     }
@@ -120,7 +120,7 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
     @Override
     public void setMenu(Menu menu) {
         this.menu = menu;
-        for (EditionDataFields<D> fields : editionDataFieldsList) {
+        for (EditionDataFields fields : editionDataFieldsList) {
             fields.setMenu(menu);
         }
     }
@@ -131,7 +131,7 @@ final public class EditionDataTypeSelect<D extends EditionData> implements Field
         if (this.isActive) {
             allActiveElements.widgets().add(selectorButtons);
             allActiveElements.visuals().add(typeSelectText);
-            for (EditionDataFields<D> fields : editionDataFieldsList) {
+            for (EditionDataFields fields : editionDataFieldsList) {
                 MenuElementGroup editionDataFieldsElements = fields.getAllActiveElements();
                 allActiveElements.widgets().addAll(editionDataFieldsElements.widgets());
                 allActiveElements.visuals().addAll(editionDataFieldsElements.visuals());

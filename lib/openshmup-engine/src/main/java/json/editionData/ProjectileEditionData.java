@@ -16,26 +16,26 @@ import java.util.List;
 
     final private IntegerAttribute spriteId;
 
-    final private EditionDataAttribute<HitboxEditionData> hitbox;
+    final private EditionDataAttribute hitbox;
 
     final private IntegerAttribute trajectoryId;
 
-    final private ListAttribute<SpawnEditionData> deathspawn;
+    final private ListAttribute deathspawn;
 
-    final private ListAttribute<ShotEditionData> shots;
+    final private ListAttribute shots;
 
     private ProjectileEditionData() {
         this.idAttribute = new IntegerAttribute(Keys.Entity.Projectile.id);
         this.evil = new BooleanAttribute(Keys.Entity.Projectile.evil);
         this.size = new Vec2DAttribute(Keys.Entity.Projectile.size);
         this.spriteId = new IntegerAttribute(Keys.Entity.Projectile.spriteVisualId);
-        this.hitbox = new EditionDataAttribute<>(Keys.Entity.Projectile.hitbox);
+        this.hitbox = new EditionDataAttribute(Keys.Entity.Projectile.hitbox);
         this.trajectoryId = new IntegerAttribute(Keys.Entity.Projectile.defaultTrajectoryId);
-        this.deathspawn = new ListAttribute<>(Keys.Entity.Projectile.deathSpawn);
-        this.shots = new ListAttribute<>(Keys.Entity.Projectile.shots);
+        this.deathspawn = new ListAttribute(Keys.Entity.Projectile.deathSpawn);
+        this.shots = new ListAttribute(Keys.Entity.Projectile.shots);
     }
 
-    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<SpawnEditionData> deathspawn, List<ShotEditionData> shots) {
+    public ProjectileEditionData(int id, boolean evil, Vec2D size, int spriteId, HitboxEditionData hitbox, Integer trajectoryId, List<EditionData> deathspawn, List<EditionData> shots) {
         this();
         this.idAttribute.setValue(id);
         this.evil.setValue(evil);

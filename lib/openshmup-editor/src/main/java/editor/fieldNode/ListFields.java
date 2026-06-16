@@ -32,10 +32,10 @@ final public class ListFields implements FieldNode {
         this.dataFieldsList = new ArrayList<>(dataList.size());
         for (EditionData data : dataList) {
             if (EditionData.hasTypeSelect(data)) {
-                dataFieldsList.add(new EditionDataTypeSelect<EditionData>(data, fieldsStartPosition));
+                dataFieldsList.add(new EditionDataTypeSelect(data, fieldsStartPosition));
             }
             else {
-                dataFieldsList.add(new EditionDataFields<EditionData>(data, fieldsStartPosition));
+                dataFieldsList.add(new EditionDataFields(data, fieldsStartPosition));
             }
         }
         this.selectedDataFields = null;

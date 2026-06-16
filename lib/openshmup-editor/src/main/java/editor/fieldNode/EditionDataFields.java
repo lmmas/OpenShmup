@@ -13,7 +13,7 @@ import engine.scene.visual.style.TextAlignment;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 import json.attribute.*;
-import json.editionData.*;
+import json.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,15 +26,15 @@ import java.util.Objects;
 import static editor.Widgets.Checkbox;
 import static editor.Widgets.EditorTextField;
 
-final public class EditionDataFields<D extends EditionData> implements FieldNode {
+final public class EditionDataFields implements FieldNode {
 
     final private static DecimalFormat df = new DecimalFormat("0.000");
     @Setter @Getter
-    private D editionData;
+    private EditionData editionData;
 
     final private HashMap<Attribute, List<Widget>> attributeWidgetsMap;
 
-    final private HashMap<EditionDataAttribute<?>, EditionDataTypeSelect<?>> editionDataTypeSelectMap;
+    final private HashMap<EditionDataAttribute, EditionDataTypeSelect> editionDataTypeSelectMap;
 
     final private List<FieldNode> children;
 
@@ -48,7 +48,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
 
     private boolean isActive;
 
-    public EditionDataFields(D editionData, Vec2D startPosition) {
+    public EditionDataFields(EditionData editionData, Vec2D startPosition) {
         this.editionData = editionData;
         this.attributeWidgetsMap = new HashMap<>();
         this.editionDataTypeSelectMap = new HashMap<>();
@@ -63,7 +63,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
     }
 
     private float getSpacing(Attribute attribute) {
-        if (attribute instanceof EditionDataAttribute<?> dataAttribute) {
+        if (attribute instanceof EditionDataAttribute dataAttribute) {
             EditionData data = dataAttribute.getData();
             if (dataAttribute.hasTypeSelect()) {
                 return (data.getAttributes().size() + 1) * 45f + EditionDataTypeSelect.selectorSpacing;
@@ -103,29 +103,16 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     attributeWidgetsMap.put(attribute, List.of(textField));
                 }
 
-                case EditionDataAttribute<?> editionDataAttribute -> {
+                case EditionDataAttribute editionDataAttribute -> {
                     Vec2D fieldOffset = new Vec2D(60f, -45f);
                     fieldPosition = attributePosition.add(fieldOffset);
                     if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect<?> node = switch (editionDataAttribute.getData()) {
-                            case VisualEditionData visualEditionData ->
-                                new EditionDataTypeSelect<VisualEditionData>(visualEditionData, fieldPosition);
-                            case TrajectoryEditionData trajectoryEditionData ->
-                                new EditionDataTypeSelect<TrajectoryEditionData>(trajectoryEditionData, fieldPosition);
-                            case SpawnEditionData spawnableEditionData ->
-                                new EditionDataTypeSelect<SpawnEditionData>(spawnableEditionData, fieldPosition);
-                            case HitboxEditionData hitboxEditionData ->
-                                new EditionDataTypeSelect<HitboxEditionData>(hitboxEditionData, fieldPosition);
-                            case EntityEditionData entityEditionData ->
-                                new EditionDataTypeSelect<EntityEditionData>(entityEditionData, fieldPosition);
-                            default ->
-                                throw new IllegalStateException("Unexpected value: " + editionDataAttribute.getData());
-                        };
+                        EditionDataTypeSelect node = new EditionDataTypeSelect(editionDataAttribute.getData(), fieldPosition);
                         children.add(node);
                         editionDataTypeSelectMap.put(editionDataAttribute, node);
                     }
                     else {
-                        EditionDataFields<?> node = new EditionDataFields<>(editionDataAttribute.getData(), fieldPosition);
+                        EditionDataFields node = new EditionDataFields(editionDataAttribute.getData(), fieldPosition);
                         children.add(node);
                     }
                 }
@@ -163,7 +150,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
 
-                case ListAttribute<? extends EditionData> listAttribute -> {
+                case ListAttribute listAttribute -> {
                     Vec2D listStartPosition = startPosition.add(850f, 0f);
                     ArrayList<EditionData> listCopy = new ArrayList<>(listAttribute.getDataList());
                     ListFields listFields = new ListFields(layer, listCopy, listStartPosition);
@@ -230,9 +217,9 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     textField.setStringValue(df.format(doubleAttribute.getValue()));
                 }
 
-                case EditionDataAttribute<?> editionDataAttribute -> {
+                case EditionDataAttribute editionDataAttribute -> {
                     if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect<?> editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
+                        EditionDataTypeSelect editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
                         editionDataTypeSelect.setData(editionDataAttribute.getData());
                     }
                 }
@@ -257,7 +244,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     textField2.setStringValue(Integer.toString(iVec2DAttribute.getValue().y));
                 }
 
-                case ListAttribute<?> ignored -> {
+                case ListAttribute ignored -> {
                     //already taken care of
                 }
 
@@ -282,7 +269,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
         this.editionData.setToDefault();
         this.loadFieldsFromAttributes();
         for (FieldNode node : children) {
-            if (node instanceof EditionDataFields<?> editionDataFields) {
+            if (node instanceof EditionDataFields editionDataFields) {
                 editionDataFields.resetToDefault();
             }
         }
@@ -346,9 +333,9 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     doubleAttribute.setValue(value);
                 }
 
-                case EditionDataAttribute<?> editionDataAttribute -> {
+                case EditionDataAttribute editionDataAttribute -> {
                     if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect<?> editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
+                        EditionDataTypeSelect editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
                         editionDataAttribute.setData(editionDataTypeSelect.getSelectedEditionData());
                     }
                 }
@@ -376,7 +363,7 @@ final public class EditionDataFields<D extends EditionData> implements FieldNode
                     iVec2DAttribute.setValue(new IVec2D(xValue, yValue));
                 }
 
-                case ListAttribute<?> listAttribute -> {
+                case ListAttribute listAttribute -> {
                     //already taken care of
                 }
 

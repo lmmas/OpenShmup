@@ -10,14 +10,14 @@ final public class SingleSpawnInfoEditionData implements SpawnInfoEditionData {
 
     final private DoubleAttribute spawnTime;
 
-    final private ListAttribute<SpawnEditionData> spawns;
+    final private ListAttribute spawns;
 
     public SingleSpawnInfoEditionData() {
         this.spawnTime = new DoubleAttribute(Keys.SpawnInfo.Single.spawnTime);
-        this.spawns = new ListAttribute<>(Keys.SpawnInfo.Single.spawns);
+        this.spawns = new ListAttribute(Keys.SpawnInfo.Single.spawns);
     }
 
-    public SingleSpawnInfoEditionData(double spawnTime, List<SpawnEditionData> spawnList) {
+    public SingleSpawnInfoEditionData(double spawnTime, List<EditionData> spawnList) {
         this();
         this.spawnTime.setValue(spawnTime);
         this.spawns.setDataList(spawnList);

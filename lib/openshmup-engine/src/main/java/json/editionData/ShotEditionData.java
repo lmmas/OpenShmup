@@ -13,15 +13,15 @@ import java.util.List;
 
     final private FloatAttribute firstShotTime;
 
-    final private ListAttribute<SpawnEditionData> spawnables;
+    final private ListAttribute spawnables;
 
     private ShotEditionData() {
         this.shotPeriod = new FloatAttribute(Keys.Shot.shotPeriod);
         this.firstShotTime = new FloatAttribute(Keys.Shot.firstShotTime);
-        this.spawnables = new ListAttribute<SpawnEditionData>(Keys.Shot.spawn);
+        this.spawnables = new ListAttribute(Keys.Shot.spawn);
     }
 
-    public ShotEditionData(float shotPeriod, float firstShotTime, List<SpawnEditionData> spawnables) {
+    public ShotEditionData(float shotPeriod, float firstShotTime, List<EditionData> spawnables) {
         this();
         this.shotPeriod.setValue(shotPeriod);
         this.firstShotTime.setValue(firstShotTime);

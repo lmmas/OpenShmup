@@ -7,17 +7,16 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
-final public class ListAttribute<D extends EditionData> extends Attribute {
+@Getter @Setter final public class ListAttribute extends Attribute {
 
-    private List<D> dataList;
+    private List<EditionData> dataList;
 
     public ListAttribute(EditionData.Key key) {
         super(key);
         this.dataList = List.of();
     }
 
-    public ListAttribute(EditionData.Key key, List<D> dataList) {
+    public ListAttribute(EditionData.Key key, List<EditionData> dataList) {
         super(key);
         this.dataList = dataList;
     }
