@@ -17,7 +17,8 @@ import java.util.List;
 
 final public class TextField implements Widget {
 
-    @Getter final private List<SceneVisual> visuals;
+    @Getter
+    final private List<SceneVisual> visuals;
 
     final private TextDisplay textInputDisplay;
 

@@ -6,7 +6,8 @@ import json.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 final public class IVec2DAttribute extends Attribute {
 
     private IVec2D value;
@@ -21,7 +22,8 @@ final public class IVec2DAttribute extends Attribute {
         this.value = value;
     }
 
-    @Override public void addToNode(ObjectNode node) {
+    @Override
+    public void addToNode(ObjectNode node) {
         var arrayNode = node.putArray(key.name());
         arrayNode.add(value.x);
         arrayNode.add(value.y);

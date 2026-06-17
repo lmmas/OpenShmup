@@ -147,11 +147,13 @@ final public class GraphicsManager implements EngineSystem {
         debugLayer.add(new RoundedRectangleBorderRenderer());
     }
 
-    @Override public void update() {
+    @Override
+    public void update() {
         drawGraphics();
     }
 
-    @Override public int getUpdateIndex() {
+    @Override
+    public int getUpdateIndex() {
         return 10;
     }
 }

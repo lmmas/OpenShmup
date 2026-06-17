@@ -29,13 +29,12 @@ final public class ImageDisplay extends SceneVisual {
             RGBAValue.ZERO);
         graphicsList.add(imageGraphic);
     }
-
     @Override
     public SceneVisual copy() {
         return new ImageDisplay(this.sceneLayerIndex, imageGraphic);
     }
-
-    @Override public void updateGraphicsColor() {
+    @Override
+    public void updateGraphicsColor() {
         imageGraphic.setColorCoefs(colorCoefs);
         imageGraphic.setAddedColor(addedColor);
     }

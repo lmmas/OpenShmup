@@ -2,7 +2,7 @@ package json.converters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import json.GameEditionDataManager;
+import json.GameEditionData;
 import json.SafeJsonNode;
 import json.converters.entity.EntityConverter;
 import json.converters.entity.ProjectileConverter;
@@ -80,7 +80,7 @@ final public class JsonDataConverter {
         return converter.fromJson(node, textureFolderPath);
     }
 
-    public void loadVisuals(GameEditionDataManager editorGameData) {
+    public void loadVisuals(GameEditionData editorGameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameVisualsFile, objectMapper);
         List<SafeJsonNode> visualNodesList = rootNode.safeGetObjectListFromArray();
         for (var visualNode : visualNodesList) {
@@ -102,7 +102,7 @@ final public class JsonDataConverter {
         return converter.fromJson(node);
     }
 
-    public void loadTrajectories(GameEditionDataManager editorGameData) {
+    public void loadTrajectories(GameEditionData editorGameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameTrajectoriesFile, objectMapper);
         List<SafeJsonNode> trajectoryNodeList = rootNode.safeGetObjectListFromArray();
         for (var trajectoryNode : trajectoryNodeList) {
@@ -142,7 +142,7 @@ final public class JsonDataConverter {
         return converter.fromJson(node, jsonDataConverter, textureFolderPath);
     }
 
-    public void loadEntities(GameEditionDataManager editorGameData) {
+    public void loadEntities(GameEditionData editorGameData) {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameEntitiesFile, objectMapper);
         List<SafeJsonNode> entityNodeList = rootNode.safeGetObjectListFromArray();
         for (var entityNode : entityNodeList) {

@@ -15,8 +15,10 @@ final public class TextInputHandler {
     final private GLFWKeyCallbackI keyInputCallback;
 
     final private long glfwWindow;
-    @Getter final private ArrayList<Integer> textInputBuffer;
-    @Getter final private StringBuffer targetBuffer;
+    @Getter
+    final private ArrayList<Integer> textInputBuffer;
+    @Getter
+    final private StringBuffer targetBuffer;
 
     private int backspaceCount;
     @Getter

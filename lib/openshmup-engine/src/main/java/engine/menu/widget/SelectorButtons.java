@@ -43,11 +43,13 @@ final public class SelectorButtons implements Widget {
         }
     }
 
-    @Override public List<SceneVisual> getVisuals() {
+    @Override
+    public List<SceneVisual> getVisuals() {
         return visuals;
     }
 
-    @Override public void handleInputs() {
+    @Override
+    public void handleInputs() {
         actionButtons.forEach(ActionButton::handleInputs);
     }
 }

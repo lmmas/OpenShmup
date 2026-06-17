@@ -151,7 +151,6 @@ final public class Level implements EngineSystem {
         levelDebug.toggle();
         this.debugModeEnabled = !debugModeEnabled;
     }
-
     @Override
     public void update() {
         handleInputs();
@@ -184,8 +183,8 @@ final public class Level implements EngineSystem {
         entitiesToRemove.clear();
         levelUI.update();
     }
-
-    @Override public int getUpdateIndex() {
+    @Override
+    public int getUpdateIndex() {
         return 7;
     }
 

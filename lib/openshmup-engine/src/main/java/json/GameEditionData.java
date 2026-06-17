@@ -7,16 +7,19 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-final public class GameEditionDataManager {
+final public class GameEditionData {
 
-    private String gameFolderName;
+    private final String gameFolderName;
 
     final public GamePaths paths;
-    @Getter final private ArrayList<EditionData> visualEditionDataList;
-    @Getter final private ArrayList<EditionData> trajectoryEditionDataList;
-    @Getter final private ArrayList<EditionData> entityEditionDataList;
+    @Getter
+    final private ArrayList<EditionData> visualEditionDataList;
+    @Getter
+    final private ArrayList<EditionData> trajectoryEditionDataList;
+    @Getter
+    final private ArrayList<EditionData> entityEditionDataList;
 
-    public GameEditionDataManager(String gameFolderName) {
+    public GameEditionData(String gameFolderName) {
         this.gameFolderName = gameFolderName;
         this.paths = new GamePaths(gameFolderName);
         this.visualEditionDataList = new ArrayList<>();

@@ -153,7 +153,8 @@ final public class TextDisplay extends SceneVisual {
         }
     }
 
-    @Override public void updateGraphicsColor() {
+    @Override
+    public void updateGraphicsColor() {
         for (Graphic<?> graphic : graphicsList) {
             ImageGraphic imageGraphic = (ImageGraphic) graphic;
             imageGraphic.setColorCoefs(colorCoefs);

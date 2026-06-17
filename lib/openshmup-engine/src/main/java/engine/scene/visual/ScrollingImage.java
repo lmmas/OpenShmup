@@ -162,7 +162,8 @@ final public class ScrollingImage extends SceneVisual {
         lastUpdateTimeSeconds = currentTimeSeconds;
     }
 
-    @Override public void updateGraphicsColor() {
+    @Override
+    public void updateGraphicsColor() {
         imageGraphic1.setColorCoefs(colorCoefs);
         imageGraphic2.setColorCoefs(colorCoefs);
         imageGraphic1.setAddedColor(addedColor);

@@ -76,7 +76,7 @@ final public class GameDataLoader {
         entityFactoryMap.put(Types.Entity.projectile, entityFactories.projectileFactory);
     }
 
-    public GameDataManager convertToGameObjects(GameEditionDataManager gameEditionData) {
+    public GameDataManager convertToGameObjects(GameEditionData gameEditionData) {
         GameDataManager gameData = new GameDataManager(gameEditionData.getGameName());
 
         for (EditionData visualEditionData : gameEditionData.getVisualEditionDataList()) {

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 final public class LevelTimeline {
+
     @Getter
     final private GameDataManager gameDataManager;
 

@@ -14,7 +14,8 @@ import static org.lwjgl.stb.STBImage.*;
 final public class Texture {
 
     private Integer textureID;
-    @Getter final private IVec2D resolution;
+    @Getter
+    final private IVec2D resolution;
     @Getter
     private final int channelCount;
     @Getter

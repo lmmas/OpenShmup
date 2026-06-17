@@ -72,7 +72,8 @@ final public class InputStatesManager implements EngineSystem {
         }
     }
 
-    @Override public int getUpdateIndex() {
+    @Override
+    public int getUpdateIndex() {
         return 0;
     }
 

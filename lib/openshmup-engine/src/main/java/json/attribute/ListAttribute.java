@@ -20,7 +20,6 @@ import java.util.List;
         super(key);
         this.dataList = dataList;
     }
-
     @Override
     public void addToNode(ObjectNode node) {
         var arrayNode = node.putArray(key.name());

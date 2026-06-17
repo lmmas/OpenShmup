@@ -4,7 +4,7 @@ import engine.Engine;
 import engine.GlobalVars;
 import engine.scene.Scene;
 import engine.types.IVec2D;
-import json.GameEditionDataManager;
+import json.GameEditionData;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -16,8 +16,9 @@ import java.util.stream.Stream;
 import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
 
 final public class Editor {
+
     @Getter
-    private static List<GameEditionDataManager> loadedGames = null;
+    private static List<GameEditionData> loadedGames = null;
 
     public static void main(String[] args) throws IOException {
         if (args.length != 0) {
@@ -43,9 +44,9 @@ final public class Editor {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
         try (Stream<Path> paths = Files.list(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder))) {
             loadedGames = paths.filter(Files::isDirectory)
-                .map(path -> new GameEditionDataManager(path.getFileName().toString()))
+                .map(path -> new GameEditionData(path.getFileName().toString()))
                 .toList();
         }
-        loadedGames.forEach(GameEditionDataManager::loadGameContents);
+        loadedGames.forEach(GameEditionData::loadGameContents);
     }
 }

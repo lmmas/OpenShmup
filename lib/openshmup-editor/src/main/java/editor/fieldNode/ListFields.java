@@ -14,7 +14,8 @@ import java.util.function.BiConsumer;
 
 final public class ListFields implements FieldNode {
 
-    @Getter final private List<EditionData> dataList;
+    @Getter
+    final private List<EditionData> dataList;
 
     final private List<FieldNode> dataFieldsList;
 

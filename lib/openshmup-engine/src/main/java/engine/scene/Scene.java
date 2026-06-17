@@ -81,7 +81,8 @@ public class Scene implements EngineSystem {
         lastDrawTime = sceneTime;
     }
 
-    @Override public int getUpdateIndex() {
+    @Override
+    public int getUpdateIndex() {
         return 9;
     }
 

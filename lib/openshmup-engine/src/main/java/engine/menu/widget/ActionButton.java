@@ -11,7 +11,8 @@ import java.util.List;
 
 final public class ActionButton implements Widget {
 
-    @Getter final private List<SceneVisual> visuals;
+    @Getter
+    final private List<SceneVisual> visuals;
 
     final private HitboxClickDetector hitboxClickDetector;
 

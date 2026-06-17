@@ -55,10 +55,10 @@ public class Menu implements EngineSystem {
         }
         if (!widgetsToRemove.isEmpty()) {
             widgetsToRemove.forEach(currentMenuScreen::removeWidget);
-                if (scene != null) {
-                    widgetsToRemove.stream().flatMap(widget -> widget.getVisuals().stream())
-                        .forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
-                }
+            if (scene != null) {
+                widgetsToRemove.stream().flatMap(widget -> widget.getVisuals().stream())
+                    .forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+            }
             widgetsToRemove.clear();
         }
         if (!visualsToRemove.isEmpty()) {
@@ -79,7 +79,7 @@ public class Menu implements EngineSystem {
         assert scene != null : "no scene attached to this menu";
         menuScreen.getWidgets().stream().flatMap(widget -> widget.getVisuals().stream())
             .forEach(visual -> scene.addVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex())
-        );
+            );
         menuScreen.getOtherVisuals().forEach(visual ->
             scene.addVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex())
         );

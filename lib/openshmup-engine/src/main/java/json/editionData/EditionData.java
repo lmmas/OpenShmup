@@ -11,9 +11,12 @@ import java.util.Map;
 
 final public class EditionData {
 
-    @Getter final private Category category;
-    @Getter final private Type type;
-    @Getter final private List<Attribute> attributesList;
+    @Getter
+    final private Category category;
+    @Getter
+    final private Type type;
+    @Getter
+    final private List<Attribute> attributesList;
 
     final private Map<Key, Object> defaultValues;
 
@@ -133,6 +136,7 @@ final public class EditionData {
     }
 
     public interface Type {
+
         String name();
     }
 
@@ -166,6 +170,7 @@ final public class EditionData {
     }
 
     public interface Key {
+
         String name();
     }
 
@@ -174,6 +179,7 @@ final public class EditionData {
         type;
 
         final public static class Visual {
+
             private Visual() {}
 
             public enum ScrollingImage implements Key {
@@ -196,6 +202,7 @@ final public class EditionData {
         }
 
         final public static class Trajectory {
+
             private Trajectory() {}
 
             public enum FixedTrajectory implements Key {
@@ -211,6 +218,7 @@ final public class EditionData {
         }
 
         final public static class Entity {
+
             private Entity() {}
 
             public enum Projectile implements Key {
@@ -255,6 +263,7 @@ final public class EditionData {
         }
 
         final public static class Spawn {
+
             private Spawn() {}
 
             public enum DisplaySpawn implements Key {
@@ -270,6 +279,7 @@ final public class EditionData {
         }
 
         final public static class Hitbox {
+
             private Hitbox() {}
 
             public enum RectangleHitbox implements Key {

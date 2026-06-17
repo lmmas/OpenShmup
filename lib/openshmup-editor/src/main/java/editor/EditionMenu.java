@@ -19,7 +19,7 @@ import engine.scene.visual.style.TextAlignment;
 import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
-import json.GameEditionDataManager;
+import json.GameEditionData;
 import json.editionData.EditionData;
 import lombok.Getter;
 
@@ -34,15 +34,16 @@ import static editor.Widgets.EditorSelector;
 
 final public class EditionMenu {
 
-    @Getter final private Menu menu;
+    @Getter
+    final private Menu menu;
 
-    final private GameEditionDataManager gameData;
+    final private GameEditionData gameData;
 
     private MenuScreen editPanel;
 
     private FieldNode editPanelRoot;
 
-    public EditionMenu(GameEditionDataManager gameData) {
+    public EditionMenu(GameEditionData gameData) {
         this.gameData = gameData;
         this.menu = new Menu();
         this.editPanel = null;
