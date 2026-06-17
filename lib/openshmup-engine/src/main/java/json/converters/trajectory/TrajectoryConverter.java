@@ -1,12 +1,10 @@
 package json.converters.trajectory;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.SafeJsonNode;
-import json.editionData.TrajectoryEditionData;
+import json.editionData.EditionData;
 
 public interface TrajectoryConverter {
 
-    TrajectoryEditionData fromJson(SafeJsonNode node);
+    EditionData fromJson(SafeJsonNode node);
 
-    ObjectNode toJson(TrajectoryEditionData trajectoryData, ObjectNode node);
 }

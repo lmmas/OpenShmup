@@ -3,9 +3,6 @@ package json;
 import engine.gameData.GamePaths;
 import json.converters.JsonDataConverter;
 import json.editionData.EditionData;
-import json.editionData.EntityEditionData;
-import json.editionData.TrajectoryEditionData;
-import json.editionData.VisualEditionData;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ final public class GameEditionDataManager {
     @Getter final private ArrayList<EditionData> visualEditionDataList;
     @Getter final private ArrayList<EditionData> trajectoryEditionDataList;
     @Getter final private ArrayList<EditionData> entityEditionDataList;
-
 
     public GameEditionDataManager(String gameFolderName) {
         this.gameFolderName = gameFolderName;
@@ -39,7 +35,8 @@ final public class GameEditionDataManager {
         }
     }
 
-    public void addVisual(VisualEditionData visualData) {
+    public void addVisual(EditionData visualData) {
+        visualData.checkForCategory(EditionData.Category.VISUAL);
         assert !visualEditionDataList.contains(visualData) : "visual already defined";
         visualEditionDataList.add(visualData);
     }
@@ -48,13 +45,15 @@ final public class GameEditionDataManager {
         return gameFolderName;
     }
 
-    public void addTrajectory(TrajectoryEditionData newTrajectoryData) {
-        assert !trajectoryEditionDataList.contains(newTrajectoryData) : "trajectory already defined";
-        trajectoryEditionDataList.add(newTrajectoryData);
+    public void addTrajectory(EditionData trajectoryData) {
+        trajectoryData.checkForCategory(EditionData.Category.TRAJECTORY);
+        assert !trajectoryEditionDataList.contains(trajectoryData) : "trajectory already defined";
+        trajectoryEditionDataList.add(trajectoryData);
     }
 
-    public void addEntity(EntityEditionData newEntityData) {
-        assert !entityEditionDataList.contains(newEntityData) : "entity already defined";
-        entityEditionDataList.add(newEntityData);
+    public void addEntity(EditionData entityData) {
+        entityData.checkForCategory(EditionData.Category.ENTITY);
+        assert !entityEditionDataList.contains(entityData) : "entity already defined";
+        entityEditionDataList.add(entityData);
     }
 }

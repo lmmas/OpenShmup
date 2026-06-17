@@ -1,21 +1,20 @@
 package json.converters.visual;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
-import json.attribute.Attribute;
-import json.editionData.AnimationEditionData;
-import json.editionData.VisualEditionData;
+import json.editionData.EditionData;
 
 import java.nio.file.Path;
-import java.util.List;
+
+import static json.editionData.EditionData.SpritesheetInfo;
+import static json.editionData.EditionData.Visual;
 
 final public class AnimationConverter implements VisualConverter {
 
     @Override
-    public VisualEditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
+    public EditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
         int id = node.safeGetInt(JsonFieldNames.Animation.id);
         int layer = node.safeGetInt(JsonFieldNames.Animation.layer);
         Vec2D size = node.safeGetVec2D(JsonFieldNames.Animation.size);
@@ -30,31 +29,13 @@ final public class AnimationConverter implements VisualConverter {
         float framePeriodSeconds = node.safeGetFloat(JsonFieldNames.Animation.framePeriodSeconds);
         boolean looping = node.safeGetBoolean(JsonFieldNames.Animation.looping);
 
-        AnimationEditionData.SpritesheetInfoData spritesheetInfo = new AnimationEditionData.SpritesheetInfoData(
+        EditionData spritesheetInfo = SpritesheetInfo(
             textureFileName,
             frameCount,
             frameSize,
             startingPosition,
             stride);
 
-        return new AnimationEditionData(id, layer, size, framePeriodSeconds, looping, spritesheetInfo);
-    }
-
-    @Override
-    public ObjectNode toJson(VisualEditionData visualData, ObjectNode node) {
-        AnimationEditionData animationEditionData = (AnimationEditionData) visualData;
-        animationEditionData.getIdAttribute().addToNode(node);
-        animationEditionData.getLayer().addToNode(node);
-        animationEditionData.getSize().addToNode(node);
-        AnimationEditionData.SpritesheetInfoData spritesheetInfoData = (AnimationEditionData.SpritesheetInfoData) animationEditionData.getSpritesheetInfo().getData();
-
-        ObjectNode spritesheetInfoNode = node.putObject("spritesheetInfo");
-        List<Attribute> attributes = List.of(spritesheetInfoData.getFileName(), spritesheetInfoData.getFrameCount(), spritesheetInfoData.getFrameSize(), spritesheetInfoData.getStartPosition(), spritesheetInfoData.getStride());
-        attributes.forEach(attribute -> attribute.addToNode(spritesheetInfoNode));
-
-        animationEditionData.getFramePeriodSeconds().addToNode(node);
-        animationEditionData.getLooping().addToNode(node);
-
-        return node;
+        return Visual.Animation(id, layer, size, framePeriodSeconds, looping, spritesheetInfo);
     }
 }

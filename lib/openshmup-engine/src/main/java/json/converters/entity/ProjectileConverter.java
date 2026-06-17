@@ -1,28 +1,26 @@
 package json.converters.entity;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
 import json.converters.JsonDataConverter;
 import json.editionData.EditionData;
-import json.editionData.EntityEditionData;
-import json.editionData.HitboxEditionData;
-import json.editionData.ProjectileEditionData;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static json.editionData.EditionData.Entity;
+
 final public class ProjectileConverter implements EntityConverter {
 
     @Override
-    public EntityEditionData fromJson(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
+    public EditionData fromJson(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
         int id = node.safeGetInt(JsonFieldNames.Projectile.id);
         boolean evil = node.safeGetBoolean(JsonFieldNames.Projectile.evil);
         Vec2D size = node.safeGetVec2D(JsonFieldNames.Projectile.size);
         SafeJsonNode hitboxNode = node.safeGetObject(JsonFieldNames.Projectile.hitbox);
-        HitboxEditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
+        EditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Projectile.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
         List<EditionData> deathSpawn = spawnableNodes.stream().map(
@@ -38,11 +36,7 @@ final public class ProjectileConverter implements EntityConverter {
                 shots.add(jsonDataConverter.shotEditionDataFromJSON(extraComponentNode, jsonDataConverter, textureFolderPath));
             }
         }
-        return new ProjectileEditionData(id, evil, size, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots);
+        return Entity.Projectile(id, evil, size, spriteVisualId, hitboxData, defaultTrajectoryID, deathSpawn, shots);
     }
 
-    @Override
-    public ObjectNode toJson(EntityEditionData entityData, ObjectNode node) {
-        return null;
-    }
 }

@@ -8,7 +8,7 @@ import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.Vec2D;
-import json.editionData.*;
+import json.editionData.EditionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,30 +16,32 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import static json.editionData.EditionData.*;
+
 final public class EditionDataTypeSelect implements FieldNode {
 
-    final private static Map<EditionData.Category, List<EditionData.Type>> typesMap = Map.of(
-        EditionData.Category.VISUAL, List.of(EditionData.Types.Visual.scrollingImage, EditionData.Types.Visual.animation),
-        EditionData.Category.TRAJECTORY, List.of(EditionData.Types.Trajectory.fixed, EditionData.Types.Trajectory.player),
-        EditionData.Category.ENTITY, List.of(EditionData.Types.Entity.projectile, EditionData.Types.Entity.ship),
-        EditionData.Category.SPAWN, List.of(EditionData.Types.Spawn.display, EditionData.Types.Spawn.entity),
-        EditionData.Category.HITBOX, List.of(EditionData.Types.Hitbox.rectangle, EditionData.Types.Hitbox.custom)
+    final private static Map<Category, List<Type>> typesMap = Map.of(
+        Category.VISUAL, List.of(Types.Visual.scrollingImage, Types.Visual.animation),
+        Category.TRAJECTORY, List.of(Types.Trajectory.fixed, Types.Trajectory.player),
+        Category.ENTITY, List.of(Types.Entity.projectile, Types.Entity.ship),
+        Category.SPAWN, List.of(Types.Spawn.display, Types.Spawn.entity),
+        Category.HITBOX, List.of(Types.Hitbox.rectangle, Types.Hitbox.custom)
     );
 
-    final private static Map<EditionData.Category, List<String>> labelsMap = Map.of(
-        EditionData.Category.VISUAL, List.of("Scrolling Image", "Animation"),
-        EditionData.Category.TRAJECTORY, List.of("Fixed", "Player Controlled"),
-        EditionData.Category.ENTITY, List.of("Projectile", "Ship"),
-        EditionData.Category.SPAWN, List.of("Display", "Entity"),
-        EditionData.Category.HITBOX, List.of("Rectangle", "Custom")
+    final private static Map<Category, List<String>> labelsMap = Map.of(
+        Category.VISUAL, List.of("Scrolling Image", "Animation"),
+        Category.TRAJECTORY, List.of("Fixed", "Player Controlled"),
+        Category.ENTITY, List.of("Projectile", "Ship"),
+        Category.SPAWN, List.of("Display", "Entity"),
+        Category.HITBOX, List.of("Rectangle", "Custom")
     );
 
-    final private static Map<EditionData.Category, List<Supplier<EditionData>>> constructorsMap = Map.of(
-        EditionData.Category.VISUAL, List.of(ScrollingImageEditionData::DEFAULT, AnimationEditionData::DEFAULT),
-        EditionData.Category.TRAJECTORY, List.of(FixedTrajectoryEditionData::DEFAULT, PlayerControlledTrajectoryEditionData::DEFAULT),
-        EditionData.Category.ENTITY, List.of(ProjectileEditionData::DEFAULT, ShipEditionData::DEFAULT),
-        EditionData.Category.SPAWN, List.of(DisplaySpawnEditionData::DEFAULT, EntitySpawnEditionData::DEFAULT),
-        EditionData.Category.HITBOX, List.of(RectangleHitboxEditionData::DEFAULT, CustomHitboxEditionData::DEFAULT)
+    final private static Map<Category, List<Supplier<EditionData>>> constructorsMap = Map.of(
+        Category.VISUAL, List.of(Defaults::ScrollingImage, Defaults::Animation),
+        Category.TRAJECTORY, List.of(Defaults::FixedTrajectory, Defaults::PlayerControlledTrajectory),
+        Category.ENTITY, List.of(Defaults::Projectile, Defaults::Ship),
+        Category.SPAWN, List.of(Defaults::DisplaySpawn, Defaults::EntitySpawn),
+        Category.HITBOX, List.of(Defaults::RectangleHitbox, Defaults::CustomHitbox)
     );
 
     final public static float selectorSpacing = 70f;
@@ -48,11 +50,11 @@ final public class EditionDataTypeSelect implements FieldNode {
 
     final public static Vec2D buttonStride = new Vec2D(280f, 0f);
 
-    final private EditionData.Category category;
+    final private Category category;
 
     final private List<EditionDataFields> editionDataFieldsList;
 
-    private final List<EditionData.Type> types;
+    private final List<Type> types;
 
     private boolean isActive;
 
@@ -63,9 +65,9 @@ final public class EditionDataTypeSelect implements FieldNode {
     final private TextDisplay typeSelectText;
 
     public EditionDataTypeSelect(EditionData editionData, Vec2D startPosition) {
+        assert editionData.getCategory() != Category.NONE : "Invalid editionData type";
         this.category = editionData.getCategory();
-        assert category != EditionData.Category.NONE : "Invalid editionData type";
-        EditionData.Type editionDataType = editionData.getType();
+        Type editionDataType = editionData.getType();
         int selectedValue = 0;
         this.types = typesMap.get(this.category);
         List<String> typeLabels = labelsMap.get(this.category);
@@ -108,8 +110,8 @@ final public class EditionDataTypeSelect implements FieldNode {
     }
 
     public void setData(EditionData editionData) {
-        EditionData.checkForCategory(editionData, this.category);
-        EditionData.Type type = editionData.getType();
+        editionData.checkForCategory(this.category);
+        Type type = editionData.getType();
         for (int i = 0; i < this.types.size(); i++) {
             if (type == this.types.get(i)) {
                 editionDataFieldsList.get(i).setEditionData(editionData);

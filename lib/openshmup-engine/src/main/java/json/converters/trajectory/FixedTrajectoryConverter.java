@@ -1,30 +1,19 @@
 package json.converters.trajectory;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
-import json.attribute.Attribute;
-import json.editionData.FixedTrajectoryEditionData;
-import json.editionData.TrajectoryEditionData;
+import json.editionData.EditionData;
 
-import java.util.List;
+import static json.editionData.EditionData.Trajectory;
 
 final public class FixedTrajectoryConverter implements TrajectoryConverter {
 
     @Override
-    public TrajectoryEditionData fromJson(SafeJsonNode node) {
+    public EditionData fromJson(SafeJsonNode node) {
         int id = node.safeGetInt(JsonFieldNames.FixedTrajectory.id);
         String functionXString = node.safeGetString(JsonFieldNames.FixedTrajectory.functionX);
         String functionYString = node.safeGetString(JsonFieldNames.FixedTrajectory.functionY);
-        return new FixedTrajectoryEditionData(id, functionXString, functionYString);
+        return Trajectory.FixedTrajectory(id, functionXString, functionYString);
     }
 
-    @Override
-    public ObjectNode toJson(TrajectoryEditionData trajectoryData, ObjectNode node) {
-        FixedTrajectoryEditionData fixedTrajectoryData = (FixedTrajectoryEditionData) trajectoryData;
-
-        List<Attribute> attributes = List.of(fixedTrajectoryData.getIdAttribute(), fixedTrajectoryData.getTrajectoryFunctionX(), fixedTrajectoryData.getTrajectoryFunctionY());
-        attributes.forEach(attribute -> attribute.addToNode(node));
-        return node;
-    }
 }

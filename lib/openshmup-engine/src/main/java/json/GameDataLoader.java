@@ -24,7 +24,8 @@ import engine.scene.visual.SpritesheetInfo;
 import engine.scene.visual.style.TimeReference;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
-import json.editionData.*;
+import json.attribute.*;
+import json.editionData.EditionData;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -79,6 +80,7 @@ final public class GameDataLoader {
         GameDataManager gameData = new GameDataManager(gameEditionData.getGameName());
 
         for (EditionData visualEditionData : gameEditionData.getVisualEditionDataList()) {
+            visualEditionData.checkForCategory(Category.VISUAL);
             var visualFactory = visualFactories.get((Types.Visual) visualEditionData.getType());
             assert visualFactory != null : "visual factory not found: " + visualEditionData.getType().name();
             SceneVisual visual = visualFactory.apply(visualEditionData, gameEditionData.paths.gameVisualsFile);
@@ -86,6 +88,7 @@ final public class GameDataLoader {
         }
 
         for (EditionData trajectoryEditionData : gameEditionData.getTrajectoryEditionDataList()) {
+            trajectoryEditionData.checkForCategory(Category.TRAJECTORY);
             var trajectoryFactory = trajectoryFactories.get((Types.Trajectory) trajectoryEditionData.getType());
             assert trajectoryFactory != null : "trajectory factory not found: " + trajectoryEditionData.getType().name();
             Trajectory trajectory = trajectoryFactory.apply(trajectoryEditionData);
@@ -93,6 +96,7 @@ final public class GameDataLoader {
         }
 
         for (EditionData entityEditionData : gameEditionData.getEntityEditionDataList()) {
+            entityEditionData.checkForCategory(Category.ENTITY);
             var entityFactory = entityFactoryMap.get((Types.Entity) entityEditionData.getType());
             assert entityFactory != null : "entity factory not found: " + entityEditionData.getType().name();
             Entity entity = entityFactory.apply(entityEditionData, gameData);
@@ -102,25 +106,25 @@ final public class GameDataLoader {
         return gameData;
     }
 
-    private Hitbox convertToHitbox(HitboxEditionData hitboxEditionData, Path textureFolder) {
+    private Hitbox convertToHitbox(EditionData hitboxEditionData, Path textureFolder) {
+        hitboxEditionData.checkForCategory(Category.HITBOX);
         var hitboxFactoy = hitboxFactories.get((Types.Hitbox) hitboxEditionData.getType());
         assert hitboxFactoy != null : "hitbox factory not found: " + hitboxEditionData.getType().name();
         return hitboxFactoy.apply(hitboxEditionData, textureFolder);
     }
 
     private Spawnable convertToSpawnable(EditionData spawnEditionData) {
-        checkForCategory(spawnEditionData, EditionData.Category.SPAWN);
+        spawnEditionData.checkForCategory(EditionData.Category.SPAWN);
         var spawnableFactory = spawnFactories.get((Types.Spawn) spawnEditionData.getType());
         assert spawnableFactory != null : "spawn factory not found: " + spawnEditionData.getType().name();
         return spawnableFactory.apply(spawnEditionData);
     }
 
     private ExtraComponent convertShot(EditionData data, boolean isPlayer) {
-        checkForType(data, Category.NONE, Types.shot);
-        ShotEditionData shotEditionData = (ShotEditionData) data;
-        float shotPeriod = shotEditionData.getShotPeriod().getValue();
-        float firstShotTime = shotEditionData.getFirstShotTime().getValue();
-        List<EditionData> spawnDataList = shotEditionData.getSpawnables().getDataList();
+        data.checkForType(Category.NONE, Types.shot);
+        float shotPeriod = ((FloatAttribute) data.get(Keys.Shot.shotPeriod)).getValue();
+        float firstShotTime = ((FloatAttribute) data.get(Keys.Shot.firstShotTime)).getValue();
+        List<EditionData> spawnDataList = ((ListAttribute) data.get(Keys.Shot.spawn)).getDataList();
         List<Spawnable> shotList = spawnDataList.stream().map(this::convertToSpawnable).toList();
         if (isPlayer) {
             return new PlayerShot(shotList, shotPeriod, firstShotTime);
@@ -135,33 +139,33 @@ final public class GameDataLoader {
         private VisualFactories() {}
 
         public static SceneVisual scrollingImageFactory(EditionData data, Path textureFolderPath) {
-            ScrollingImageEditionData scrollingImageData = (ScrollingImageEditionData) data;
-            int layer = scrollingImageData.getLayer().getValue();
-            Vec2D size = scrollingImageData.getSize().getValue();
-            String textureName = scrollingImageData.getFileName().getValue();
+            data.checkForType(Types.Visual.scrollingImage);
+            int layer = ((IntegerAttribute) data.get(Keys.Visual.ScrollingImage.layer)).getValue();
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Visual.ScrollingImage.size)).getValue();
+            String textureName = ((StringAttribute) data.get(Keys.Visual.ScrollingImage.fileName)).getValue();
             Texture texture = assetManager.getTexture(textureFolderPath.resolve(textureName));
-            boolean horizontalScrolling = scrollingImageData.getHorizontalScrolling().getValue();
-            float speed = scrollingImageData.getSpeed().getValue();
+            boolean horizontalScrolling = ((BooleanAttribute) data.get(Keys.Visual.ScrollingImage.horizontalScrolling)).getValue();
+            float speed = ((FloatAttribute) data.get(Keys.Visual.ScrollingImage.speed)).getValue();
 
             return new ScrollingImage(texture, layer, size, speed, horizontalScrolling, TimeReference.LEVEL);
         }
 
         public static SceneVisual animationFactory(EditionData data, Path textureFolderPath) {
-            AnimationEditionData animationData = (AnimationEditionData) data;
-            int layer = animationData.getLayer().getValue();
-            Vec2D size = animationData.getSize().getValue();
+            data.checkForType(Types.Visual.animation);
+            int layer = ((IntegerAttribute) data.get(Keys.Visual.Animation.layer)).getValue();
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Visual.Animation.size)).getValue();
 
-            AnimationEditionData.SpritesheetInfoData spritesheetInfoData = (AnimationEditionData.SpritesheetInfoData) animationData.getSpritesheetInfo().getData();
+            EditionData spritesheetInfoData = ((EditionDataAttribute) data.get(Keys.Visual.Animation.spritesheetInfo)).getData();
 
-            String fileName = spritesheetInfoData.getFileName().getValue();
+            String fileName = ((StringAttribute) spritesheetInfoData.get(Keys.SpritesheetInfo.fileName)).getValue();
             Path textureFilepath = textureFolderPath.resolve(fileName);
-            int frameCount = spritesheetInfoData.getFrameCount().getValue();
-            IVec2D frameSize = spritesheetInfoData.getFrameSize().getValue();
-            IVec2D startingPosition = spritesheetInfoData.getStartPosition().getValue();
-            IVec2D stride = spritesheetInfoData.getStride().getValue();
+            int frameCount = ((IntegerAttribute) spritesheetInfoData.get(Keys.SpritesheetInfo.frameCount)).getValue();
+            IVec2D frameSize = ((IVec2DAttribute) spritesheetInfoData.get(Keys.SpritesheetInfo.frameSize)).getValue();
+            IVec2D startingPosition = ((IVec2DAttribute) spritesheetInfoData.get(Keys.SpritesheetInfo.startingPosition)).getValue();
+            IVec2D stride = ((IVec2DAttribute) spritesheetInfoData.get(Keys.SpritesheetInfo.stride)).getValue();
 
-            double framePeriodSeconds = animationData.getFramePeriodSeconds().getValue();
-            boolean looping = animationData.getLooping().getValue();
+            double framePeriodSeconds = ((DoubleAttribute) data.get(Keys.Visual.Animation.framePeriodSeconds)).getValue();
+            boolean looping = ((BooleanAttribute) data.get(Keys.Visual.Animation.looping)).getValue();
 
             Texture texture = assetManager.getTexture(textureFilepath);
             IVec2D animationResolution = texture.getResolution();
@@ -180,15 +184,15 @@ final public class GameDataLoader {
         private TrajectoryFactories() {}
 
         public static Trajectory playerControlledTrajectoryFactory(EditionData data) {
-            PlayerControlledTrajectoryEditionData playerControlledTrajectoryData = (PlayerControlledTrajectoryEditionData) data;
-            float playerMovementSpeed = playerControlledTrajectoryData.getPlayerMovementSpeed().getValue();
+            data.checkForType(Types.Trajectory.player);
+            float playerMovementSpeed = ((FloatAttribute) data.get(Keys.Trajectory.PlayerControlledTrajectory.playerMovementSpeed)).getValue();
             return new PlayerControlledTrajectory(playerMovementSpeed);
         }
 
         public static Trajectory fixedTrajectoryFactory(EditionData data) {
-            FixedTrajectoryEditionData fixedTrajectoryData = (FixedTrajectoryEditionData) data;
-            String functionXString = fixedTrajectoryData.getTrajectoryFunctionX().getValue();
-            String functionYString = fixedTrajectoryData.getTrajectoryFunctionY().getValue();
+            data.checkForType(Types.Trajectory.fixed);
+            String functionXString = ((StringAttribute) data.get(Keys.Trajectory.FixedTrajectory.functionX)).getValue();
+            String functionYString = ((StringAttribute) data.get(Keys.Trajectory.FixedTrajectory.functionY)).getValue();
             Function<Double, Float> trajectoryFunctionX = convertToFunction(functionXString);
             Function<Double, Float> trajectoryFunctionY = convertToFunction(functionYString);
             boolean relative = true;
@@ -211,16 +215,16 @@ final public class GameDataLoader {
         private HitboxFactories() {}
 
         public static Hitbox rectangleHitboxFactory(EditionData data, Path path) {
-            RectangleHitboxEditionData rectangleHitboxData = (RectangleHitboxEditionData) data;
-            Vec2D size = rectangleHitboxData.getSize().getValue();
+            data.checkForType(Types.Hitbox.rectangle);
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Hitbox.RectangleHitbox.size)).getValue();
             return new SimpleRectangleHitbox(Vec2D.ZERO, size);
         }
 
         public static Hitbox customHitboxFactory(EditionData data, Path path) {
-            CustomHitboxEditionData customHitboxData = (CustomHitboxEditionData) data;
-            String textureName = customHitboxData.getFileName().getValue();
+            data.checkForType(Types.Hitbox.custom);
+            String textureName = ((StringAttribute) data.get(Keys.Hitbox.CustomHitbox.fileName)).getValue();
             Texture texture = assetManager.getTexture(path.resolve(textureName));
-            Vec2D size = customHitboxData.getSize().getValue();
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Hitbox.CustomHitbox.size)).getValue();
             return new CompositeHitbox(texture, size);
         }
     }
@@ -230,17 +234,17 @@ final public class GameDataLoader {
         private SpawnFactories() {}
 
         public static Spawnable displaySpawnFactory(EditionData data) {
-            DisplaySpawnEditionData displaySpawnData = (DisplaySpawnEditionData) data;
-            int id = displaySpawnData.getVisualID().getValue();
-            Vec2D positionVec = displaySpawnData.getPosition().getValue();
+            data.checkForType(Types.Spawn.display);
+            int id = ((IntegerAttribute) data.get(Keys.Spawn.DisplaySpawn.id)).getValue();
+            Vec2D positionVec = ((Vec2DAttribute) data.get(Keys.Spawn.DisplaySpawn.position)).getValue();
             return new DisplaySpawnInfo(id, positionVec);
         }
 
         public static Spawnable entitySpawnFactory(EditionData data) {
-            EntitySpawnEditionData entitySpawnData = (EntitySpawnEditionData) data;
-            int id = entitySpawnData.getEntityID().getValue();
-            Vec2D startingPosition = entitySpawnData.getPosition().getValue();
-            int trajectoryId = entitySpawnData.getTrajectoryID().getValue();
+            data.checkForType(Types.Spawn.entity);
+            int id = ((IntegerAttribute) data.get(Keys.Spawn.EntitySpawn.id)).getValue();
+            Vec2D startingPosition = ((Vec2DAttribute) data.get(Keys.Spawn.EntitySpawn.startingPosition)).getValue();
+            int trajectoryId = ((IntegerAttribute) data.get(Keys.Spawn.EntitySpawn.trajectory)).getValue();
             return new EntitySpawnInfo(id, startingPosition, trajectoryId);
         }
     }
@@ -248,47 +252,45 @@ final public class GameDataLoader {
     final public class EntityFactories {
 
         final public BiFunction<EditionData, GameDataManager, Entity> shipFactory = (data, gameData) -> {
-            ShipEditionData shipData = (ShipEditionData) data;
-
-            int id = shipData.getId();
-            boolean evil = shipData.getEvil().getValue();
-            Vec2D size = shipData.getSize().getValue();
-            HitboxEditionData hitboxData = (HitboxEditionData) shipData.getHitbox().getData();
+            data.checkForType(Types.Entity.ship);
+            int id = ((IntegerAttribute) data.get(Keys.Entity.Ship.id)).getValue();
+            boolean evil = ((BooleanAttribute) data.get(Keys.Entity.Ship.evil)).getValue();
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Entity.Ship.size)).getValue();
+            EditionData hitboxData = ((EditionDataAttribute) data.get(Keys.Entity.Ship.hitbox)).getData();
             Hitbox hitbox = convertToHitbox(hitboxData, gameData.paths.gameTextureFolder);
-            List<EditionData> deathSpawnList = shipData.getDeathspawn().getDataList();
+            List<EditionData> deathSpawnList = ((ListAttribute) data.get(Keys.Entity.Ship.deathSpawn)).getDataList();
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
-            int spriteVisualId = shipData.getSpriteId().getValue();
+            int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Ship.spriteVisualId)).getValue();
             SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
             Trajectory trajectory;
-            int defaultTrajectoryId = shipData.getTrajectoryId().getValue();
+            int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Ship.defaultTrajectoryId)).getValue();
             trajectory = gameData.getTrajectory(defaultTrajectoryId);
 
             ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
-            List<EditionData> shotDataList = shipData.getShots().getDataList();
+            List<EditionData> shotDataList = ((ListAttribute) data.get(Keys.Entity.Ship.shots)).getDataList();
             List<ExtraComponent> shotList = shotDataList.stream().map(shotData -> convertShot(shotData, (id == 0))).toList();
             extraComponents.addAll(shotList);
-            int hp = shipData.getHp().getValue();
+            int hp = ((IntegerAttribute) data.get(Keys.Entity.Ship.hp)).getValue();
             return new Ship(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
         };
 
         final public BiFunction<EditionData, GameDataManager, Entity> projectileFactory = (data, gameData) -> {
-            ProjectileEditionData shipData = (ProjectileEditionData) data;
-
-            int id = shipData.getId();
-            boolean evil = shipData.getEvil().getValue();
-            Vec2D size = shipData.getSize().getValue();
-            HitboxEditionData hitboxData = (HitboxEditionData) shipData.getHitbox().getData();
+            data.checkForType(Types.Entity.projectile);
+            int id = ((IntegerAttribute) data.get(Keys.Entity.Projectile.id)).getValue();
+            boolean evil = ((BooleanAttribute) data.get(Keys.Entity.Projectile.evil)).getValue();
+            Vec2D size = ((Vec2DAttribute) data.get(Keys.Entity.Projectile.size)).getValue();
+            EditionData hitboxData = ((EditionDataAttribute) data.get(Keys.Entity.Projectile.hitbox)).getData();
             Hitbox hitbox = convertToHitbox(hitboxData, gameData.paths.gameTextureFolder);
-            List<EditionData> deathSpawnList = shipData.getDeathspawn().getDataList();
+            List<EditionData> deathSpawnList = ((ListAttribute) data.get(Keys.Entity.Projectile.deathSpawn)).getDataList();
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
-            int spriteVisualId = shipData.getSpriteId().getValue();
+            int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.spriteVisualId)).getValue();
             SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
             Trajectory trajectory;
-            int defaultTrajectoryId = shipData.getTrajectoryId().getValue();
+            int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.defaultTrajectoryId)).getValue();
             trajectory = gameData.getTrajectory(defaultTrajectoryId);
 
             ArrayList<ExtraComponent> extraComponents = new ArrayList<>();
-            List<EditionData> shotDataList = shipData.getShots().getDataList();
+            List<EditionData> shotDataList = ((ListAttribute) data.get(Keys.Entity.Projectile.shots)).getDataList();
             List<ExtraComponent> shotList = shotDataList.stream().map(shotData -> convertShot(shotData, (id == 0))).toList();
             extraComponents.addAll(shotList);
             return new Projectile(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);

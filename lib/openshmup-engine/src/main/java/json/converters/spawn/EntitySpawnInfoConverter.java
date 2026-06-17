@@ -1,32 +1,20 @@
 package json.converters.spawn;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
-import json.attribute.Attribute;
-import json.editionData.EntitySpawnEditionData;
-import json.editionData.SpawnEditionData;
+import json.editionData.EditionData;
 
-import java.util.List;
+import static json.editionData.EditionData.Spawn;
 
 final public class EntitySpawnInfoConverter implements SpawnConverter {
 
     @Override
-    public SpawnEditionData fromJson(SafeJsonNode node) {
+    public EditionData fromJson(SafeJsonNode node) {
         int id = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.id);
         Vec2D startingPositionVec = node.safeGetVec2D(JsonFieldNames.EntitySpawnInfo.startingPosition);
         int trajectoryId = node.safeGetInt(JsonFieldNames.EntitySpawnInfo.trajectory);
-        return new EntitySpawnEditionData(id, startingPositionVec, trajectoryId);
+        return Spawn.EntitySpawn(id, trajectoryId, startingPositionVec);
     }
 
-    @Override
-    public ObjectNode toJson(SpawnEditionData spawnableData, ObjectNode node) {
-        EntitySpawnEditionData entitySpawnInfoData = (EntitySpawnEditionData) spawnableData;
-
-        List<Attribute> attributes = List.of(entitySpawnInfoData.getEntityID(), entitySpawnInfoData.getPosition(), entitySpawnInfoData.getTrajectoryID());
-        attributes.forEach(attribute -> attribute.addToNode(node));
-
-        return node;
-    }
 }

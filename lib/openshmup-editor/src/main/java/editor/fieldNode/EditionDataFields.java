@@ -66,9 +66,9 @@ final public class EditionDataFields implements FieldNode {
         if (attribute instanceof EditionDataAttribute dataAttribute) {
             EditionData data = dataAttribute.getData();
             if (dataAttribute.hasTypeSelect()) {
-                return (data.getAttributes().size() + 1) * 45f + EditionDataTypeSelect.selectorSpacing;
+                return (data.getAttributesList().size() + 1) * 45f + EditionDataTypeSelect.selectorSpacing;
             }
-            return (data.getAttributes().size() + 1) * 45f;
+            return (data.getAttributesList().size() + 1) * 45f;
         }
         else {
             return 45f;
@@ -76,7 +76,7 @@ final public class EditionDataFields implements FieldNode {
     }
 
     private void buildFields(Vec2D startPosition) {
-        List<Attribute> attributeList = editionData.getAttributes();
+        List<Attribute> attributeList = editionData.getAttributesList();
         int layer = 1;
         float coupleFieldSpacing = 35f;
         Vec2D fieldMargin = new Vec2D(320f, 0f);

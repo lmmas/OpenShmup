@@ -1,14 +1,12 @@
 package json.converters.hitbox;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.SafeJsonNode;
-import json.editionData.HitboxEditionData;
+import json.editionData.EditionData;
 
 import java.nio.file.Path;
 
 public interface HitboxConverter {
 
-    HitboxEditionData fromJson(SafeJsonNode node, Path textureFolderPath);
+    EditionData fromJson(SafeJsonNode node, Path textureFolderPath);
 
-    ObjectNode toJson(HitboxEditionData hitboxData, ObjectNode node);
 }

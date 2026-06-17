@@ -20,7 +20,7 @@ import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
 import json.GameEditionDataManager;
-import json.editionData.*;
+import json.editionData.EditionData;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -75,10 +75,10 @@ final public class EditionMenu {
             int finalI = i;
             Runnable onClick = () -> this.openEditPanel(visualEditionDataList, finalI);
             String typeString = "";
-            if (visualData instanceof AnimationEditionData) {
+            if (visualData.getType() == EditionData.Types.Visual.animation) {
                 typeString = "Animation";
             }
-            if (visualData instanceof ScrollingImageEditionData) {
+            if (visualData.getType() == EditionData.Types.Visual.scrollingImage) {
                 typeString = "Scrolling image";
             }
             String menuButtonLabel = EditionData.getVisualId(visualData) + ": " + typeString;
@@ -96,10 +96,10 @@ final public class EditionMenu {
             int finalI = i;
             Runnable onClick = () -> this.openEditPanel(trajectoryEditionDataList, finalI);
             String typeString = "";
-            if (trajectoryData instanceof PlayerControlledTrajectoryEditionData) {
+            if (trajectoryData.getType() == EditionData.Types.Trajectory.player) {
                 typeString = "Player Controlled";
             }
-            if (trajectoryData instanceof FixedTrajectoryEditionData) {
+            if (trajectoryData.getType() == EditionData.Types.Trajectory.fixed) {
                 typeString = "Fixed";
             }
             String menuButtonLabel = EditionData.getTrajectoryId(trajectoryData) + ": " + typeString;
@@ -117,10 +117,10 @@ final public class EditionMenu {
             int finalI = i;
             Runnable onClick = () -> this.openEditPanel(entityEditionDataList, finalI);
             String typeString = "";
-            if (entityData instanceof ShipEditionData) {
+            if (entityData.getType() == EditionData.Types.Entity.ship) {
                 typeString = "Ship";
             }
-            if (entityData instanceof ProjectileEditionData) {
+            if (entityData.getType() == EditionData.Types.Entity.projectile) {
                 typeString = "Projectile";
             }
             String menuButtonLabel = EditionData.getEntityId(entityData) + ": " + typeString;

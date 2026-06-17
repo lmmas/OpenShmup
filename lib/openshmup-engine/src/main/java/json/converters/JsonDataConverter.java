@@ -20,7 +20,7 @@ import json.converters.trajectory.TrajectoryConverter;
 import json.converters.visual.AnimationConverter;
 import json.converters.visual.ScrollingImageConverter;
 import json.converters.visual.VisualConverter;
-import json.editionData.*;
+import json.editionData.EditionData;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -71,7 +71,7 @@ final public class JsonDataConverter {
         this.entityConverters.put(Types.Entity.projectile.name(), new ProjectileConverter());
     }
 
-    public VisualEditionData visualEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
+    public EditionData visualEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
         String type = node.safeGetString(EditionData.Keys.type.name());
         VisualConverter converter = visualConverters.get(type);
         if (converter == null) {
@@ -84,12 +84,16 @@ final public class JsonDataConverter {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameVisualsFile, objectMapper);
         List<SafeJsonNode> visualNodesList = rootNode.safeGetObjectListFromArray();
         for (var visualNode : visualNodesList) {
-            VisualEditionData newVisualData = visualEditionDataFromJSON(visualNode, editorGameData.paths.gameTextureFolder);
+            EditionData newVisualData = visualEditionDataFromJSON(visualNode, editorGameData.paths.gameTextureFolder);
             editorGameData.addVisual(newVisualData);
         }
     }
 
-    public TrajectoryEditionData trajectoryEditionDataFromJSON(SafeJsonNode node) {
+    public static void addDataToNode(EditionData data, ObjectNode node) {
+        data.getAttributesList().forEach(attribute -> attribute.addToNode(node));
+    }
+
+    public EditionData trajectoryEditionDataFromJSON(SafeJsonNode node) {
         String type = node.safeGetString(EditionData.Keys.type.name());
         TrajectoryConverter converter = trajectoryConverters.get(type);
         if (converter == null) {
@@ -102,12 +106,12 @@ final public class JsonDataConverter {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameTrajectoriesFile, objectMapper);
         List<SafeJsonNode> trajectoryNodeList = rootNode.safeGetObjectListFromArray();
         for (var trajectoryNode : trajectoryNodeList) {
-            TrajectoryEditionData newTrajectoryData = trajectoryEditionDataFromJSON(trajectoryNode);
+            EditionData newTrajectoryData = trajectoryEditionDataFromJSON(trajectoryNode);
             editorGameData.addTrajectory(newTrajectoryData);
         }
     }
 
-    public HitboxEditionData hitboxEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
+    public EditionData hitboxEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
         String type = node.safeGetString(EditionData.Keys.type.name());
         HitboxConverter converter = hitboxConverters.get(type);
         if (converter == null) {
@@ -125,41 +129,11 @@ final public class JsonDataConverter {
         return converter.fromJson(node);
     }
 
-    public ObjectNode spawnEditionDataToJSON(SpawnEditionData spawnData, ObjectNode node) {
-        String typeStr = spawnData.getType().name();
-        node.put(EditionData.Keys.type.name(), typeStr);
-        return spawnConverters.get(typeStr).toJson(spawnData, node);
-    }
-
-    public ObjectNode visualToJSON(VisualEditionData visualData, ObjectNode node) {
-        String typeStr = visualData.getType().name();
-        node.put(EditionData.Keys.type.name(), typeStr);
-        return visualConverters.get(typeStr).toJson(visualData, node);
-    }
-
-    public ObjectNode hitboxToJSON(HitboxEditionData hitboxData, ObjectNode node) {
-        String typeStr = hitboxData.getType().name();
-        node.put(EditionData.Keys.type.name(), typeStr);
-        return hitboxConverters.get(typeStr).toJson(hitboxData, node);
-    }
-
-    public ObjectNode trajectoryToJSON(TrajectoryEditionData trajectoryData, ObjectNode node) {
-        String typeStr = trajectoryData.getType().name();
-        node.put(EditionData.Keys.type.name(), typeStr);
-        return trajectoryConverters.get(typeStr).toJson(trajectoryData, node);
-    }
-
-    public ObjectNode entityToJSON(EntityEditionData entityData, ObjectNode node) {
-        String typeStr = entityData.getType().name();
-        node.put(EditionData.Keys.type.name(), typeStr);
-        return entityConverters.get(typeStr).toJson(entityData, node);
-    }
-
-    public ShotEditionData shotEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
+    public EditionData shotEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
         return shotConverter.fromJson(node, jsonDataConverter, textureFolderPath);
     }
 
-    public EntityEditionData entityEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
+    public EditionData entityEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
         String type = node.safeGetString(EditionData.Keys.type.name());
         EntityConverter converter = entityConverters.get(type);
         if (converter == null) {
@@ -172,7 +146,7 @@ final public class JsonDataConverter {
         SafeJsonNode rootNode = SafeJsonNode.getArrayRootNode(editorGameData.paths.gameEntitiesFile, objectMapper);
         List<SafeJsonNode> entityNodeList = rootNode.safeGetObjectListFromArray();
         for (var entityNode : entityNodeList) {
-            EntityEditionData newEntityData = entityEditionDataFromJSON(entityNode, this, editorGameData.paths.gameVisualsFile);
+            EditionData newEntityData = entityEditionDataFromJSON(entityNode, this, editorGameData.paths.gameVisualsFile);
             editorGameData.addEntity(newEntityData);
         }
     }

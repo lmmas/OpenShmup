@@ -31,7 +31,7 @@ final public class ListFields implements FieldNode {
         Vec2D fieldsStartPosition = startPosition.add(200f, 0f);
         this.dataFieldsList = new ArrayList<>(dataList.size());
         for (EditionData data : dataList) {
-            if (EditionData.hasTypeSelect(data)) {
+            if (data.hasTypeSelect()) {
                 dataFieldsList.add(new EditionDataTypeSelect(data, fieldsStartPosition));
             }
             else {

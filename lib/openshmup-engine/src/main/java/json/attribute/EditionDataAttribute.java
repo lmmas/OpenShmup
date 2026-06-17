@@ -30,6 +30,6 @@ final public class EditionDataAttribute extends Attribute {
     }
 
     public boolean hasTypeSelect() {
-        return EditionData.hasTypeSelect(editionData);
+        return editionData.hasTypeSelect();
     }
 }
