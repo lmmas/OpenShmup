@@ -1,12 +1,13 @@
 package editor.fieldNode;
 
+import editor.EditionMenu;
 import editor.Widgets;
 import engine.menu.Menu;
 import engine.menu.MenuElementGroup;
+import engine.menu.MenuScreen;
 import engine.menu.widget.SelectorButtons;
 import engine.types.Vec2D;
 import json.editionData.EditionData;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.function.BiConsumer;
 
 final public class ListFields implements FieldNode {
 
-    @Getter
     final private List<EditionData> dataList;
 
-    final private List<FieldNode> dataFieldsList;
+    final private List<EditionData> tempDataList;
+
+    final private List<EditionDataFieldNode> dataFieldsList;
+
+    final private List<MenuScreen> menuScreenList;
 
     private FieldNode selectedDataFields;
 
@@ -27,18 +31,28 @@ final public class ListFields implements FieldNode {
 
     private Menu menu;
 
-    public ListFields(int layer, List<EditionData> dataList, Vec2D startPosition) {
+    final private boolean openInNewScreen;
+
+    public ListFields(List<EditionData> dataList, Vec2D startPosition, boolean openInNewScreen) {
         this.dataList = dataList;
-        Vec2D fieldsStartPosition = startPosition.add(200f, 0f);
+        this.tempDataList = new ArrayList<>(dataList);
+        this.openInNewScreen = openInNewScreen;
+
         this.dataFieldsList = new ArrayList<>(dataList.size());
-        for (EditionData data : dataList) {
-            if (data.hasTypeSelect()) {
-                dataFieldsList.add(new EditionDataTypeSelect(data, fieldsStartPosition));
-            }
-            else {
-                dataFieldsList.add(new EditionDataFields(data, fieldsStartPosition));
+        for (int i = 0; i < dataList.size(); i++) {
+            dataFieldsList.add(null);
+        }
+
+        if (openInNewScreen) {
+            menuScreenList = new ArrayList<>(dataList.size());
+            for (int i = 0; i < dataList.size(); i++) {
+                menuScreenList.add(null);
             }
         }
+        else {
+            menuScreenList = null;
+        }
+
         this.selectedDataFields = null;
         this.isActive = false;
         Vec2D selectorButtonSize = new Vec2D(200f, 50f);
@@ -48,37 +62,57 @@ final public class ListFields implements FieldNode {
             selectorLabels.add((i + 1) + "");
         }
         BiConsumer<SelectorButtons, Integer> selectorOnChange = (selectorButtons, newValue) -> {
-            if (selectorButtons.getSelectedValue() != null) {
+            Integer oldValue = selectorButtons.getSelectedValue();
+            if (oldValue != null) {
                 selectedDataFields.setActive(false);
             }
             if (newValue != null) {
-                selectedDataFields = dataFieldsList.get(newValue);
-                if (isActive) {
-                    selectedDataFields.setActive(true);
+                Vec2D fieldsStartPosition;
+                if (openInNewScreen) {
+                    fieldsStartPosition = new Vec2D(120f, 830f);
+                    if (dataFieldsList.get(newValue) == null) {
+                        EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(tempDataList.get(newValue), fieldsStartPosition);
+                        node.setMenu(this.menu);
+                        dataFieldsList.set(newValue, node);
+                        Runnable onApply = () -> {
+                            node.applyChanges();
+                            tempDataList.set(newValue, node.getEditionData());
+                        };
+                        Runnable onClose = () -> {
+                            selectorButtons.setSelectedValue(null);
+                            selectedDataFields = null;
+                        };
+                        MenuScreen screen = EditionMenu.openEditPanel(this.menu, 8, node, onApply, onClose);
+                        menuScreenList.set(newValue, screen);
+                    }
+                    else {
+                        menu.addMenuScreen(menuScreenList.get(newValue));
+                    }
                 }
+                else {
+                    fieldsStartPosition = startPosition.add(200f, 0f);
+                    if (dataFieldsList.get(newValue) == null) {
+                        EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(tempDataList.get(newValue), fieldsStartPosition);
+                        node.setMenu(this.menu);
+                        dataFieldsList.set(newValue, node);
+                    }
+                }
+                selectedDataFields = dataFieldsList.get(newValue);
+                selectedDataFields.setActive(isActive);
             }
         };
-        SelectorButtons dataSelector = Widgets.EditorSelector(layer, dataList.size(), selectorButtonSize, startPosition, stride, selectorLabels, selectorOnChange, null);
+
+        SelectorButtons dataSelector = Widgets.EditorSelector(2, dataList.size(), selectorButtonSize, startPosition, stride, selectorLabels, selectorOnChange, null);
         this.buttonsGroup = new MenuElementGroup(List.of(dataSelector), List.of());
     }
     @Override
     public void setMenu(Menu menu) {
         this.menu = menu;
-        dataFieldsList.forEach(fields -> fields.setMenu(menu));
-    }
-    @Override
-    public MenuElementGroup getAllActiveElements() {
-        MenuElementGroup allActiveElements = new MenuElementGroup();
-        if (isActive) {
-            allActiveElements.widgets().addAll(buttonsGroup.widgets());
-            allActiveElements.visuals().addAll(buttonsGroup.visuals());
-            if (selectedDataFields != null) {
-                MenuElementGroup selectedDataElements = selectedDataFields.getAllActiveElements();
-                allActiveElements.widgets().addAll(selectedDataElements.widgets());
-                allActiveElements.visuals().addAll(selectedDataElements.visuals());
+        for (EditionDataFieldNode fields : dataFieldsList) {
+            if (fields != null) {
+                fields.setMenu(menu);
             }
         }
-        return allActiveElements;
     }
     @Override
     public void setActive(boolean active) {
@@ -99,6 +133,17 @@ final public class ListFields implements FieldNode {
     }
     @Override
     public void applyChanges() {
-        dataFieldsList.forEach(FieldNode::applyChanges);
+        for (EditionDataFieldNode fields : dataFieldsList) {
+            if (fields != null) {
+                fields.applyChanges();
+            }
+        }
+        for (int i = 0; i < tempDataList.size(); i++) {
+            if (dataFieldsList.get(i) != null) {
+                tempDataList.set(i, dataFieldsList.get(i).getEditionData());
+            }
+        }
+        dataList.clear();
+        dataList.addAll(tempDataList);
     }
 }

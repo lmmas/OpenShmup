@@ -36,35 +36,36 @@ public class Menu implements EngineSystem {
             assert widgetsToRemove.isEmpty();
             return;
         }
-        MenuScreen currentMenuScreen = displayedMenuScreens.getLast();
-        currentMenuScreen.getWidgets().forEach(Widget::handleInputs);
+        MenuScreen currentScreen = displayedMenuScreens.getLast();
+        currentScreen.getWidgets().forEach(Widget::handleInputs);
+        MenuScreen newCurrentScreen = displayedMenuScreens.getLast();
         if (!widgetsToAdd.isEmpty()) {
-            widgetsToAdd.forEach(currentMenuScreen::addWidget);
+            widgetsToAdd.forEach(newCurrentScreen::addWidget);
             if (scene != null) {
                 widgetsToAdd.stream().flatMap(widget -> widget.getVisuals().stream())
-                    .forEach(visual -> scene.addVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+                    .forEach(visual -> scene.addVisual(visual, newCurrentScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
             widgetsToAdd.clear();
         }
         if (!visualsToAdd.isEmpty()) {
-            visualsToAdd.forEach(currentMenuScreen::addVisual);
+            visualsToAdd.forEach(newCurrentScreen::addVisual);
             if (scene != null) {
-                visualsToAdd.forEach(visual -> scene.addVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+                visualsToAdd.forEach(visual -> scene.addVisual(visual, newCurrentScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
             visualsToAdd.clear();
         }
         if (!widgetsToRemove.isEmpty()) {
-            widgetsToRemove.forEach(currentMenuScreen::removeWidget);
+            widgetsToRemove.forEach(newCurrentScreen::removeWidget);
             if (scene != null) {
                 widgetsToRemove.stream().flatMap(widget -> widget.getVisuals().stream())
-                    .forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+                    .forEach(visual -> scene.removeVisual(visual, newCurrentScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
             widgetsToRemove.clear();
         }
         if (!visualsToRemove.isEmpty()) {
-            visualsToRemove.forEach(currentMenuScreen::removeVisual);
+            visualsToRemove.forEach(newCurrentScreen::removeVisual);
             if (scene != null) {
-                visualsToRemove.forEach(visual -> scene.removeVisual(visual, currentMenuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+                visualsToRemove.forEach(visual -> scene.removeVisual(visual, newCurrentScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
             }
             visualsToRemove.clear();
         }

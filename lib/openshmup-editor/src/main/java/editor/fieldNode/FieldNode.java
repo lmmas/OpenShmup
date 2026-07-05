@@ -1,13 +1,10 @@
 package editor.fieldNode;
 
 import engine.menu.Menu;
-import engine.menu.MenuElementGroup;
 
-public interface FieldNode {
+public sealed interface FieldNode permits EditionDataFieldNode, ListFields {
 
     void setMenu(Menu menu);
-
-    MenuElementGroup getAllActiveElements();
 
     void setActive(boolean active);
 

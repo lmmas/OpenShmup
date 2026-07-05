@@ -42,7 +42,7 @@ final public class Menus {
                 var game = Editor.getLoadedGames().get(i);
                 Runnable onclick = () -> {
                     Engine.switchCurrentScene(new Scene());
-                    Engine.switchCurrentMenu(new EditionMenu(game).getMenu());
+                    Engine.switchCurrentMenu(EditionMenu.EditionMenu(game));
                 };
                 popupMenu.addWidget(Widgets.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonStyle1, game.getGameName(), onclick));
             }

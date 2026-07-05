@@ -10,15 +10,19 @@ import java.util.List;
 @Getter @Setter final public class ListAttribute extends Attribute {
 
     private List<EditionData> dataList;
+    @Getter
+    final private EditionData.Category category;
 
-    public ListAttribute(EditionData.Key key) {
+    public ListAttribute(EditionData.Category category, EditionData.Key key) {
         super(key);
+        this.category = category;
         this.dataList = List.of();
     }
 
-    public ListAttribute(EditionData.Key key, List<EditionData> dataList) {
+    public ListAttribute(EditionData.Category category, EditionData.Key key, List<EditionData> dataList) {
         super(key);
         this.dataList = dataList;
+        this.category = category;
     }
     @Override
     public void addToNode(ObjectNode node) {

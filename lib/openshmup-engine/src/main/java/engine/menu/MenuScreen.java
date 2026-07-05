@@ -25,12 +25,12 @@ import java.util.ArrayList;
     }
 
     public void addWidget(Widget widget) {
-        assert !widgets.contains(widget) : "item is already present in item list of the screen";
+        assert !widgets.contains(widget) : "widget is already present in widget list of the screen";
         widgets.add(widget);
     }
 
     public void removeWidget(Widget widget) {
-        assert widgets.contains(widget) : "item is not present in item list of the screen";
+        assert widgets.contains(widget) : "widget is not present in widget list of the screen";
         widgets.remove(widget);
     }
 

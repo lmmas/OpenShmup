@@ -26,7 +26,7 @@ import java.util.Objects;
 import static editor.Widgets.Checkbox;
 import static editor.Widgets.EditorTextField;
 
-final public class EditionDataFields implements FieldNode {
+final public class EditionDataFields implements EditionDataFieldNode {
 
     final private static DecimalFormat df = new DecimalFormat("0.000");
     @Setter @Getter
@@ -34,11 +34,9 @@ final public class EditionDataFields implements FieldNode {
 
     final private HashMap<Attribute, List<Widget>> attributeWidgetsMap;
 
-    final private HashMap<EditionDataAttribute, EditionDataTypeSelect> editionDataTypeSelectMap;
+    final private HashMap<Attribute, FieldNode> childrenNodeMap;
 
-    final private List<FieldNode> children;
-
-    final private List<ListFields> listFieldsList;
+    final private List<ListFields> listFieldsSelectList;
 
     private Integer selectedListIndex;
 
@@ -51,10 +49,9 @@ final public class EditionDataFields implements FieldNode {
     public EditionDataFields(EditionData editionData, Vec2D startPosition) {
         this.editionData = editionData;
         this.attributeWidgetsMap = new HashMap<>();
-        this.editionDataTypeSelectMap = new HashMap<>();
-        this.listFieldsList = new ArrayList<>();
+        this.childrenNodeMap = new HashMap<>();
+        this.listFieldsSelectList = new ArrayList<>();
         this.selectedListIndex = null;
-        this.children = new ArrayList<>();
         this.menu = null;
         this.elementGroup = new MenuElementGroup();
         this.isActive = false;
@@ -64,11 +61,29 @@ final public class EditionDataFields implements FieldNode {
 
     private float getSpacing(Attribute attribute) {
         if (attribute instanceof EditionDataAttribute dataAttribute) {
-            EditionData data = dataAttribute.getData();
+            float fieldHeight = 45f;
+            float editionDataFieldSize = switch (dataAttribute.getData().getCategory()) {
+                case HITBOX -> 2 * fieldHeight;
+                case NONE -> {
+                    if (dataAttribute.getData().getType() == EditionData.Types.spritesheetInfo) {
+                        yield 5 * fieldHeight;
+                    }
+                    else {
+                        assert false : "incorrect edition data type";
+                        yield 0f;
+                    }
+                }
+                default -> {
+                    assert false : "incorrect edition data type";
+                    yield 0f;
+                }
+            };
             if (dataAttribute.hasTypeSelect()) {
-                return (data.getAttributesList().size() + 1) * 45f + EditionDataTypeSelect.selectorSpacing;
+                return editionDataFieldSize + fieldHeight + EditionDataTypeSelect.selectorSpacing;
             }
-            return (data.getAttributesList().size() + 1) * 45f;
+            else {
+                return editionDataFieldSize + fieldHeight;
+            }
         }
         else {
             return 45f;
@@ -77,20 +92,20 @@ final public class EditionDataFields implements FieldNode {
 
     private void buildFields(Vec2D startPosition) {
         List<Attribute> attributeList = editionData.getAttributesList();
-        int layer = 1;
+        int fieldLayer = 1;
         float coupleFieldSpacing = 35f;
         Vec2D fieldMargin = new Vec2D(320f, 0f);
 
 
         Vec2D attributePosition = startPosition;
         for (Attribute attribute : attributeList) {
-            TextDisplay attributeLabel = new TextDisplay(layer, false, attributePosition, AttributeLabels.get(attribute.getKey()) + ":", Style.Text.menuTextStyle, TextAlignment.LEFT);
+            TextDisplay attributeLabel = new TextDisplay(fieldLayer, false, attributePosition, AttributeLabels.get(attribute.getKey()) + ":", Style.Text.menuTextStyle, TextAlignment.LEFT);
             elementGroup.visuals().add(attributeLabel);
             Vec2D fieldPosition = attributePosition.add(fieldMargin);
             switch (attribute) {
                 case BooleanAttribute booleanAttribute -> {
                     Vec2D fieldOffset = new Vec2D(16f, 0f);
-                    BooleanField checkbox = Checkbox(layer, fieldPosition.add(fieldOffset), booleanAttribute.getValue());
+                    BooleanField checkbox = Checkbox(fieldLayer, fieldPosition.add(fieldOffset), booleanAttribute.getValue());
                     elementGroup.widgets().add(checkbox);
                     attributeWidgetsMap.put(attribute, List.of(checkbox));
                 }
@@ -98,7 +113,7 @@ final public class EditionDataFields implements FieldNode {
                 case DoubleAttribute doubleAttribute -> {
                     float fieldWidthPixels = 120f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
-                    TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(doubleAttribute.getValue()));
+                    TextField textField = EditorTextField(fieldLayer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(doubleAttribute.getValue()));
                     elementGroup.widgets().add(textField);
                     attributeWidgetsMap.put(attribute, List.of(textField));
                 }
@@ -106,21 +121,14 @@ final public class EditionDataFields implements FieldNode {
                 case EditionDataAttribute editionDataAttribute -> {
                     Vec2D fieldOffset = new Vec2D(60f, -45f);
                     fieldPosition = attributePosition.add(fieldOffset);
-                    if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect node = new EditionDataTypeSelect(editionDataAttribute.getData(), fieldPosition);
-                        children.add(node);
-                        editionDataTypeSelectMap.put(editionDataAttribute, node);
-                    }
-                    else {
-                        EditionDataFields node = new EditionDataFields(editionDataAttribute.getData(), fieldPosition);
-                        children.add(node);
-                    }
+                    EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(editionDataAttribute.getData(), fieldPosition);
+                    childrenNodeMap.put(editionDataAttribute, node);
                 }
 
                 case FloatAttribute floatAttribute -> {
                     float fieldWidthPixels = 120f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
-                    TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(floatAttribute.getValue()));
+                    TextField textField = EditorTextField(fieldLayer, fieldPosition.add(fieldOffset), fieldWidthPixels, df.format(floatAttribute.getValue()));
                     elementGroup.widgets().add(textField);
                     attributeWidgetsMap.put(attribute, List.of(textField));
                 }
@@ -128,7 +136,7 @@ final public class EditionDataFields implements FieldNode {
                 case IntegerAttribute integerAttribute -> {
                     float fieldWidthPixels = 100f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
-                    TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, Integer.toString(integerAttribute.getValue()));
+                    TextField textField = EditorTextField(fieldLayer, fieldPosition.add(fieldOffset), fieldWidthPixels, Integer.toString(integerAttribute.getValue()));
                     elementGroup.widgets().add(textField);
                     attributeWidgetsMap.put(attribute, List.of(textField));
                 }
@@ -136,16 +144,16 @@ final public class EditionDataFields implements FieldNode {
                 case IVec2DAttribute iVec2DAttribute -> {
                     float fieldWidthPixels = 100f;
                     float fieldLabelOffset = 25f;
-                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+                    TextDisplay fieldLabel1 = new TextDisplay(fieldLayer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
-                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().x));
+                    TextField textField1 = EditorTextField(fieldLayer, fieldPosition.add(field1Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().x));
                     elementGroup.widgets().add(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + fieldWidthPixels + coupleFieldSpacing, fieldPosition.y);
-                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+                    TextDisplay fieldDisplay2 = new TextDisplay(fieldLayer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldLabelOffset + fieldWidthPixels + coupleFieldSpacing + fieldWidthPixels / 2, 0f);
-                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().y));
+                    TextField textField2 = EditorTextField(fieldLayer, fieldPosition.add(field2Offset), fieldWidthPixels, Integer.toString(iVec2DAttribute.getValue().y));
                     elementGroup.widgets().add(textField2);
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
@@ -153,28 +161,29 @@ final public class EditionDataFields implements FieldNode {
                 case ListAttribute listAttribute -> {
                     Vec2D listStartPosition = startPosition.add(850f, 0f);
                     ArrayList<EditionData> listCopy = new ArrayList<>(listAttribute.getDataList());
-                    ListFields listFields = new ListFields(layer, listCopy, listStartPosition);
-                    int fieldsListIndex = listFieldsList.size();
-                    listFieldsList.add(listFields);
+                    ListFields listFields = new ListFields(listCopy, listStartPosition, listAttribute.getCategory() == EditionData.Category.NONE);
+                    int fieldsListIndex = listFieldsSelectList.size();
+                    listFieldsSelectList.add(listFields);
                     Vec2D openListButtonSize = new Vec2D(80f, 40f);
                     Vec2D fieldOffset = new Vec2D(openListButtonSize.x / 2, 0f);
                     Runnable onClick = () -> {
                         if (!Objects.equals(selectedListIndex, fieldsListIndex)) {
                             if (selectedListIndex != null) {
-                                listFieldsList.get(selectedListIndex).setActive(false);
+                                listFieldsSelectList.get(selectedListIndex).setActive(false);
                             }
-                            listFieldsList.get(fieldsListIndex).setActive(isActive);
+                            listFieldsSelectList.get(fieldsListIndex).setActive(isActive);
                             selectedListIndex = fieldsListIndex;
                         }
                     };
-                    Widget openListButton = Widgets.RoundedRectangleButton(layer, openListButtonSize, fieldPosition.add(fieldOffset), Style.editionSelectorUnselected, "Open", onClick);
+                    Widget openListButton = Widgets.RoundedRectangleButton(fieldLayer, openListButtonSize, fieldPosition.add(fieldOffset), Style.editionSelectorUnselected, "Open", onClick);
                     elementGroup.widgets().add(openListButton);
+                    childrenNodeMap.put(listAttribute, listFields);
                 }
 
                 case StringAttribute stringAttribute -> {
                     float fieldWidthPixels = 300f;
                     Vec2D fieldOffset = new Vec2D(fieldWidthPixels / 2, 0f);
-                    TextField textField = EditorTextField(layer, fieldPosition.add(fieldOffset), fieldWidthPixels, stringAttribute.getValue());
+                    TextField textField = EditorTextField(fieldLayer, fieldPosition.add(fieldOffset), fieldWidthPixels, stringAttribute.getValue());
                     elementGroup.widgets().add(textField);
                     attributeWidgetsMap.put(attribute, List.of(textField));
                 }
@@ -182,16 +191,16 @@ final public class EditionDataFields implements FieldNode {
                 case Vec2DAttribute vec2DAttribute -> {
                     float fieldWidthPixels = 120f;
                     float fieldLabelOffset = 25f;
-                    TextDisplay fieldLabel1 = new TextDisplay(layer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+                    TextDisplay fieldLabel1 = new TextDisplay(fieldLayer, false, fieldPosition, "x:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldLabel1);
                     Vec2D field1Offset = new Vec2D(fieldWidthPixels / 2 + fieldLabelOffset, 0f);
-                    TextField textField1 = EditorTextField(layer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().x));
+                    TextField textField1 = EditorTextField(fieldLayer, fieldPosition.add(field1Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().x));
                     elementGroup.widgets().add(textField1);
                     Vec2D fieldLabel2Position = new Vec2D(fieldPosition.x + fieldWidthPixels + coupleFieldSpacing, fieldPosition.y);
-                    TextDisplay fieldDisplay2 = new TextDisplay(layer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+                    TextDisplay fieldDisplay2 = new TextDisplay(fieldLayer, false, fieldLabel2Position, "y:", Style.Text.menuTextStyle, TextAlignment.LEFT);
                     elementGroup.visuals().add(fieldDisplay2);
                     Vec2D field2Offset = new Vec2D(fieldLabelOffset + fieldWidthPixels + coupleFieldSpacing + fieldWidthPixels / 2, 0f);
-                    TextField textField2 = EditorTextField(layer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().y));
+                    TextField textField2 = EditorTextField(fieldLayer, fieldPosition.add(field2Offset), fieldWidthPixels, df.format(vec2DAttribute.getValue().y));
                     elementGroup.widgets().add(textField2);
                     attributeWidgetsMap.put(attribute, List.of(textField1, textField2));
                 }
@@ -217,11 +226,8 @@ final public class EditionDataFields implements FieldNode {
                     textField.setStringValue(df.format(doubleAttribute.getValue()));
                 }
 
-                case EditionDataAttribute editionDataAttribute -> {
-                    if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
-                        editionDataTypeSelect.setData(editionDataAttribute.getData());
-                    }
+                case EditionDataAttribute ignored -> {
+                    assert false : "attribute should not be in map";
                 }
 
                 case FloatAttribute floatAttribute -> {
@@ -245,7 +251,7 @@ final public class EditionDataFields implements FieldNode {
                 }
 
                 case ListAttribute ignored -> {
-                    //already taken care of
+                    assert false : "attribute should not be in map";
                 }
 
                 case StringAttribute stringAttribute -> {
@@ -268,7 +274,7 @@ final public class EditionDataFields implements FieldNode {
     public void resetToDefault() {
         this.editionData.setToDefault();
         this.loadFieldsFromAttributes();
-        for (FieldNode node : children) {
+        for (FieldNode node : childrenNodeMap.values()) {
             if (node instanceof EditionDataFields editionDataFields) {
                 editionDataFields.resetToDefault();
             }
@@ -277,22 +283,7 @@ final public class EditionDataFields implements FieldNode {
     @Override
     public void setMenu(Menu menu) {
         this.menu = menu;
-        children.forEach(fieldNode -> fieldNode.setMenu(menu));
-        listFieldsList.forEach(listFields -> listFields.setMenu(menu));
-    }
-    @Override
-    public MenuElementGroup getAllActiveElements() {
-        MenuElementGroup allActiveElements = new MenuElementGroup();
-        if (this.isActive) {
-            allActiveElements.widgets().addAll(elementGroup.widgets());
-            allActiveElements.visuals().addAll(elementGroup.visuals());
-            for (FieldNode node : children) {
-                MenuElementGroup editionDataFieldsElements = node.getAllActiveElements();
-                allActiveElements.widgets().addAll(editionDataFieldsElements.widgets());
-                allActiveElements.visuals().addAll(editionDataFieldsElements.visuals());
-            }
-        }
-        return allActiveElements;
+        childrenNodeMap.values().forEach(fieldNode -> fieldNode.setMenu(menu));
     }
     @Override
     public void setActive(boolean active) {
@@ -306,15 +297,33 @@ final public class EditionDataFields implements FieldNode {
                     menu.removeFromCurrentScreen(this.elementGroup);
                 }
             }
-            children.forEach(node -> node.setActive(active));
+            for (FieldNode node : childrenNodeMap.values()) {
+                if (!(node instanceof ListFields)) {
+                    node.setActive(active);
+                }
+            }
             if (selectedListIndex != null) {
-                listFieldsList.get(selectedListIndex).setActive(active);
+                listFieldsSelectList.get(selectedListIndex).setActive(active);
             }
         }
     }
     @Override
     public void applyChanges() {
-        children.forEach(FieldNode::applyChanges);
+
+        for (var entry : childrenNodeMap.entrySet()) {
+            Attribute attribute = entry.getKey();
+            FieldNode node = entry.getValue();
+            node.applyChanges();
+            switch (node) {
+                case EditionDataFieldNode editionDataNode -> {
+                    EditionDataAttribute editionDataAttribute = (EditionDataAttribute) attribute;
+                    editionDataAttribute.setData(editionDataNode.getEditionData());
+                }
+                case ListFields ignored -> {
+                }
+            }
+        }
+
         for (var entry : attributeWidgetsMap.entrySet()) {
             Attribute attribute = entry.getKey();
             List<Widget> items = entry.getValue();
@@ -333,11 +342,8 @@ final public class EditionDataFields implements FieldNode {
                     doubleAttribute.setValue(value);
                 }
 
-                case EditionDataAttribute editionDataAttribute -> {
-                    if (editionDataAttribute.hasTypeSelect()) {
-                        EditionDataTypeSelect editionDataTypeSelect = editionDataTypeSelectMap.get(editionDataAttribute);
-                        editionDataAttribute.setData(editionDataTypeSelect.getSelectedEditionData());
-                    }
+                case EditionDataAttribute ignored -> {
+                    assert false : "attribute should not be in map";
                 }
 
                 case FloatAttribute floatAttribute -> {
@@ -363,8 +369,8 @@ final public class EditionDataFields implements FieldNode {
                     iVec2DAttribute.setValue(new IVec2D(xValue, yValue));
                 }
 
-                case ListAttribute listAttribute -> {
-                    //already taken care of
+                case ListAttribute ignored -> {
+                    assert false : "attribute should not be in map";
                 }
 
                 case StringAttribute stringAttribute -> {

@@ -437,8 +437,8 @@ final public class EditionData {
                 new IntegerAttribute(Keys.Entity.Projectile.spriteVisualId),
                 new EditionDataAttribute(Keys.Entity.Projectile.hitbox),
                 new IntegerAttribute(Keys.Entity.Projectile.defaultTrajectoryId),
-                new ListAttribute(Keys.Entity.Projectile.shots),
-                new ListAttribute(Keys.Entity.Projectile.deathSpawn)
+                new ListAttribute(Category.NONE, Keys.Entity.Projectile.shots),
+                new ListAttribute(Category.SPAWN, Keys.Entity.Projectile.deathSpawn)
             );
             return new EditionData(Category.ENTITY, Types.Entity.projectile, attributeList, projectileDefaultValues);
         }
@@ -476,8 +476,8 @@ final public class EditionData {
                 new IntegerAttribute(Keys.Entity.Ship.spriteVisualId),
                 new EditionDataAttribute(Keys.Entity.Ship.hitbox),
                 new IntegerAttribute(Keys.Entity.Ship.defaultTrajectoryId),
-                new ListAttribute(Keys.Entity.Ship.shots),
-                new ListAttribute(Keys.Entity.Ship.deathSpawn)
+                new ListAttribute(Category.NONE, Keys.Entity.Ship.shots),
+                new ListAttribute(Category.SPAWN, Keys.Entity.Ship.deathSpawn)
             );
             return new EditionData(Category.ENTITY, Types.Entity.ship, attributeList, shipDefaultValues);
         }
@@ -564,7 +564,7 @@ final public class EditionData {
         public static EditionData SingleSpawnInfo() {
             List<Attribute> attributeList = List.of(
                 new DoubleAttribute(Keys.SpawnInfo.Single.spawnTime),
-                new ListAttribute(Keys.SpawnInfo.Single.spawns)
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Single.spawns)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.single, attributeList, singleSpawnInfoDefaultValues);
         }
@@ -586,7 +586,7 @@ final public class EditionData {
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.startTime),
                 new IntegerAttribute(Keys.SpawnInfo.Repeat.spawnCount),
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.interval),
-                new ListAttribute(Keys.SpawnInfo.Repeat.spawns)
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Repeat.spawns)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.repeat, attributeList, repeatSpawnInfoDefaultValues);
         }
@@ -654,7 +654,7 @@ final public class EditionData {
         List<Attribute> attributeList = List.of(
             new FloatAttribute(Keys.Shot.shotPeriod),
             new FloatAttribute(Keys.Shot.firstShotTime),
-            new ListAttribute(Keys.Shot.spawn)
+            new ListAttribute(Category.SPAWN, Keys.Shot.spawn)
         );
         return new EditionData(Category.NONE, Types.shot, attributeList, shotDefaultValues);
     }

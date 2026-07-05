@@ -3,7 +3,6 @@ package editor.fieldNode;
 import editor.Style;
 import editor.Widgets;
 import engine.menu.Menu;
-import engine.menu.MenuElementGroup;
 import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
@@ -18,7 +17,7 @@ import java.util.function.Supplier;
 
 import static json.editionData.EditionData.*;
 
-final public class EditionDataTypeSelect implements FieldNode {
+final public class EditionDataTypeSelect implements EditionDataFieldNode {
 
     final private static Map<Category, List<Type>> typesMap = Map.of(
         Category.VISUAL, List.of(Types.Visual.scrollingImage, Types.Visual.animation),
@@ -97,7 +96,7 @@ final public class EditionDataTypeSelect implements FieldNode {
             }
         };
         this.menu = null;
-        this.typeSelectText = new TextDisplay(1, false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+        this.typeSelectText = new TextDisplay(2, false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
         Vec2D fieldPosition = startPosition.add(200f, 0f);
         Vec2D selectorButtonsSize = new Vec2D(200f, buttonSize.y);
         Vec2D selectorButtonsStride = new Vec2D(220f, 0.0f);
@@ -105,11 +104,13 @@ final public class EditionDataTypeSelect implements FieldNode {
         this.selectorButtons.setSelectedValue(selectedValue);
     }
 
-    public EditionData getSelectedEditionData() {
+    @Override
+    public EditionData getEditionData() {
         return editionDataFieldsList.get(selectorButtons.getSelectedValue()).getEditionData();
     }
 
-    public void setData(EditionData editionData) {
+    @Override
+    public void setEditionData(EditionData editionData) {
         editionData.checkForCategory(this.category);
         Type type = editionData.getType();
         for (int i = 0; i < this.types.size(); i++) {
@@ -128,29 +129,16 @@ final public class EditionDataTypeSelect implements FieldNode {
     }
 
     @Override
-    public MenuElementGroup getAllActiveElements() {
-        MenuElementGroup allActiveElements = new MenuElementGroup();
-        if (this.isActive) {
-            allActiveElements.widgets().add(selectorButtons);
-            allActiveElements.visuals().add(typeSelectText);
-            for (EditionDataFields fields : editionDataFieldsList) {
-                MenuElementGroup editionDataFieldsElements = fields.getAllActiveElements();
-                allActiveElements.widgets().addAll(editionDataFieldsElements.widgets());
-                allActiveElements.visuals().addAll(editionDataFieldsElements.visuals());
-            }
-        }
-        return allActiveElements;
-    }
-
-    @Override
     public void setActive(boolean active) {
         if (this.isActive != active) {
             this.isActive = active;
             if (this.menu != null) {
                 if (active) {
+                    menu.addToCurrentScreen(typeSelectText);
                     menu.addToCurrentScreen(selectorButtons);
                 }
                 else {
+                    menu.removeFromCurrentScreen(typeSelectText);
                     menu.removeFromCurrentScreen(selectorButtons);
                 }
             }
