@@ -161,7 +161,7 @@ final public class EditionDataFields implements EditionDataFieldNode {
                 case ListAttribute listAttribute -> {
                     Vec2D listStartPosition = startPosition.add(850f, 0f);
                     ArrayList<EditionData> listCopy = new ArrayList<>(listAttribute.getDataList());
-                    ListFields listFields = new ListFields(listCopy, listStartPosition, listAttribute.getCategory() == EditionData.Category.NONE);
+                    ListFields listFields = new ListFields(listAttribute.getCategory(), listCopy, listStartPosition, listAttribute.getCategory() == EditionData.Category.NONE);
                     int fieldsListIndex = listFieldsSelectList.size();
                     listFieldsSelectList.add(listFields);
                     Vec2D openListButtonSize = new Vec2D(80f, 40f);
@@ -319,7 +319,11 @@ final public class EditionDataFields implements EditionDataFieldNode {
                     EditionDataAttribute editionDataAttribute = (EditionDataAttribute) attribute;
                     editionDataAttribute.setData(editionDataNode.getEditionData());
                 }
-                case ListFields ignored -> {
+                case ListFields listFields -> {
+                    ListAttribute listAttribute = (ListAttribute) attribute;
+                    ArrayList<EditionData> dataList = listAttribute.getDataList();
+                    dataList.clear();
+                    dataList.addAll(listFields.getDataList());
                 }
             }
         }

@@ -61,4 +61,8 @@ final public class Style {
 
     final public static RoundedRectangleButtonStyle editionSelectorUnselected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
 
+    final public static RoundedRectangleButtonStyle editableListUnselected = editionSelectorUnselected;
+
+    final public static RoundedRectangleButtonStyle editableListSelected = editionSelectorSelected;
+
 }

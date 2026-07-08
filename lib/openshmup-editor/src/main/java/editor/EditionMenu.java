@@ -1,13 +1,13 @@
 package editor;
 
 import editor.fieldNode.EditionDataFieldNode;
+import editor.fieldNode.FieldNode;
+import editor.fieldNode.ListFields;
 import engine.Engine;
 import engine.menu.Menu;
-import engine.menu.MenuElementGroup;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
 import engine.menu.widget.SelectorButtons;
-import engine.menu.widget.Widget;
 import engine.menu.widget.Widgets;
 import engine.scene.Scene;
 import engine.scene.visual.BorderedRoundedRectangle;
@@ -50,112 +50,50 @@ final public class EditionMenu {
         ActionButton returnToMainMenuButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
         mainScreen.addWidget(returnToMainMenuButton);
 
-        Vec2D listButtonSize = new Vec2D(300f, 50f);
-        float listButtonSpacing = 15f;
+        ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
+        Vec2D listStartPosition = new Vec2D(Engine.getNativeWidth() / 2.0f, 850f);
+        ListFields visualListFields = new ListFields(EditionData.Category.VISUAL, visualEditionDataList, listStartPosition, true);
+        visualListFields.setMenu(menu);
 
-        List<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
-        ArrayList<Widget> visualListItems = new ArrayList<>(visualEditionDataList.size());
-        Vec2D fieldsStartPosition = new Vec2D(120f, 830f);
-        for (int i = 0; i < visualEditionDataList.size(); i++) {
-            var visualData = visualEditionDataList.get(i);
-            int finalI = i;
-            Runnable onClick = () -> {
-                EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(visualEditionDataList.get(finalI), fieldsStartPosition);
-                Runnable onApply = () -> applyChangesToList(node, visualEditionDataList, finalI);
-                openEditPanel(menu, 4, node, onApply, () -> {});
-            };
-            String typeString = "";
-            if (visualData.getType() == EditionData.Types.Visual.animation) {
-                typeString = "Animation";
-            }
-            if (visualData.getType() == EditionData.Types.Visual.scrollingImage) {
-                typeString = "Scrolling image";
-            }
-            String menuButtonLabel = EditionData.getVisualId(visualData) + ": " + typeString;
+        ArrayList<EditionData> trajectoryEditionDataList = gameData.getTrajectoryEditionDataList();
 
-            Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
-            visualListItems.add(visualSelectButton);
-        }
-        MenuElementGroup visualList = new MenuElementGroup(visualListItems, List.of());
+        ListFields trajectoryListFields = new ListFields(EditionData.Category.TRAJECTORY, trajectoryEditionDataList, listStartPosition, true);
+        trajectoryListFields.setMenu(menu);
 
-        List<EditionData> trajectoryEditionDataList = gameData.getTrajectoryEditionDataList();
-        ArrayList<Widget> trajectoryListItems = new ArrayList<>(trajectoryEditionDataList.size());
-        for (int i = 0; i < trajectoryEditionDataList.size(); i++) {
-            var trajectoryData = trajectoryEditionDataList.get(i);
-            int finalI = i;
-            Runnable onClick = () -> {
-                EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(trajectoryEditionDataList.get(finalI), fieldsStartPosition);
-                Runnable onApply = () -> applyChangesToList(node, trajectoryEditionDataList, finalI);
-                openEditPanel(menu, 4, node, onApply, () -> {});
-            };
-            String typeString = "";
-            if (trajectoryData.getType() == EditionData.Types.Trajectory.player) {
-                typeString = "Player Controlled";
-            }
-            if (trajectoryData.getType() == EditionData.Types.Trajectory.fixed) {
-                typeString = "Fixed";
-            }
-            String menuButtonLabel = EditionData.getTrajectoryId(trajectoryData) + ": " + typeString;
+        ArrayList<EditionData> entityEditionDataList = gameData.getEntityEditionDataList();
 
-            Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
-            trajectoryListItems.add(visualSelectButton);
-        }
-        MenuElementGroup trajectoryList = new MenuElementGroup(trajectoryListItems, List.of());
+        ListFields entityListFields = new ListFields(EditionData.Category.ENTITY, entityEditionDataList, listStartPosition, true);
+        entityListFields.setMenu(menu);
 
-        List<EditionData> entityEditionDataList = gameData.getEntityEditionDataList();
-        List<Widget> entityListItems = new ArrayList<>(entityEditionDataList.size());
-        for (int i = 0; i < entityEditionDataList.size(); i++) {
-            var entityData = entityEditionDataList.get(i);
-            int finalI = i;
-            Runnable onClick = () -> {
-                EditionDataFieldNode node = EditionDataFieldNode.createFromEtitionData(entityEditionDataList.get(finalI), fieldsStartPosition);
-                Runnable onApply = () -> applyChangesToList(node, entityEditionDataList, finalI);
-                openEditPanel(menu, 4, node, onApply, () -> {});
-            };
-            String typeString = "";
-            if (entityData.getType() == EditionData.Types.Entity.ship) {
-                typeString = "Ship";
-            }
-            if (entityData.getType() == EditionData.Types.Entity.projectile) {
-                typeString = "Projectile";
-            }
-            String menuButtonLabel = EditionData.getEntityId(entityData) + ": " + typeString;
-
-            Vec2D listButtonPosition = new Vec2D((float) Engine.getNativeWidth() / 2, 850f - (i * (listButtonSize.y + listButtonSpacing)));
-            ActionButton visualSelectButton = Widgets.RoundedRectangleButton(2, listButtonSize, listButtonPosition, menuButtonStyle1, menuButtonLabel, onClick);
-            entityListItems.add(visualSelectButton);
-        }
-        MenuElementGroup entityList = new MenuElementGroup(entityListItems, List.of());
-
-        MenuElementGroup timelineSpawnList = new MenuElementGroup();
+        ListFields timelineSpawnInfoList = new ListFields(EditionData.Category.SPAWN_INFO, new ArrayList<>(), listStartPosition, true);
 
         List<String> labels = List.of("Visuals", "Trajectories", "Entities", "Timeline");
         Vec2D selectorButtonStride = new Vec2D(250f, 0f);
         Vec2D selectorButtonSize = new Vec2D(200, 50f);
         Vec2D selectorStartPosition = new Vec2D(Engine.getNativeWidth() * 0.5f - 1.5f * selectorButtonStride.x, 950);
-        final Reference<MenuElementGroup> currentList = new Reference<>(null);
+        final Reference<FieldNode> currentNode = new Reference<>(null);
         BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {
 
-            if (currentList.get() != null) {
-                menu.removeFromCurrentScreen(currentList.get());
+            if (currentNode.get() != null) {
+                currentNode.get().setActive(false);
             }
-            MenuElementGroup newCurrentList = switch (newValue) {
-                case 0 -> visualList;
-                case 1 -> trajectoryList;
-                case 2 -> entityList;
-                case 3 -> timelineSpawnList;
-                default -> throw new IllegalArgumentException("incorrect selected value");
+            FieldNode node = switch (newValue) {
+                case 0 -> visualListFields;
+                case 1 -> trajectoryListFields;
+                case 2 -> entityListFields;
+                default -> {
+                    assert false : "incorrect value";
+                    yield null;
+                }
             };
-            menu.addToCurrentScreen(newCurrentList);
-            currentList.set(newCurrentList);
+            node.setActive(true);
+            currentNode.set(node);
         };
         SelectorButtons categorySelector = EditorSelector(1, 4, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange, 0);
         mainScreen.addWidget(categorySelector);
-        currentList.set(visualList);
-        mainScreen.addElementGroup(currentList.get());
+        currentNode.set(visualListFields);
         menu.addMenuScreen(mainScreen);
+        visualListFields.setActive(true);
 
         return menu;
     }
@@ -184,7 +122,6 @@ final public class EditionMenu {
         editPanel.addVisual(panelTitle);
 
         node.setMenu(menu);
-        node.setActive(true);
 
         Vec2D buttonSize = new Vec2D(150, 50);
         Vec2D applyButtonPosition = new Vec2D(1465, 125);
@@ -199,6 +136,7 @@ final public class EditionMenu {
         editPanel.addWidget(closeButton);
         editPanel.addWidget(applyButton);
         menu.addMenuScreen(editPanel);
+        node.setActive(true);
 
         return editPanel;
     }

@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record MenuElementGroup(
-    List<Widget> widgets,
-    List<SceneVisual> visuals
+    ArrayList<Widget> widgets,
+    ArrayList<SceneVisual> visuals
 ) {
+
+    public MenuElementGroup(List<? extends Widget> widgets, List<? extends SceneVisual> visuals) {
+        this(new ArrayList<>(widgets), new ArrayList<>(visuals));
+    }
 
     public MenuElementGroup() {
         this(new ArrayList<>(), new ArrayList<>());
