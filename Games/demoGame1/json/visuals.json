@@ -1,86 +1,81 @@
 [
     {
+        "type": "scrollingImage",
         "id": 1,
         "layer": 0,
-        "type": "scrollingImage",
+        "size": [1000.0, 562.0],
         "fileName": "bg1.png",
-        "size": [1000, 562],
-        "speed": -200,
+        "speed": -200.0,
         "horizontalScrolling": true
+    }, {
+    "type": "animation",
+    "id": 2,
+    "layer": 10,
+    "size": [50.0, 50.0],
+    "spritesheetInfo": {
+        "fileName": "explosion.png",
+        "frameCount": 5,
+        "frameSize": [16, 16],
+        "startingPosition": [0, 0],
+        "stride": [16, 0]
     },
-    {
-        "id": 2,
-        "layer": 10,
-        "type": "animation",
-        "spritesheetInfo": {
-            "fileName": "explosion.png",
-            "frameCount": 5,
-            "frameSize": [16, 16],
-            "startingPosition": [0, 0],
-            "stride": [16, 0]
-        },
-        "framePeriodSeconds": 0.07,
-        "looping": false,
-        "size": [50, 50]
+    "framePeriodSeconds": 0.07000000029802322,
+    "looping": false
+}, {
+    "type": "animation",
+    "id": 3,
+    "layer": 2,
+    "size": [100.0, 100.0],
+    "spritesheetInfo": {
+        "fileName": "Spaceships.png",
+        "frameCount": 1,
+        "frameSize": [64, 64],
+        "startingPosition": [128, 64],
+        "stride": [0, 0]
     },
-    {
-        "id": 3,
-        "layer": 2,
-        "type": "animation",
-        "spritesheetInfo": {
-            "fileName": "Spaceships.png",
-            "frameCount": 1,
-            "frameSize": [64, 64],
-            "startingPosition": [128, 64],
-            "stride": [0, 0]
-        },
-        "framePeriodSeconds": 0.25,
-        "looping": true,
-        "size": [100, 100]
+    "framePeriodSeconds": 0.25,
+    "looping": true
+}, {
+    "type": "animation",
+    "id": 4,
+    "layer": 2,
+    "size": [10.0, 10.0],
+    "spritesheetInfo": {
+        "fileName": "laser-bolts-blue.png",
+        "frameCount": 1,
+        "frameSize": [5, 5],
+        "startingPosition": [6, 20],
+        "stride": [14, 0]
     },
-    {
-        "id": 4,
-        "layer": 2,
-        "type": "animation",
-        "spritesheetInfo": {
-            "fileName": "laser-bolts-blue.png",
-            "frameCount": 1,
-            "frameSize": [5, 5],
-            "startingPosition": [6, 20],
-            "stride": [14, 0]
-        },
-        "framePeriodSeconds": 0.25,
-        "looping": true,
-        "size": [10, 10]
+    "framePeriodSeconds": 0.25,
+    "looping": true
+}, {
+    "type": "animation",
+    "id": 5,
+    "layer": 4,
+    "size": [50.0, 50.0],
+    "spritesheetInfo": {
+        "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
+        "frameCount": 6,
+        "frameSize": [16, 16],
+        "startingPosition": [1, 451],
+        "stride": [18, 0]
     },
-    {
-        "id": 5,
-        "layer": 4,
-        "type": "animation",
-        "spritesheetInfo": {
-            "fileName": "oga-swm-objectsandenemies-sheet-alpha.png",
-            "frameCount": 6,
-            "frameSize": [16, 16],
-            "startingPosition": [1, 451],
-            "stride": [18, 0]
-        },
-        "framePeriodSeconds": 0.2,
-        "looping": true,
-        "size": [50, 50]
+    "framePeriodSeconds": 0.20000000298023224,
+    "looping": true
+}, {
+    "type": "animation",
+    "id": 6,
+    "layer": 3,
+    "size": [10.0, 10.0],
+    "spritesheetInfo": {
+        "fileName": "laser-bolts.png",
+        "frameCount": 2,
+        "frameSize": [5, 5],
+        "startingPosition": [6, 20],
+        "stride": [14, 0]
     },
-    {
-        "id": 6,
-        "layer": 3,
-        "type": "animation",
-        "spritesheetInfo": {
-            "fileName": "laser-bolts.png",
-            "frameCount": 2,
-            "frameSize": [5, 5],
-            "startingPosition": [6, 20],
-            "stride": [14, 0]
-        },
-        "framePeriodSeconds": 0.25,
-        "looping": true,
-        "size": [10, 10]
-    }
+    "framePeriodSeconds": 0.25,
+    "looping": true
+}
 ]

@@ -19,6 +19,7 @@ import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
 import json.GameEditionData;
+import json.JsonDataWriter;
 import json.editionData.EditionData;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ final public class EditionMenu {
     private EditionMenu() {}
 
     public static Menu EditionMenu(GameEditionData gameData) {
+        JsonDataWriter jsonDataWriter = new JsonDataWriter();
         Menu menu = new Menu();
         MenuScreen mainScreen = new MenuScreen(0);
 
@@ -49,6 +51,8 @@ final public class EditionMenu {
         };
         ActionButton returnToMainMenuButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
         mainScreen.addWidget(returnToMainMenuButton);
+        ActionButton saveButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, "Save", () -> jsonDataWriter.saveToJson(gameData));
+        mainScreen.addWidget(saveButton);
 
         ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         Vec2D listStartPosition = new Vec2D(Engine.getNativeWidth() / 2.0f, 850f);
@@ -61,11 +65,12 @@ final public class EditionMenu {
         trajectoryListFields.setMenu(menu);
 
         ArrayList<EditionData> entityEditionDataList = gameData.getEntityEditionDataList();
-
         ListFields entityListFields = new ListFields(EditionData.Category.ENTITY, entityEditionDataList, listStartPosition, true);
         entityListFields.setMenu(menu);
 
-        ListFields timelineSpawnInfoList = new ListFields(EditionData.Category.SPAWN_INFO, new ArrayList<>(), listStartPosition, true);
+        ArrayList<EditionData> timelineEditionDataList = gameData.getTimelineDataList();
+        ListFields timelineSpawnInfoList = new ListFields(EditionData.Category.SPAWN_INFO, timelineEditionDataList, listStartPosition, true);
+        timelineSpawnInfoList.setMenu(menu);
 
         List<String> labels = List.of("Visuals", "Trajectories", "Entities", "Timeline");
         Vec2D selectorButtonStride = new Vec2D(250f, 0f);
@@ -81,6 +86,7 @@ final public class EditionMenu {
                 case 0 -> visualListFields;
                 case 1 -> trajectoryListFields;
                 case 2 -> entityListFields;
+                case 3 -> timelineSpawnInfoList;
                 default -> {
                     assert false : "incorrect value";
                     yield null;

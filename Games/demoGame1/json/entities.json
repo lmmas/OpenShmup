@@ -1,14 +1,14 @@
 [
     {
+        "type": "ship",
         "id": 0,
         "evil": false,
-        "type": "ship",
         "hp": 5,
-        "size": [100, 100],
+        "size": [100.0, 100.0],
         "spriteVisualId": 3,
         "hitbox": {
             "type": "rectangle",
-            "size": [100, 100]
+            "size": [100.0, 100.0]
         },
         "defaultTrajectoryId": 0,
         "shots": [
@@ -20,19 +20,17 @@
                         "type": "entity",
                         "id": 1,
                         "trajectory": 2,
-                        "startingPosition": [25, 0]
-                    },
-                    {
+                        "startingPosition": [25.0, 0.0]
+                    }, {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 3,
-                        "startingPosition": [25, 0]
-                    },
-                    {
+                        "startingPosition": [25.0, 0.0]
+                    }, {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 4,
-                        "startingPosition": [25, 0]
+                        "startingPosition": [25.0, 0.0]
                     }
                 ]
             }
@@ -41,68 +39,67 @@
             {
                 "type": "display",
                 "id": 2,
-                "position": [0, 0]
+                "position": [0.0, 0.0]
             }
         ]
+    }, {
+    "type": "projectile",
+    "id": 1,
+    "evil": false,
+    "size": [10.0, 10.0],
+    "spriteVisualId": 4,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [10.0, 10.0]
     },
-    {
-        "id": 1,
-        "type": "projectile",
-        "evil": false,
-        "size": [10, 10],
-        "spriteVisualId": 4,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [10, 10]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": []
+    "defaultTrajectoryId": 1,
+    "shots": [],
+    "deathSpawn": []
+}, {
+    "type": "ship",
+    "id": 2,
+    "evil": true,
+    "hp": 5,
+    "size": [50.0, 50.0],
+    "spriteVisualId": 5,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [50.0, 50.0]
     },
-    {
-        "id": 2,
-        "type": "ship",
-        "hp": 5,
-        "evil": true,
-        "size": [50, 50],
-        "spriteVisualId": 5,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [50, 50]
-        },
-        "defaultTrajectoryId": 1,
-        "shots": [
-            {
-                "shotPeriod": 1.0,
-                "firstShotTime": 2,
-                "spawn": [
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 1,
-                        "startingPosition": [0, -30]
-                    }
-                ]
-            }
-        ],
-        "deathSpawn": [
-            {
-                "type": "display",
-                "id": 2,
-                "position": [0, 0]
-            }
-        ]
+    "defaultTrajectoryId": 1,
+    "shots": [
+        {
+            "shotPeriod": 1.0,
+            "firstShotTime": 2.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 1,
+                    "startingPosition": [0.0, -30.0]
+                }
+            ]
+        }
+    ],
+    "deathSpawn": [
+        {
+            "type": "display",
+            "id": 2,
+            "position": [0.0, 0.0]
+        }
+    ]
+}, {
+    "type": "projectile",
+    "id": 3,
+    "evil": true,
+    "size": [10.0, 10.0],
+    "spriteVisualId": 6,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [10.0, 10.0]
     },
-    {
-        "id": 3,
-        "type": "projectile",
-        "evil": true,
-        "size": [10, 10],
-        "spriteVisualId": 6,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [10, 10]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": []
-    }
+    "defaultTrajectoryId": 1,
+    "shots": [],
+    "deathSpawn": []
+}
 ]

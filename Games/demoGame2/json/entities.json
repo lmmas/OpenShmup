@@ -1,14 +1,14 @@
 [
     {
+        "type": "ship",
         "id": 0,
         "evil": false,
-        "type": "ship",
         "hp": 5,
-        "size": [50, 75],
+        "size": [50.0, 75.0],
         "spriteVisualId": 3,
         "hitbox": {
             "type": "custom",
-            "size": [50, 75],
+            "size": [50.0, 75.0],
             "fileName": "shipHitbox.png"
         },
         "defaultTrajectoryId": 0,
@@ -21,19 +21,17 @@
                         "type": "entity",
                         "id": 1,
                         "trajectory": 2,
-                        "startingPosition": [0, 30]
-                    },
-                    {
+                        "startingPosition": [0.0, 30.0]
+                    }, {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 3,
-                        "startingPosition": [0, 30]
-                    },
-                    {
+                        "startingPosition": [0.0, 30.0]
+                    }, {
                         "type": "entity",
                         "id": 1,
                         "trajectory": 4,
-                        "startingPosition": [0, 30]
+                        "startingPosition": [0.0, 30.0]
                     }
                 ]
             }
@@ -42,175 +40,162 @@
             {
                 "type": "display",
                 "id": 2,
-                "position": [0, 0]
+                "position": [0.0, 0.0]
             }
         ]
+    }, {
+    "type": "projectile",
+    "id": 1,
+    "evil": false,
+    "size": [10.0, 26.0],
+    "spriteVisualId": 4,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [10.0, 26.0]
     },
-    {
-        "id": 1,
-        "type": "projectile",
-        "evil": false,
-        "size": [10, 26],
-        "spriteVisualId": 4,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [10, 26]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": []
+    "defaultTrajectoryId": 1,
+    "shots": [],
+    "deathSpawn": []
+}, {
+    "type": "ship",
+    "id": 2,
+    "evil": true,
+    "hp": 5,
+    "size": [50.0, 50.0],
+    "spriteVisualId": 5,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [50.0, 50.0]
     },
-    {
-        "id": 2,
-        "type": "ship",
-        "hp": 5,
-        "evil": true,
-        "size": [50, 50],
-        "spriteVisualId": 5,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [50, 50]
-        },
-        "defaultTrajectoryId": 1,
-        "shots": [
-            {
-                "type": "shot",
-                "shotPeriod": 0.5,
-                "firstShotTime": 1.5,
-                "spawn": [
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 1,
-                        "startingPosition": [0, -30]
-                    }
-                ]
-            }
-        ],
-        "deathSpawn": [
-            {
-                "type": "display",
-                "id": 2,
-                "position": [0, 0]
-            }
-        ]
+    "defaultTrajectoryId": 1,
+    "shots": [
+        {
+            "shotPeriod": 0.5,
+            "firstShotTime": 1.5,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 1,
+                    "startingPosition": [0.0, -30.0]
+                }
+            ]
+        }
+    ],
+    "deathSpawn": [
+        {
+            "type": "display",
+            "id": 2,
+            "position": [0.0, 0.0]
+        }
+    ]
+}, {
+    "type": "projectile",
+    "id": 3,
+    "evil": true,
+    "size": [20.0, 20.0],
+    "spriteVisualId": 6,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [15.0, 15.0]
     },
-    {
-        "id": 3,
-        "type": "projectile",
-        "evil": true,
-        "size": [20, 20],
-        "spriteVisualId": 6,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [15, 15]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": []
+    "defaultTrajectoryId": 1,
+    "shots": [],
+    "deathSpawn": []
+}, {
+    "type": "ship",
+    "id": 4,
+    "evil": true,
+    "hp": 5,
+    "size": [50.0, 50.0],
+    "spriteVisualId": 7,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [50.0, 50.0]
     },
-    {
-        "id": 4,
-        "type": "ship",
-        "hp": 5,
-        "evil": true,
-        "size": [50, 50],
-        "spriteVisualId": 7,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [50, 50]
-        },
-        "defaultTrajectoryId": 1,
-        "deathSpawn": [
-            {
-                "type": "display",
-                "id": 2,
-                "position": [0, 0]
-            }
-        ]
+    "defaultTrajectoryId": 1,
+    "shots": [],
+    "deathSpawn": [
+        {
+            "type": "display",
+            "id": 2,
+            "position": [0.0, 0.0]
+        }
+    ]
+}, {
+    "type": "ship",
+    "id": 5,
+    "evil": true,
+    "hp": 30,
+    "size": [100.0, 100.0],
+    "spriteVisualId": 5,
+    "hitbox": {
+        "type": "rectangle",
+        "size": [100.0, 100.0]
     },
-    {
-        "id": 5,
-        "type": "ship",
-        "hp": 30,
-        "evil": true,
-        "size": [100, 100],
-        "spriteVisualId": 5,
-        "hitbox": {
-            "type": "rectangle",
-            "size": [100, 100]
-        },
-        "defaultTrajectoryId": 5,
-        "shots": [
-            {
-                "type": "shot",
-                "shotPeriod": 0.8,
-                "firstShotTime": 1.0,
-                "spawn": [
-                    {
-                        "type": "entity",
-                        "id": 4,
-                        "trajectory": 10,
-                        "startingPosition": [0, -30]
-                    }
-                ]
-            },
-            {
-                "type": "shot",
-                "shotPeriod": 0.3,
-                "firstShotTime": 1.5,
-                "spawn": [
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 6,
-                        "startingPosition": [0, 0]
-                    },
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 7,
-                        "startingPosition": [0, 0]
-                    },
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 8,
-                        "startingPosition": [0, 0]
-                    },
-                    {
-                        "type": "entity",
-                        "id": 3,
-                        "trajectory": 9,
-                        "startingPosition": [0, 0]
-                    }
-                ]
-            }
-        ],
-        "deathSpawn": [
-            {
-                "type": "display",
-                "id": 2,
-                "position": [0, 0]
-            },
-            {
-                "type": "display",
-                "id": 2,
-                "position": [-40, -40]
-            },
-            {
-                "type": "display",
-                "id": 2,
-                "position": [-40, 40]
-            },
-            {
-                "type": "display",
-                "id": 2,
-                "position": [40, -40]
-            },
-            {
-                "type": "display",
-                "id": 2,
-                "position": [40, 40]
-            }
-        ]
-    }
+    "defaultTrajectoryId": 5,
+    "shots": [
+        {
+            "shotPeriod": 0.8,
+            "firstShotTime": 1.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 10,
+                    "startingPosition": [0.0, -30.0]
+                }
+            ]
+        }, {
+            "shotPeriod": 0.3,
+            "firstShotTime": 1.5,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 6,
+                    "startingPosition": [0.0, 0.0]
+                }, {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 7,
+                    "startingPosition": [0.0, 0.0]
+                }, {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 8,
+                    "startingPosition": [0.0, 0.0]
+                }, {
+                    "type": "entity",
+                    "id": 3,
+                    "trajectory": 9,
+                    "startingPosition": [0.0, 0.0]
+                }
+            ]
+        }
+    ],
+    "deathSpawn": [
+        {
+            "type": "display",
+            "id": 2,
+            "position": [0.0, 0.0]
+        }, {
+            "type": "display",
+            "id": 2,
+            "position": [-40.0, -40.0]
+        }, {
+            "type": "display",
+            "id": 2,
+            "position": [-40.0, 40.0]
+        }, {
+            "type": "display",
+            "id": 2,
+            "position": [40.0, -40.0]
+        }, {
+            "type": "display",
+            "id": 2,
+            "position": [40.0, 40.0]
+        }
+    ]
+}
 ]

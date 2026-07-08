@@ -24,7 +24,8 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
         Category.TRAJECTORY, List.of(Types.Trajectory.fixed, Types.Trajectory.player),
         Category.ENTITY, List.of(Types.Entity.projectile, Types.Entity.ship),
         Category.SPAWN, List.of(Types.Spawn.display, Types.Spawn.entity),
-        Category.HITBOX, List.of(Types.Hitbox.rectangle, Types.Hitbox.custom)
+        Category.HITBOX, List.of(Types.Hitbox.rectangle, Types.Hitbox.custom),
+        Category.SPAWN_INFO, List.of(Types.SpawnInfo.single, Types.SpawnInfo.repeat)
     );
 
     final private static Map<Category, List<String>> labelsMap = Map.of(
@@ -32,7 +33,8 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
         Category.TRAJECTORY, List.of("Fixed", "Player Controlled"),
         Category.ENTITY, List.of("Projectile", "Ship"),
         Category.SPAWN, List.of("Display", "Entity"),
-        Category.HITBOX, List.of("Rectangle", "Custom")
+        Category.HITBOX, List.of("Rectangle", "Custom"),
+        Category.SPAWN_INFO, List.of("Single", "Repeat")
     );
 
     final private static Map<Category, List<Supplier<EditionData>>> constructorsMap = Map.of(
@@ -40,7 +42,8 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
         Category.TRAJECTORY, List.of(Defaults::FixedTrajectory, Defaults::PlayerControlledTrajectory),
         Category.ENTITY, List.of(Defaults::Projectile, Defaults::Ship),
         Category.SPAWN, List.of(Defaults::DisplaySpawn, Defaults::EntitySpawn),
-        Category.HITBOX, List.of(Defaults::RectangleHitbox, Defaults::CustomHitbox)
+        Category.HITBOX, List.of(Defaults::RectangleHitbox, Defaults::CustomHitbox),
+        Category.SPAWN_INFO, List.of(Defaults::SingleSpawnInfo, Defaults::RepeatSpawnInfo)
     );
 
     final public static float selectorSpacing = 70f;

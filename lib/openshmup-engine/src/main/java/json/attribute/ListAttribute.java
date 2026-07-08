@@ -1,5 +1,6 @@
 package json.attribute;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 import lombok.Getter;
@@ -27,8 +28,16 @@ import java.util.List;
     }
     @Override
     public void addToNode(ObjectNode node) {
-        var arrayNode = node.putArray(key.name());
-        //dataList.forEach(data ->);
+        ArrayNode arrayNode = node.putArray(key.name());
+        for (EditionData data : dataList) {
+            ObjectNode dataNode = arrayNode.addObject();
+            if (data.hasTypeSelect()) {
+                dataNode.put(EditionData.Keys.type.name(), data.getType().name());
+            }
+            for (Attribute attribute : data.getAttributesList()) {
+                attribute.addToNode(dataNode);
+            }
+        }
     }
 
     public void setDataList(List<EditionData> dataList) {

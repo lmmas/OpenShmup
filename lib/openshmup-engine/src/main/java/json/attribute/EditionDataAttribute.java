@@ -26,7 +26,11 @@ final public class EditionDataAttribute extends Attribute {
     }
     @Override
     public void addToNode(ObjectNode node) {
-        var arrayNode = node.putArray(key.name());
+        var dataNode = node.putObject(key.name());
+        if (editionData.hasTypeSelect()) {
+            dataNode.put(EditionData.Keys.type.name(), editionData.getType().name());
+        }
+        editionData.getAttributesList().forEach(attribute -> attribute.addToNode(dataNode));
     }
 
     public boolean hasTypeSelect() {

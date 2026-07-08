@@ -63,6 +63,12 @@ final public class AttributeLabels {
         {Shot.shotPeriod, "Shot period"},
         {Shot.firstShotTime, "First shot time"},
         {Shot.spawn, "Spawns"},
+        {SpawnInfo.Single.time, "Spawn time"},
+        {SpawnInfo.Single.spawn, "Spawns"},
+        {SpawnInfo.Repeat.startTime, "Start time"},
+        {SpawnInfo.Repeat.spawnCount, "Spawn count"},
+        {SpawnInfo.Repeat.interval, "Spawn interval"},
+        {SpawnInfo.Repeat.spawn, "Spawns"},
     }).collect(Collectors.toMap(data -> (EditionData.Key) data[0], data -> (String) data[1]));
 
     public static String get(EditionData.Key key) {

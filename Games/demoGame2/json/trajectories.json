@@ -1,79 +1,67 @@
 [
     {
-        "id": 0,
         "type": "player",
-        "playerMovementSpeed": 700
-    },
-    {
-        "id": 1,
-        "type": "fixed",
-        "functionX": "0.0",
-        "functionY": "-400 * t"
-    },
-    {
-        "id": 2,
-        "type": "fixed",
-        "functionX": "0.0",
-        "functionY": "1000 * t"
-    },
-    {
-        "id": 3,
-        "type": "fixed",
-        "functionX": "-300 * t",
-        "functionY": "1000 * t"
-    },
-    {
-        "id": 4,
-        "type": "fixed",
-        "functionX": "300 * t",
-        "functionY": "1000 * t"
-    },
-    {
-        "id": 12,
-        "type": "fixed",
-        "functionX": "100 * cos(2 * t)",
-        "functionY": "-200 * t"
-    },
-    {
-        "id": 13,
-        "type": "fixed",
-        "functionX": "0.0",
-        "functionY": "-200 * t"
-    },
-    {
-        "id": 5,
-        "type": "fixed",
-        "functionX": "200 * sin(t)",
-        "functionY": "450 * 5 ^(-1.0 * t) - 450"
-    },
-    {
-        "id": 6,
-        "type": "fixed",
-        "functionX": "-360.0 * t",
-        "functionY": "-900 * t"
-    },
-    {
-        "id": 7,
-        "type": "fixed",
-        "functionX": "-120.0 * t",
-        "functionY": "-900 * t"
-    },
-    {
-        "id": 8,
-        "type": "fixed",
-        "functionX": "120.0 * t",
-        "functionY": "-900 * t"
-    },
-    {
-        "id": 9,
-        "type": "fixed",
-        "functionX": "360.0 * t",
-        "functionY": "-900 * t"
-    },
-    {
-        "id": 10,
-        "type": "fixed",
-        "functionX": "0.0",
-        "functionY": "-600 * t"
-    }
+        "id": 0,
+        "playerMovementSpeed": 700.0
+    }, {
+    "type": "fixed",
+    "id": 1,
+    "functionX": "0.0",
+    "functionY": "-400 * t"
+}, {
+    "type": "fixed",
+    "id": 2,
+    "functionX": "0.0",
+    "functionY": "1000 * t"
+}, {
+    "type": "fixed",
+    "id": 3,
+    "functionX": "-300 * t",
+    "functionY": "1000 * t"
+}, {
+    "type": "fixed",
+    "id": 4,
+    "functionX": "300 * t",
+    "functionY": "1000 * t"
+}, {
+    "type": "fixed",
+    "id": 5,
+    "functionX": "200 * sin(t)",
+    "functionY": "450 * 5 ^(-1.0 * t) - 450"
+}, {
+    "type": "fixed",
+    "id": 6,
+    "functionX": "-360.0 * t",
+    "functionY": "-900 * t"
+}, {
+    "type": "fixed",
+    "id": 7,
+    "functionX": "-120.0 * t",
+    "functionY": "-900 * t"
+}, {
+    "type": "fixed",
+    "id": 8,
+    "functionX": "120.0 * t",
+    "functionY": "-900 * t"
+}, {
+    "type": "fixed",
+    "id": 9,
+    "functionX": "360.0 * t",
+    "functionY": "-900 * t"
+}, {
+    "type": "fixed",
+    "id": 10,
+    "functionX": "0.0",
+    "functionY": "-600 * t"
+}, {
+    "type": "fixed",
+    "id": 12,
+    "functionX": "100 * cos(2 * t)",
+    "functionY": "-200 * t"
+}, {
+    "type": "fixed",
+    "id": 13,
+    "functionX": "0.0",
+    "functionY": "-200 * t"
+}
 ]

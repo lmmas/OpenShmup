@@ -250,15 +250,15 @@ final public class EditionData {
             private SpawnInfo() {}
 
             public enum Single implements Key {
-                spawnTime,
-                spawns
+                time,
+                spawn
             }
 
             public enum Repeat implements Key {
                 startTime,
                 spawnCount,
                 interval,
-                spawns
+                spawn
             }
         }
 
@@ -563,20 +563,20 @@ final public class EditionData {
 
         public static EditionData SingleSpawnInfo() {
             List<Attribute> attributeList = List.of(
-                new DoubleAttribute(Keys.SpawnInfo.Single.spawnTime),
-                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Single.spawns)
+                new DoubleAttribute(Keys.SpawnInfo.Single.time),
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Single.spawn)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.single, attributeList, singleSpawnInfoDefaultValues);
         }
         final private static Map<Key, Object> singleSpawnInfoDefaultValues = Map.of(
-            Keys.SpawnInfo.Single.spawnTime, 0d,
-            Keys.SpawnInfo.Single.spawns, List.of()
+            Keys.SpawnInfo.Single.time, 0d,
+            Keys.SpawnInfo.Single.spawn, List.of()
         );
-        public static EditionData SingleSpawnInfo(int spawnTime, List<EditionData> spawns) {
+        public static EditionData SingleSpawnInfo(double spawnTime, List<EditionData> spawns) {
             EditionData singleSpawnInfoData = SingleSpawnInfo();
             singleSpawnInfoData.setToMap(Map.of(
-                Keys.SpawnInfo.Single.spawnTime, spawnTime,
-                Keys.SpawnInfo.Single.spawns, spawns
+                Keys.SpawnInfo.Single.time, spawnTime,
+                Keys.SpawnInfo.Single.spawn, spawns
             ));
             return singleSpawnInfoData;
         }
@@ -586,7 +586,7 @@ final public class EditionData {
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.startTime),
                 new IntegerAttribute(Keys.SpawnInfo.Repeat.spawnCount),
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.interval),
-                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Repeat.spawns)
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Repeat.spawn)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.repeat, attributeList, repeatSpawnInfoDefaultValues);
         }
@@ -594,7 +594,7 @@ final public class EditionData {
             Keys.SpawnInfo.Repeat.startTime, 0.0d,
             Keys.SpawnInfo.Repeat.spawnCount, 1,
             Keys.SpawnInfo.Repeat.interval, 1.0d,
-            Keys.SpawnInfo.Repeat.spawns, List.of()
+            Keys.SpawnInfo.Repeat.spawn, List.of()
         );
         public static EditionData RepeatSpawnInfo(double startTime, int spawnCount, double interval, List<EditionData> spawns) {
             EditionData repeatSpawnInfoData = RepeatSpawnInfo();
@@ -602,7 +602,7 @@ final public class EditionData {
                 Keys.SpawnInfo.Repeat.startTime, startTime,
                 Keys.SpawnInfo.Repeat.spawnCount, spawnCount,
                 Keys.SpawnInfo.Repeat.interval, interval,
-                Keys.SpawnInfo.Repeat.spawns, spawns
+                Keys.SpawnInfo.Repeat.spawn, spawns
             ));
             return repeatSpawnInfoData;
         }

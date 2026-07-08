@@ -14,6 +14,9 @@ import json.converters.hitbox.SimpleRectangleHitboxConverter;
 import json.converters.spawn.DisplaySpawnInfoConverter;
 import json.converters.spawn.EntitySpawnInfoConverter;
 import json.converters.spawn.SpawnConverter;
+import json.converters.spawnInfo.RepeatSpawnInfoConverter;
+import json.converters.spawnInfo.SingleSpawnInfoConverter;
+import json.converters.spawnInfo.SpawnInfoConverter;
 import json.converters.trajectory.FixedTrajectoryConverter;
 import json.converters.trajectory.PlayerTrajectoryConverter;
 import json.converters.trajectory.TrajectoryConverter;
@@ -38,6 +41,8 @@ final public class JsonDataConverter {
     final private Map<String, HitboxConverter> hitboxConverters;
 
     final private Map<String, SpawnConverter> spawnConverters;
+
+    final private Map<String, SpawnInfoConverter> spawnInfoConverters;
 
     final private ShotConverter shotConverter;
 
@@ -69,6 +74,10 @@ final public class JsonDataConverter {
         this.entityConverters = new HashMap<>(2);
         this.entityConverters.put(Types.Entity.ship.name(), new ShipConverter());
         this.entityConverters.put(Types.Entity.projectile.name(), new ProjectileConverter());
+
+        this.spawnInfoConverters = new HashMap<>(2);
+        this.spawnInfoConverters.put(Types.SpawnInfo.single.name(), new SingleSpawnInfoConverter());
+        this.spawnInfoConverters.put(Types.SpawnInfo.repeat.name(), new RepeatSpawnInfoConverter());
     }
 
     public EditionData visualEditionDataFromJSON(SafeJsonNode node, Path textureFolderPath) {
@@ -148,6 +157,25 @@ final public class JsonDataConverter {
         for (var entityNode : entityNodeList) {
             EditionData newEntityData = entityEditionDataFromJSON(entityNode, this, editorGameData.paths.gameVisualsFile);
             editorGameData.addEntity(newEntityData);
+        }
+    }
+
+    public EditionData spawnInfoEditionDataFromJSON(SafeJsonNode node, JsonDataConverter jsonDataConverter) {
+        String type = node.safeGetString(EditionData.Keys.type.name());
+        SpawnInfoConverter converter = spawnInfoConverters.get(type);
+        if (converter == null) {
+            throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawn info type is not supported");
+        }
+        return converter.fromJSON(node, jsonDataConverter);
+    }
+
+    public void loadTimeline(GameEditionData editorgameData) {
+        SafeJsonNode rootNode = SafeJsonNode.getObjectRootNode(editorgameData.paths.gameTimelineFile, objectMapper);
+        SafeJsonNode arrayNode = rootNode.safeGetArray("spawns");
+        List<SafeJsonNode> spawnInfoNodeList = arrayNode.safeGetObjectListFromArray();
+        for (var spawnInfoNode : spawnInfoNodeList) {
+            EditionData newSpawnInfoData = spawnInfoEditionDataFromJSON(spawnInfoNode, this);
+            editorgameData.addTimelineSpawnInfo(newSpawnInfoData);
         }
     }
 }
