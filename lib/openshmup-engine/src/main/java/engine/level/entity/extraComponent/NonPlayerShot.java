@@ -11,11 +11,11 @@ final public class NonPlayerShot implements ExtraComponent {
 
     private final List<Spawnable> spawnables;
 
-    private final float shotPeriodSeconds;
+    private final double shotPeriodSeconds;
 
-    private float nextShotTimeSeconds;
+    private double nextShotTimeSeconds;
 
-    public NonPlayerShot(List<Spawnable> spawnables, float shotPeriodSeconds, float firstShotTimeSeconds) {
+    public NonPlayerShot(List<Spawnable> spawnables, double shotPeriodSeconds, double firstShotTimeSeconds) {
         this.spawnables = spawnables;
         this.shotPeriodSeconds = shotPeriodSeconds;
         this.nextShotTimeSeconds = firstShotTimeSeconds;

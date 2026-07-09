@@ -1,6 +1,5 @@
 package json.attribute;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +17,5 @@ final public class IntegerAttribute extends Attribute {
     public IntegerAttribute(EditionData.Key key, int value) {
         super(key);
         this.value = value;
-    }
-    @Override
-    public void addToNode(ObjectNode node) {
-        node.put(key.name(), value);
     }
 }

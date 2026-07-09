@@ -87,6 +87,15 @@ final public class SafeJsonNode {
         return floatNode.floatValue();
     }
 
+    public double safeGetDouble(String fieldName) throws IllegalArgumentException {
+        checkForField(fieldName);
+        JsonNode doubleNode = node.get(fieldName);
+        if (!doubleNode.isNumber()) {
+            throw new IllegalArgumentException("Invalid JSON format: " + getFullPath() + "." + fieldName + " should be a double");
+        }
+        return doubleNode.doubleValue();
+    }
+
     public String safeGetString(String fieldName) throws IllegalArgumentException {
         checkForField(fieldName);
         JsonNode stringNode = node.get(fieldName);

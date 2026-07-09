@@ -131,7 +131,7 @@ final public class GameLoader {
     }
 
     public LevelTimeline timelineFromJson(SafeJsonNode node, GameDataManager gameData) {
-        float duration = node.safeGetFloat("duration");
+        double duration = node.safeGetDouble("duration");
         SafeJsonNode spawnsNode = node.safeGetArray("spawns");
         LevelTimeline newTimeline = new LevelTimeline(gameData, duration);
         List<SafeJsonNode> elementList = spawnsNode.safeGetObjectListFromArray();

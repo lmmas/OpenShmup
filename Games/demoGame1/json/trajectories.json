@@ -1,27 +1,27 @@
 [
-    {
-        "type": "player",
-        "id": 0,
-        "playerMovementSpeed": 700.0
-    }, {
-    "type": "fixed",
-    "id": 1,
-    "functionX": "0.0",
-    "functionY": "0.0"
+  {
+    "type": "player",
+    "id": 0,
+    "playerMovementSpeed": 700.0
+  }, {
+  "type": "fixed",
+  "id": 1,
+  "functionX": "0.0",
+  "functionY": "0.0"
 }, {
-    "type": "fixed",
-    "id": 2,
-    "functionX": "500 * t",
-    "functionY": "0.0 + 15 * sin(20*t)"
+  "type": "fixed",
+  "id": 2,
+  "functionX": "500 * t",
+  "functionY": "0.0 + 15 * sin(20*t)"
 }, {
-    "type": "fixed",
-    "id": 3,
-    "functionX": "500 * t",
-    "functionY": "-150 * t + 15 * sin(20*t)"
+  "type": "fixed",
+  "id": 3,
+  "functionX": "500 * t",
+  "functionY": "-150 * t + 15 * sin(20*t)"
 }, {
-    "type": "fixed",
-    "id": 4,
-    "functionX": "500 * t",
-    "functionY": "150 * t + 15 * sin(20*t)"
+  "type": "fixed",
+  "id": 4,
+  "functionX": "500 * t",
+  "functionY": "150 * t + 15 * sin(20*t)"
 }
 ]

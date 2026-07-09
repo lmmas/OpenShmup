@@ -1,6 +1,5 @@
 package json.attribute;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,5 @@ public sealed abstract class Attribute permits BooleanAttribute, DoubleAttribute
 
         this.key = key;
     }
-
-    abstract public void addToNode(ObjectNode node);
 
 }

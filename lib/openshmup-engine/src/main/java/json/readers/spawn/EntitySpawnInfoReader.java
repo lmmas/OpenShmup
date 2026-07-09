@@ -1,4 +1,4 @@
-package json.converters.spawn;
+package json.readers.spawn;
 
 import engine.types.Vec2D;
 import json.JsonFieldNames;
@@ -7,7 +7,7 @@ import json.editionData.EditionData;
 
 import static json.editionData.EditionData.Spawn;
 
-final public class EntitySpawnInfoConverter implements SpawnConverter {
+final public class EntitySpawnInfoReader implements SpawnReader {
 
     @Override
     public EditionData fromJson(SafeJsonNode node) {

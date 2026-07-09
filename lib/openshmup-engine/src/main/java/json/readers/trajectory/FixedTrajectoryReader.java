@@ -1,4 +1,4 @@
-package json.converters.trajectory;
+package json.readers.trajectory;
 
 import json.JsonFieldNames;
 import json.SafeJsonNode;
@@ -6,7 +6,7 @@ import json.editionData.EditionData;
 
 import static json.editionData.EditionData.Trajectory;
 
-final public class FixedTrajectoryConverter implements TrajectoryConverter {
+final public class FixedTrajectoryReader implements TrajectoryReader {
 
     @Override
     public EditionData fromJson(SafeJsonNode node) {

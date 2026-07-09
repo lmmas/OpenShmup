@@ -1,4 +1,4 @@
-package json.converters.hitbox;
+package json.readers.hitbox;
 
 import engine.types.Vec2D;
 import json.JsonFieldNames;
@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 import static json.editionData.EditionData.Hitbox;
 
-final public class CompositeHitboxConverter implements HitboxConverter {
+final public class CompositeHitboxReader implements HitboxReader {
 
     @Override
     public EditionData fromJson(SafeJsonNode node, Path textureFolderPath) {

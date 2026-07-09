@@ -1,4 +1,4 @@
-package json.converters.visual;
+package json.readers.visual;
 
 import engine.types.Vec2D;
 import json.JsonFieldNames;
@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 import static json.editionData.EditionData.Visual;
 
-final public class ScrollingImageConverter implements VisualConverter {
+final public class ScrollingImageReader implements VisualReader {
 
     @Override
     public EditionData fromJson(SafeJsonNode node, Path textureFolderPath) {

@@ -1,8 +1,8 @@
 package json;
 
 import engine.gameData.GamePaths;
-import json.converters.JsonDataConverter;
 import json.editionData.EditionData;
+import json.readers.JsonDataReader;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ final public class GameEditionData {
     }
 
     public void loadGameContents() {
-        JsonDataConverter jsonDataConverter = new JsonDataConverter();
+        JsonDataReader jsonDataReader = new JsonDataReader();
         try {
-            jsonDataConverter.loadVisuals(this);
-            jsonDataConverter.loadTrajectories(this);
-            jsonDataConverter.loadEntities(this);
-            jsonDataConverter.loadTimeline(this);
+            jsonDataReader.loadVisuals(this);
+            jsonDataReader.loadTrajectories(this);
+            jsonDataReader.loadEntities(this);
+            jsonDataReader.loadTimeline(this);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }

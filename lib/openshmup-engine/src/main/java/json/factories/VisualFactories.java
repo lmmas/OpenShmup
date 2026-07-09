@@ -41,7 +41,7 @@ final public class VisualFactories {
         IVec2D startingPosition = spritesheetInfoNode.safeGetIVec2D(JsonFieldNames.Animation.SpritesheetInfo.startingPosition);
         IVec2D stride = spritesheetInfoNode.safeGetIVec2D(JsonFieldNames.Animation.SpritesheetInfo.stride);
 
-        float framePeriodSeconds = node.safeGetFloat(JsonFieldNames.Animation.framePeriodSeconds);
+        double framePeriodSeconds = node.safeGetDouble(JsonFieldNames.Animation.framePeriodSeconds);
         boolean looping = node.safeGetBoolean(JsonFieldNames.Animation.looping);
 
         Texture texture = assetManager.getTexture(textureFilepath);

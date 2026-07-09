@@ -1,6 +1,5 @@
 package json.attribute;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.types.Vec2D;
 import json.editionData.EditionData;
 import lombok.Getter;
@@ -19,11 +18,5 @@ final public class Vec2DAttribute extends Attribute {
     public Vec2DAttribute(EditionData.Key key, Vec2D value) {
         super(key);
         this.value = value;
-    }
-    @Override
-    public void addToNode(ObjectNode node) {
-        var arrayNode = node.putArray(key.name());
-        arrayNode.add(value.x);
-        arrayNode.add(value.y);
     }
 }

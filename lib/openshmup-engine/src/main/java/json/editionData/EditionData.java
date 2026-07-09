@@ -652,8 +652,8 @@ final public class EditionData {
 
     private static EditionData Shot() {
         List<Attribute> attributeList = List.of(
-            new FloatAttribute(Keys.Shot.shotPeriod),
-            new FloatAttribute(Keys.Shot.firstShotTime),
+            new DoubleAttribute(Keys.Shot.shotPeriod),
+            new DoubleAttribute(Keys.Shot.firstShotTime),
             new ListAttribute(Category.SPAWN, Keys.Shot.spawn)
         );
         return new EditionData(Category.NONE, Types.shot, attributeList, shotDefaultValues);
@@ -663,7 +663,7 @@ final public class EditionData {
         Keys.Shot.firstShotTime, 0.0f,
         Keys.Shot.spawn, List.of()
     );
-    public static EditionData Shot(float shotPeriod, float firstShotTime, List<EditionData> spawnables) {
+    public static EditionData Shot(double shotPeriod, double firstShotTime, List<EditionData> spawnables) {
         EditionData shotData = Shot();
         shotData.setToMap(Map.of(
             Keys.Shot.shotPeriod, shotPeriod,

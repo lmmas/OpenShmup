@@ -15,8 +15,8 @@ import java.util.List;
 final public class ExtraComponentFactories {
 
     final public static TetraFunction<SafeJsonNode, GameDataManager, GameLoader, Boolean, ExtraComponent> shotFactory = (node, gameDataManager, gameFactory, isPlayer) -> {
-        float shotPeriod = node.safeGetFloat(JsonFieldNames.Shot.shotPeriod);
-        float firstShotTime = node.safeGetFloat(JsonFieldNames.Shot.firstShotTime);
+        double shotPeriod = node.safeGetDouble(JsonFieldNames.Shot.shotPeriod);
+        double firstShotTime = node.safeGetDouble(JsonFieldNames.Shot.firstShotTime);
         SafeJsonNode spawnsNode = node.safeGetArray(JsonFieldNames.Shot.spawn);
         List<SafeJsonNode> spawnableNodes = spawnsNode.safeGetObjectListFromArray();
         List<Spawnable> shotList = spawnableNodes.stream().map(gameFactory::spawnableFromJson).toList();

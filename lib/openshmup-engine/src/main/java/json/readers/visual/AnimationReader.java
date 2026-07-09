@@ -1,4 +1,4 @@
-package json.converters.visual;
+package json.readers.visual;
 
 import engine.types.IVec2D;
 import engine.types.Vec2D;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import static json.editionData.EditionData.SpritesheetInfo;
 import static json.editionData.EditionData.Visual;
 
-final public class AnimationConverter implements VisualConverter {
+final public class AnimationReader implements VisualReader {
 
     @Override
     public EditionData fromJson(SafeJsonNode node, Path textureFolderPath) {
@@ -26,7 +26,7 @@ final public class AnimationConverter implements VisualConverter {
         IVec2D startingPosition = spritesheetInfoNode.safeGetIVec2D(JsonFieldNames.Animation.SpritesheetInfo.startingPosition);
         IVec2D stride = spritesheetInfoNode.safeGetIVec2D(JsonFieldNames.Animation.SpritesheetInfo.stride);
 
-        float framePeriodSeconds = node.safeGetFloat(JsonFieldNames.Animation.framePeriodSeconds);
+        double framePeriodSeconds = node.safeGetDouble(JsonFieldNames.Animation.framePeriodSeconds);
         boolean looping = node.safeGetBoolean(JsonFieldNames.Animation.looping);
 
         EditionData spritesheetInfo = SpritesheetInfo(

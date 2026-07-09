@@ -1,10 +1,10 @@
-package json.converters.entity;
+package json.readers.entity;
 
 import engine.types.Vec2D;
 import json.JsonFieldNames;
 import json.SafeJsonNode;
-import json.converters.JsonDataConverter;
 import json.editionData.EditionData;
+import json.readers.JsonDataReader;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,18 +12,18 @@ import java.util.List;
 
 import static json.editionData.EditionData.Entity;
 
-final public class ShipConverter implements EntityConverter {
+final public class ShipReader implements EntityReader {
 
     @Override
-    public EditionData fromJson(SafeJsonNode node, JsonDataConverter jsonDataConverter, Path textureFolderPath) {
+    public EditionData fromJson(SafeJsonNode node, JsonDataReader jsonDataReader, Path textureFolderPath) {
         int id = node.safeGetInt(JsonFieldNames.Ship.id);
         boolean evil = node.safeGetBoolean(JsonFieldNames.Ship.evil);
         Vec2D size = node.safeGetVec2D(JsonFieldNames.Ship.size);
         SafeJsonNode hitboxNode = node.safeGetObject(JsonFieldNames.Ship.hitbox);
-        EditionData hitboxData = jsonDataConverter.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
+        EditionData hitboxData = jsonDataReader.hitboxEditionDataFromJSON(hitboxNode, textureFolderPath);
         SafeJsonNode deathSpawnNode = node.safeGetArray(JsonFieldNames.Ship.deathSpawn);
         List<SafeJsonNode> spawnableNodes = deathSpawnNode.safeGetObjectListFromArray();
-        List<EditionData> deathSpawn = spawnableNodes.stream().map(jsonDataConverter::spawnEditionDataFromJSON).toList();
+        List<EditionData> deathSpawn = spawnableNodes.stream().map(jsonDataReader::spawnEditionDataFromJSON).toList();
         int spriteVisualId = node.safeGetInt(JsonFieldNames.Ship.spriteVisualId);
         int defaultTrajectoryID = node.safeGetInt(JsonFieldNames.Ship.defaultTrajectoryId);
         ArrayList<EditionData> shots = new ArrayList<>();
@@ -31,7 +31,7 @@ final public class ShipConverter implements EntityConverter {
             SafeJsonNode shotsArray = node.safeGetArray(JsonFieldNames.Ship.shots);
             List<SafeJsonNode> shotNodes = shotsArray.safeGetObjectListFromArray();
             for (var extraComponentNode : shotNodes) {
-                shots.add(jsonDataConverter.shotEditionDataFromJSON(extraComponentNode, jsonDataConverter, textureFolderPath));
+                shots.add(jsonDataReader.shotEditionDataFromJSON(extraComponentNode, jsonDataReader, textureFolderPath));
             }
         }
 

@@ -1,6 +1,5 @@
 package json.attribute;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 
 final public class EditionDataAttribute extends Attribute {
@@ -23,14 +22,6 @@ final public class EditionDataAttribute extends Attribute {
 
     public void setData(EditionData data) {
         this.editionData = data;
-    }
-    @Override
-    public void addToNode(ObjectNode node) {
-        var dataNode = node.putObject(key.name());
-        if (editionData.hasTypeSelect()) {
-            dataNode.put(EditionData.Keys.type.name(), editionData.getType().name());
-        }
-        editionData.getAttributesList().forEach(attribute -> attribute.addToNode(dataNode));
     }
 
     public boolean hasTypeSelect() {

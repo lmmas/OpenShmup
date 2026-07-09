@@ -6,12 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import json.attribute.*;
 import json.editionData.EditionData;
 
 import java.io.IOException;
 import java.util.List;
 
-public class JsonDataWriter {
+final public class JsonDataWriter {
 
     final private ObjectMapper mapper;
 
@@ -32,14 +33,58 @@ public class JsonDataWriter {
         this.writer = mapper.writer(pp);
     }
 
+    private void addToNode(Attribute attribute, ObjectNode node) {
+        switch (attribute) {
+            case BooleanAttribute booleanAttribute ->
+                node.put(booleanAttribute.getKey().name(), booleanAttribute.getValue());
+            case DoubleAttribute doubleAttribute ->
+                node.put(doubleAttribute.getKey().name(), doubleAttribute.getValue());
+            case EditionDataAttribute editionDataAttribute -> {
+                EditionData editionData = editionDataAttribute.getData();
+                var dataNode = node.putObject(editionDataAttribute.getKey().name());
+                if (editionData.hasTypeSelect()) {
+                    dataNode.put(EditionData.Keys.type.name(), editionData.getType().name());
+                }
+                editionData.getAttributesList().forEach(attr -> addToNode(attr, dataNode));
+            }
+            case FloatAttribute floatAttribute -> node.put(floatAttribute.getKey().name(), floatAttribute.getValue());
+            case IntegerAttribute integerAttribute ->
+                node.put(integerAttribute.getKey().name(), integerAttribute.getValue());
+            case IVec2DAttribute iVec2DAttribute -> {
+                var arrayNode = node.putArray(iVec2DAttribute.getKey().name());
+                arrayNode.add(iVec2DAttribute.getValue().x);
+                arrayNode.add(iVec2DAttribute.getValue().y);
+            }
+            case ListAttribute listAttribute -> {
+                ArrayNode arrayNode = node.putArray(listAttribute.getKey().name());
+                for (EditionData data : listAttribute.getDataList()) {
+                    ObjectNode dataNode = arrayNode.addObject();
+                    if (data.hasTypeSelect()) {
+                        dataNode.put(EditionData.Keys.type.name(), data.getType().name());
+                    }
+                    for (Attribute attr : data.getAttributesList()) {
+                        addToNode(attr, dataNode);
+                    }
+                }
+            }
+            case StringAttribute stringAttribute ->
+                node.put(stringAttribute.getKey().name(), stringAttribute.getValue());
+            case Vec2DAttribute vec2DAttribute -> {
+                var arrayNode = node.putArray(vec2DAttribute.getKey().name());
+                arrayNode.add(vec2DAttribute.getValue().x);
+                arrayNode.add(vec2DAttribute.getValue().y);
+            }
+        }
+    }
+
     private ArrayNode buildJsonNodeOfList(List<EditionData> dataList) {
         ArrayNode listNode = mapper.createArrayNode();
         for (EditionData data : dataList) {
-            ObjectNode visualNode = listNode.addObject();
+            ObjectNode node = listNode.addObject();
             if (data.hasTypeSelect()) {
-                visualNode.put(EditionData.Keys.type.name(), data.getType().name());
+                node.put(EditionData.Keys.type.name(), data.getType().name());
             }
-            data.getAttributesList().forEach(attribute -> attribute.addToNode(visualNode));
+            data.getAttributesList().forEach(attribute -> addToNode(attribute, node));
         }
         return listNode;
     }

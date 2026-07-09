@@ -18,13 +18,13 @@ final public class LevelTimeline {
     @Getter
     final private GameDataManager gameDataManager;
 
-    private final float levelDuration;
+    private final double levelDuration;
 
     private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
 
     private Float nextSpawnTime;
 
-    public LevelTimeline(GameDataManager gameDataManager, float levelDuration) {
+    public LevelTimeline(GameDataManager gameDataManager, double levelDuration) {
         this.gameDataManager = gameDataManager;
         this.levelDuration = levelDuration;
         this.spawnList = new TreeMap<>();

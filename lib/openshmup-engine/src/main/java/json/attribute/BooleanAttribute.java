@@ -1,6 +1,5 @@
 package json.attribute;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import json.editionData.EditionData;
 import lombok.Setter;
 
@@ -21,9 +20,5 @@ final public class BooleanAttribute extends Attribute {
 
     public boolean getValue() {
         return value;
-    }
-    @Override
-    public void addToNode(ObjectNode node) {
-        node.put(key.name(), value);
     }
 }

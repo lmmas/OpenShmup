@@ -1,9 +1,9 @@
-package json.converters.spawn;
+package json.readers.trajectory;
 
 import json.SafeJsonNode;
 import json.editionData.EditionData;
 
-public interface SpawnConverter {
+public interface TrajectoryReader {
 
     EditionData fromJson(SafeJsonNode node);
 
