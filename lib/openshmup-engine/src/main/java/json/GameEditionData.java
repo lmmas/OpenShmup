@@ -30,7 +30,7 @@ final public class GameEditionData implements Serializable {
     public GameEditionData(String gameName, Path gameFolderPath) {
         this.gameName = gameName;
         this.paths = new GamePaths(gameFolderPath);
-        this.fileFolderPathString = paths.gameFolder.toAbsolutePath().toString();
+        this.fileFolderPathString = paths.gameFolder.toString();
         this.visualEditionDataList = new ArrayList<>();
         this.trajectoryEditionDataList = new ArrayList<>();
         this.entityEditionDataList = new ArrayList<>();

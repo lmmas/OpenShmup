@@ -12,6 +12,7 @@ public class TestDemoGame1 {
         Path rootFolderAbsolutePath = Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
         Path folderPath = rootFolderAbsolutePath.resolve("Games").resolve(folderName);
         GameEditionData gameEditionData = new GameEditionData(folderName, folderPath);
+        gameEditionData.loadGameContents();
         Game.init(gameEditionData);
         Game.run();
     }

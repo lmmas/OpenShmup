@@ -93,7 +93,7 @@ final public class GameDataLoader {
             visualEditionData.checkForCategory(Category.VISUAL);
             var visualFactory = visualFactories.get((Types.Visual) visualEditionData.getType());
             assert visualFactory != null : "visual factory not found: " + visualEditionData.getType().name();
-            SceneVisual visual = visualFactory.apply(visualEditionData, gameEditionData.paths.gameVisualsFile);
+            SceneVisual visual = visualFactory.apply(visualEditionData, gameEditionData.paths.gameTextureFolder);
             gameData.addVisual(EditionData.getVisualId(visualEditionData), visual);
         }
 
