@@ -1,6 +1,7 @@
+import edition.GameEditionData;
 import engine.Engine;
 import engine.Game;
-import json.GameEditionData;
+import json.readers.GameDataReader;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,8 +12,7 @@ public class TestDemoGame1 {
         String folderName = "demoGame1";
         Path rootFolderAbsolutePath = Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
         Path folderPath = rootFolderAbsolutePath.resolve("Games").resolve(folderName);
-        GameEditionData gameEditionData = new GameEditionData(folderName, folderPath);
-        gameEditionData.loadGameContents();
+        GameEditionData gameEditionData = new GameDataReader().readGameData(folderPath);
         Game.init(gameEditionData);
         Game.run();
     }

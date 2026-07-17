@@ -1,12 +1,12 @@
 package engine;
 
+import edition.GameDataLoader;
+import edition.GameEditionData;
 import engine.gameData.GameDataManager;
 import engine.level.Level;
 import engine.menu.Menu;
 import engine.scene.Scene;
 import engine.types.Reference;
-import json.GameDataLoader;
-import json.GameEditionData;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 final public class Game {
+
+    private Game() {}
 
     public static GameDataManager gameDataManager;
 
@@ -34,7 +36,6 @@ final public class Game {
         Game.run();
     }
 
-    private Game() {}
 
     public static void init(GameEditionData gameEditionData) throws IOException {
         Engine.init();
@@ -43,7 +44,7 @@ final public class Game {
 
         levelTime = 0.0d;
         gameDataManager = new GameDataLoader().convertToGameObjects(gameEditionData);
-        gameDataManager.loadGameConfig();
+        //gameDataManager.loadGameConfig();
         playerSettings = new PlayerSettings();
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());

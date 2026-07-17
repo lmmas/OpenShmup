@@ -1,6 +1,7 @@
 package io.github.lmmas;
 
-import json.GameEditionData;
+import edition.GameEditionData;
+import json.readers.GameDataReader;
 
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
@@ -15,8 +16,7 @@ public class GameLauncher {
                 .getLocation()
                 .toURI())
             .getParent();
-        GameEditionData gameEditionData = new GameEditionData(gameFolder.getFileName().toString(), gameFolder);
-        gameEditionData.loadGameContents();
+        GameEditionData gameEditionData = new GameDataReader().readGameData(gameFolder);
 
         Path projectFolder = gameFolder.getParent().getParent();
         System.out.println("Detected game folder: " + gameFolder);

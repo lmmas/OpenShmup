@@ -1,7 +1,7 @@
 package editor.fieldNode;
 
+import edition.EditionData;
 import engine.types.Vec2D;
-import json.editionData.EditionData;
 
 public sealed interface EditionDataFieldNode extends FieldNode permits EditionDataFields, EditionDataTypeSelect {
 

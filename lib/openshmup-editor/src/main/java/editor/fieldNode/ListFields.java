@@ -1,12 +1,12 @@
 package editor.fieldNode;
 
+import edition.EditionData;
 import editor.EditionMenu;
 import editor.Style;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
 import engine.types.Vec2D;
-import json.editionData.EditionData;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -184,6 +184,7 @@ final public class ListFields implements FieldNode {
             case SPAWN -> EditionData.Defaults.DisplaySpawn();
             case SPAWN_INFO -> EditionData.Defaults.SingleSpawnInfo();
             case NONE -> EditionData.Defaults.Shot();
+            case CONFIG -> EditionData.Defaults.Config(EditionData.Types.Config.general);
         };
     }
 

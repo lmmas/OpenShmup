@@ -1,5 +1,8 @@
 package engine;
 
+import lombok.Getter;
+
+@Getter
 final public class PlayerSettings {
 
     private WindowMode windowMode;
@@ -8,21 +11,9 @@ final public class PlayerSettings {
 
     private int windowHeight;
 
-    public int getWindowWidth() {
-        return windowWidth;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
     public void setResolution(int width, int height) {
         windowWidth = width;
         windowHeight = height;
-    }
-
-    public WindowMode getWindowMode() {
-        return windowMode;
     }
 
     public enum WindowMode {

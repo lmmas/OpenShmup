@@ -1,10 +1,10 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.InputStatesManager;
 import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
+import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.effects.ColorEffect;
 import engine.types.Vec2D;

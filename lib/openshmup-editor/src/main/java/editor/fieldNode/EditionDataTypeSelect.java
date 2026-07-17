@@ -1,5 +1,6 @@
 package editor.fieldNode;
 
+import edition.EditionData;
 import editor.Style;
 import editor.Widgets;
 import engine.menu.Menu;
@@ -7,7 +8,6 @@ import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.Vec2D;
-import json.editionData.EditionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import static json.editionData.EditionData.*;
+import static edition.EditionData.*;
 
 final public class EditionDataTypeSelect implements EditionDataFieldNode {
 

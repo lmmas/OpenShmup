@@ -3,6 +3,7 @@ package engine;
 import debug.DebugMethods;
 import engine.assets.AssetManager;
 import engine.graphics.GraphicsManager;
+import engine.input.InputStatesManager;
 import engine.menu.Menu;
 import engine.scene.Scene;
 import engine.types.IVec2D;

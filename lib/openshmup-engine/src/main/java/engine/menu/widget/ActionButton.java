@@ -1,9 +1,9 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.InputStatesManager;
 import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
+import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 

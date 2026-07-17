@@ -7,7 +7,6 @@ import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;
-import json.GameLoader;
 import lombok.Getter;
 
 import java.nio.file.Path;
@@ -44,27 +43,6 @@ final public class GameDataManager {
         this.entities = new HashMap<>();
         this.trajectories = new HashMap<>();
         this.timelines = new ArrayList<>();
-    }
-
-    public void loadGameConfig() {
-        GameLoader gameLoader = new GameLoader();
-        try {
-            gameLoader.loadGameConfig(this);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void loadGameContents() {
-        GameLoader gameLoader = new GameLoader();
-        try {
-            gameLoader.loadGameVisuals(this);
-            gameLoader.loadGameTrajectories(this);
-            gameLoader.loadGameEntities(this);
-            gameLoader.loadGameTimelines(this);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void addVisual(int id, SceneVisual visual) {

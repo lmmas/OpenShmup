@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import json.attribute.*;
-import json.editionData.EditionData;
+import edition.EditionData;
+import edition.GameEditionData;
+import edition.attribute.*;
 
 import java.io.IOException;
 import java.util.List;

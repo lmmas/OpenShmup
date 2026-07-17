@@ -1,5 +1,7 @@
 package editor.fieldNode;
 
+import edition.EditionData;
+import edition.attribute.*;
 import editor.AttributeLabels;
 import editor.Style;
 import engine.menu.Menu;
@@ -12,8 +14,6 @@ import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.types.IVec2D;
 import engine.types.Vec2D;
-import json.attribute.*;
-import json.editionData.EditionData;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,7 @@
 package editor;
 
+import edition.EditionData;
+import edition.GameEditionData;
 import editor.fieldNode.EditionDataFieldNode;
 import editor.fieldNode.FieldNode;
 import editor.fieldNode.ListFields;
@@ -19,9 +21,7 @@ import engine.scene.visual.style.TextAlignment;
 import engine.types.RGBAValue;
 import engine.types.Reference;
 import engine.types.Vec2D;
-import json.GameEditionData;
 import json.JsonDataWriter;
-import json.editionData.EditionData;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

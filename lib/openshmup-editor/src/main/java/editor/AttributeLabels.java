@@ -1,12 +1,12 @@
 package editor;
 
-import json.editionData.EditionData;
+import edition.EditionData;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static json.editionData.EditionData.Keys.*;
+import static edition.EditionData.Keys.*;
 
 final public class AttributeLabels {
 

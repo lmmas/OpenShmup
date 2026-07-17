@@ -2,18 +2,16 @@ package engine.gameData;
 
 import engine.types.IVec2D;
 import engine.types.Vec2D;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.nio.file.Path;
 
 final public class GameConfig {
 
+    @Getter
     @Setter
     private IVec2D nativeResolution = new IVec2D(0, 0);
-
-    public IVec2D getNativeResolution() {
-        return new IVec2D(nativeResolution);
-    }
 
     public int getNativeWidth() {
         return nativeResolution.x;

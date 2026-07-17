@@ -1,10 +1,11 @@
 package editor;
 
+import edition.GameEditionData;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.scene.Scene;
 import engine.types.IVec2D;
-import json.GameEditionData;
+import json.readers.GameDataReader;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -42,11 +43,11 @@ final public class Editor {
 
     public static void loadGames() throws IOException {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
+        GameDataReader reader = new GameDataReader();
         try (Stream<Path> paths = Files.list(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder))) {
             loadedGames = paths.filter(Files::isDirectory)
-                .map(path -> new GameEditionData(path.getFileName().toString(), path))
+                .map(reader::readGameData)
                 .toList();
         }
-        loadedGames.forEach(GameEditionData::loadGameContents);
     }
 }
