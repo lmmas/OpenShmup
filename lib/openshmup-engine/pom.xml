@@ -9,7 +9,7 @@
     <name>openshmup-engine</name>
 
     <parent>
-        <groupId>io.github.lmmas</groupId>
+        <groupId>com.github.lmmas</groupId>
         <artifactId>OpenShmup</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
@@ -17,14 +17,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.lmmas</groupId>
+            <groupId>com.github.lmmas</groupId>
             <artifactId>openshmup-common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>io.github.lmmas</groupId>
+            <groupId>com.github.lmmas</groupId>
             <artifactId>openshmup-json</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
