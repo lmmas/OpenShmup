@@ -44,7 +44,7 @@ final public class Editor {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
         try (Stream<Path> paths = Files.list(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder))) {
             loadedGames = paths.filter(Files::isDirectory)
-                .map(path -> new GameEditionData(path.getFileName().toString()))
+                .map(path -> new GameEditionData(path.getFileName().toString(), path))
                 .toList();
         }
         loadedGames.forEach(GameEditionData::loadGameContents);

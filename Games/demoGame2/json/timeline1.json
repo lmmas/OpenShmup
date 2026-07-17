@@ -1,143 +1,143 @@
 {
   "duration": 3000.0,
-  "spawns": [
-    {
-      "type": "single",
-      "time": 0.0,
-      "spawn": [
+    "spawns": [
         {
-          "type": "entity",
-          "id": 0,
-          "trajectory": -1,
-          "startingPosition": [500.0, 200.0]
+            "type": "single",
+            "time": 0.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 0,
+                    "trajectory": -1,
+                    "startingPosition": [500.0, 200.0]
+                }, {
+                    "type": "display",
+                    "id": 1,
+                    "position": [500.0, 550.0]
+                }
+            ]
         }, {
-          "type": "display",
-          "id": 1,
-          "position": [500.0, 550.0]
+            "type": "repeat",
+            "startTime": 1.0,
+            "spawnCount": 2,
+            "interval": 2.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [50.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [125.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [200.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [275.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [350.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [425.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [500.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [575.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [650.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [725.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [800.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [875.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 4,
+                    "trajectory": 13,
+                    "startingPosition": [950.0, 1300.0]
+                }
+            ]
+        }, {
+            "type": "repeat",
+            "startTime": 8.0,
+            "spawnCount": 2,
+            "interval": 1.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [150.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [300.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [450.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [600.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [750.0, 1300.0]
+                }, {
+                    "type": "entity",
+                    "id": 2,
+                    "trajectory": 12,
+                    "startingPosition": [900.0, 1300.0]
+                }
+            ]
+        }, {
+            "type": "single",
+            "time": 15.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 5,
+                    "trajectory": -1,
+                    "startingPosition": [500.0, 1300.0]
+                }
+            ]
         }
-      ]
-    }, {
-      "type": "repeat",
-      "startTime": 1.0,
-      "spawnCount": 2,
-      "interval": 2.0,
-      "spawn": [
-        {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [50.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [125.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [200.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [275.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [350.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [425.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [500.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [575.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [650.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [725.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [800.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [875.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 4,
-          "trajectory": 13,
-          "startingPosition": [950.0, 1300.0]
-        }
-      ]
-    }, {
-      "type": "repeat",
-      "startTime": 8.0,
-      "spawnCount": 2,
-      "interval": 1.0,
-      "spawn": [
-        {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [150.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [300.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [450.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [600.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [750.0, 1300.0]
-        }, {
-          "type": "entity",
-          "id": 2,
-          "trajectory": 12,
-          "startingPosition": [900.0, 1300.0]
-        }
-      ]
-    }, {
-      "type": "single",
-      "time": 15.0,
-      "spawn": [
-        {
-          "type": "entity",
-          "id": 5,
-          "trajectory": -1,
-          "startingPosition": [500.0, 1300.0]
-        }
-      ]
-    }
-  ]
+    ]
 }

@@ -1,13 +1,13 @@
 [
-  {
-    "type": "scrollingImage",
-    "id": 1,
-    "layer": 0,
-    "size": [1000.0, 1200.0],
-    "fileName": "background.png",
-    "speed": -300.0,
-    "horizontalScrolling": false
-  }, {
+    {
+        "type": "scrollingImage",
+        "id": 1,
+        "layer": 0,
+        "size": [1000.0, 1200.0],
+        "fileName": "background.png",
+        "speed": -300.0,
+        "horizontalScrolling": false
+    }, {
   "type": "animation",
   "id": 2,
   "layer": 10,

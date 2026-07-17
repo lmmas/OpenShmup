@@ -1,6 +1,8 @@
 package engine.types;
 
-final public class IVec2D {
+import java.io.Serializable;
+
+final public class IVec2D implements Serializable {
 
     final public int x;
 

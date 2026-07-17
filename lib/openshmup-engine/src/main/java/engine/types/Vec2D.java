@@ -2,8 +2,9 @@ package engine.types;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-final public class Vec2D {
+import java.io.Serializable;
+
+@AllArgsConstructor final public class Vec2D implements Serializable {
 
     final public float x;
 

@@ -4,6 +4,7 @@ import editor.fieldNode.EditionDataFieldNode;
 import editor.fieldNode.FieldNode;
 import editor.fieldNode.ListFields;
 import engine.Engine;
+import engine.GlobalVars;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
@@ -22,6 +23,9 @@ import json.GameEditionData;
 import json.JsonDataWriter;
 import json.editionData.EditionData;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -53,6 +57,23 @@ final public class EditionMenu {
         mainScreen.addWidget(returnToMainMenuButton);
         ActionButton saveButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, "Save", () -> jsonDataWriter.saveToJson(gameData));
         mainScreen.addWidget(saveButton);
+        Runnable lauchGame = () -> {
+            Path enginePath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT.jar");
+
+            ProcessBuilder pb = new ProcessBuilder(
+                "java", "-jar", enginePath.toAbsolutePath().toString());
+            try {
+                Process process = pb.start();
+                try (ObjectOutputStream out = new ObjectOutputStream(process.getOutputStream())) {
+                    out.writeObject(gameData);
+                    out.flush();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        ActionButton launchGameButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, "Launch game", lauchGame);
+        mainScreen.addWidget(launchGameButton);
 
         ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         Vec2D listStartPosition = new Vec2D(Engine.getNativeWidth() / 2.0f, 850f);

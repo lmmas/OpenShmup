@@ -6,26 +6,29 @@ import json.attribute.*;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-final public class EditionData {
+final public class EditionData implements Serializable {
 
     @Getter
     final private Category category;
     @Getter
     final private Type type;
     @Getter
-    final private List<Attribute> attributesList;
+    final private ArrayList<Attribute> attributesList;
 
-    final private Map<Key, Object> defaultValues;
+    final private HashMap<Key, Object> defaultValues;
 
     private EditionData(Category category, Type type, List<Attribute> attributesList, Map<Key, Object> defaultValues) {
         assert defaultValues.size() == attributesList.size() : "incorrect default values";
         this.category = category;
         this.type = type;
-        this.attributesList = attributesList;
-        this.defaultValues = defaultValues;
+        this.attributesList = new ArrayList<>(attributesList);
+        this.defaultValues = new HashMap<>(defaultValues);
     }
 
     public boolean hasTypeSelect() {
@@ -135,7 +138,7 @@ final public class EditionData {
         NONE, VISUAL, TRAJECTORY, ENTITY, SPAWN, SPAWN_INFO, HITBOX
     }
 
-    public interface Type {
+    public interface Type extends Serializable {
 
         String name();
     }
@@ -169,7 +172,7 @@ final public class EditionData {
         }
     }
 
-    public interface Key {
+    public interface Key extends Serializable {
 
         String name();
     }

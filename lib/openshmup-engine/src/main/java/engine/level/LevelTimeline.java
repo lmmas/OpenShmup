@@ -20,9 +20,9 @@ final public class LevelTimeline {
 
     private final double levelDuration;
 
-    private final TreeMap<Float, ArrayList<Spawnable>> spawnList;
+    private final TreeMap<Double, ArrayList<Spawnable>> spawnList;
 
-    private Float nextSpawnTime;
+    private Double nextSpawnTime;
 
     public LevelTimeline(GameDataManager gameDataManager, double levelDuration) {
         this.gameDataManager = gameDataManager;
@@ -80,24 +80,24 @@ final public class LevelTimeline {
         return allTextures;
     }
 
-    public void addSpawnable(float time, Spawnable spawnable) {
+    public void addSpawnable(double time, Spawnable spawnable) {
         this.spawnList.computeIfAbsent(time, k -> new ArrayList<Spawnable>());
         this.spawnList.get(time).add(spawnable);
-        nextSpawnTime = spawnList.higherKey(-1.0f);
+        resetTime();
     }
 
-    public void addEntity(float time, int id, Vec2D startingPosition, int trajectoryId) {
+    public void addEntity(double time, int id, Vec2D startingPosition, int trajectoryId) {
         EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPosition, trajectoryId);
         addSpawnable(time, entitySpawnInfo);
     }
 
-    public void addEntity(float time, int id, Vec2D startingPosition) {
+    public void addEntity(double time, int id, Vec2D startingPosition) {
         EntitySpawnInfo entitySpawnInfo = new EntitySpawnInfo(id, startingPosition, -1);
         addSpawnable(time, entitySpawnInfo);
     }
 
     public void resetTime() {
-        this.nextSpawnTime = spawnList.higherKey(-1.0f);
+        this.nextSpawnTime = spawnList.higherKey(-1.0d);
     }
 
 }

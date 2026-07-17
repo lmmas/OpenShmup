@@ -5,14 +5,19 @@ import json.editionData.EditionData;
 import json.readers.JsonDataReader;
 import lombok.Getter;
 
+import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-final public class GameEditionData {
+final public class GameEditionData implements Serializable {
 
-    private final String gameFolderName;
+    @Getter
+    private final String gameName;
 
-    final public GamePaths paths;
+    public transient GamePaths paths;
+
+    final private String fileFolderPathString;
     @Getter
     final private ArrayList<EditionData> visualEditionDataList;
     @Getter
@@ -22,13 +27,18 @@ final public class GameEditionData {
     @Getter
     final private ArrayList<EditionData> timelineDataList;
 
-    public GameEditionData(String gameFolderName) {
-        this.gameFolderName = gameFolderName;
-        this.paths = new GamePaths(gameFolderName);
+    public GameEditionData(String gameName, Path gameFolderPath) {
+        this.gameName = gameName;
+        this.paths = new GamePaths(gameFolderPath);
+        this.fileFolderPathString = paths.gameFolder.toAbsolutePath().toString();
         this.visualEditionDataList = new ArrayList<>();
         this.trajectoryEditionDataList = new ArrayList<>();
         this.entityEditionDataList = new ArrayList<>();
         this.timelineDataList = new ArrayList<>();
+    }
+
+    public void reloadPaths() {
+        this.paths = new GamePaths(Path.of(fileFolderPathString));
     }
 
     public void loadGameContents() {
@@ -48,10 +58,6 @@ final public class GameEditionData {
         assert !visualEditionDataList.contains(visualData) : "visual already defined";
         visualEditionDataList.add(visualData);
         visualEditionDataList.sort(Comparator.comparingInt(EditionData::getVisualId));
-    }
-
-    public String getGameName() {
-        return gameFolderName;
     }
 
     public void addTrajectory(EditionData trajectoryData) {

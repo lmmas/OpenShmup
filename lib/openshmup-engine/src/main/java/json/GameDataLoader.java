@@ -5,6 +5,7 @@ import engine.gameData.GameDataManager;
 import engine.hitbox.CompositeHitbox;
 import engine.hitbox.Hitbox;
 import engine.hitbox.SimpleRectangleHitbox;
+import engine.level.LevelTimeline;
 import engine.level.entity.Entity;
 import engine.level.entity.Projectile;
 import engine.level.entity.Ship;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -51,6 +53,8 @@ final public class GameDataLoader {
     final private Map<Types.Spawn, Function<EditionData, Spawnable>> spawnFactories;
 
     final private Map<Types.Entity, BiFunction<EditionData, GameDataManager, Entity>> entityFactoryMap;
+
+    final private Map<Types.SpawnInfo, BiConsumer<EditionData, LevelTimeline>> timelineBuilderMap;
 
     public GameDataLoader() {
 
@@ -72,12 +76,18 @@ final public class GameDataLoader {
 
         this.entityFactoryMap = new HashMap<>(2);
         EntityFactories entityFactories = this.new EntityFactories();
-        entityFactoryMap.put(Types.Entity.ship, entityFactories.shipFactory);
-        entityFactoryMap.put(Types.Entity.projectile, entityFactories.projectileFactory);
+        entityFactoryMap.put(Types.Entity.ship, entityFactories::shipFactory);
+        entityFactoryMap.put(Types.Entity.projectile, entityFactories::projectileFactory);
+
+        TimelineBuilders timelineBuilders = this.new TimelineBuilders();
+        this.timelineBuilderMap = new HashMap<>(2);
+        timelineBuilderMap.put(Types.SpawnInfo.single, timelineBuilders::singleSpawnInfoBuilder);
+        timelineBuilderMap.put(Types.SpawnInfo.repeat, timelineBuilders::repeatSpawnInfoBuilder);
+
     }
 
     public GameDataManager convertToGameObjects(GameEditionData gameEditionData) {
-        GameDataManager gameData = new GameDataManager(gameEditionData.getGameName());
+        GameDataManager gameData = new GameDataManager(gameEditionData.paths.gameFolder, "");
 
         for (EditionData visualEditionData : gameEditionData.getVisualEditionDataList()) {
             visualEditionData.checkForCategory(Category.VISUAL);
@@ -103,6 +113,15 @@ final public class GameDataLoader {
             gameData.addCustomEntity(EditionData.getEntityId(entityEditionData), entity);
         }
 
+        LevelTimeline timeline = new LevelTimeline(gameData, 3000);
+        for (EditionData spawnInfoEditionData : gameEditionData.getTimelineDataList()) {
+            spawnInfoEditionData.checkForCategory(Category.SPAWN_INFO);
+            var timelineBuilder = timelineBuilderMap.get((Types.SpawnInfo) spawnInfoEditionData.getType());
+            assert timelineBuilder != null : "timeline builder not found: " + spawnInfoEditionData.getType().name();
+            timelineBuilder.accept(spawnInfoEditionData, timeline);
+        }
+        gameData.addTimeline(timeline);
+
         return gameData;
     }
 
@@ -122,8 +141,8 @@ final public class GameDataLoader {
 
     private ExtraComponent convertShot(EditionData data, boolean isPlayer) {
         data.checkForType(Category.NONE, Types.shot);
-        float shotPeriod = ((FloatAttribute) data.get(Keys.Shot.shotPeriod)).getValue();
-        float firstShotTime = ((FloatAttribute) data.get(Keys.Shot.firstShotTime)).getValue();
+        double shotPeriod = ((DoubleAttribute) data.get(Keys.Shot.shotPeriod)).getValue();
+        double firstShotTime = ((DoubleAttribute) data.get(Keys.Shot.firstShotTime)).getValue();
         List<EditionData> spawnDataList = ((ListAttribute) data.get(Keys.Shot.spawn)).getDataList();
         List<Spawnable> shotList = spawnDataList.stream().map(this::convertToSpawnable).toList();
         if (isPlayer) {
@@ -251,7 +270,7 @@ final public class GameDataLoader {
 
     final public class EntityFactories {
 
-        final public BiFunction<EditionData, GameDataManager, Entity> shipFactory = (data, gameData) -> {
+        public Entity shipFactory(EditionData data, GameDataManager gameData) {
             data.checkForType(Types.Entity.ship);
             int id = ((IntegerAttribute) data.get(Keys.Entity.Ship.id)).getValue();
             boolean evil = ((BooleanAttribute) data.get(Keys.Entity.Ship.evil)).getValue();
@@ -272,9 +291,9 @@ final public class GameDataLoader {
             extraComponents.addAll(shotList);
             int hp = ((IntegerAttribute) data.get(Keys.Entity.Ship.hp)).getValue();
             return new Ship(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
-        };
+        }
 
-        final public BiFunction<EditionData, GameDataManager, Entity> projectileFactory = (data, gameData) -> {
+        public Entity projectileFactory(EditionData data, GameDataManager gameData) {
             data.checkForType(Types.Entity.projectile);
             int id = ((IntegerAttribute) data.get(Keys.Entity.Projectile.id)).getValue();
             boolean evil = ((BooleanAttribute) data.get(Keys.Entity.Projectile.evil)).getValue();
@@ -294,6 +313,38 @@ final public class GameDataLoader {
             List<ExtraComponent> shotList = shotDataList.stream().map(shotData -> convertShot(shotData, (id == 0))).toList();
             extraComponents.addAll(shotList);
             return new Projectile(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
-        };
+        }
+    }
+
+    final public class TimelineBuilders {
+
+        private TimelineBuilders() {}
+
+        public void singleSpawnInfoBuilder(EditionData spawnInfoData, LevelTimeline timeline) {
+            double spawnTime = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Single.time)).getValue();
+            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Single.spawn);
+            assert spawnList.getCategory() == Category.SPAWN : "incorrect ListAttribrute category";
+            List<EditionData> spawnDataList = spawnList.getDataList();
+            List<Spawnable> spawnableList = spawnDataList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
+            for (Spawnable spawnable : spawnableList) {
+                timeline.addSpawnable(spawnTime, spawnable);
+            }
+        }
+
+        public void repeatSpawnInfoBuilder(EditionData spawnInfoData, LevelTimeline timeline) {
+            double startTime = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.startTime)).getValue();
+            int spawnCount = ((IntegerAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.spawnCount)).getValue();
+            double interval = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.interval)).getValue();
+            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.spawn);
+            assert spawnList.getCategory() == Category.SPAWN : "incorrect ListAttribrute category";
+            List<EditionData> spawnDataList = spawnList.getDataList();
+            List<Spawnable> spawnableList = spawnDataList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
+            for (int i = 0; i < spawnCount; i++) {
+                double spawnTime = startTime + i * interval;
+                for (Spawnable spawnable : spawnableList) {
+                    timeline.addSpawnable(spawnTime, spawnable);
+                }
+            }
+        }
     }
 }

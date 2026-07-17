@@ -2,11 +2,10 @@ package engine.gameData;
 
 import engine.GlobalVars;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 
-import static engine.GlobalVars.Paths.rootFolderAbsolutePath;
-
-final public class GamePaths {
+final public class GamePaths implements Serializable {
 
     final public Path gameFolder;
 
@@ -22,8 +21,8 @@ final public class GamePaths {
 
     final public Path gameTimelineFile;
 
-    public GamePaths(String gameFolderName) {
-        gameFolder = rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder).resolve(gameFolderName);
+    public GamePaths(Path gameFolderPath) {
+        gameFolder = gameFolderPath;
         gameConfigFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameConfigFile);
         gameTextureFolder = gameFolder.resolve(GlobalVars.Paths.Partial.gameTextureFolder);
         gameVisualsFile = gameFolder.resolve(GlobalVars.Paths.Partial.gameVisualsFile);

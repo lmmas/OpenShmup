@@ -10,7 +10,7 @@ import java.util.List;
 @Getter @Setter final public class ListAttribute extends Attribute {
 
     private ArrayList<EditionData> dataList;
-    @Getter
+
     final private EditionData.Category category;
 
     public ListAttribute(EditionData.Category category, EditionData.Key key) {

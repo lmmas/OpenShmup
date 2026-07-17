@@ -10,13 +10,15 @@ import engine.scene.visual.SceneVisual;
 import json.GameLoader;
 import lombok.Getter;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 final public class GameDataManager {
 
-    final private String gameFolderName;
+    @Getter
+    final private String gameName;
 
     final public GamePaths paths;
 
@@ -34,9 +36,9 @@ final public class GameDataManager {
     @Getter
     final private ArrayList<LevelTimeline> timelines;
 
-    public GameDataManager(String gameFolderName) {
-        this.gameFolderName = gameFolderName;
-        this.paths = new GamePaths(gameFolderName);
+    public GameDataManager(Path gameFolderPath, String gameName) {
+        this.gameName = gameName;
+        this.paths = new GamePaths(gameFolderPath);
         this.config = new GameConfig();
         this.visuals = new HashMap<>();
         this.entities = new HashMap<>();
@@ -114,10 +116,6 @@ final public class GameDataManager {
 
     public LevelTimeline getTimeline(int index) {
         return timelines.get(index);
-    }
-
-    public String getGameName() {
-        return gameFolderName;
     }
 
 }

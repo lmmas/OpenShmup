@@ -5,12 +5,13 @@ import engine.level.Level;
 import engine.menu.Menu;
 import engine.scene.Scene;
 import engine.types.Reference;
+import json.GameDataLoader;
+import json.GameEditionData;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.ObjectInputStream;
 
 final public class Game {
 
@@ -22,29 +23,27 @@ final public class Game {
     @Getter @Setter
     private static double levelTime;
 
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            throw new IllegalArgumentException("invalid engine arguments");
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        if (args.length != 0) {
+            throw new IllegalArgumentException("invalid game arguments");
         }
-        Game.init(args[0]);
+        ObjectInputStream in = new ObjectInputStream(System.in);
+        GameEditionData gameEditionData = (GameEditionData) in.readObject();
+        gameEditionData.reloadPaths();
+        Game.init(gameEditionData);
         Game.run();
     }
 
     private Game() {}
 
-    public static void init(String gameFolderName) throws IOException {
+    public static void init(GameEditionData gameEditionData) throws IOException {
         Engine.init();
-        Path gameFolderPath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("Games").resolve(gameFolderName);
-        if (!Files.isDirectory(gameFolderPath)) {
-            throw new IllegalArgumentException("Game folder not found at path: " + gameFolderPath);
-        }
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
 
         levelTime = 0.0d;
-        gameDataManager = new GameDataManager(gameFolderName);
+        gameDataManager = new GameDataLoader().convertToGameObjects(gameEditionData);
         gameDataManager.loadGameConfig();
-        gameDataManager.loadGameContents();
         playerSettings = new PlayerSettings();
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
