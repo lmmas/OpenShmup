@@ -6,8 +6,6 @@ import engine.graphics.GraphicsManager;
 import engine.input.InputStatesManager;
 import engine.menu.Menu;
 import engine.scene.Scene;
-import engine.types.IVec2D;
-import engine.types.Reference;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.Callbacks;
@@ -15,6 +13,8 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.Callback;
+import types.IVec2D;
+import types.Reference;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

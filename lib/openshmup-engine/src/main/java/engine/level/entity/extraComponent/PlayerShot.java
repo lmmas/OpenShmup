@@ -1,10 +1,10 @@
 package engine.level.entity.extraComponent;
 
+import engine.input.GameControl;
 import engine.level.Level;
 import engine.level.entity.Entity;
 import engine.level.spawnable.Spawnable;
-import engine.types.GameControl;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.List;
 

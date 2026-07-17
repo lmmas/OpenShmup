@@ -5,8 +5,8 @@ import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TimeReference;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

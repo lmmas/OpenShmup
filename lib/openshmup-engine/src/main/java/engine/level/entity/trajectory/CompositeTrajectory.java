@@ -2,7 +2,7 @@ package engine.level.entity.trajectory;
 
 import engine.level.Level;
 import engine.level.entity.Entity;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 final public class CompositeTrajectory implements Trajectory {
 

@@ -2,9 +2,9 @@ package engine.scene.visual;
 
 import engine.graphics.colorRoundedRectangle.RoundedColorRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

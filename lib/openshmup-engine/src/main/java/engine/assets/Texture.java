@@ -1,8 +1,8 @@
 package engine.assets;
 
-import engine.types.IVec2D;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
+import types.IVec2D;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

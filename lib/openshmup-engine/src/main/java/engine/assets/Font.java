@@ -1,11 +1,11 @@
 package engine.assets;
 
-import engine.types.IVec2D;
-import engine.types.Vec2D;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
+import types.IVec2D;
+import types.Vec2D;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

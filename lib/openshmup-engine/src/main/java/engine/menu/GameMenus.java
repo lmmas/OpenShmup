@@ -4,8 +4,8 @@ import engine.menu.widget.ActionButton;
 import engine.menu.widget.Widgets;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.style.TextStyle;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import static engine.GlobalVars.Paths.debugFont;
 

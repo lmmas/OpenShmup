@@ -4,10 +4,10 @@ import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
 import lombok.Getter;
 import lombok.Setter;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

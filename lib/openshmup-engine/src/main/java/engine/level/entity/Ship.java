@@ -5,7 +5,7 @@ import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

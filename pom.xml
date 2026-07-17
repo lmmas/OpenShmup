@@ -13,8 +13,9 @@
     <modules>
         <module>lib/openshmup-editor</module>
         <module>lib/openshmup-engine</module>
-        <module>lib/openshmup-gamebuilder</module>
         <module>lib/openshmup-gameExecutable</module>
+        <module>lib/openshmup-common</module>
+        <module>lib/openshmup-json</module>
     </modules>
 
     <properties>

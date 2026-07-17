@@ -1,6 +1,6 @@
 package engine.level.spawnable;
 
-import engine.types.Vec2D;
+import types.Vec2D;
 
 public record EntitySpawnInfo(int id, Vec2D startingPosition, int trajectoryId) implements Spawnable {
 

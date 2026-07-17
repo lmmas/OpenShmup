@@ -4,9 +4,9 @@ import edition.GameEditionData;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.scene.Scene;
-import engine.types.IVec2D;
 import json.readers.GameDataReader;
 import lombok.Getter;
+import types.IVec2D;
 
 import java.io.IOException;
 import java.nio.file.Files;

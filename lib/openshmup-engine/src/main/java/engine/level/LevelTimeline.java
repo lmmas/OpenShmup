@@ -5,8 +5,8 @@ import engine.gameData.GameDataManager;
 import engine.level.spawnable.DisplaySpawnInfo;
 import engine.level.spawnable.EntitySpawnInfo;
 import engine.level.spawnable.Spawnable;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.HashSet;

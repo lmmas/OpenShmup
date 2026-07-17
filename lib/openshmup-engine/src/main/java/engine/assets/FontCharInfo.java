@@ -1,6 +1,6 @@
 package engine.assets;
 
-import engine.types.Vec2D;
+import types.Vec2D;
 
 public record FontCharInfo(
     int codepoint,

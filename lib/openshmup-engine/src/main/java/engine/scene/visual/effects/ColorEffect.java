@@ -1,6 +1,6 @@
 package engine.scene.visual.effects;
 
-import engine.types.RGBAValue;
+import types.RGBAValue;
 
 public record ColorEffect(
     RGBAValue colorCoefs,

@@ -1,6 +1,6 @@
 import engine.assets.Texture;
 import engine.hitbox.CompositeHitbox;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.io.IOException;
 import java.nio.file.Paths;

@@ -1,6 +1,6 @@
 package engine.scene.visual.style;
 
-import engine.types.RGBAValue;
+import types.RGBAValue;
 
 public record RoundedRectangleButtonStyle(
     float roundingRadius,

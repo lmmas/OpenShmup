@@ -1,10 +1,10 @@
 package engine.level.entity.trajectory;
 
 import engine.Engine;
+import engine.input.GameControl;
 import engine.level.Level;
 import engine.level.entity.Entity;
-import engine.types.GameControl;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 final public class PlayerControlledTrajectory implements Trajectory {
 

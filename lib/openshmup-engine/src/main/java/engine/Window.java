@@ -1,8 +1,8 @@
 package engine;
 
-import engine.types.IVec2D;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFWVidMode;
+import types.IVec2D;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glViewport;

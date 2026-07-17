@@ -1,6 +1,6 @@
 package engine.level.spawnable;
 
-import engine.types.Vec2D;
+import types.Vec2D;
 
 public record DisplaySpawnInfo(
     int id,

@@ -2,8 +2,7 @@ package engine.input;
 
 import engine.Engine;
 import engine.EngineSystem;
-import engine.types.GameControl;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.Collections;

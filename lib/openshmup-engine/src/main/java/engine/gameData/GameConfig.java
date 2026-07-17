@@ -1,9 +1,9 @@
 package engine.gameData;
 
-import engine.types.IVec2D;
-import engine.types.Vec2D;
 import lombok.Getter;
 import lombok.Setter;
+import types.IVec2D;
+import types.Vec2D;
 
 import java.nio.file.Path;
 

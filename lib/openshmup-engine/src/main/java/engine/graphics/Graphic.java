@@ -1,9 +1,9 @@
 package engine.graphics;
 
 import engine.assets.Shader;
-import engine.types.Vec2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

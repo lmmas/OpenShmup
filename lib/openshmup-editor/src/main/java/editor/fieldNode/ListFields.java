@@ -6,8 +6,8 @@ import editor.Style;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.Objects;

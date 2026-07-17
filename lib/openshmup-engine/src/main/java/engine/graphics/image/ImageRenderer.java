@@ -6,9 +6,9 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
 import org.lwjgl.BufferUtils;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

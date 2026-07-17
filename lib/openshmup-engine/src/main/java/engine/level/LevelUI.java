@@ -4,7 +4,7 @@ import engine.gameData.GameConfig;
 import engine.level.entity.Ship;
 import engine.scene.Scene;
 import engine.scene.visual.ImageDisplay;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.ArrayList;
 

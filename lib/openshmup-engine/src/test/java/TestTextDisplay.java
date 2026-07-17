@@ -3,8 +3,8 @@ import engine.assets.Font;
 import engine.scene.Scene;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
-import engine.types.IVec2D;
-import engine.types.RGBAValue;
+import types.IVec2D;
+import types.RGBAValue;
 
 import java.io.IOException;
 import java.nio.file.Paths;

@@ -1,14 +1,13 @@
 package engine;
 
-import edition.GameDataLoader;
 import edition.GameEditionData;
 import engine.gameData.GameDataManager;
 import engine.level.Level;
 import engine.menu.Menu;
 import engine.scene.Scene;
-import engine.types.Reference;
 import lombok.Getter;
 import lombok.Setter;
+import types.Reference;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

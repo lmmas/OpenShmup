@@ -5,8 +5,8 @@ import engine.menu.widget.SelectorButtons;
 import engine.menu.widget.TextField;
 import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.ImageDisplay;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

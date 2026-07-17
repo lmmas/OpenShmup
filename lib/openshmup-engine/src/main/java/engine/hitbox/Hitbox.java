@@ -1,6 +1,6 @@
 package engine.hitbox;
 
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.ArrayList;
 

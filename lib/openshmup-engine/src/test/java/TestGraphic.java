@@ -2,9 +2,9 @@ import engine.Engine;
 import engine.graphics.GraphicsManager;
 import engine.graphics.colorRoundedRectangle.RoundedColorRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
-import engine.types.IVec2D;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.IVec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.io.IOException;
 

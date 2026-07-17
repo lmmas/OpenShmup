@@ -4,10 +4,10 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.RenderType;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

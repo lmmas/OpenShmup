@@ -12,8 +12,8 @@ import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.io.IOException;
 

@@ -7,8 +7,8 @@ import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.effects.ColorEffect;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

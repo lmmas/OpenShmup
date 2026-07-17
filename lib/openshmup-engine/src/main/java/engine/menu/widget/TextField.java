@@ -9,8 +9,8 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

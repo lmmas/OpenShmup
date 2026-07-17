@@ -12,10 +12,10 @@ import engine.menu.widget.Widget;
 import engine.menu.widget.Widgets;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
-import engine.types.IVec2D;
-import engine.types.Vec2D;
 import lombok.Getter;
 import lombok.Setter;
+import types.IVec2D;
+import types.Vec2D;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

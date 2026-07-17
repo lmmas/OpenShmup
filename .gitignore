@@ -5,6 +5,8 @@ out/
 *.iml
 /.idea/
 /target/
+/lib/*/target/
+/lib/*/dependecy-reduced-pom.xml
 /lib/openshmup-editor/target/
 /lib/openshmup-engine/target/
 /lib/openshmup-gamebuilder/target/

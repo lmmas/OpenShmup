@@ -6,7 +6,7 @@ import engine.hitbox.SimpleRectangleHitbox;
 import engine.level.Level;
 import engine.level.entity.Entity;
 import engine.level.spawnable.Spawnable;
-import engine.types.RGBAValue;
+import types.RGBAValue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

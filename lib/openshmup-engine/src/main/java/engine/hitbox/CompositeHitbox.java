@@ -1,9 +1,9 @@
 package engine.hitbox;
 
 import engine.assets.Texture;
-import engine.types.IVec2D;
-import engine.types.Vec2D;
 import lombok.Getter;
+import types.IVec2D;
+import types.Vec2D;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

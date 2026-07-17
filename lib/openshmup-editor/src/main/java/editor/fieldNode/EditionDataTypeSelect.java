@@ -7,7 +7,7 @@ import engine.menu.Menu;
 import engine.menu.widget.SelectorButtons;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

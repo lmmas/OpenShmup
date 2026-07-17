@@ -9,7 +9,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import engine.types.RGBAValue;
+import types.RGBAValue;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

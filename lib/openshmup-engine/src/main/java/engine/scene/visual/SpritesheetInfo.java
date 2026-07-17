@@ -1,6 +1,6 @@
 package engine.scene.visual;
 
-import engine.types.Vec2D;
+import types.Vec2D;
 
 import java.nio.file.Path;
 

@@ -37,8 +37,6 @@ final public class GlobalVars {
             final static public Path gameEntitiesFile = get("json/entities.json");
 
             final static public Path gameTimelineFile = get("json/timeline1.json");
-
-            final static public Path missingTextureFile = get("lib/openshmup-engine/src/main/resources/textures/missingTexture.png");
         }
     }
 }

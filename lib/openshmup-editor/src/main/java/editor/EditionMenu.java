@@ -18,10 +18,10 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
-import engine.types.RGBAValue;
-import engine.types.Reference;
-import engine.types.Vec2D;
 import json.JsonDataWriter;
+import types.RGBAValue;
+import types.Reference;
+import types.Vec2D;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

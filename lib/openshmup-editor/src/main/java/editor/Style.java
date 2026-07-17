@@ -2,14 +2,14 @@ package editor;
 
 import engine.scene.visual.style.RoundedRectangleButtonStyle;
 import engine.scene.visual.style.TextStyle;
-import engine.types.RGBAValue;
-import engine.types.Vec2D;
+import types.RGBAValue;
+import types.Vec2D;
 
 import java.nio.file.Path;
 
-import static engine.types.RGBAValue.SOLID_BLACK;
-import static engine.types.RGBAValue.SOLID_WHITE;
 import static java.nio.file.Paths.get;
+import static types.RGBAValue.SOLID_BLACK;
+import static types.RGBAValue.SOLID_WHITE;
 
 final public class Style {
 
