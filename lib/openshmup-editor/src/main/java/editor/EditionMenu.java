@@ -25,7 +25,9 @@ import json.JsonDataWriter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -40,7 +42,6 @@ final public class EditionMenu {
     private EditionMenu() {}
 
     public static Menu EditionMenu(GameEditionData gameData) {
-        JsonDataWriter jsonDataWriter = new JsonDataWriter();
         Menu menu = new Menu();
         MenuScreen mainScreen = new MenuScreen(0);
 
@@ -55,24 +56,9 @@ final public class EditionMenu {
         };
         ActionButton returnToMainMenuButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
         mainScreen.addWidget(returnToMainMenuButton);
-        ActionButton saveButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, "Save", () -> jsonDataWriter.saveToJson(gameData));
+        ActionButton saveButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, "Save", () -> saveGame(gameData));
         mainScreen.addWidget(saveButton);
-        Runnable lauchGame = () -> {
-            Path enginePath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT.jar");
-
-            ProcessBuilder pb = new ProcessBuilder(
-                "java", "-jar", enginePath.toAbsolutePath().toString());
-            try {
-                Process process = pb.start();
-                try (ObjectOutputStream out = new ObjectOutputStream(process.getOutputStream())) {
-                    out.writeObject(gameData);
-                    out.flush();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        ActionButton launchGameButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, "Launch game", lauchGame);
+        ActionButton launchGameButton = Widgets.RoundedRectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, "Launch game", () -> launchGame(gameData));
         mainScreen.addWidget(launchGameButton);
 
         ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
@@ -168,9 +154,32 @@ final public class EditionMenu {
         return editPanel;
     }
 
-    private static void applyChangesToList(EditionDataFieldNode node, List<EditionData> dataList, int index) {
-        node.applyChanges();
-        EditionData selectedEditionData = node.getEditionData();
-        dataList.set(index, selectedEditionData);
+    private static void saveGame(GameEditionData gameData) {
+        JsonDataWriter writer = new JsonDataWriter();
+        writer.saveToJson(gameData);
+        Path gameJAR = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
+        Path gameFolder = gameData.paths.gameFolder;
+        Path targetPath = gameFolder.resolve(gameFolder.getFileName() + ".jar");
+        try {
+            Files.copy(gameJAR, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to copy to " + gameFolder + ": " + e.getMessage());
+        }
+    }
+
+    private static void launchGame(GameEditionData gameData) {
+        Path enginePath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT.jar");
+
+        ProcessBuilder pb = new ProcessBuilder(
+            "java", "-jar", enginePath.toAbsolutePath().toString());
+        try {
+            Process process = pb.start();
+            try (ObjectOutputStream out = new ObjectOutputStream(process.getOutputStream())) {
+                out.writeObject(gameData);
+                out.flush();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

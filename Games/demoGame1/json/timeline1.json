@@ -1,21 +1,21 @@
 {
   "duration": 3000.0,
-  "spawns": [
-    {
-      "type": "single",
-      "time": 0.0,
-      "spawn": [
+    "spawns": [
         {
-          "type": "entity",
-          "id": 0,
-          "trajectory": 0,
-          "startingPosition": [100.0, 330.0]
-        }, {
-          "type": "display",
-          "id": 1,
-          "position": [500.0, 281.0]
+            "type": "single",
+            "time": 0.0,
+            "spawn": [
+                {
+                    "type": "entity",
+                    "id": 0,
+                    "trajectory": 0,
+                    "startingPosition": [100.0, 330.0]
+                }, {
+                    "type": "display",
+                    "id": 1,
+                    "position": [500.0, 281.0]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

@@ -44,7 +44,6 @@ final public class Game {
 
         levelTime = 0.0d;
         gameDataManager = new GameDataLoader().convertToGameObjects(gameEditionData);
-        //gameDataManager.loadGameConfig();
         playerSettings = new PlayerSettings();
 
         playerSettings.setResolution(gameDataManager.config.getNativeWidth(), gameDataManager.config.getNativeHeight());
