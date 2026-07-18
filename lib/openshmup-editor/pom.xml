@@ -102,7 +102,7 @@
                             <jre>
                                 <minVersion>21.0.0</minVersion>
                                 <path>
-                                    ${jreFolder}
+                                    ./lib/openjdk-21.0.1
                                 </path>
                                 <opts>
                                     <opt>-Dapp.home=%EXEDIR%</opt>
