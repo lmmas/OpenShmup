@@ -157,11 +157,11 @@ final public class EditionMenu {
     private static void saveGame(GameEditionData gameData) {
         JsonDataWriter writer = new JsonDataWriter();
         writer.saveToJson(gameData);
-        Path gameJAR = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-gameExecutable/target/openshmup-gameExecutable-1.0-SNAPSHOT.jar");
+        Path gameExecutable = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-gameExecutable/gameExecutable.exe");
         Path gameFolder = gameData.paths.gameFolder;
-        Path targetPath = gameFolder.resolve(gameFolder.getFileName() + ".jar");
+        Path targetPath = gameFolder.resolve(gameFolder.getFileName() + ".exe");
         try {
-            Files.copy(gameJAR, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(gameExecutable, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Failed to copy to " + gameFolder + ": " + e.getMessage());
         }

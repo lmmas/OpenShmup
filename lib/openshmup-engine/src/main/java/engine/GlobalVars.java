@@ -25,18 +25,6 @@ final public class GlobalVars {
             private Partial() {}
 
             final static public Path customGamesFolder = get("Games");
-
-            final static public Path gameConfigFile = get("json/config.json");
-
-            final static public Path gameTextureFolder = get("textures");
-
-            final static public Path gameVisualsFile = get("json/visuals.json");
-
-            final static public Path gameTrajectoriesFile = get("json/trajectories.json");
-
-            final static public Path gameEntitiesFile = get("json/entities.json");
-
-            final static public Path gameTimelineFile = get("json/timeline1.json");
         }
     }
 }

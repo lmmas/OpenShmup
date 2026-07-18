@@ -17,8 +17,6 @@ import types.IVec2D;
 import types.Reference;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -69,13 +67,14 @@ final public class Engine {
     }
 
     private static void detectRootFolder() {
-        try {
-            Path rootFolderAbsolutePath = Paths.get(Engine.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().getParent().getParent();
-            GlobalVars.Paths.rootFolderAbsolutePath = rootFolderAbsolutePath;
-            System.out.println(rootFolderAbsolutePath);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+        String appHome = System.getProperty("app.home");
+        if (appHome != null) {
+            GlobalVars.Paths.rootFolderAbsolutePath = Paths.get(appHome).toAbsolutePath();
         }
+        else {
+            GlobalVars.Paths.rootFolderAbsolutePath = Paths.get("").toAbsolutePath();
+        }
+        System.out.println("Detected project folder: " + GlobalVars.Paths.rootFolderAbsolutePath);
     }
 
     private static void OpenGLInitialization() {
