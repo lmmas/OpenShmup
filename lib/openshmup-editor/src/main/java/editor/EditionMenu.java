@@ -168,10 +168,10 @@ final public class EditionMenu {
     }
 
     private static void launchGame(GameEditionData gameData) {
-        Path enginePath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-engine/target/openshmup-engine-1.0-SNAPSHOT.jar");
+        Path enginePath = GlobalVars.Paths.rootFolderAbsolutePath.resolve("lib/openshmup-engine/gameEngine.jar");
 
         ProcessBuilder pb = new ProcessBuilder(
-            "java", "-jar", enginePath.toAbsolutePath().toString());
+            "lib/openjdk-21.0.1/bin/javaw.exe", "-jar", enginePath.toAbsolutePath().toString());
         try {
             Process process = pb.start();
             try (ObjectOutputStream out = new ObjectOutputStream(process.getOutputStream())) {
