@@ -32,7 +32,7 @@ final public class EditionData implements Serializable {
     }
 
     public boolean hasTypeSelect() {
-        return this.category != Category.NONE;
+        return this.category != Category.NONE && this.category != Category.CONFIG;
     }
 
     @NonNull

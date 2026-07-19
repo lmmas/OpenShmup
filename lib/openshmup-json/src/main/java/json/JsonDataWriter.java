@@ -10,6 +10,8 @@ import edition.EditionData;
 import edition.GameEditionData;
 import edition.attribute.*;
 
+import static edition.EditionData.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -91,6 +93,9 @@ final public class JsonDataWriter {
     }
 
     public void saveToJson(GameEditionData gameEditionData) {
+        gameEditionData.paths.gameFolder.toFile().mkdir();
+        gameEditionData.paths.gameVisualsFile.getParent().toFile().mkdir();
+        gameEditionData.paths.gameTextureFolder.toFile().mkdir();
         ArrayNode visualsNode = buildJsonNodeOfList(gameEditionData.getVisualEditionDataList());
         ArrayNode trajectoriesNode = buildJsonNodeOfList(gameEditionData.getTrajectoryEditionDataList());
         ArrayNode entitiesNode = buildJsonNodeOfList(gameEditionData.getEntityEditionDataList());
@@ -98,11 +103,17 @@ final public class JsonDataWriter {
         ObjectNode timelineNode = mapper.createObjectNode();
         timelineNode.put("duration", 3000.0d);
         timelineNode.set("spawns", timelineSpawnInfosNode);
+        ObjectNode configNode = mapper.createObjectNode();
+        ObjectNode generalConfigNode = configNode.putObject(Types.Config.general.name());
+        gameEditionData.configs.get(Types.Config.general).getAttributesList().forEach(attribute -> addToNode(attribute, generalConfigNode));
+        ObjectNode levelUIConfigNode = configNode.putObject(Types.Config.levelUI.name());
+        gameEditionData.configs.get(Types.Config.levelUI).getAttributesList().forEach(attribute -> addToNode(attribute, levelUIConfigNode));
         try {
             writer.writeValue(gameEditionData.paths.gameVisualsFile.toFile(), visualsNode);
             writer.writeValue(gameEditionData.paths.gameTrajectoriesFile.toFile(), trajectoriesNode);
             writer.writeValue(gameEditionData.paths.gameEntitiesFile.toFile(), entitiesNode);
             writer.writeValue(gameEditionData.paths.gameTimelineFile.toFile(), timelineNode);
+            writer.writeValue(gameEditionData.paths.gameConfigFile.toFile(), configNode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

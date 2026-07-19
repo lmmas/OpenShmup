@@ -3,11 +3,13 @@ package editor;
 import edition.EditionData;
 import edition.GameEditionData;
 import editor.fieldNode.EditionDataFieldNode;
+import editor.fieldNode.EditionDataFields;
 import editor.fieldNode.FieldNode;
 import editor.fieldNode.ListFields;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.menu.Menu;
+import engine.menu.MenuElementGroup;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
 import engine.menu.widget.SelectorButtons;
@@ -79,30 +81,58 @@ final public class EditionMenu {
         ListFields timelineSpawnInfoList = new ListFields(EditionData.Category.SPAWN_INFO, timelineEditionDataList, listStartPosition, true);
         timelineSpawnInfoList.setMenu(menu);
 
-        List<String> labels = List.of("Visuals", "Trajectories", "Entities", "Timeline");
+        List<String> labels = List.of("Visuals", "Trajectories", "Entities", "Timeline", "Config");
         Vec2D selectorButtonStride = new Vec2D(250f, 0f);
         Vec2D selectorButtonSize = new Vec2D(200, 50f);
-        Vec2D selectorStartPosition = new Vec2D(Engine.getNativeWidth() * 0.5f - 1.5f * selectorButtonStride.x, 950);
+        Vec2D selectorStartPosition = new Vec2D(Engine.getNativeWidth() * 0.5f - 2.0f * selectorButtonStride.x, 950);
         final Reference<FieldNode> currentNode = new Reference<>(null);
+
+        List<EditionData> configList = gameData.getConfigs().values().stream().toList();
+        MenuElementGroup configListGroup = new MenuElementGroup();
+        for(int i = 0; i < configList.size(); i++){
+            EditionData configData = configList.get(i);
+            Runnable onClick = () -> {
+                EditionDataFields node = new EditionDataFields(configData, new Vec2D(120f, 830f));
+                openEditPanel(menu, 8, node, node::applyChanges, () -> {});
+            };
+            configListGroup.widgets().add(Widgets.RoundedRectangleButton(1, new Vec2D(200f, 50f), new Vec2D(Engine.getNativeWidth() / 2f, 850f - 60 * i), menuButtonStyle1, configData.getType().name(), onClick));
+        }
+
         BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {
 
             if (currentNode.get() != null) {
                 currentNode.get().setActive(false);
             }
-            FieldNode node = switch (newValue) {
-                case 0 -> visualListFields;
-                case 1 -> trajectoryListFields;
-                case 2 -> entityListFields;
-                case 3 -> timelineSpawnInfoList;
-                default -> {
-                    assert false : "incorrect value";
-                    yield null;
+            if(buttons.getSelectedValue() == 4){
+                menu.removeFromCurrentScreen(configListGroup);
+            }
+            switch (newValue){
+                case 0 -> {
+                    visualListFields.setActive(true);
+                    currentNode.set(visualListFields);
                 }
-            };
-            node.setActive(true);
-            currentNode.set(node);
+                case 1 -> {
+                    trajectoryListFields.setActive(true);
+                    currentNode.set(trajectoryListFields);
+                }
+                case 2 -> {
+                    entityListFields.setActive(true);
+                    currentNode.set(entityListFields);
+                }
+                case 3 -> {
+                    timelineSpawnInfoList.setActive(true);
+                    currentNode.set(timelineSpawnInfoList);
+                }
+                case 4 -> {
+                    currentNode.set(null);
+                    menu.addToCurrentScreen(configListGroup);
+                }
+                default -> {
+                    assert false: "incorrect value";
+                }
+            }
         };
-        SelectorButtons categorySelector = EditorSelector(1, 4, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange, 0);
+        SelectorButtons categorySelector = EditorSelector(1, 5, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange, 0);
         mainScreen.addWidget(categorySelector);
         currentNode.set(visualListFields);
         menu.addMenuScreen(mainScreen);
@@ -113,7 +143,7 @@ final public class EditionMenu {
 
     public static MenuScreen openEditPanel(Menu menu, int layer, EditionDataFieldNode node, Runnable onApply, Runnable onClose) {
         EditionData editionData = node.getEditionData();
-        assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot : "Incorrect editionData type: " + editionData.getType().name();
+        assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot || editionData.getCategory() == EditionData.Category.CONFIG: "Incorrect editionData type: " + editionData.getType().name();
         MenuScreen editPanel = new MenuScreen(layer);
         SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         editPanel.addVisual(backgroundColor);
@@ -137,10 +167,10 @@ final public class EditionMenu {
         node.setMenu(menu);
 
         Vec2D buttonSize = new Vec2D(150, 50);
-        Vec2D applyButtonPosition = new Vec2D(1465, 125);
+        Vec2D applyButtonPosition = new Vec2D(1565, 100);
         ActionButton applyButton = Widgets.RoundedRectangleButton(3, buttonSize, applyButtonPosition, menuButtonStyle2, "Apply", onApply);
 
-        Vec2D closeButtonPosition = new Vec2D(1625, 125);
+        Vec2D closeButtonPosition = new Vec2D(1725, 100);
         Runnable closeButtonAction = () -> {
             menu.removeMenuScreen(editPanel);
             onClose.run();

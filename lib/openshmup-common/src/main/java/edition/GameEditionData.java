@@ -25,7 +25,7 @@ final public class GameEditionData implements Serializable {
     final private ArrayList<EditionData> entityEditionDataList;
     @Getter
     final private ArrayList<EditionData> timelineDataList;
-
+    @Getter
     final public HashMap<EditionData.Types.Config, EditionData> configs;
 
     public GameEditionData(Path gameFolderPath) {
@@ -41,6 +41,16 @@ final public class GameEditionData implements Serializable {
 
     public void reloadPaths() {
         this.paths = new GamePaths(Path.of(fileFolderPathString));
+    }
+
+    public void setToDefaultEmpty(){
+        visualEditionDataList.clear();
+        trajectoryEditionDataList.clear();
+        entityEditionDataList.clear();
+        timelineDataList.clear();
+        configs.clear();
+        configs.put(EditionData.Types.Config.general, EditionData.Defaults.Config(EditionData.Types.Config.general));
+        configs.put(EditionData.Types.Config.levelUI, EditionData.Defaults.Config(EditionData.Types.Config.levelUI));
     }
 
     public void addVisual(EditionData visualData) {
@@ -69,4 +79,5 @@ final public class GameEditionData implements Serializable {
         assert !timelineDataList.contains(spawnInfoData) : "spawn info already defined";
         timelineDataList.add(spawnInfoData);
     }
+
 }

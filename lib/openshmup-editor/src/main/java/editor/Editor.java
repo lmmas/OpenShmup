@@ -44,7 +44,8 @@ final public class Editor {
     public static void loadGames() throws IOException {
         assert rootFolderAbsolutePath != null : "function called before necessary path is set";
         GameDataReader reader = new GameDataReader();
-        try (Stream<Path> paths = Files.list(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder))) {
+        Path gamesFolder = rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder);
+        try (Stream<Path> paths = Files.list(gamesFolder)) {
             loadedGames = paths.filter(Files::isDirectory)
                 .map(reader::readGameData)
                 .toList();

@@ -73,6 +73,7 @@ final public class EditionDataFields implements EditionDataFieldNode {
                         yield 0f;
                     }
                 }
+                case CONFIG -> 4 * fieldHeight;
                 default -> {
                     assert false : "incorrect edition data type";
                     yield 0f;
