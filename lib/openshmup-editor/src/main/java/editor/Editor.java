@@ -32,7 +32,7 @@ final public class Editor {
     public static void init() throws IOException {
 
         Engine.init();
-        Engine.setNativeResolution(new IVec2D(1920, 1080));
+        Engine.setNativeResolution(new IVec2D(1920, 1000));
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
         Engine.switchCurrentScene(new Scene());

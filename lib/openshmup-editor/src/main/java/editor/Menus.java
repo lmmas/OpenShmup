@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import static editor.Style.*;
 import static editor.Style.Color.menuBackgroundColor;
-import static engine.GlobalVars.Paths.debugFont;
+import static editor.Style.Text.menuFontPath;
 import static engine.menu.MenuActions.terminateProgram;
 
 final public class Menus {
@@ -33,18 +33,19 @@ final public class Menus {
         private static MenuScreen PopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            ActionButton closeButton = Widgets.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 1000), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            ActionButton closeButton = Widgets.RoundedRectangleButton(1, closeButtonSize, new Vec2D(1800, 930), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addWidget(closeButton);
             popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)));
 
             Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
+            Vec2D listButtonSize = new Vec2D(300f, 75f);
             for (int i = 0; i < Editor.getLoadedGames().size(); i++) {
                 var game = Editor.getLoadedGames().get(i);
                 Runnable onclick = () -> {
                     Engine.switchCurrentScene(new Scene());
                     Engine.switchCurrentMenu(EditionMenu.EditionMenu(game));
                 };
-                popupMenu.addWidget(Widgets.RoundedRectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 800 - (buttonSize.y + 20f) * i), menuButtonStyle1, game.getGameName(), onclick));
+                popupMenu.addWidget(Widgets.RoundedRectangleButton(1, listButtonSize, new Vec2D(resolution.x / 2, 800 - (listButtonSize.y + 10f) * i), menuButtonStyle1, game.getGameName(), onclick));
             }
             return popupMenu;
         }
@@ -57,7 +58,7 @@ final public class Menus {
         int backgroundLayer = 0;
         SceneVisual menuBackground = new ColorRectangleVisual(0, resolution, resolution.scalar(0.5f), menuBackgroundColor);
 
-        TextStyle menuTitleTextStyle = new TextStyle(debugFont, Color.titleColor, 50);
+        TextStyle menuTitleTextStyle = new TextStyle(menuFontPath, Color.titleColor, 50);
         SceneVisual menuTitle = new TextDisplay(1, false, new Vec2D(resolution.x / 2, 800), "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
         Runnable editGameAction = () -> {
