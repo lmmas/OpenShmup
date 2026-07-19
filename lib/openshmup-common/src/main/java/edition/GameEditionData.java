@@ -76,7 +76,7 @@ final public class GameEditionData implements Serializable {
 
     public void addTimelineSpawnInfo(EditionData spawnInfoData) {
         spawnInfoData.checkForCategory(EditionData.Category.SPAWN_INFO);
-        assert !timelineDataList.contains(spawnInfoData) : "spawn info already defined";
+        assert !timelineDataList.contains(spawnInfoData) : "spawns info already defined";
         timelineDataList.add(spawnInfoData);
     }
 

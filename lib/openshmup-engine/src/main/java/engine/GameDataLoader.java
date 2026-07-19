@@ -132,12 +132,12 @@ final public class GameDataLoader {
         config.setNativeResolution(nativeResolution);
 
         EditionData levelUIConfigData = gameEditionData.configs.get(Types.Config.levelUI);
-        EditionData livesDisplayConfigData = ((EditionDataAttribute) levelUIConfigData.get(Keys.Config.LevelUI.lives)).getData();
-        String livesDisplayFileName = ((StringAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.Lives.fileName)).getValue();
+        EditionData livesDisplayConfigData = ((EditionDataAttribute) levelUIConfigData.get(Keys.Config.LevelUI.livesDisplay)).getData();
+        String livesDisplayFileName = ((StringAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.LivesDisplay.fileName)).getValue();
         config.levelUI.lives.textureFilepath = gameData.paths.gameTextureFolder.resolve(livesDisplayFileName);
-        config.levelUI.lives.size = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.Lives.size)).getValue();
-        config.levelUI.lives.position = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.Lives.position)).getValue();
-        config.levelUI.lives.stride = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.Lives.stride)).getValue();
+        config.levelUI.lives.size = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.LivesDisplay.size)).getValue();
+        config.levelUI.lives.position = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.LivesDisplay.position)).getValue();
+        config.levelUI.lives.stride = ((Vec2DAttribute) livesDisplayConfigData.get(Keys.Config.LevelUI.LivesDisplay.stride)).getValue();
 
         for (EditionData visualEditionData : gameEditionData.getVisualEditionDataList()) {
             visualEditionData.checkForCategory(Category.VISUAL);
@@ -185,7 +185,7 @@ final public class GameDataLoader {
     private Spawnable convertToSpawnable(EditionData spawnEditionData) {
         spawnEditionData.checkForCategory(EditionData.Category.SPAWN);
         var spawnableFactory = spawnFactories.get((Types.Spawn) spawnEditionData.getType());
-        assert spawnableFactory != null : "spawn factory not found: " + spawnEditionData.getType().name();
+        assert spawnableFactory != null : "spawns factory not found: " + spawnEditionData.getType().name();
         return spawnableFactory.build(spawnEditionData);
     }
 
@@ -372,7 +372,7 @@ final public class GameDataLoader {
 
         public void singleSpawnInfoBuilder(LevelTimeline timeline, EditionData spawnInfoData) {
             double spawnTime = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Single.time)).getValue();
-            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Single.spawn);
+            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Single.spawns);
             assert spawnList.getCategory() == Category.SPAWN : "incorrect ListAttribrute category";
             List<EditionData> spawnDataList = spawnList.getDataList();
             List<Spawnable> spawnableList = spawnDataList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
@@ -385,7 +385,7 @@ final public class GameDataLoader {
             double startTime = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.startTime)).getValue();
             int spawnCount = ((IntegerAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.spawnCount)).getValue();
             double interval = ((DoubleAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.interval)).getValue();
-            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.spawn);
+            ListAttribute spawnList = (ListAttribute) spawnInfoData.get(Keys.SpawnInfo.Repeat.spawns);
             assert spawnList.getCategory() == Category.SPAWN : "incorrect ListAttribrute category";
             List<EditionData> spawnDataList = spawnList.getDataList();
             List<Spawnable> spawnableList = spawnDataList.stream().map(GameDataLoader.this::convertToSpawnable).toList();

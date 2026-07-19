@@ -37,7 +37,7 @@ final public class AttributeLabels {
             {Entity.Projectile.spriteVisualId, "Sprite visual ID"},
             {Entity.Projectile.hitbox, "Hitbox"},
             {Entity.Projectile.defaultTrajectoryId, "Default trajectory ID"},
-            {Entity.Projectile.deathSpawn, "Death spawn"},
+            {Entity.Projectile.deathSpawn, "Death spawns"},
             {Entity.Projectile.shots, "Shot"},
             {Entity.Ship.id, "Entity ID"},
             {Entity.Ship.evil, "Evil"},
@@ -45,7 +45,7 @@ final public class AttributeLabels {
             {Entity.Ship.spriteVisualId, "Sprite visual ID"},
             {Entity.Ship.hitbox, "Hitbox"},
             {Entity.Ship.defaultTrajectoryId, "Default trajectory ID"},
-            {Entity.Ship.deathSpawn, "Death spawn"},
+            {Entity.Ship.deathSpawn, "Death spawns"},
             {Entity.Ship.shots, "Shot"},
             {Entity.Ship.hp, "HP"},
             {Spawn.DisplaySpawn.id, "Visual ID"},
@@ -65,17 +65,17 @@ final public class AttributeLabels {
             {Shot.firstShotTime, "First shot time"},
             {Shot.spawn, "Spawns"},
             {SpawnInfo.Single.time, "Spawn time"},
-            {SpawnInfo.Single.spawn, "Spawns"},
+            {SpawnInfo.Single.spawns, "Spawns"},
             {SpawnInfo.Repeat.startTime, "Start time"},
             {SpawnInfo.Repeat.spawnCount, "Spawn count"},
             {SpawnInfo.Repeat.interval, "Spawn interval"},
-            {SpawnInfo.Repeat.spawn, "Spawns"},
+            {SpawnInfo.Repeat.spawns, "Spawns"},
             {Config.General.resolution, "Game resolution"},
-            {Config.LevelUI.lives, "Lives display"},
-            {Config.LevelUI.Lives.fileName, "Texture file name"},
-            {Config.LevelUI.Lives.size, "Display size"},
-            {Config.LevelUI.Lives.position, "Display position"},
-            {Config.LevelUI.Lives.stride, "Display stride"}
+            {Config.LevelUI.livesDisplay, "Lives display"},
+            {Config.LevelUI.LivesDisplay.fileName, "Texture file name"},
+            {Config.LevelUI.LivesDisplay.size, "Display size"},
+            {Config.LevelUI.LivesDisplay.position, "Display position"},
+            {Config.LevelUI.LivesDisplay.stride, "Display stride"}
     }).collect(Collectors.toMap(data -> (EditionData.Key) data[0], data -> (String) data[1]));
 
     public static String get(EditionData.Key key) {

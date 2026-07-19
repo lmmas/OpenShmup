@@ -78,12 +78,12 @@ final public class GameDataReader {
         EditionData generalConfig = EditionData.Config.General(resolution);
         gameEditionData.configs.put(Types.Config.general, generalConfig);
         JsonNodeReader levelUINode = rootNode.readObject(Types.Config.levelUI.name());
-        JsonNodeReader livesNode = levelUINode.readObject(Keys.Config.LevelUI.lives);
-        String fileName = livesNode.readString(Keys.Config.LevelUI.Lives.fileName);
-        Vec2D size = livesNode.readVec2D(Keys.Config.LevelUI.Lives.size);
-        Vec2D startPosition = livesNode.readVec2D(Keys.Config.LevelUI.Lives.position);
-        Vec2D stride = livesNode.readVec2D(Keys.Config.LevelUI.Lives.stride);
-        EditionData livesConfig = EditionData.Config.LevelUI.Lives(fileName, size, startPosition, stride);
+        JsonNodeReader livesNode = levelUINode.readObject(Keys.Config.LevelUI.livesDisplay);
+        String fileName = livesNode.readString(Keys.Config.LevelUI.LivesDisplay.fileName);
+        Vec2D size = livesNode.readVec2D(Keys.Config.LevelUI.LivesDisplay.size);
+        Vec2D startPosition = livesNode.readVec2D(Keys.Config.LevelUI.LivesDisplay.position);
+        Vec2D stride = livesNode.readVec2D(Keys.Config.LevelUI.LivesDisplay.stride);
+        EditionData livesConfig = EditionData.Config.LevelUI.LivesDisplay(fileName, size, startPosition, stride);
         EditionData levelUIConfig = EditionData.Config.LevelUI(livesConfig);
         gameEditionData.configs.put(Types.Config.levelUI, levelUIConfig);
     }
@@ -173,14 +173,14 @@ final public class GameDataReader {
         String type = node.readString(EditionData.Keys.type);
         SpawnInfoReader reader = spawnInfoReaders.get(type);
         if (reader == null) {
-            throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawn info type is not supported");
+            throw new IllegalArgumentException("Invalid JSON format: " + node.getFullPath() + ": spawns info type is not supported");
         }
         return reader.fromJSON(node, gameDataReader);
     }
 
     public void readTimeline(GameEditionData editorgameData) {
         JsonNodeReader rootNode = JsonNodeReader.getObjectRootNode(editorgameData.paths.gameTimelineFile, objectMapper);
-        JsonNodeReader arrayNode = rootNode.readArray("spawns");
+        JsonNodeReader arrayNode = rootNode.readArray("spawnInfos");
         List<JsonNodeReader> spawnInfoNodeList = arrayNode.getObjectListFromArray();
         for (var spawnInfoNode : spawnInfoNodeList) {
             EditionData newSpawnInfoData = spawnInfoEditionDataFromJSON(spawnInfoNode, this);

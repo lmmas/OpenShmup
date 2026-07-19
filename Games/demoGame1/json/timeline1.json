@@ -1,9 +1,9 @@
 {
   "duration": 3000.0,
-  "spawns": [{
+  "spawnInfos": [{
     "type": "single",
     "time": 0.0,
-    "spawn": [{
+    "spawns": [{
       "type": "entity",
       "id": 0,
       "trajectory": 0,

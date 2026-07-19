@@ -172,7 +172,7 @@ final public class EditionData implements Serializable {
         }
 
         public enum Config implements Type {
-            general, levelUI, lives
+            general, levelUI, livesDisplay
         }
     }
 
@@ -258,14 +258,14 @@ final public class EditionData implements Serializable {
 
             public enum Single implements Key {
                 time,
-                spawn
+                spawns
             }
 
             public enum Repeat implements Key {
                 startTime,
                 spawnCount,
                 interval,
-                spawn
+                spawns
             }
         }
 
@@ -320,9 +320,9 @@ final public class EditionData implements Serializable {
             }
 
             public enum LevelUI implements Key {
-                lives;
+                livesDisplay;
 
-                public enum Lives implements Key {
+                public enum LivesDisplay implements Key {
                     fileName, size, position, stride
                 }
             }
@@ -586,19 +586,19 @@ final public class EditionData implements Serializable {
         public static EditionData SingleSpawnInfo() {
             List<Attribute> attributeList = List.of(
                 new DoubleAttribute(Keys.SpawnInfo.Single.time),
-                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Single.spawn)
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Single.spawns)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.single, attributeList, singleSpawnInfoDefaultValues);
         }
         final private static Map<Key, Object> singleSpawnInfoDefaultValues = Map.of(
             Keys.SpawnInfo.Single.time, 0d,
-            Keys.SpawnInfo.Single.spawn, List.of()
+            Keys.SpawnInfo.Single.spawns, List.of()
         );
         public static EditionData SingleSpawnInfo(double spawnTime, List<EditionData> spawns) {
             EditionData singleSpawnInfoData = SingleSpawnInfo();
             singleSpawnInfoData.setToMap(Map.of(
                 Keys.SpawnInfo.Single.time, spawnTime,
-                Keys.SpawnInfo.Single.spawn, spawns
+                Keys.SpawnInfo.Single.spawns, spawns
             ));
             return singleSpawnInfoData;
         }
@@ -608,7 +608,7 @@ final public class EditionData implements Serializable {
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.startTime),
                 new IntegerAttribute(Keys.SpawnInfo.Repeat.spawnCount),
                 new DoubleAttribute(Keys.SpawnInfo.Repeat.interval),
-                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Repeat.spawn)
+                new ListAttribute(Category.SPAWN, Keys.SpawnInfo.Repeat.spawns)
             );
             return new EditionData(Category.SPAWN_INFO, Types.SpawnInfo.repeat, attributeList, repeatSpawnInfoDefaultValues);
         }
@@ -616,7 +616,7 @@ final public class EditionData implements Serializable {
             Keys.SpawnInfo.Repeat.startTime, 0.0d,
             Keys.SpawnInfo.Repeat.spawnCount, 1,
             Keys.SpawnInfo.Repeat.interval, 1.0d,
-            Keys.SpawnInfo.Repeat.spawn, List.of()
+            Keys.SpawnInfo.Repeat.spawns, List.of()
         );
         public static EditionData RepeatSpawnInfo(double startTime, int spawnCount, double interval, List<EditionData> spawns) {
             EditionData repeatSpawnInfoData = RepeatSpawnInfo();
@@ -624,7 +624,7 @@ final public class EditionData implements Serializable {
                 Keys.SpawnInfo.Repeat.startTime, startTime,
                 Keys.SpawnInfo.Repeat.spawnCount, spawnCount,
                 Keys.SpawnInfo.Repeat.interval, interval,
-                Keys.SpawnInfo.Repeat.spawn, spawns
+                Keys.SpawnInfo.Repeat.spawns, spawns
             ));
             return repeatSpawnInfoData;
         }
@@ -693,45 +693,45 @@ final public class EditionData implements Serializable {
 
         private static EditionData LevelUI() {
             var attributeList = List.of(
-                new EditionDataAttribute(Keys.Config.LevelUI.lives)
+                new EditionDataAttribute(Keys.Config.LevelUI.livesDisplay)
             );
             return new EditionData(Category.CONFIG, Types.Config.levelUI, attributeList, levelUIConfigDefaultValues);
         }
         final private static Map<Key, Object> levelUIConfigDefaultValues = Map.of(
-            Keys.Config.LevelUI.lives, Defaults.Config(Types.Config.lives)
+            Keys.Config.LevelUI.livesDisplay, Defaults.Config(Types.Config.livesDisplay)
         );
         public static EditionData LevelUI(EditionData livesData) {
             EditionData data = LevelUI();
             data.setToMap(Map.of(
-                Keys.Config.LevelUI.lives, livesData
+                Keys.Config.LevelUI.livesDisplay, livesData
             ));
             return data;
         }
 
         final public static class LevelUI {
 
-            private static EditionData Lives() {
+            private static EditionData LivesDisplay() {
                 var attributeList = List.of(
-                    new StringAttribute(Keys.Config.LevelUI.Lives.fileName),
-                    new Vec2DAttribute(Keys.Config.LevelUI.Lives.size),
-                    new Vec2DAttribute(Keys.Config.LevelUI.Lives.position),
-                    new Vec2DAttribute(Keys.Config.LevelUI.Lives.stride)
+                    new StringAttribute(Keys.Config.LevelUI.LivesDisplay.fileName),
+                    new Vec2DAttribute(Keys.Config.LevelUI.LivesDisplay.size),
+                    new Vec2DAttribute(Keys.Config.LevelUI.LivesDisplay.position),
+                    new Vec2DAttribute(Keys.Config.LevelUI.LivesDisplay.stride)
                 );
-                return new EditionData(Category.CONFIG, Types.Config.lives, attributeList, livesConfigDefaultValues);
+                return new EditionData(Category.CONFIG, Types.Config.livesDisplay, attributeList, livesConfigDefaultValues);
             }
             final private static Map<Key, Object> livesConfigDefaultValues = Map.of(
-                Keys.Config.LevelUI.Lives.fileName, "",
-                Keys.Config.LevelUI.Lives.size, new Vec2D(20f, 20f),
-                Keys.Config.LevelUI.Lives.position, new Vec2D(80f, 1000f),
-                Keys.Config.LevelUI.Lives.stride, new Vec2D(30f, 0f)
+                Keys.Config.LevelUI.LivesDisplay.fileName, "",
+                Keys.Config.LevelUI.LivesDisplay.size, new Vec2D(20f, 20f),
+                Keys.Config.LevelUI.LivesDisplay.position, new Vec2D(80f, 1000f),
+                Keys.Config.LevelUI.LivesDisplay.stride, new Vec2D(30f, 0f)
             );
-            public static EditionData Lives(String fileName, Vec2D size, Vec2D startPosition, Vec2D stride) {
-                EditionData data = Lives();
+            public static EditionData LivesDisplay(String fileName, Vec2D size, Vec2D startPosition, Vec2D stride) {
+                EditionData data = LivesDisplay();
                 data.setToMap(Map.of(
-                    Keys.Config.LevelUI.Lives.fileName, fileName,
-                    Keys.Config.LevelUI.Lives.size, size,
-                    Keys.Config.LevelUI.Lives.position, startPosition,
-                    Keys.Config.LevelUI.Lives.stride, stride
+                    Keys.Config.LevelUI.LivesDisplay.fileName, fileName,
+                    Keys.Config.LevelUI.LivesDisplay.size, size,
+                    Keys.Config.LevelUI.LivesDisplay.position, startPosition,
+                    Keys.Config.LevelUI.LivesDisplay.stride, stride
                 ));
                 return data;
             }
@@ -882,7 +882,7 @@ final public class EditionData implements Serializable {
             EditionData configData = switch (type) {
                 case general -> Config.General();
                 case levelUI -> Config.LevelUI();
-                case lives -> Config.LevelUI.Lives();
+                case livesDisplay -> Config.LevelUI.LivesDisplay();
             };
             configData.setToDefault();
             return configData;

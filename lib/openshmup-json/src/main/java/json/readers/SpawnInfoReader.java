@@ -13,7 +13,7 @@ public interface SpawnInfoReader {
 
     static EditionData SingleSpawnInfo(JsonNodeReader node, GameDataReader reader) {
         double spawnTime = node.readDouble(EditionData.Keys.SpawnInfo.Single.time);
-        JsonNodeReader spawnsNode = node.readArray(EditionData.Keys.SpawnInfo.Single.spawn);
+        JsonNodeReader spawnsNode = node.readArray(EditionData.Keys.SpawnInfo.Single.spawns);
         List<JsonNodeReader> spawnNodes = spawnsNode.getObjectListFromArray();
         List<EditionData> spawnList = new ArrayList<>(spawnNodes.size());
         for (var spawnNode : spawnNodes) {
@@ -26,7 +26,7 @@ public interface SpawnInfoReader {
         double startTime = node.readDouble(EditionData.Keys.SpawnInfo.Repeat.startTime);
         int spawnCount = node.readInt(EditionData.Keys.SpawnInfo.Repeat.spawnCount);
         double interval = node.readDouble(EditionData.Keys.SpawnInfo.Repeat.interval);
-        JsonNodeReader spawnsNode = node.readArray(EditionData.Keys.SpawnInfo.Repeat.spawn);
+        JsonNodeReader spawnsNode = node.readArray(EditionData.Keys.SpawnInfo.Repeat.spawns);
         List<JsonNodeReader> spawnNodes = spawnsNode.getObjectListFromArray();
         List<EditionData> spawnList = new ArrayList<>(spawnNodes.size());
         for (var spawnNode : spawnNodes) {

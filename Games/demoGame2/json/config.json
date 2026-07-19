@@ -3,7 +3,7 @@
         "resolution": [1000, 1100]
     },
     "levelUI": {
-        "lives": {
+        "livesDisplay": {
             "fileName": "heart.png",
             "size": [35, 36],
             "position": [50,1040],
