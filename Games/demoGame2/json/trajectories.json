@@ -1,9 +1,8 @@
-[
-    {
-        "type": "player",
-        "id": 0,
-        "playerMovementSpeed": 700.0
-    }, {
+[{
+  "type": "player",
+  "id": 0,
+  "playerMovementSpeed": 700.0
+}, {
   "type": "fixed",
   "id": 1,
   "functionX": "0.0",
@@ -63,5 +62,4 @@
   "id": 13,
   "functionX": "0.0",
   "functionY": "-200 * t"
-}
-]
+}]

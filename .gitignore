@@ -38,6 +38,4 @@ out/
 /lib/openshmup-engine/dependency-reduced-pom.xml
 /lib/openshmup-engine/classdiagram1.puml
 /lib/openshmup-gameExecutable/dependency-reduced-pom.xml
-/Games/*/*.jar
-/Games/*/*.exe
 /lib/openshmup-engine/original-gameEngine.jar

@@ -1,13 +1,12 @@
-[
-    {
-        "type": "scrollingImage",
-        "id": 1,
-        "layer": 0,
-        "size": [1000.0, 562.0],
-        "fileName": "bg1.png",
-        "speed": -200.0,
-        "horizontalScrolling": true
-    }, {
+[{
+  "type": "scrollingImage",
+  "id": 1,
+  "layer": 0,
+  "size": [1000.0, 562.0],
+  "fileName": "bg1.png",
+  "speed": -200.0,
+  "horizontalScrolling": true
+}, {
   "type": "animation",
   "id": 2,
   "layer": 10,
@@ -77,5 +76,4 @@
   },
   "framePeriodSeconds": 0.25,
   "looping": true
-}
-]
+}]
