@@ -17,6 +17,12 @@ import java.util.Optional;
 import static org.lwjgl.stb.STBTruetype.*;
 
 final public class Font {
+    final public static int codepointRangeStart = 10;
+    final public static int codepointRangeEnd = 126;
+
+    public static boolean codepointIsSupported(int codepoint){
+        return codepoint >= codepointRangeStart && codepoint <= codepointRangeEnd;
+    }
 
     final private Path fontFilepath;
     @Getter
@@ -50,27 +56,24 @@ final public class Font {
         ByteBuffer dataBuffer = BufferUtils.createByteBuffer(fontBytes.length);
         dataBuffer.put(fontBytes);
         dataBuffer.flip();
-        STBTTFontinfo fontinfo = STBTTFontinfo.create();
-        stbtt_InitFont(fontinfo, dataBuffer);
+        STBTTFontinfo fontInfo = STBTTFontinfo.create();
+        stbtt_InitFont(fontInfo, dataBuffer);
         int[] ascentBuf = new int[]{0};
         int[] descentBuf = new int[]{0};
         int[] lineGapBuf = new int[]{0};
-        stbtt_GetFontVMetrics(fontinfo, ascentBuf, descentBuf, lineGapBuf);
+        stbtt_GetFontVMetrics(fontInfo, ascentBuf, descentBuf, lineGapBuf);
         int[] x0M = new int[1];
         int[] x1M = new int[1];
         int[] y0M = new int[1];
         int[] y1M = new int[1];
-        stbtt_GetCodepointBox(fontinfo, 'M', x0M, y0M, x1M, y1M);
+        stbtt_GetCodepointBox(fontInfo, 'M', x0M, y0M, x1M, y1M);
         int capHeightNativeValue = y1M[0] - y0M[0];
         float normalizedAscent = (float) ascentBuf[0] / capHeightNativeValue;
         float normalizedDescent = (float) descentBuf[0] / capHeightNativeValue;
         float normalizedLineGap = (float) lineGapBuf[0] / capHeightNativeValue;
         float normalizedLineHeight = (float) (ascentBuf[0] - descentBuf[0] + lineGapBuf[0]) / capHeightNativeValue;
 
-        int startCodepoint = 10;
-        int endCodepoint = 126;
-
-        int charCount = endCodepoint - startCodepoint + 1;
+        int charCount = codepointRangeEnd - codepointRangeStart + 1;
         int bitmapWidth = 1024;
         int bitmapHeight = 1024;
         float capHeightPixels = 96.0f;
@@ -78,13 +81,13 @@ final public class Font {
         ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
         STBTTBakedChar.Buffer charBuffer = STBTTBakedChar.malloc(charCount);
         int result = stbtt_BakeFontBitmap(
-            dataBuffer, capHeightPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, startCodepoint, charBuffer);
+            dataBuffer, capHeightPixels * normalizedLineHeight, bitmap, bitmapWidth, bitmapHeight, codepointRangeStart, charBuffer);
         assert result > 0 : "Font " + filepath + ": loading failed";
 
         HashMap<Integer, FontCharInfo> charInfoMap = new HashMap<>(charCount);
         for (int i = 0; i < charCount; i++) {
             STBTTBakedChar charData = charBuffer.get(i);
-            int codepoint = startCodepoint + i;
+            int codepoint = codepointRangeStart + i;
             short x0 = charData.x0();
             int y0 = bitmapHeight - charData.y1();
             short x1 = charData.x1();

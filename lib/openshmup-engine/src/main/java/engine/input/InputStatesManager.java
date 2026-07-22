@@ -98,6 +98,7 @@ final public class InputStatesManager implements EngineSystem {
 
     public void closeTextInput() {
         glfwSetCharCallback(glfwWindow, null);
+        glfwSetKeyCallback(glfwWindow, null);
         this.textInputHandler = null;
     }
 

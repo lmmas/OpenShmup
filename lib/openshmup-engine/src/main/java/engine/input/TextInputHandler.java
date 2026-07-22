@@ -1,10 +1,12 @@
 package engine.input;
 
+import engine.assets.Font;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFWCharCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -16,51 +18,46 @@ final public class TextInputHandler {
 
     final private long glfwWindow;
     @Getter
-    final private ArrayList<Integer> textInputBuffer;
+    final private ArrayList<Integer> rawInputBuffer;
     @Getter
     final private StringBuffer targetBuffer;
 
     private int backspaceCount;
-    @Getter
-    private boolean targetGotModified;
 
     public TextInputHandler(long glfwWindow, StringBuffer targetBuffer) {
         this.glfwWindow = glfwWindow;
         this.targetBuffer = targetBuffer;
-        this.textInputBuffer = new ArrayList<>();
-        this.textInputCallback = (window, codepoint) -> textInputBuffer.add(codepoint);
+        this.rawInputBuffer = new ArrayList<>();
+        this.textInputCallback = (window, codepoint) -> rawInputBuffer.add(codepoint);
         this.keyInputCallback = (win, key, scancode, action, mods) -> {
             if (action == GLFW_PRESS || action == GLFW_REPEAT) {
                 switch (key) {
-                    case GLFW_KEY_BACKSPACE -> {
-                        if (!textInputBuffer.isEmpty()) {
-                            textInputBuffer.removeLast();
-                        }
-                        else {
-                            backspaceCount += 1;
-                        }
-                    }
+                    case GLFW_KEY_BACKSPACE -> backspaceCount += 1;
                 }
             }
         };
-        glfwSetCharCallback(glfwWindow, textInputCallback);
-        glfwSetKeyCallback(glfwWindow, keyInputCallback);
+        glfwSetCharCallback(this.glfwWindow, textInputCallback);
+        glfwSetKeyCallback(this.glfwWindow, keyInputCallback);
         this.backspaceCount = 0;
-        this.targetGotModified = false;
     }
 
     public void update() {
-        if (!textInputBuffer.isEmpty()) {
-            this.targetGotModified = true;
+        List<Integer> filteredBuffer = rawInputBuffer.stream().filter(Font::codepointIsSupported).toList();
+        int validCharCount = filteredBuffer.size();
+        filteredBuffer = filteredBuffer.subList(0, Integer.max(0, (validCharCount - backspaceCount)));
+        filteredBuffer.forEach(targetBuffer::appendCodePoint);
+        if(backspaceCount > validCharCount){
+            backspaceCount = backspaceCount - validCharCount;
         }
-        textInputBuffer.forEach(targetBuffer::appendCodePoint);
-        textInputBuffer.clear();
+        else{
+            backspaceCount = 0;
+        }
         for (int i = 0; i < backspaceCount; i++) {
             if (!targetBuffer.isEmpty()) {
                 targetBuffer.setLength(targetBuffer.length() - 1);
-                this.targetGotModified = true;
             }
         }
         backspaceCount = 0;
+        rawInputBuffer.clear();
     }
 }
