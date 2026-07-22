@@ -15,7 +15,7 @@ import engine.menu.widget.ActionButton;
 import engine.menu.widget.SelectorButtons;
 import engine.menu.widget.Widgets;
 import engine.scene.Scene;
-import engine.scene.visual.BorderedRoundedRectangle;
+import engine.scene.visual.RoundedRectangle;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.ScreenFilter;
 import engine.scene.visual.TextDisplay;
@@ -56,11 +56,11 @@ final public class EditionMenu {
             Engine.switchCurrentScene(new Scene());
             Engine.switchCurrentMenu(MainMenu());
         };
-        ActionButton returnToMainMenuButton = Widgets.RectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, "Return to main menu", returnToMainMenu);
+        ActionButton returnToMainMenuButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Return to main menu", returnToMainMenu);
         mainScreen.addWidget(returnToMainMenuButton);
-        ActionButton saveButton = Widgets.RectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, "Save", () -> saveGame(gameData));
+        ActionButton saveButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Save", () -> saveGame(gameData));
         mainScreen.addWidget(saveButton);
-        ActionButton launchGameButton = Widgets.RectangleButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, "Launch game", () -> launchGame(gameData));
+        ActionButton launchGameButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Launch game", () -> launchGame(gameData));
         mainScreen.addWidget(launchGameButton);
 
         ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
@@ -95,7 +95,7 @@ final public class EditionMenu {
                 EditionDataFields node = new EditionDataFields(configData, new Vec2D(120f, 830f));
                 openEditPanel(menu, 8, node, node::applyChanges, () -> {});
             };
-            configListGroup.widgets().add(Widgets.RectangleButton(1, new Vec2D(200f, 50f), new Vec2D(Engine.getNativeWidth() / 2f, 850f - 60 * i), menuButtonStyle1, configData.getType().name(), onClick));
+            configListGroup.widgets().add(Widgets.TextButton(1, new Vec2D(200f, 50f), new Vec2D(Engine.getNativeWidth() / 2f, 850f - 60 * i), menuButtonStyle1, Style.Text.menuButtonLabelStyle, configData.getType().name(), onClick));
         }
 
         BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {
@@ -147,7 +147,7 @@ final public class EditionMenu {
         MenuScreen editPanel = new MenuScreen(layer);
         SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         editPanel.addVisual(backgroundColor);
-        SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
+        SceneVisual backgroundRectangle = new RoundedRectangle(1, new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
         editPanel.addVisual(backgroundRectangle);
 
         String panelTitleString = switch (editionData.getCategory()) {
@@ -168,14 +168,14 @@ final public class EditionMenu {
 
         Vec2D buttonSize = new Vec2D(150, 50);
         Vec2D applyButtonPosition = new Vec2D(1565, 100);
-        ActionButton applyButton = Widgets.RectangleButton(3, buttonSize, applyButtonPosition, menuButtonStyle2, "Apply", onApply);
+        ActionButton applyButton = Widgets.TextButton(3, buttonSize, applyButtonPosition, menuButtonStyle2, Style.Text.menuButtonLabelStyle, "Apply", onApply);
 
         Vec2D closeButtonPosition = new Vec2D(1725, 100);
         Runnable closeButtonAction = () -> {
             menu.removeMenuScreen(editPanel);
             onClose.run();
         };
-        ActionButton closeButton = Widgets.RectangleButton(3, buttonSize, closeButtonPosition, menuButtonStyle2, "Close", closeButtonAction);
+        ActionButton closeButton = Widgets.TextButton(3, buttonSize, closeButtonPosition, menuButtonStyle2, Style.Text.menuButtonLabelStyle, "Close", closeButtonAction);
         editPanel.addWidget(closeButton);
         editPanel.addWidget(applyButton);
         menu.addMenuScreen(editPanel);

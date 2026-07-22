@@ -39,7 +39,7 @@ final public class Menus {
         private static MenuScreen EditPopupScreen() {
             MenuScreen popupMenu = new MenuScreen(3);
             Vec2D closeButtonSize = new Vec2D(150, 50);
-            ActionButton closeButton = Widgets.RectangleButton(1, closeButtonSize, new Vec2D(1800, 930), menuButtonStyle1, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
+            ActionButton closeButton = Widgets.TextButton(1, closeButtonSize, new Vec2D(1800, 930), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addWidget(closeButton);
             popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)));
 
@@ -48,7 +48,7 @@ final public class Menus {
             List<GameEditionData> loadedGames = Editor.getLoadedGames();
             for (int i = 0; i < loadedGames.size(); i++) {
                 var game = loadedGames.get(i);
-                popupMenu.addWidget(Widgets.RectangleButton(1, listButtonSize, new Vec2D(resolution.x / 2, 800 - (listButtonSize.y + 10f) * i), menuButtonStyle1, game.getGameName(), () -> openEditionMenu(game)));
+                popupMenu.addWidget(Widgets.TextButton(1, listButtonSize, new Vec2D(resolution.x / 2, 800 - (listButtonSize.y + 10f) * i), menuButtonStyle1, Style.Text.menuButtonLabelStyle, game.getGameName(), () -> openEditionMenu(game)));
             }
             return popupMenu;
         }
@@ -75,7 +75,7 @@ final public class Menus {
             MenuScreen screen = new MenuScreen(3);
             Vec2D buttonSize = new Vec2D(150, 50);
             screen.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)));
-            SceneVisual backgroundRectangle = new BorderedRoundedRectangle(1, new Vec2D(500f, 160f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
+            SceneVisual backgroundRectangle = new RoundedRectangle(1, new Vec2D(500f, 160f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
             screen.addVisual(backgroundRectangle);
             Vec2D fieldLabelPosition = Engine.getNativeResolution().scalar(0.5f).add(-150f, 0f);
             SceneVisual fieldLabel = new TextDisplay(2, false, fieldLabelPosition, "Game Name: ", Text.menuButtonLabelStyle, TextAlignment.LEFT);
@@ -83,9 +83,9 @@ final public class Menus {
             Vec2D textFieldPosition = Engine.getNativeResolution().scalar(0.5f).add(120f, 0f);
             TextField gameNameTextField = editor.Widgets.EditorTextField(2, textFieldPosition, 200f, "");
             screen.addWidget(gameNameTextField);
-            ActionButton cancelButton = Widgets.RectangleButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f + 80f  , 450), menuButtonStyle1, "Cancel", () -> Engine.getCurrentMenu().removeMenuScreen(screen));
+            ActionButton cancelButton = Widgets.TextButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f + 80f  , 450), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Cancel", () -> Engine.getCurrentMenu().removeMenuScreen(screen));
             screen.addWidget(cancelButton);
-            ActionButton okButton = Widgets.RectangleButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f - 80f, 450), menuButtonStyle1, "OK", () -> createNewGame(gameNameTextField.getStringValue(), folderNames));
+            ActionButton okButton = Widgets.TextButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f - 80f, 450), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "OK", () -> createNewGame(gameNameTextField.getStringValue(), folderNames));
             screen.addWidget(okButton);
 
             return screen;
@@ -116,9 +116,9 @@ final public class Menus {
             MenuScreen popupScreen = Screens.EditPopupScreen();
             mainMenu.addMenuScreen(popupScreen);
         };
-        ActionButton newGameButton = Widgets.RectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 575), menuButtonStyle1, "Create New Game", () -> mainMenu.addMenuScreen(Screens.NewGamePopupScreen()));
-        ActionButton editGameButton = Widgets.RectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 400), menuButtonStyle1, "Edit game", editGameAction);
-        ActionButton quitButton = Widgets.RectangleButton(1, buttonSize, new Vec2D(resolution.x / 2, 225), menuButtonStyle1, "Quit", terminateProgram);
+        ActionButton newGameButton = Widgets.TextButton(1, buttonSize, new Vec2D(resolution.x / 2, 575), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Create New Game", () -> mainMenu.addMenuScreen(Screens.NewGamePopupScreen()));
+        ActionButton editGameButton = Widgets.TextButton(1, buttonSize, new Vec2D(resolution.x / 2, 400), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Edit game", editGameAction);
+        ActionButton quitButton = Widgets.TextButton(1, buttonSize, new Vec2D(resolution.x / 2, 225), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Quit", terminateProgram);
         MenuScreen titleScreen = new MenuScreen(backgroundLayer);
         titleScreen.addWidget(newGameButton);
         titleScreen.addWidget(editGameButton);

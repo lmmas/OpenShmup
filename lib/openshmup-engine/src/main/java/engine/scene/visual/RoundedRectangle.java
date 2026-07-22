@@ -9,7 +9,7 @@ import types.Vec2D;
 import java.util.ArrayList;
 import java.util.List;
 
-final public class BorderedRoundedRectangle extends SceneVisual {
+final public class RoundedRectangle extends SceneVisual {
 
     final private RoundedColorRectangle rectangle;
 
@@ -19,7 +19,7 @@ final public class BorderedRoundedRectangle extends SceneVisual {
     @Getter
     private RGBAValue borderBaseColor;
 
-    public BorderedRoundedRectangle(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor) {
+    public RoundedRectangle(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor) {
         super(layer, new ArrayList<>(2), List.of(0, 1));
         this.rectangle = new RoundedColorRectangle(size, position, roundingRadius, rectangleColor);
         graphicsList.add(rectangle);

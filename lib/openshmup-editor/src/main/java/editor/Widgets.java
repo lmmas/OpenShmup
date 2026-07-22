@@ -3,8 +3,8 @@ package editor;
 import engine.menu.widget.BooleanField;
 import engine.menu.widget.SelectorButtons;
 import engine.menu.widget.TextField;
-import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.ImageDisplay;
+import engine.scene.visual.RoundedRectangle;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import static editor.Style.Text.menuButtonLabelStyle;
 import static editor.Style.Text.menuTextStyle;
 import static editor.Style.*;
 import static engine.Engine.assetManager;
@@ -29,7 +30,7 @@ final public class Widgets {
         float boxBorderWidth = 1.5f;
         RGBAValue boxColor = RGBAValue.SOLID_WHITE;
         RGBAValue boxBorderColor = RGBAValue.SOLID_BLACK;
-        BorderedRoundedRectangle box = new BorderedRoundedRectangle(layer, size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
+        RoundedRectangle box = new RoundedRectangle(layer, size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
         ImageDisplay checkMark = new ImageDisplay(layer + 1, assetManager.getTexture(checkboxTexturePath), size, position);
         return new BooleanField(size, position, checkMark, List.of(box), startingState);
     }
@@ -40,16 +41,16 @@ final public class Widgets {
         float borderWidth = 2f;
         RGBAValue rectangleColor = RGBAValue.SOLID_WHITE;
         RGBAValue borderColor = RGBAValue.SOLID_BLACK;
-        BorderedRoundedRectangle borderedRoundedRectangle = new BorderedRoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
-        return new TextField(layer + 1, size, position, menuTextStyle, List.of(borderedRoundedRectangle), startingText);
+        RoundedRectangle roundedRectangle = new RoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
+        return new TextField(layer + 1, size, position, menuTextStyle, List.of(roundedRectangle), startingText);
     }
 
     public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
-        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, labels, onChange, startingValue);
+        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, menuButtonLabelStyle, labels, onChange, startingValue);
     }
 
     public static SelectorButtons TypeSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
-        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, editionSelectorSelected, editionSelectorUnselected, labels, onChange, startingValue);
+        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, editionSelectorSelected, editionSelectorUnselected, menuButtonLabelStyle, labels, onChange, startingValue);
     }
 
 }

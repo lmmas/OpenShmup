@@ -1,7 +1,6 @@
 package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
-import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;

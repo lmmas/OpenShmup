@@ -20,7 +20,7 @@ final public class GameMenus {
         RGBAValue buttonLabelColor = new RGBAValue(0.0f, 0.0f, 0.0f, 1.0f);
         TextStyle buttonTextStyle = new TextStyle(debugFont, buttonLabelColor, 25.0f);
         Vec2D buttonSize = new Vec2D(300, 150);
-        ActionButton blueButton = Widgets.RectangleButton(1, buttonSize, new Vec2D(500f, 500f),5f, 1f, buttonColor, RGBAValue.SOLID_BLACK,"Restart Game", buttonTextStyle, MenuActions.reloadGame);
+        ActionButton blueButton = Widgets.TextButton(1, buttonSize, new Vec2D(500f, 500f),5f, 1f, buttonColor, RGBAValue.SOLID_BLACK,"Restart Game", buttonTextStyle, MenuActions.reloadGame);
         pauseMenu.addWidget(blueButton);
 
         pauseMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.7f)));
