@@ -1,6 +1,6 @@
 package editor;
 
-import engine.scene.visual.style.RoundedRectangleButtonStyle;
+import engine.scene.visual.style.RectangleButtonStyle;
 import engine.scene.visual.style.TextStyle;
 import types.RGBAValue;
 import types.Vec2D;
@@ -51,18 +51,18 @@ final public class Style {
 
     final public static float menuButtonBorderWidth = 2f;
 
-    final public static RoundedRectangleButtonStyle menuButtonStyle1 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
+    final public static RectangleButtonStyle menuButtonStyle1 = new RectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
-    final public static RoundedRectangleButtonStyle menuButtonStyle2 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
+    final public static RectangleButtonStyle menuButtonStyle2 = new RectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
-    final public static RoundedRectangleButtonStyle menuButtonStyle3 = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.grey1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
+    final public static RectangleButtonStyle menuButtonStyle3 = new RectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.grey1, Color.menuButtonBorderColor, Text.menuButtonLabelStyle);
 
-    final public static RoundedRectangleButtonStyle editionSelectorSelected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuTextStyle);
+    final public static RectangleButtonStyle editionSelectorSelected = new RectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor, Text.menuTextStyle);
 
-    final public static RoundedRectangleButtonStyle editionSelectorUnselected = new RoundedRectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
+    final public static RectangleButtonStyle editionSelectorUnselected = new RectangleButtonStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor, Text.menuTextStyle);
 
-    final public static RoundedRectangleButtonStyle editableListUnselected = editionSelectorUnselected;
+    final public static RectangleButtonStyle editableListUnselected = editionSelectorUnselected;
 
-    final public static RoundedRectangleButtonStyle editableListSelected = editionSelectorSelected;
+    final public static RectangleButtonStyle editableListSelected = editionSelectorSelected;
 
 }

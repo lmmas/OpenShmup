@@ -1,6 +1,7 @@
 package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
+import engine.scene.visual.BorderedRoundedRectangle;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +21,11 @@ final public class SelectorButtons implements Widget {
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<List<SceneVisual>> buttonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+    public SelectorButtons(List<SceneVisual> buttonBackgrounds, List<List<SceneVisual>> otherButtonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         this.onChange = onChange;
         this.selectedValue = startingValue;
-        assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
-        int buttonCount = buttonVisuals.size();
+        assert otherButtonVisuals.size() == hitboxes.size() : "list size mismatch";
+        int buttonCount = otherButtonVisuals.size();
         ArrayList<Runnable> onClicks = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             final int buttonValue = i;
@@ -38,8 +39,9 @@ final public class SelectorButtons implements Widget {
         this.actionButtons = new ArrayList<>(buttonCount);
         this.visuals = new ArrayList<>();
         for (int i = 0; i < buttonCount; i++) {
-            this.actionButtons.add(new ActionButton(buttonVisuals.get(i), hitboxes.get(i), onClicks.get(i)));
-            this.visuals.addAll(buttonVisuals.get(i));
+            this.actionButtons.add(new ActionButton(buttonBackgrounds.get(i), otherButtonVisuals.get(i), hitboxes.get(i), onClicks.get(i)));
+            this.visuals.add(buttonBackgrounds.get(i));
+            this.visuals.addAll(otherButtonVisuals.get(i));
         }
     }
 

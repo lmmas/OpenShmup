@@ -12,7 +12,7 @@ import types.Vec2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static engine.menu.widget.Widgets.RoundedRectangleButton;
+import static engine.menu.widget.Widgets.RectangleButton;
 
 final public class ListFields implements FieldNode {
 
@@ -199,10 +199,10 @@ final public class ListFields implements FieldNode {
             case ENTITY -> EditionData.getEntityId(newItem);
             default -> itemIndex + 1;
         });
-        ActionButton newSelect = RoundedRectangleButton(2, selectButtonSize, selectButtonPosition, Style.menuButtonStyle1, buttonLabel, () -> selectListItem(itemIndex));
+        ActionButton newSelect = RectangleButton(2, selectButtonSize, selectButtonPosition, Style.menuButtonStyle1, buttonLabel, () -> selectListItem(itemIndex));
         Vec2D deleteButtonSize = new Vec2D(60f, 50f);
         Vec2D deleteButtonPosition = selectButtonPosition.add(130f, 0f);
-        ActionButton newDelete = RoundedRectangleButton(2, deleteButtonSize, deleteButtonPosition, Style.menuButtonStyle1, "X", () -> deleteItem(itemIndex));
+        ActionButton newDelete = RectangleButton(2, deleteButtonSize, deleteButtonPosition, Style.menuButtonStyle1, "X", () -> deleteItem(itemIndex));
         selectButtons.add(newSelect);
         deleteButtons.add(newDelete);
         if (isActive) {
@@ -215,7 +215,7 @@ final public class ListFields implements FieldNode {
     private void buildAddButton() {
         Vec2D buttonSize = new Vec2D(100f, 50f);
         Vec2D buttonPosition = listStartPosition.add(0f, -selectButtons.size() * buttonSize.y);
-        this.addButton = RoundedRectangleButton(2, buttonSize, buttonPosition, Style.menuButtonStyle1, "Add", this::addNewItem);
+        this.addButton = RectangleButton(2, buttonSize, buttonPosition, Style.menuButtonStyle1, "Add", this::addNewItem);
     }
 
     @Override
