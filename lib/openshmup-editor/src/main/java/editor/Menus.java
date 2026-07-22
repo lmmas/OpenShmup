@@ -12,6 +12,7 @@ import engine.scene.Scene;
 import engine.scene.visual.*;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import json.JsonDataWriter;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -58,6 +59,8 @@ final public class Menus {
             assert !existingFolders.contains(gameName): "game folder already exists";
             GameEditionData newGameData = new GameEditionData(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder).resolve(gameName));
             newGameData.setToDefaultEmpty();
+            JsonDataWriter writer = new JsonDataWriter();
+            writer.saveToJson(newGameData);
             openEditionMenu(newGameData);
         }
 
