@@ -9,16 +9,15 @@ import types.RGBAValue;
 import types.Vec2D;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
+import static engine.graphics.VBOAttributeInfo.*;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex> {
 
-    final static private int vertexFloatCount = 10;
-
     public RoundedRectangleBorderRenderer() {
-        super(RenderType.ROUNDED_RECTANGLE_BORDER, GL_STATIC_DRAW, vertexFloatCount * Float.BYTES);
-        this.batchSize = 100;
+        super(RenderType.ROUNDED_RECTANGLE_BORDER, GL_STATIC_DRAW, List.of(VEC2, VEC2, FLOAT, FLOAT, VEC4));
     }
 
     @Override
@@ -32,7 +31,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
 
         public RoundedRectangleBorderBatch(Shader shader) {
             super(shader);
-            this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexFloatCount * Float.BYTES);
+            this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexDataSize);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -44,22 +43,6 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
                 return false;
             }
             return graphic.getShader() == shader;
-        }
-
-        @Override
-        protected void setupVertexAttributes() {
-            int quadSizeLength = 2;
-            int positionLength = 2;
-            int roundingRadiusLength = 1;
-            int borderWidthLength = 1;
-            int colorLength = 4;
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glVertexAttribPointer(0, quadSizeLength, GL_FLOAT, false, vboStrideBytes, 0);
-            glVertexAttribPointer(1, positionLength, GL_FLOAT, false, vboStrideBytes, quadSizeLength * Float.BYTES);
-            glVertexAttribPointer(2, roundingRadiusLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength) * Float.BYTES);
-            glVertexAttribPointer(3, borderWidthLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + roundingRadiusLength) * Float.BYTES);
-            glVertexAttribPointer(4, colorLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + roundingRadiusLength + borderWidthLength) * Float.BYTES);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         @Override
@@ -109,11 +92,6 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
             glDisableVertexAttribArray(4);
         }
 
-        @Override
-        public void removeVertex(int vertexToRemoveIndex) {
-            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
-            vertices.remove(vertexToRemoveIndex);
-        }
     }
 }
 

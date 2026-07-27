@@ -13,7 +13,9 @@ import types.Vec2D;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import static engine.graphics.VBOAttributeInfo.*;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.ImageVertex> {
@@ -23,26 +25,23 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
     }
 
     public ImageRenderer(RenderType type) {
-        super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, 68);
+        super(type, type == RenderType.DYNAMIC_IMAGE ? GL_STREAM_DRAW : GL_STATIC_DRAW, List.of(VEC2, VEC2, VEC2, VEC2, INT, VEC4, VEC4));
         assert type == RenderType.STATIC_IMAGE || type == RenderType.DYNAMIC_IMAGE : "incorrect render type for Image2D renderer";
-        this.batchSize = 100;
     }
 
     protected class ImageBatch extends Renderer<ImageGraphic, ImageGraphic.ImageVertex>.Batch {
 
         protected ArrayList<Texture> textures;
 
-        protected ArrayList<Integer> textureIndexes;
+        protected ArrayList<Integer> textureIndices;
 
         final protected ByteBuffer dataBuffer;
-
-        protected static final int vertexAttributeCount = 17;
 
         public ImageBatch(Shader shader, Texture texture) {
             super(shader);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
-            this.textureIndexes = new ArrayList<>();
-            this.dataBuffer = BufferUtils.createByteBuffer(Float.BYTES * batchSize * vertexAttributeCount);
+            this.textureIndices = new ArrayList<>();
+            this.dataBuffer = BufferUtils.createByteBuffer(batchSize * vboStrideBytes);
             this.textures.add(texture);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
@@ -81,25 +80,6 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
         }
 
-        public void setupVertexAttributes() {
-            int quadSizeLength = 2;
-            int positionLength = 2;
-            int textureSizeLength = 2;
-            int texturePositionLength = 2;
-            int textureIndexLength = 1;
-            int colorCoefsLength = 4;
-            int addedColorLength = 4;
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glVertexAttribPointer(0, quadSizeLength, GL_FLOAT, false, vboStrideBytes, 0);
-            glVertexAttribPointer(1, positionLength, GL_FLOAT, false, vboStrideBytes, quadSizeLength * Float.BYTES);
-            glVertexAttribPointer(2, textureSizeLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength) * Float.BYTES);
-            glVertexAttribPointer(3, texturePositionLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength) * Float.BYTES);
-            glVertexAttribIPointer(4, textureIndexLength, GL_INT, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength) * Float.BYTES);
-            glVertexAttribPointer(5, colorCoefsLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
-            glVertexAttribPointer(6, addedColorLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength + textureSizeLength + texturePositionLength + colorCoefsLength) * Float.BYTES + textureIndexLength * Integer.BYTES);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-        }
-
         public void uploadData() {
             dataBuffer.clear();
             for (int i = 0; i < vertices.size(); i++) {
@@ -119,7 +99,7 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
                 dataBuffer.putFloat(textureSize.y);
                 dataBuffer.putFloat(texturePosition.x);
                 dataBuffer.putFloat(texturePosition.y);
-                dataBuffer.putInt(textureIndexes.get(i));
+                dataBuffer.putInt(textureIndices.get(i));
                 dataBuffer.putFloat(colorCoefs.r);
                 dataBuffer.putFloat(colorCoefs.g);
                 dataBuffer.putFloat(colorCoefs.b);
@@ -138,25 +118,24 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
 
         @Override
         public void addVertex(ImageGraphic.ImageVertex newVertex) {
-            assert vertices.size() == textureIndexes.size() : "mismatching list sizes between vertices and texture indices";
+            assert vertices.size() == textureIndices.size() : "mismatching list sizes between vertices and texture indices";
             super.addVertex(newVertex);
             int textureIndex = textures.indexOf(newVertex.getTexture());
             assert textures.size() < GlobalVars.MAX_TEXTURE_SLOTS || textureIndex != -1 : "invalid vertex texture";
             if (textureIndex != -1) {
-                textureIndexes.add(textureIndex);
+                textureIndices.add(textureIndex);
             }
             else {
                 textures.add(newVertex.getTexture());
-                textureIndexes.add(textures.size() - 1);
+                textureIndices.add(textures.size() - 1);
             }
         }
 
         @Override
         public void removeVertex(int vertexToRemoveIndex) {
-            assert vertices.size() == textureIndexes.size() : "mismatching list sizes between vertices and texture indices";
-            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
-            vertices.remove(vertexToRemoveIndex);
-            textureIndexes.remove(vertexToRemoveIndex);
+            assert vertices.size() == textureIndices.size() : "mismatching list sizes between vertices and texture indices";
+            super.removeVertex(vertexToRemoveIndex);
+            textureIndices.remove(vertexToRemoveIndex);
         }
     }
 }

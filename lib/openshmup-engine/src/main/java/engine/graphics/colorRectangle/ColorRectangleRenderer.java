@@ -9,16 +9,16 @@ import types.RGBAValue;
 import types.Vec2D;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
+import static engine.graphics.VBOAttributeInfo.VEC2;
+import static engine.graphics.VBOAttributeInfo.VEC4;
 import static org.lwjgl.opengl.GL33.*;
 
 final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic, ColorRectangleGraphic.ColorRectangleVertex> {
 
-    final static private int vertexFloatCount = 8;
-
     public ColorRectangleRenderer() {
-        super(RenderType.COLOR_RECTANGLE, GL_STREAM_DRAW, vertexFloatCount * Float.BYTES);
-        this.batchSize = 100;
+        super(RenderType.COLOR_RECTANGLE, GL_STREAM_DRAW, List.of(VEC2, VEC2, VEC4));
     }
 
     @Override
@@ -32,7 +32,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
 
         public ColorRectangleBatch(Shader shader) {
             super(shader);
-            this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexFloatCount * Float.BYTES);
+            this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexDataSize);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -44,18 +44,6 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
                 return false;
             }
             return graphic.getShader() == shader;
-        }
-
-        @Override
-        protected void setupVertexAttributes() {
-            int quadSizeLength = 2;
-            int positionLength = 2;
-            int colorLength = 4;
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glVertexAttribPointer(0, quadSizeLength, GL_FLOAT, false, vboStrideBytes, 0);
-            glVertexAttribPointer(1, positionLength, GL_FLOAT, false, vboStrideBytes, quadSizeLength * Float.BYTES);
-            glVertexAttribPointer(2, colorLength, GL_FLOAT, false, vboStrideBytes, (quadSizeLength + positionLength) * Float.BYTES);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         @Override
@@ -97,10 +85,5 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
             glDisableVertexAttribArray(2);
         }
 
-        @Override
-        public void removeVertex(int vertexToRemoveIndex) {
-            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
-            vertices.remove(vertexToRemoveIndex);
-        }
     }
 }

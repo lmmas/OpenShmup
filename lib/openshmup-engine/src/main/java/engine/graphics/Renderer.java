@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL33.*;
 
 public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex<V>> {
@@ -16,27 +17,26 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
     protected RenderType type;
 
     final protected int drawingType;
-
+    final protected int vertexDataSize; //size in words
     final protected int vboStrideBytes;
 
     protected int batchSize;
 
-    protected ArrayList<Batch> batches;
+    final private ArrayList<Batch> batches;
+    final private List<VBOAttributeInfo> attributeInfoList;
 
-    public Renderer(RenderType type, int drawingType, int vboStrideBytes) {
+    public Renderer(RenderType type, int drawingType, List<VBOAttributeInfo> attributeInfoList) {
         this.vaoID = glGenVertexArrays();
         this.type = type;
         this.drawingType = drawingType;
-        this.vboStrideBytes = vboStrideBytes;
+        this.attributeInfoList = attributeInfoList;
+        this.vertexDataSize = attributeInfoList.stream().map(VBOAttributeInfo::size).reduce(0, Integer::sum);
+        this.vboStrideBytes = this.vertexDataSize * Float.BYTES;
         this.batches = new ArrayList<>();
+        this.batchSize = 100;
     }
 
     abstract protected Batch createBatchFromGraphic(G graphic);
-
-    protected void addNewBatchFromGraphic(G graphic) {
-        Batch newBatch = createBatchFromGraphic(graphic);
-        batches.add(newBatch);
-    }
 
     public void draw() {
         glBindVertexArray(this.vaoID);
@@ -60,8 +60,9 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
                 batchIndex++;
             }
             if (!newVertexAllocated) {
-                addNewBatchFromGraphic(newGraphic);
-                batches.getLast().addVertex(newVertex);
+                Batch newBatch = createBatchFromGraphic(newGraphic);
+                newBatch.addVertex(newVertex);
+                batches.add(newBatch);
             }
         }
     }
@@ -88,25 +89,40 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
 
         abstract protected boolean canReceiveVertexFrom(G graphic);
 
-        abstract protected void setupVertexAttributes();
+        protected void setupVertexAttributes(){
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
+            int pointerValue = 0;
+            for(int i = 0; i < attributeInfoList.size(); i++){
+                VBOAttributeInfo info = attributeInfoList.get(i);
+                if(info.type() == GL_FLOAT) {
+                    glVertexAttribPointer(i, info.size(), info.type(), false, vboStrideBytes, (long) pointerValue * Float.BYTES);
+                }
+                else if(info.type() == GL_INT){
+                    glVertexAttribIPointer(i, info.size(), info.type(), vboStrideBytes, (long) pointerValue * Float.BYTES);
+                }
+                else{
+                    assert false: "incorrect VBO attribute info type";
+                }
+                pointerValue += info.size();
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
 
         abstract protected void uploadData();
 
         abstract protected void draw();
 
-        public void dataHasChanged() {
+        public void removeVertex(int vertexToRemoveIndex) {
+            assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
+            vertices.remove(vertexToRemoveIndex);
         }
-
-        abstract public void removeVertex(int vertexToRemoveIndex);
 
         public void cleanupVertices() {
             int i = 0;
             while (i < vertices.size()) {
                 V vertex = vertices.get(i);
                 if (vertex.getShouldBeRemoved()) {
-                    vertex.resetShouldBeRemoved();
                     removeVertex(i);
-                    dataHasChanged();
                 }
                 else {
                     i++;
