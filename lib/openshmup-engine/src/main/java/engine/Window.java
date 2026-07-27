@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import types.IVec2D;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL33.glViewport;
 
 final public class Window {
 

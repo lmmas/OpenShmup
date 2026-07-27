@@ -8,7 +8,6 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL33.*;
 
 public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex<V>> {
