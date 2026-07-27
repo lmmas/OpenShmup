@@ -40,30 +40,26 @@ flat out vec4 v_Color;
 flat out vec2 v_QuadSizePixels;
 
 void build_quad(vec4 position, vec2 quadSize, vec2 quadSizePixels, vec4 color){
+    //common values
+    v_QuadSizePixels = quadSizePixels;
+    v_Color = color;
+
+    //vertex-specific values
     vec2 tempCoords = quadSize / 2.0f;
-
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
-    v_InternalCoordsPixels = vec2(0.0f, quadSizePixels[1]);
-    v_QuadSizePixels = quadSizePixels;
-    v_Color = color;
+    gl_Position = position + vec4(-tempCoords.x, tempCoords.y, 0.0, 0.0);//top-left
+    v_InternalCoordsPixels = vec2(0.0f, quadSizePixels.y);
     EmitVertex();
 
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
+    gl_Position = position + vec4(tempCoords.x, tempCoords.y, 0.0, 0.0);//top-right
     v_InternalCoordsPixels = quadSizePixels;
-    v_QuadSizePixels = quadSizePixels;
-    v_Color = color;
     EmitVertex();
 
-    gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
+    gl_Position = position + vec4(-tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-left
     v_InternalCoordsPixels = vec2(0.0f, 0.0f);
-    v_QuadSizePixels = quadSizePixels;
-    v_Color = color;
     EmitVertex();
 
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
-    v_InternalCoordsPixels = vec2(quadSizePixels[0], 0.0f);
-    v_QuadSizePixels = quadSizePixels;
-    v_Color = color;
+    gl_Position = position + vec4(tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-right
+    v_InternalCoordsPixels = vec2(quadSizePixels.x, 0.0f);
     EmitVertex();
 
     EndPrimitive();
@@ -84,7 +80,7 @@ out vec4 fragColor;
 
 void main(){
     int borderWidth = 3;
-    if (v_InternalCoordsPixels[0] < float(borderWidth) || v_InternalCoordsPixels[0] > v_QuadSizePixels[0] - float(borderWidth) || v_InternalCoordsPixels[1] < float(borderWidth) || v_InternalCoordsPixels[1] > v_QuadSizePixels[1] - float(borderWidth)){
+    if (v_InternalCoordsPixels.x < float(borderWidth) || v_InternalCoordsPixels.x > v_QuadSizePixels.x - float(borderWidth) || v_InternalCoordsPixels.y < float(borderWidth) || v_InternalCoordsPixels.y > v_QuadSizePixels.y - float(borderWidth)){
         fragColor = v_Color;
     }
     else {

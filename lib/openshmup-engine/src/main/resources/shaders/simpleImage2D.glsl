@@ -63,17 +63,17 @@ void build_quad(vec4 position, vec2 quadSize, vec2 texturePosition, vec2 texture
     v_ColorCoefs = colorCoefs;
     v_AddedColor = addedColor;
 
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
-    v_TextureCoords = texturePosition + vec2(0.0, textureSize[1]);
+    gl_Position = position + vec4(-tempCoords.x, tempCoords.y, 0.0, 0.0);//top-left
+    v_TextureCoords = texturePosition + vec2(0.0, textureSize.y);
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
+    gl_Position = position + vec4(tempCoords.x, tempCoords.y, 0.0, 0.0);//top-right
     v_TextureCoords = texturePosition + textureSize;
     EmitVertex();
-    gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
+    gl_Position = position + vec4(-tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-left
     v_TextureCoords = texturePosition;
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
-    v_TextureCoords = texturePosition + vec2(textureSize[0], 0.0);
+    gl_Position = position + vec4(tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-right
+    v_TextureCoords = texturePosition + vec2(textureSize.x, 0.0);
     EmitVertex();
     EndPrimitive();
 }

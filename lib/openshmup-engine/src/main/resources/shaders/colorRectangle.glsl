@@ -35,18 +35,18 @@ in VS_OUT{
 flat out vec4 v_Color;
 
 void build_quad(vec4 position, vec2 quadSize, vec4 color){
+    //common values
+    v_Color = color;
+
+    //vertex-specific values
     vec2 tempCoords = quadSize / 2.0f;
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
-    v_Color = color;
+    gl_Position = position + vec4(-tempCoords.x, tempCoords.y, 0.0, 0.0);//top-left
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
-    v_Color = color;
+    gl_Position = position + vec4(tempCoords.x, tempCoords.y, 0.0, 0.0);//top-right
     EmitVertex();
-    gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
-    v_Color = color;
+    gl_Position = position + vec4(-tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-left
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
-    v_Color = color;
+    gl_Position = position + vec4(tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-right
     EmitVertex();
     EndPrimitive();
 }

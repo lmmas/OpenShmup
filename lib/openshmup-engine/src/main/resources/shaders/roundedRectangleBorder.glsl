@@ -23,8 +23,8 @@ void main(){
     gl_Position = vec4(a_Position / u_NativeResolution * 2.0f - vec2(1.0f, 1.0f), 0.0f, 1.0f);
     v_Out.v_QuadSize = a_QuadSize / u_NativeResolution * 2.0f;
     v_Out.v_Color = a_Color;
-    v_Out.v_RoundingRadius = a_RoundingRadius * 2 / a_QuadSize[0];
-    v_Out.v_BorderWidth = a_BorderWidth * 2 / a_QuadSize[0];
+    v_Out.v_RoundingRadius = a_RoundingRadius * 2 / a_QuadSize.x;
+    v_Out.v_BorderWidth = a_BorderWidth * 2 / a_QuadSize.x;
 }
 
 #type geometry
@@ -49,39 +49,30 @@ out vec2 v_PositionInQuad;
 
 void build_quad(vec4 position, vec2 quadSize, float roundingRadius, float borderWidth, vec4 color){
     float quadRelativeHeight;
-    if (quadSize[0] != 0){
-        quadRelativeHeight = quadSize[1] / quadSize[0] / u_NativeAspectRatio;
+    if (quadSize.x != 0){
+        quadRelativeHeight = quadSize.y / quadSize.x / u_NativeAspectRatio;
     }
     else {
         quadRelativeHeight = 0.0f;
     }
-    vec2 tempCoords = quadSize / 2.0f;
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
+    //common values
     v_Color = color;
     v_RoundingRadius = roundingRadius;
     v_BorderWidth = borderWidth;
     v_QuadRelativeHeight = quadRelativeHeight;
+
+    //vertex-specific values
+    vec2 tempCoords = quadSize / 2.0f;
+    gl_Position = position + vec4(-tempCoords.x, tempCoords.y, 0.0, 0.0);//top-left
     v_PositionInQuad = vec2(-1.0f, quadRelativeHeight);
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_BorderWidth = borderWidth;
-    v_QuadRelativeHeight = quadRelativeHeight;
+    gl_Position = position + vec4(tempCoords.x, tempCoords.y, 0.0, 0.0);//top-right
     v_PositionInQuad = vec2(1.0f, quadRelativeHeight);
     EmitVertex();
-    gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_BorderWidth = borderWidth;
-    v_QuadRelativeHeight = quadRelativeHeight;
+    gl_Position = position + vec4(-tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-left
     v_PositionInQuad = vec2(-1.0f, -quadRelativeHeight);
     EmitVertex();
-    gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_BorderWidth = borderWidth;
-    v_QuadRelativeHeight = quadRelativeHeight;
+    gl_Position = position + vec4(tempCoords.x, -tempCoords.y, 0.0, 0.0);//bottom-right
     v_PositionInQuad = vec2(1.0f, -quadRelativeHeight);
     EmitVertex();
     EndPrimitive();
