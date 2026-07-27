@@ -4,11 +4,9 @@ import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import org.lwjgl.BufferUtils;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.nio.FloatBuffer;
 import java.util.List;
 
 import static engine.graphics.VBOAttributeInfo.*;
@@ -27,14 +25,8 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
 
     public class RoundedRectangleBorderBatch extends Renderer<RoundedRectangleBorder, RoundedRectangleBorder.RoundedRectangleBorderVertex>.Batch {
 
-        final private FloatBuffer dataBuffer;
-
         public RoundedRectangleBorderBatch(Shader shader) {
             super(shader);
-            this.dataBuffer = BufferUtils.createFloatBuffer(batchSize * vertexDataSize);
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         @Override
@@ -46,32 +38,25 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         }
 
         @Override
-        protected void uploadData() {
-            dataBuffer.clear();
-            for (RoundedRectangleBorder.RoundedRectangleBorderVertex rectangle : vertices) {
-                Vec2D position = rectangle.getPosition();
-                Vec2D size = rectangle.getSize();
-                float roundingRadius = rectangle.getRoundingRadius();
-                float borderWidth = rectangle.getBorderWidth();
-                RGBAValue color = rectangle.getColor();
+        protected void sendToBuffer(int vertexIndex){
+            RoundedRectangleBorder.RoundedRectangleBorderVertex rectangle = vertices.get(vertexIndex);
+            Vec2D position = rectangle.getPosition();
+            Vec2D size = rectangle.getSize();
+            float roundingRadius = rectangle.getRoundingRadius();
+            float borderWidth = rectangle.getBorderWidth();
+            RGBAValue color = rectangle.getColor();
 
 
-                dataBuffer.put(size.x);
-                dataBuffer.put(size.y);
-                dataBuffer.put(position.x);
-                dataBuffer.put(position.y);
-                dataBuffer.put(roundingRadius);
-                dataBuffer.put(borderWidth);
-                dataBuffer.put(color.r);
-                dataBuffer.put(color.g);
-                dataBuffer.put(color.b);
-                dataBuffer.put(color.a);
-            }
-            dataBuffer.flip();
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, dataBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            dataBuffer.flip();
+            dataBuffer.putFloat(size.x);
+            dataBuffer.putFloat(size.y);
+            dataBuffer.putFloat(position.x);
+            dataBuffer.putFloat(position.y);
+            dataBuffer.putFloat(roundingRadius);
+            dataBuffer.putFloat(borderWidth);
+            dataBuffer.putFloat(color.r);
+            dataBuffer.putFloat(color.g);
+            dataBuffer.putFloat(color.b);
+            dataBuffer.putFloat(color.a);
         }
 
         @Override
@@ -91,7 +76,6 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
             glDisableVertexAttribArray(3);
             glDisableVertexAttribArray(4);
         }
-
     }
 }
 

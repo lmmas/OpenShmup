@@ -6,11 +6,9 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import org.lwjgl.BufferUtils;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,17 +33,11 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
 
         protected ArrayList<Integer> textureIndices;
 
-        final protected ByteBuffer dataBuffer;
-
         public ImageBatch(Shader shader, Texture texture) {
             super(shader);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
             this.textureIndices = new ArrayList<>();
-            this.dataBuffer = BufferUtils.createByteBuffer(batchSize * vboStrideBytes);
             this.textures.add(texture);
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         public void draw() {
@@ -71,6 +63,8 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
             glDisableVertexAttribArray(2);
             glDisableVertexAttribArray(3);
             glDisableVertexAttribArray(4);
+            glDisableVertexAttribArray(5);
+            glDisableVertexAttribArray(6);
         }
 
         @Override
@@ -80,40 +74,33 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
             return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
         }
 
-        public void uploadData() {
-            dataBuffer.clear();
-            for (int i = 0; i < vertices.size(); i++) {
-                ImageGraphic.ImageVertex image = vertices.get(i);
-                Vec2D imagePosition = image.getImagePosition();
-                Vec2D imageSize = image.getImageSize();
-                Vec2D texturePosition = image.getTexturePosition();
-                Vec2D textureSize = image.getTextureSize();
-                RGBAValue colorCoefs = image.getTextureColorCoefs();
-                RGBAValue addedColor = image.getAddedColor();
+        @Override
+        public void sendToBuffer(int vertexIndex){
+            ImageGraphic.ImageVertex image = vertices.get(vertexIndex);
+            Vec2D imagePosition = image.getImagePosition();
+            Vec2D imageSize = image.getImageSize();
+            Vec2D texturePosition = image.getTexturePosition();
+            Vec2D textureSize = image.getTextureSize();
+            RGBAValue colorCoefs = image.getTextureColorCoefs();
+            RGBAValue addedColor = image.getAddedColor();
 
-                dataBuffer.putFloat(imageSize.x);
-                dataBuffer.putFloat(imageSize.y);
-                dataBuffer.putFloat(imagePosition.x);
-                dataBuffer.putFloat(imagePosition.y);
-                dataBuffer.putFloat(textureSize.x);
-                dataBuffer.putFloat(textureSize.y);
-                dataBuffer.putFloat(texturePosition.x);
-                dataBuffer.putFloat(texturePosition.y);
-                dataBuffer.putInt(textureIndices.get(i));
-                dataBuffer.putFloat(colorCoefs.r);
-                dataBuffer.putFloat(colorCoefs.g);
-                dataBuffer.putFloat(colorCoefs.b);
-                dataBuffer.putFloat(colorCoefs.a);
-                dataBuffer.putFloat(addedColor.r);
-                dataBuffer.putFloat(addedColor.g);
-                dataBuffer.putFloat(addedColor.b);
-                dataBuffer.putFloat(addedColor.a);
-            }
-            dataBuffer.flip();
-            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, dataBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            dataBuffer.flip();
+            dataBuffer.putFloat(imageSize.x);
+            dataBuffer.putFloat(imageSize.y);
+            dataBuffer.putFloat(imagePosition.x);
+            dataBuffer.putFloat(imagePosition.y);
+            dataBuffer.putFloat(textureSize.x);
+            dataBuffer.putFloat(textureSize.y);
+            dataBuffer.putFloat(texturePosition.x);
+            dataBuffer.putFloat(texturePosition.y);
+            dataBuffer.putInt(textureIndices.get(vertexIndex));
+            dataBuffer.putFloat(colorCoefs.r);
+            dataBuffer.putFloat(colorCoefs.g);
+            dataBuffer.putFloat(colorCoefs.b);
+            dataBuffer.putFloat(colorCoefs.a);
+            dataBuffer.putFloat(addedColor.r);
+            dataBuffer.putFloat(addedColor.g);
+            dataBuffer.putFloat(addedColor.b);
+            dataBuffer.putFloat(addedColor.a);
         }
 
         @Override

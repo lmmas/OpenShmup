@@ -31,8 +31,8 @@ final public class GraphicsManager implements EngineSystem {
     }
 
     public void drawGraphics() {
-        layers.stream().flatMap(List::stream).forEach(Renderer::draw);
-        debugLayer.forEach(Renderer::draw);
+        layers.stream().flatMap(List::stream).forEach(Renderer::update);
+        debugLayer.forEach(Renderer::update);
     }
 
     public void addGraphic(Graphic<?> newGraphic, int layer) {

@@ -2,7 +2,9 @@ package engine.graphics;
 
 import engine.assets.Shader;
 import lombok.Getter;
+import org.lwjgl.BufferUtils;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
 
     abstract protected Batch createBatchFromGraphic(G graphic);
 
-    public void draw() {
+    public void update() {
         glBindVertexArray(this.vaoID);
         for (Batch batch : batches) {
             batch.update();
@@ -71,13 +73,21 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
 
         protected int vboID;
 
-        protected ArrayList<V> vertices = new ArrayList<>(batchSize);
+        protected ArrayList<V> vertices;
         @Getter
         protected Shader shader;
+        protected ByteBuffer dataBuffer;
+        private boolean dataHasChangedFlag;
 
         protected Batch(Shader shader) {
-            vboID = glGenBuffers();
+            this.vboID = glGenBuffers();
+            this.vertices = new ArrayList<>(batchSize);
             this.shader = shader;
+            this.dataBuffer = BufferUtils.createByteBuffer(batchSize * vboStrideBytes);
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
+            glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            this.dataHasChangedFlag = false;
         }
 
         public void addVertex(V newVertex) {
@@ -108,7 +118,19 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        abstract protected void uploadData();
+        private void uploadData(){
+            dataBuffer.clear();
+            for (int i = 0; i < vertices.size(); i++) {
+                sendToBuffer(i);
+            }
+            dataBuffer.flip();
+            glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, dataBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            dataBuffer.flip();
+        }
+
+        abstract protected void sendToBuffer(int vertexIndex);
 
         abstract protected void draw();
 
@@ -123,6 +145,7 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
                 V vertex = vertices.get(i);
                 if (vertex.getShouldBeRemoved()) {
                     removeVertex(i);
+                    dataHasChangedFlag = true;
                 }
                 else {
                     i++;
@@ -136,10 +159,14 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
             this.shader.use();
             for (var vertex : vertices) {
                 if (vertex.getDataHasChanged()) {
-                    this.uploadData();
-                    vertices.forEach(V::resetDataHasChanged);
+                    dataHasChangedFlag = true;
                     break;
                 }
+            }
+            if(dataHasChangedFlag){
+                this.uploadData();
+                vertices.forEach(V::resetDataHasChanged);
+                dataHasChangedFlag = false;
             }
             this.draw();
         }
