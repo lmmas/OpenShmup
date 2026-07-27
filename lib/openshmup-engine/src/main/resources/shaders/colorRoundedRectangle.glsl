@@ -51,29 +51,24 @@ void build_quad(vec4 position, vec2 quadSize, float roundingRadius, vec4 color){
         quadRelativeHeight = 0.0f;
     }
     vec2 tempCoords = quadSize / 2.0f;
-    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
+
+    //common values
     v_Color = color;
     v_RoundingRadius = roundingRadius;
     v_QuadRelativeHeight = quadRelativeHeight;
-    v_PositionInQuad = vec2(-1.0f, quadRelativeHeight);
+
+    //vertex-specific values
+    gl_Position = position + vec4(-tempCoords[0], tempCoords[1], 0.0, 0.0);//top-left
+    v_PositionInQuad = vec2(-1.0f, v_QuadRelativeHeight);
     EmitVertex();
     gl_Position = position + vec4(tempCoords[0], tempCoords[1], 0.0, 0.0);//top-right
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_QuadRelativeHeight = quadRelativeHeight;
-    v_PositionInQuad = vec2(1.0f, quadRelativeHeight);
+    v_PositionInQuad = vec2(1.0f, v_QuadRelativeHeight);
     EmitVertex();
     gl_Position = position + vec4(-tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-left
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_QuadRelativeHeight = quadRelativeHeight;
-    v_PositionInQuad = vec2(-1.0f, -quadRelativeHeight);
+    v_PositionInQuad = vec2(-1.0f, -v_QuadRelativeHeight);
     EmitVertex();
     gl_Position = position + vec4(tempCoords[0], -tempCoords[1], 0.0, 0.0);//bottom-right
-    v_Color = color;
-    v_RoundingRadius = roundingRadius;
-    v_QuadRelativeHeight = quadRelativeHeight;
-    v_PositionInQuad = vec2(1.0f, -quadRelativeHeight);
+    v_PositionInQuad = vec2(1.0f, -v_QuadRelativeHeight);
     EmitVertex();
     EndPrimitive();
 }
@@ -93,12 +88,14 @@ in vec2 v_PositionInQuad;
 
 out vec4 fragColor;
 
+float roundedBoxSDF(vec2 positionInQuad, float quadRelativeHeight, float roundingRadius){
+    vec2 q = abs(positionInQuad) - vec2(1.0f, quadRelativeHeight) + roundingRadius;
+    return length(max(q, 0.0f)) + min(max(q.x, q.y), 0.0f) - roundingRadius;
+}
+
 void main(){
-    fragColor = v_Color;
-    vec2 cornerPosition = vec2(abs(v_PositionInQuad[0]) - (1.0f - v_RoundingRadius), abs(v_PositionInQuad[1]) - (v_QuadRelativeHeight - v_RoundingRadius));
-    if (cornerPosition[0] > 0 && cornerPosition[1] > 0){
-        if (cornerPosition[0] * cornerPosition[0] + cornerPosition[1] * cornerPosition[1] > v_RoundingRadius * v_RoundingRadius){
-            fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
-        }
-    }
+    float distance = roundedBoxSDF(v_PositionInQuad, v_QuadRelativeHeight, v_RoundingRadius);
+    float aa = fwidth(distance);
+    float shapeAlpha = 1.0f - smoothstep(-aa, aa, distance);
+    fragColor = vec4(v_Color.rgb, v_Color.a * shapeAlpha);
 }

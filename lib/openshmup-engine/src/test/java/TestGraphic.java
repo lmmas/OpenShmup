@@ -23,8 +23,8 @@ public class TestGraphic {
         GraphicsManager graphicsManager = Engine.getGraphicsManager();
 
         Vec2D graphicSize = new Vec2D(300f, 200f);
-        float roundingRadius = 50f;
-        float borderWidth = 5f;
+        float roundingRadius = 40f;
+        float borderWidth = 7f;
 
         ColorRectangleGraphic colorRectangle1 = new ColorRectangleGraphic(graphicSize, new Vec2D(200f, 850f), RGBAValue.SOLID_WHITE);
         graphicsManager.addDebugGraphic(colorRectangle1);
