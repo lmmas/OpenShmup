@@ -4,7 +4,7 @@ import types.Vec2D;
 
 import java.util.ArrayList;
 
-public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRectangleHitbox {
+public sealed interface Hitbox permits CompositeHitbox, SimpleRectangleHitbox {
 
     boolean containsPoint(Vec2D position);
 
@@ -16,15 +16,8 @@ public sealed interface Hitbox permits EmptyHitbox, CompositeHitbox, SimpleRecta
 
     Hitbox copy();
 
-    static Hitbox DEFAULT_EMPTY() {
-        return EmptyHitbox.getInstance();
-    }
-
     static boolean intersection(Hitbox hitbox, Hitbox otherHitbox) {
-        if (hitbox instanceof EmptyHitbox) {
-            return false;
-        }
-        if (otherHitbox instanceof EmptyHitbox) {
+        if (hitbox == null || otherHitbox == null) {
             return false;
         }
         if (hitbox instanceof SimpleRectangleHitbox simpleRectangleHitbox) {

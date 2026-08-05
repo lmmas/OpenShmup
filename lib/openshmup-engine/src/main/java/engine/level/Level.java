@@ -9,7 +9,6 @@ import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.graphics.Graphic;
 import engine.hitbox.CompositeHitbox;
-import engine.hitbox.EmptyHitbox;
 import engine.hitbox.Hitbox;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.GameControl;
@@ -171,12 +170,7 @@ final public class Level implements EngineSystem {
         }
         removeFarAwayEntities(goodEntities);
         removeFarAwayEntities(evilEntities);
-        for (Entity entity : evilEntities) {
-            handleCollisions(entity, goodEntities);
-        }
-        for (Entity entity : goodEntities) {
-            handleCollisions(entity, evilEntities);
-        }
+        handleCollisions();
         for (Entity entity : entitiesToRemove) {
             deleteEntity(entity);
         }
@@ -284,40 +278,42 @@ final public class Level implements EngineSystem {
         }
     }
 
-    public void handleCollisions(Entity entity, HashSet<Entity> ennemyList) {
-        if (entity.isInvincible()) {
-            return;
-        }
-        Hitbox entityHitbox = entity.getHitbox();
-        if (entityHitbox == Hitbox.DEFAULT_EMPTY()) {
-            return;
-        }
-        if (entity.getType() == EntityType.PROJECTILE) {
-            for (Entity ennemy : ennemyList) {
-                if (ennemy.getType() == EntityType.PROJECTILE) {
+    public void handleCollisions() {
+        for(Entity goodEntity: goodEntities){
+            for(Entity evilEntity: evilEntities){
+                if(!Hitbox.intersection(goodEntity.getHitbox(), evilEntity.getHitbox())){
                     continue;
                 }
-                Ship ennemyShip = (Ship) ennemy;
-                Hitbox ennemyHitbox = ennemyShip.getHitbox();
-                if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
-                    handleEntityDeath(entity);
+                if(!goodEntity.isInvincible()){
+                    //consequences of the collision for the good entity
+                    if(goodEntity instanceof Ship goodShip){
+                        goodShip.takeDamage(1);
+                    }
+                    else if (evilEntity.getType() == EntityType.SHIP){ //nothing happens for a collision between 2 projectiles
+                        handleEntityDeath(goodEntity);
+                    }
+                }
+                if(!evilEntity.isInvincible()){
+                    //consequences of the collision for the evil entity
+                    if(evilEntity instanceof Ship evilShip){
+                        evilShip.takeDamage(1);
+                    }
+                    else if(goodEntity.getType() == EntityType.SHIP){ //nothing happens for a collision between 2 projectiles
+                        handleEntityDeath(evilEntity);
+                    }
+                }
+            }
+            if(goodEntity instanceof Ship goodShip && goodShip.isDead()){
+                handleEntityDeath(goodEntity);
+                if(goodEntity.getEntityId() == 0){
+                    menu.addMenuScreen(gameOverScreen);
+                    timer.pause();
                 }
             }
         }
-        else if (entity.getType() == EntityType.SHIP) {
-            Ship shipEntity = (Ship) entity;
-            for (Entity ennemy : ennemyList) {
-                Hitbox ennemyHitbox = ennemy.getHitbox();
-                if (Hitbox.intersection(entityHitbox, ennemyHitbox)) {
-                    shipEntity.takeDamage(1);
-                    if (shipEntity.isDead()) {
-                        handleEntityDeath(entity);
-                        if (!shipEntity.isEvil()) {
-                            menu.addMenuScreen(gameOverScreen);
-                            timer.pause();
-                        }
-                    }
-                }
+        for(Entity evilEntity: evilEntities){
+            if(evilEntity instanceof Ship evilShip && evilShip.isDead()){
+                handleEntityDeath(evilEntity);
             }
         }
     }
@@ -360,9 +356,10 @@ final public class Level implements EngineSystem {
         private static void addHitboxDebugDisplay(Entity entity) {
             RGBAValue hitboxColor = getHitboxDebugDisplayColor(entity);
             Hitbox entityHitbox = entity.getHitbox();
+            if (entityHitbox == null) {
+                return;
+            }
             switch (entityHitbox) {
-                case EmptyHitbox ignored -> {
-                }
                 case SimpleRectangleHitbox simpleRectangleHitbox -> {
                     HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(simpleRectangleHitbox, hitboxColor);
                     addComponent(entity, debugDisplay);

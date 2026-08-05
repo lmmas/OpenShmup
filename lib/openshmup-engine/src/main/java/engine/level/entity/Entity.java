@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class Entity {
-
+    @Getter
     protected int entityId;
     @Getter
     protected EntityType type;
@@ -105,7 +105,7 @@ abstract public class Entity {
     }
 
     public void init(Level level) {
-        assert level != null;
+        assert level != null : "level not found";
         this.level = level;
         this.lifetimeSeconds = 0.0d;
         this.startingTimeSeconds = level.getLevelTimeSeconds();
