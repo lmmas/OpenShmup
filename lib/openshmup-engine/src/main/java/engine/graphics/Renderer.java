@@ -135,6 +135,7 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
 
         public void removeVertex(int vertexToRemoveIndex) {
             assert vertexToRemoveIndex < vertices.size() : "index out of bounds";
+            vertices.get(vertexToRemoveIndex).resetShouldBeRemoved();
             vertices.remove(vertexToRemoveIndex);
         }
 
