@@ -7,7 +7,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter final public class ListAttribute extends Attribute {
+@Getter
+@Setter
+final public class ListAttribute extends Attribute {
 
     private ArrayList<EditionData> dataList;
 

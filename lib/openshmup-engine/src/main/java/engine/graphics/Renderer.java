@@ -98,26 +98,26 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
 
         abstract protected boolean canReceiveVertexFrom(G graphic);
 
-        protected void setupVertexAttributes(){
+        protected void setupVertexAttributes() {
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             int pointerValue = 0;
-            for(int i = 0; i < attributeInfoList.size(); i++){
+            for (int i = 0; i < attributeInfoList.size(); i++) {
                 VBOAttributeInfo info = attributeInfoList.get(i);
-                if(info.type() == GL_FLOAT) {
+                if (info.type() == GL_FLOAT) {
                     glVertexAttribPointer(i, info.size(), info.type(), false, vboStrideBytes, (long) pointerValue * Float.BYTES);
                 }
-                else if(info.type() == GL_INT){
+                else if (info.type() == GL_INT) {
                     glVertexAttribIPointer(i, info.size(), info.type(), vboStrideBytes, (long) pointerValue * Float.BYTES);
                 }
-                else{
-                    assert false: "incorrect VBO attribute info type";
+                else {
+                    assert false : "incorrect VBO attribute info type";
                 }
                 pointerValue += info.size();
             }
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        private void uploadData(){
+        private void uploadData() {
             dataBuffer.clear();
             for (int i = 0; i < vertices.size(); i++) {
                 sendToBuffer(i);
@@ -163,7 +163,7 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
                     break;
                 }
             }
-            if(dataHasChangedFlag){
+            if (dataHasChangedFlag) {
                 this.uploadData();
                 vertices.forEach(V::resetDataHasChanged);
                 dataHasChangedFlag = false;

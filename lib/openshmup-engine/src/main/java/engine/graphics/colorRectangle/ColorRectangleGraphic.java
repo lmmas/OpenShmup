@@ -66,7 +66,8 @@ final public class ColorRectangleGraphic extends Graphic<ColorRectangleGraphic.C
         vertex.setDataHasChanged();
     }
 
-    @Getter @AllArgsConstructor
+    @Getter
+    @AllArgsConstructor
     public class ColorRectangleVertex extends Graphic<ColorRectangleVertex>.Vertex<ColorRectangleVertex> {
 
         private Vec2D size;

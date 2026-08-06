@@ -29,7 +29,8 @@ import static editor.Widgets.EditorTextField;
 final public class EditionDataFields implements EditionDataFieldNode {
 
     final private static DecimalFormat df = new DecimalFormat("0.000");
-    @Setter @Getter
+    @Setter
+    @Getter
     private EditionData editionData;
 
     final private HashMap<Attribute, List<Widget>> attributeWidgetsMap;

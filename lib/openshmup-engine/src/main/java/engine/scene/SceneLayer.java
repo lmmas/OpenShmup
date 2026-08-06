@@ -6,7 +6,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter final public class SceneLayer {
+@Getter
+final public class SceneLayer {
 
     final private ArrayList<SceneVisual> visuals;
     @Setter

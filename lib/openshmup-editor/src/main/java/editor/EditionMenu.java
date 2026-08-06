@@ -89,7 +89,7 @@ final public class EditionMenu {
 
         List<EditionData> configList = gameData.getConfigs().values().stream().toList();
         MenuElementGroup configListGroup = new MenuElementGroup();
-        for(int i = 0; i < configList.size(); i++){
+        for (int i = 0; i < configList.size(); i++) {
             EditionData configData = configList.get(i);
             Runnable onClick = () -> {
                 EditionDataFields node = new EditionDataFields(configData, new Vec2D(120f, 830f));
@@ -103,10 +103,10 @@ final public class EditionMenu {
             if (currentNode.get() != null) {
                 currentNode.get().setActive(false);
             }
-            if(buttons.getSelectedValue() == 4){
+            if (buttons.getSelectedValue() == 4) {
                 menu.removeFromCurrentScreen(configListGroup);
             }
-            switch (newValue){
+            switch (newValue) {
                 case 0 -> {
                     visualListFields.setActive(true);
                     currentNode.set(visualListFields);
@@ -128,7 +128,7 @@ final public class EditionMenu {
                     menu.addToCurrentScreen(configListGroup);
                 }
                 default -> {
-                    assert false: "incorrect value";
+                    assert false : "incorrect value";
                 }
             }
         };
@@ -143,7 +143,7 @@ final public class EditionMenu {
 
     public static MenuScreen openEditPanel(Menu menu, int layer, EditionDataFieldNode node, Runnable onApply, Runnable onClose) {
         EditionData editionData = node.getEditionData();
-        assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot || editionData.getCategory() == EditionData.Category.CONFIG: "Incorrect editionData type: " + editionData.getType().name();
+        assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot || editionData.getCategory() == EditionData.Category.CONFIG : "Incorrect editionData type: " + editionData.getType().name();
         MenuScreen editPanel = new MenuScreen(layer);
         SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         editPanel.addVisual(backgroundColor);

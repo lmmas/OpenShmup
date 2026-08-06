@@ -43,7 +43,7 @@ final public class GameEditionData implements Serializable {
         this.paths = new GamePaths(Path.of(fileFolderPathString));
     }
 
-    public void setToDefaultEmpty(){
+    public void setToDefaultEmpty() {
         visualEditionDataList.clear();
         trajectoryEditionDataList.clear();
         entityEditionDataList.clear();

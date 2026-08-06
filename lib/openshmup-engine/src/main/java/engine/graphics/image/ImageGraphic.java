@@ -83,7 +83,8 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
         vertex.setDataHasChanged();
     }
 
-    @Getter @AllArgsConstructor
+    @Getter
+    @AllArgsConstructor
     public class ImageVertex extends Graphic<ImageVertex>.Vertex<ImageVertex> {
 
         private final Texture texture;

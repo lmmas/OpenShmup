@@ -75,7 +75,7 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
         }
 
         @Override
-        public void sendToBuffer(int vertexIndex){
+        public void sendToBuffer(int vertexIndex) {
             ImageGraphic.ImageVertex image = vertices.get(vertexIndex);
             Vec2D imagePosition = image.getImagePosition();
             Vec2D imageSize = image.getImageSize();

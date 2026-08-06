@@ -67,7 +67,8 @@ final public class RoundedColorRectangle extends Graphic<RoundedColorRectangle.C
         vertex.setDataHasChanged();
     }
 
-    @Getter @AllArgsConstructor
+    @Getter
+    @AllArgsConstructor
     public class ColorRoundedRectangleVertex extends Graphic<ColorRoundedRectangleVertex>.Vertex<ColorRoundedRectangleVertex> {
 
         private Vec2D size;

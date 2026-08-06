@@ -28,7 +28,8 @@ abstract public class Entity {
     protected Vec2D size;
     @Getter
     protected float orientationRadians;
-    @Getter @Setter
+    @Getter
+    @Setter
     protected boolean invincible;
 
     protected double startingTimeSeconds;

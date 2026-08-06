@@ -1,9 +1,9 @@
 #type vertex
 #version 330 core
-layout(location=0) in vec2 a_QuadSize;
-layout(location=1) in vec2 a_Position;
-layout(location=2) in float a_RoundingRadius;
-layout(location=3) in vec4 a_Color;
+layout(location = 0) in vec2 a_QuadSize;
+layout(location = 1) in vec2 a_Position;
+layout(location = 2) in float a_RoundingRadius;
+layout(location = 3) in vec4 a_Color;
 
 uniform ivec2 u_NativeResolution;
 

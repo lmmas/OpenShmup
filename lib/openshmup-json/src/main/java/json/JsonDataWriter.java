@@ -10,10 +10,10 @@ import edition.EditionData;
 import edition.GameEditionData;
 import edition.attribute.*;
 
-import static edition.EditionData.*;
-
 import java.io.IOException;
 import java.util.List;
+
+import static edition.EditionData.Types;
 
 final public class JsonDataWriter {
 

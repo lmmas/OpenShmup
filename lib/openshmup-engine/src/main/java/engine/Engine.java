@@ -35,7 +35,8 @@ final public class Engine {
     static private IVec2D nativeResolution;
     @Setter
     private static Runnable inLoopScript;
-    @Getter @Setter
+    @Getter
+    @Setter
     private static double sceneTime;
 
     private static Callback debugProc;

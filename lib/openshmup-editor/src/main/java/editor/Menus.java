@@ -54,9 +54,9 @@ final public class Menus {
             return popupMenu;
         }
 
-        private static void createNewGame(String gameName, List<String> existingFolders){
-            assert !Objects.equals(gameName, ""): "empty game name";
-            assert !existingFolders.contains(gameName): "game folder already exists";
+        private static void createNewGame(String gameName, List<String> existingFolders) {
+            assert !Objects.equals(gameName, "") : "empty game name";
+            assert !existingFolders.contains(gameName) : "game folder already exists";
             GameEditionData newGameData = new GameEditionData(rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder).resolve(gameName));
             newGameData.setToDefaultEmpty();
             JsonDataWriter writer = new JsonDataWriter();
@@ -64,15 +64,14 @@ final public class Menus {
             openEditionMenu(newGameData);
         }
 
-        private static MenuScreen NewGamePopupScreen(){
+        private static MenuScreen NewGamePopupScreen() {
             Path gamesFolder = rootFolderAbsolutePath.resolve(GlobalVars.Paths.Partial.customGamesFolder);
             List<String> folderNames;
             try (Stream<Path> paths = Files.list(gamesFolder)) {
                 folderNames = paths.filter(Files::isDirectory)
-                        .map(path -> path.getFileName().toString())
-                        .toList();
-            }
-            catch (IOException e){
+                    .map(path -> path.getFileName().toString())
+                    .toList();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             MenuScreen screen = new MenuScreen(3);
@@ -86,7 +85,7 @@ final public class Menus {
             Vec2D textFieldPosition = Engine.getNativeResolution().scalar(0.5f).add(120f, 0f);
             TextField gameNameTextField = editor.Widgets.EditorTextField(2, textFieldPosition, 200f, "");
             screen.addWidget(gameNameTextField);
-            ActionButton cancelButton = Widgets.TextButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f + 80f  , 450), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Cancel", () -> Engine.getCurrentMenu().removeMenuScreen(screen));
+            ActionButton cancelButton = Widgets.TextButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f + 80f, 450), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Cancel", () -> Engine.getCurrentMenu().removeMenuScreen(screen));
             screen.addWidget(cancelButton);
             ActionButton okButton = Widgets.TextButton(2, buttonSize, new Vec2D(Engine.getNativeWidth() / 2.0f - 80f, 450), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "OK", () -> createNewGame(gameNameTextField.getStringValue(), folderNames));
             screen.addWidget(okButton);
@@ -94,7 +93,7 @@ final public class Menus {
             return screen;
         }
 
-        private static void openEditionMenu(GameEditionData game){
+        private static void openEditionMenu(GameEditionData game) {
             Engine.switchCurrentScene(new Scene());
             Engine.switchCurrentMenu(EditionMenu.EditionMenu(game));
         }

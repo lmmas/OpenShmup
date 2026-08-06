@@ -39,7 +39,7 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
         }
 
         @Override
-        public void sendToBuffer(int vertexIndex){
+        public void sendToBuffer(int vertexIndex) {
             ColorRectangleGraphic.ColorRectangleVertex rectangle = vertices.get(vertexIndex);
             Vec2D position = rectangle.getPosition();
             Vec2D size = rectangle.getSize();

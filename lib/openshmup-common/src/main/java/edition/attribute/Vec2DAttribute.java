@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import types.Vec2D;
 
-@Getter @Setter
+@Getter
+@Setter
 final public class Vec2DAttribute extends Attribute {
 
     private Vec2D value;

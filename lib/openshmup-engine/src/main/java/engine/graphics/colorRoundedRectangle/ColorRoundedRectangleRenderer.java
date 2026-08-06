@@ -38,7 +38,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<RoundedColorRe
         }
 
         @Override
-        public void sendToBuffer(int vertexIndex){
+        public void sendToBuffer(int vertexIndex) {
             RoundedColorRectangle.ColorRoundedRectangleVertex rectangle = vertices.get(vertexIndex);
             Vec2D position = rectangle.getPosition();
             Vec2D size = rectangle.getSize();

@@ -7,7 +7,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter final public class MenuScreen {
+@Getter
+final public class MenuScreen {
 
     private int backgroundLayer;
 

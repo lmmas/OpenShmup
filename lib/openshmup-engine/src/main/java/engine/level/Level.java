@@ -279,40 +279,40 @@ final public class Level implements EngineSystem {
     }
 
     public void handleCollisions() {
-        for(Entity goodEntity: goodEntities){
-            for(Entity evilEntity: evilEntities){
-                if(!Hitbox.intersection(goodEntity.getHitbox(), evilEntity.getHitbox())){
+        for (Entity goodEntity : goodEntities) {
+            for (Entity evilEntity : evilEntities) {
+                if (!Hitbox.intersection(goodEntity.getHitbox(), evilEntity.getHitbox())) {
                     continue;
                 }
-                if(!goodEntity.isInvincible()){
+                if (!goodEntity.isInvincible()) {
                     //consequences of the collision for the good entity
-                    if(goodEntity instanceof Ship goodShip){
+                    if (goodEntity instanceof Ship goodShip) {
                         goodShip.takeDamage(1);
                     }
-                    else if (evilEntity.getType() == EntityType.SHIP){ //nothing happens for a collision between 2 projectiles
+                    else if (evilEntity.getType() == EntityType.SHIP) { //nothing happens for a collision between 2 projectiles
                         handleEntityDeath(goodEntity);
                     }
                 }
-                if(!evilEntity.isInvincible()){
+                if (!evilEntity.isInvincible()) {
                     //consequences of the collision for the evil entity
-                    if(evilEntity instanceof Ship evilShip){
+                    if (evilEntity instanceof Ship evilShip) {
                         evilShip.takeDamage(1);
                     }
-                    else if(goodEntity.getType() == EntityType.SHIP){ //nothing happens for a collision between 2 projectiles
+                    else if (goodEntity.getType() == EntityType.SHIP) { //nothing happens for a collision between 2 projectiles
                         handleEntityDeath(evilEntity);
                     }
                 }
             }
-            if(goodEntity instanceof Ship goodShip && goodShip.isDead()){
+            if (goodEntity instanceof Ship goodShip && goodShip.isDead()) {
                 handleEntityDeath(goodEntity);
-                if(goodEntity.getEntityId() == 0){
+                if (goodEntity.getEntityId() == 0) {
                     menu.addMenuScreen(gameOverScreen);
                     timer.pause();
                 }
             }
         }
-        for(Entity evilEntity: evilEntities){
-            if(evilEntity instanceof Ship evilShip && evilShip.isDead()){
+        for (Entity evilEntity : evilEntities) {
+            if (evilEntity instanceof Ship evilShip && evilShip.isDead()) {
                 handleEntityDeath(evilEntity);
             }
         }

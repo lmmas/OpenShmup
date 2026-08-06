@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
-@AllArgsConstructor final public class Vec2D implements Serializable {
+@AllArgsConstructor
+final public class Vec2D implements Serializable {
 
     final public float x;
 

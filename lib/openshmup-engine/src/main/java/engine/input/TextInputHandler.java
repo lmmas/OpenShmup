@@ -46,10 +46,10 @@ final public class TextInputHandler {
         int validCharCount = filteredBuffer.size();
         filteredBuffer = filteredBuffer.subList(0, Integer.max(0, (validCharCount - backspaceCount)));
         filteredBuffer.forEach(targetBuffer::appendCodePoint);
-        if(backspaceCount > validCharCount){
+        if (backspaceCount > validCharCount) {
             backspaceCount = backspaceCount - validCharCount;
         }
-        else{
+        else {
             backspaceCount = 0;
         }
         for (int i = 0; i < backspaceCount; i++) {

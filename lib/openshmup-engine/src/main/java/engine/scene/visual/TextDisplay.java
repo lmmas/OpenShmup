@@ -20,13 +20,15 @@ final public class TextDisplay extends SceneVisual {
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
     private Vec2D position;
-    @Setter @Getter
+    @Setter
+    @Getter
     private String displayedString;
 
     private final Font font;
 
     private float textHeight;
-    @Getter @Setter
+    @Getter
+    @Setter
     private RGBAValue textColor;
 
     private final TextAlignment alignment;

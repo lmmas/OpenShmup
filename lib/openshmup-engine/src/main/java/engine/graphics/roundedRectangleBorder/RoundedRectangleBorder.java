@@ -62,7 +62,8 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         vertex.setDataHasChanged();
     }
 
-    @Getter @AllArgsConstructor
+    @Getter
+    @AllArgsConstructor
     public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorderVertex>.Vertex<RoundedRectangleBorderVertex> {
 
         private Vec2D size;

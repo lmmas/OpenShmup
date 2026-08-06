@@ -20,7 +20,7 @@ final public class Font {
     final public static int codepointRangeStart = 10;
     final public static int codepointRangeEnd = 126;
 
-    public static boolean codepointIsSupported(int codepoint){
+    public static boolean codepointIsSupported(int codepoint) {
         return codepoint >= codepointRangeStart && codepoint <= codepointRangeEnd;
     }
 

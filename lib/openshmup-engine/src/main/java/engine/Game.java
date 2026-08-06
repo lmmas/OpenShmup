@@ -21,7 +21,8 @@ final public class Game {
     public static PlayerSettings playerSettings;
 
     final private static Reference<Level> currentLevel = new Reference<>(null);
-    @Getter @Setter
+    @Getter
+    @Setter
     private static double levelTime;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {

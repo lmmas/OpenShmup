@@ -15,7 +15,8 @@ final public class SelectorButtons implements Widget {
     final private List<ActionButton> actionButtons;
 
     final private List<SceneVisual> visuals;
-    @Getter @Setter
+    @Getter
+    @Setter
     private Integer selectedValue;
 
     final private BiConsumer<SelectorButtons, Integer> onChange;

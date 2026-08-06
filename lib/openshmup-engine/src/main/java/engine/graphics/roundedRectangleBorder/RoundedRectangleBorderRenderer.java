@@ -38,7 +38,7 @@ final public class RoundedRectangleBorderRenderer extends Renderer<RoundedRectan
         }
 
         @Override
-        protected void sendToBuffer(int vertexIndex){
+        protected void sendToBuffer(int vertexIndex) {
             RoundedRectangleBorder.RoundedRectangleBorderVertex rectangle = vertices.get(vertexIndex);
             Vec2D position = rectangle.getPosition();
             Vec2D size = rectangle.getSize();

@@ -4,7 +4,8 @@ import edition.EditionData;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 final public class StringAttribute extends Attribute {
 
     private String value;
