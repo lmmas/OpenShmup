@@ -153,7 +153,7 @@ final public class ListFields implements FieldNode {
         }
         buildAddButton();
         if (isActive) {
-            menu.addToCurrentScreen(addButton);
+            menu.addToCurrentScreen(addButton, 2);
         }
     }
 
@@ -170,7 +170,7 @@ final public class ListFields implements FieldNode {
         }
         buildAddButton();
         if (isActive) {
-            menu.addToCurrentScreen(this.addButton);
+            menu.addToCurrentScreen(this.addButton, 2);
         }
         selectListItem(selectButtons.size() - 1);// selects the last element of the list, the one just added
     }
@@ -207,8 +207,8 @@ final public class ListFields implements FieldNode {
         deleteButtons.add(newDelete);
         if (isActive) {
             assert menu != null : "menu not found";
-            menu.addToCurrentScreen(newSelect);
-            menu.addToCurrentScreen(newDelete);
+            menu.addToCurrentScreen(newSelect, 2);
+            menu.addToCurrentScreen(newDelete, 2);
         }
     }
 
@@ -234,9 +234,9 @@ final public class ListFields implements FieldNode {
             this.isActive = active;
             if (menu != null) {
                 if (active) {
-                    selectButtons.forEach(menu::addToCurrentScreen);
-                    deleteButtons.forEach(menu::addToCurrentScreen);
-                    menu.addToCurrentScreen(addButton);
+                    selectButtons.forEach(widget -> menu.addToCurrentScreen(widget, 2));
+                    deleteButtons.forEach(widget -> menu.addToCurrentScreen(widget, 2));
+                    menu.addToCurrentScreen(addButton, 2);
                 }
                 else {
                     selectButtons.forEach(menu::removeFromCurrentScreen);

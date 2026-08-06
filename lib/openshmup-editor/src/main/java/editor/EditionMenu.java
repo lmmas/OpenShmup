@@ -9,7 +9,7 @@ import editor.fieldNode.ListFields;
 import engine.Engine;
 import engine.GlobalVars;
 import engine.menu.Menu;
-import engine.menu.MenuElementGroup;
+import engine.menu.MenuItemGroup;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
 import engine.menu.widget.SelectorButtons;
@@ -88,14 +88,14 @@ final public class EditionMenu {
         final Reference<FieldNode> currentNode = new Reference<>(null);
 
         List<EditionData> configList = gameData.getConfigs().values().stream().toList();
-        MenuElementGroup configListGroup = new MenuElementGroup();
+        MenuItemGroup configListGroup = new MenuItemGroup();
         for (int i = 0; i < configList.size(); i++) {
             EditionData configData = configList.get(i);
             Runnable onClick = () -> {
                 EditionDataFields node = new EditionDataFields(configData, new Vec2D(120f, 830f));
                 openEditPanel(menu, 8, node, node::applyChanges, () -> {});
             };
-            configListGroup.widgets().add(Widgets.TextButton(1, new Vec2D(200f, 50f), new Vec2D(Engine.getNativeWidth() / 2f, 850f - 60 * i), menuButtonStyle1, Style.Text.menuButtonLabelStyle, configData.getType().name(), onClick));
+            configListGroup.addWidget(Widgets.TextButton(1, new Vec2D(200f, 50f), new Vec2D(Engine.getNativeWidth() / 2f, 850f - 60 * i), menuButtonStyle1, Style.Text.menuButtonLabelStyle, configData.getType().name(), onClick), 1);
         }
 
         BiConsumer<SelectorButtons, Integer> onChange = (buttons, newValue) -> {

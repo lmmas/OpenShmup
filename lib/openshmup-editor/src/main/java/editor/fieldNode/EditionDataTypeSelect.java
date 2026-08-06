@@ -137,8 +137,8 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
             this.isActive = active;
             if (this.menu != null) {
                 if (active) {
-                    menu.addToCurrentScreen(typeSelectText);
-                    menu.addToCurrentScreen(selectorButtons);
+                    menu.addToCurrentScreen(typeSelectText, 2);
+                    menu.addToCurrentScreen(selectorButtons, 2);
                 }
                 else {
                     menu.removeFromCurrentScreen(typeSelectText);

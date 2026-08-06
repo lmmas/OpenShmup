@@ -45,13 +45,13 @@ final public class MenuScreen {
         otherVisuals.remove(visual);
     }
 
-    public void addElementGroup(MenuElementGroup elementGroup) {
-        elementGroup.widgets().forEach(this::addWidget);
-        elementGroup.visuals().forEach(this::addVisual);
+    public void addElementGroup(MenuItemGroup elementGroup) {
+        elementGroup.getWidgets().forEach(this::addWidget);
+        elementGroup.getVisuals().forEach(this::addVisual);
     }
 
-    public void removeElementGroup(MenuElementGroup elementGroup) {
-        elementGroup.widgets().forEach(this::removeWidget);
-        elementGroup.visuals().forEach(this::removeVisual);
+    public void removeElementGroup(MenuItemGroup elementGroup) {
+        elementGroup.getWidgets().forEach(this::removeWidget);
+        elementGroup.getVisuals().forEach(this::removeVisual);
     }
 }
