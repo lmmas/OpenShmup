@@ -65,6 +65,16 @@ final public class LayerMap<T> {
         return map.get(layer);
     }
 
+    public int getLayerOfObject(T object) {
+        for (var entry : map.entrySet()) {
+            if (entry.getValue() == object) {
+                return entry.getKey();
+            }
+        }
+        assert false : "object not found";
+        return 0;
+    }
+
     public List<LayerEntry<T>> getEntryList() {
         return map.entrySet().stream()
             .flatMap(entry -> entry.getValue().stream()

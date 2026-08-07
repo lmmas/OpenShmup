@@ -4,24 +4,26 @@ import engine.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;
+import types.LayerMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
-final public class SelectorButtons {
+final public class SelectorButtons implements Widget {
 
     @Getter
     final private List<ActionButton> actionButtons;
 
-    final private List<SceneVisual> visuals;
+    final private LayerMap<SceneVisual> visualLayers;
     @Getter
     @Setter
     private Integer selectedValue;
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<SceneVisual> buttonBackgrounds, List<List<SceneVisual>> otherButtonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+    public SelectorButtons(List<SceneVisual> buttonBackgrounds, List<Map<SceneVisual, Integer>> otherButtonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         this.onChange = onChange;
         this.selectedValue = startingValue;
         assert otherButtonVisuals.size() == hitboxes.size() : "list size mismatch";
@@ -37,17 +39,17 @@ final public class SelectorButtons {
             });
         }
         this.actionButtons = new ArrayList<>(buttonCount);
-        this.visuals = new ArrayList<>();
+        this.visualLayers = new LayerMap<>();
         for (int i = 0; i < buttonCount; i++) {
             this.actionButtons.add(new ActionButton(buttonBackgrounds.get(i), otherButtonVisuals.get(i), hitboxes.get(i), onClicks.get(i)));
-            this.visuals.add(buttonBackgrounds.get(i));
-            this.visuals.addAll(otherButtonVisuals.get(i));
+            this.visualLayers.add(buttonBackgrounds.get(i), 0);
+            otherButtonVisuals.get(i).forEach(visualLayers::add);
         }
     }
 
     @Override
-    public List<SceneVisual> getVisuals() {
-        return visuals;
+    public LayerMap<SceneVisual> getVisualLayers() {
+        return visualLayers;
     }
 
     @Override

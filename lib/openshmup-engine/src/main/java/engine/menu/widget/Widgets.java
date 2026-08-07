@@ -36,7 +36,7 @@ final public class Widgets {
     public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         assert labels.size() == buttonCount : "Incorrect label count";
         List<SceneVisual> buttonBackgrounds = new ArrayList<>(buttonCount);
-        List<List<SceneVisual>> buttonOtherVisuals = new ArrayList<>(buttonCount);
+        List<Map<SceneVisual, Integer>> buttonOtherVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
@@ -45,9 +45,9 @@ final public class Widgets {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonBackgrounds.add(rectangle);
-            buttonOtherVisuals.add(List.of(
+            buttonOtherVisuals.add(Map.of(
                 new TextDisplay(layer + 1, false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
-            ));
+                , 1));
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }
         BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {

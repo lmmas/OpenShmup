@@ -42,7 +42,7 @@ final public class Menus {
             Vec2D closeButtonSize = new Vec2D(150, 50);
             ActionButton closeButton = Widgets.TextButton(1, closeButtonSize, new Vec2D(1800, 930), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Close", () -> Engine.getCurrentMenu().removeMenuScreen(popupMenu));
             popupMenu.addWidget(closeButton, 1);
-            popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)), );
+            popupMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)), 0);
 
             Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
             Vec2D listButtonSize = new Vec2D(300f, 75f);
@@ -76,12 +76,12 @@ final public class Menus {
             }
             MenuScreen screen = new MenuScreen(3);
             Vec2D buttonSize = new Vec2D(150, 50);
-            screen.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)), );
+            screen.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)), 0);
             SceneVisual backgroundRectangle = new RoundedRectangle(1, new Vec2D(500f, 160f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
-            screen.addVisual(backgroundRectangle, );
+            screen.addVisual(backgroundRectangle, 1);
             Vec2D fieldLabelPosition = Engine.getNativeResolution().scalar(0.5f).add(-150f, 0f);
             SceneVisual fieldLabel = new TextDisplay(2, false, fieldLabelPosition, "Game Name: ", Text.menuButtonLabelStyle, TextAlignment.LEFT);
-            screen.addVisual(fieldLabel, );
+            screen.addVisual(fieldLabel, 2);
             Vec2D textFieldPosition = Engine.getNativeResolution().scalar(0.5f).add(120f, 0f);
             TextField gameNameTextField = editor.Widgets.EditorTextField(2, textFieldPosition, 200f, "");
             screen.addWidget(gameNameTextField, 2);
@@ -125,8 +125,8 @@ final public class Menus {
         titleScreen.addWidget(newGameButton, 1);
         titleScreen.addWidget(editGameButton, 1);
         titleScreen.addWidget(quitButton, 1);
-        titleScreen.addVisual(menuBackground, );
-        titleScreen.addVisual(menuTitle, );
+        titleScreen.addVisual(menuBackground, 0);
+        titleScreen.addVisual(menuTitle, 1);
 
         mainMenu.addMenuScreen(titleScreen);
         return mainMenu;
