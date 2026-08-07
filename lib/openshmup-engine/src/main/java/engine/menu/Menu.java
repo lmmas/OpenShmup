@@ -14,8 +14,12 @@ public class Menu implements EngineSystem {
 
     final private ArrayList<MenuScreen> displayedMenuScreens;
 
+    private MenuScreen currentScreen;
+
     public Menu() {
         this.displayedMenuScreens = new ArrayList<>();
+        this.currentScreen = null;
+        this.scene = null;
     }
 
     @Override
@@ -23,7 +27,6 @@ public class Menu implements EngineSystem {
         if (displayedMenuScreens.isEmpty()) {
             return;
         }
-        MenuScreen currentScreen = displayedMenuScreens.getLast();
         List<Widget> widgetListCopy = currentScreen.getWidgets().getObjectList();
         widgetListCopy.forEach(Widget::handleInputs);
     }
@@ -49,22 +52,24 @@ public class Menu implements EngineSystem {
         }
         displayedMenuScreens.add(menuScreen);
         menuScreen.setOpen(true);
-    }
-
-    private void removeMenuScreenFromScene(MenuScreen menuScreen) {
-        assert scene != null : "no scene attached to this menu";
-        menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualLayers()
-            .forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + widgetLayer + visualLayer)));
-        menuScreen.getOtherVisuals().forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visualLayer));
+        this.currentScreen = menuScreen;
     }
 
     public void removeMenuScreen(MenuScreen menuScreen) {
         assert menuScreen.isOpen() : "menu screen not open";
         if (scene != null) {
-            removeMenuScreenFromScene(menuScreen);
+            menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualLayers()
+                .forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + widgetLayer + visualLayer)));
+            menuScreen.getOtherVisuals().forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visualLayer));
         }
         displayedMenuScreens.remove(menuScreen);
         menuScreen.setOpen(false);
+        if (!displayedMenuScreens.isEmpty()) {
+            currentScreen = displayedMenuScreens.getLast();
+        }
+        else {
+            currentScreen = null;
+        }
     }
 
     public void setScene(Scene scene) {
@@ -76,7 +81,7 @@ public class Menu implements EngineSystem {
 
     public void addToCurrentScreen(Widget widget, int layer) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        displayedMenuScreens.getLast().addWidget(widget, layer);
+        currentScreen.addWidget(widget, layer);
         if (scene != null) {
             widget.getVisualLayers().forEachObject((visual, visualLayer) -> scene.addVisual(visual, displayedMenuScreens.getLast().getBackgroundLayer() + layer + visualLayer));
         }
@@ -84,15 +89,14 @@ public class Menu implements EngineSystem {
 
     public void addToCurrentScreen(SceneVisual visual, int layer) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        displayedMenuScreens.getLast().addVisual(visual, layer);
+        currentScreen.addVisual(visual, layer);
         if (scene != null) {
-            scene.addVisual(visual, displayedMenuScreens.getLast().getBackgroundLayer() + layer);
+            scene.addVisual(visual, currentScreen.getBackgroundLayer() + layer);
         }
     }
 
     public void addToCurrentScreen(MenuItemGroup menuItemGroup) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        MenuScreen currentScreen = displayedMenuScreens.getLast();
         currentScreen.addElementGroup(menuItemGroup);
         if (scene != null) {
             menuItemGroup.getVisuals().forEachObject((visual, layer) -> scene.addVisual(visual, currentScreen.getBackgroundLayer() + layer));
@@ -103,7 +107,6 @@ public class Menu implements EngineSystem {
 
     public void removeFromCurrentScreen(Widget widget) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        MenuScreen currentScreen = displayedMenuScreens.getLast();
         int widgetLayer = currentScreen.getWidgets().getLayerOfObject(widget);
         currentScreen.removeWidget(widget);
         if (scene != null) {
@@ -113,7 +116,6 @@ public class Menu implements EngineSystem {
 
     public void removeFromCurrentScreen(SceneVisual visual) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        MenuScreen currentScreen = displayedMenuScreens.getLast();
         int visualLayer = currentScreen.getOtherVisuals().getLayerOfObject(visual);
         currentScreen.removeVisual(visual);
         if (scene != null) {
@@ -123,7 +125,6 @@ public class Menu implements EngineSystem {
 
     public void removeFromCurrentScreen(MenuItemGroup menuItemGroup) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        MenuScreen currentScreen = displayedMenuScreens.getLast();
         currentScreen.removeElementGroup(menuItemGroup);
         if (scene != null) {
             menuItemGroup.getVisuals().forEachObject((visual, visualLayer) -> scene.removeVisual(visual, currentScreen.getBackgroundLayer() + visualLayer));
