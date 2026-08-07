@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-final public class SelectorButtons implements Widget {
+final public class SelectorButtons {
 
     @Getter
     final private List<ActionButton> actionButtons;

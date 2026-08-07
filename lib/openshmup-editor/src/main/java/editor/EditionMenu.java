@@ -48,20 +48,20 @@ final public class EditionMenu {
         MenuScreen mainScreen = new MenuScreen(0);
 
         SceneVisual menuBackground = new ScreenFilter(0, menuBackgroundColor);
-        mainScreen.addVisual(menuBackground);
+        mainScreen.addVisual(menuBackground, 0);
 
         TextDisplay screenTitle = new TextDisplay(1, false, new Vec2D((float) Engine.getNativeWidth() / 2, 1020f), "Edit Game", Text.menuScreenTitleStyle, TextAlignment.CENTER);
-        mainScreen.addVisual(screenTitle);
+        mainScreen.addVisual(screenTitle, 1);
         Runnable returnToMainMenu = () -> {
             Engine.switchCurrentScene(new Scene());
             Engine.switchCurrentMenu(MainMenu());
         };
         ActionButton returnToMainMenuButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 75), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Return to main menu", returnToMainMenu);
-        mainScreen.addWidget(returnToMainMenuButton);
+        mainScreen.addWidget(returnToMainMenuButton, 1);
         ActionButton saveButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 150), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Save", () -> saveGame(gameData));
-        mainScreen.addWidget(saveButton);
+        mainScreen.addWidget(saveButton, 1);
         ActionButton launchGameButton = Widgets.TextButton(1, new Vec2D(300, 50), new Vec2D(1750, 220), menuButtonStyle1, Style.Text.menuButtonLabelStyle, "Launch game", () -> launchGame(gameData));
-        mainScreen.addWidget(launchGameButton);
+        mainScreen.addWidget(launchGameButton, 1);
 
         ArrayList<EditionData> visualEditionDataList = gameData.getVisualEditionDataList();
         Vec2D listStartPosition = new Vec2D(Engine.getNativeWidth() / 2.0f, 850f);
@@ -133,7 +133,7 @@ final public class EditionMenu {
             }
         };
         SelectorButtons categorySelector = EditorSelector(1, 5, selectorButtonSize, selectorStartPosition, selectorButtonStride, labels, onChange, 0);
-        mainScreen.addWidget(categorySelector);
+        mainScreen.addWidget(categorySelector, 1);
         currentNode.set(visualListFields);
         menu.addMenuScreen(mainScreen);
         visualListFields.setActive(true);
@@ -146,9 +146,9 @@ final public class EditionMenu {
         assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot || editionData.getCategory() == EditionData.Category.CONFIG : "Incorrect editionData type: " + editionData.getType().name();
         MenuScreen editPanel = new MenuScreen(layer);
         SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
-        editPanel.addVisual(backgroundColor);
+        editPanel.addVisual(backgroundColor, 0);
         SceneVisual backgroundRectangle = new RoundedRectangle(1, new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
-        editPanel.addVisual(backgroundRectangle);
+        editPanel.addVisual(backgroundRectangle, 1);
 
         String panelTitleString = switch (editionData.getCategory()) {
             case VISUAL -> "Edit Visual";
@@ -162,7 +162,7 @@ final public class EditionMenu {
             default -> "";
         };
         TextDisplay panelTitle = new TextDisplay(2, false, new Vec2D((float) Engine.getNativeWidth() / 2, 950f), panelTitleString, Text.menuButtonLabelStyle, TextAlignment.CENTER);
-        editPanel.addVisual(panelTitle);
+        editPanel.addVisual(panelTitle, 2);
 
         node.setMenu(menu);
 
@@ -176,8 +176,8 @@ final public class EditionMenu {
             onClose.run();
         };
         ActionButton closeButton = Widgets.TextButton(3, buttonSize, closeButtonPosition, menuButtonStyle2, Style.Text.menuButtonLabelStyle, "Close", closeButtonAction);
-        editPanel.addWidget(closeButton);
-        editPanel.addWidget(applyButton);
+        editPanel.addWidget(closeButton, 3);
+        editPanel.addWidget(applyButton, 3);
         menu.addMenuScreen(editPanel);
         node.setActive(true);
 

@@ -1,12 +1,11 @@
 package engine.menu.widget;
 
 import engine.scene.visual.SceneVisual;
-
-import java.util.List;
+import types.LayerMap;
 
 public interface Widget {
 
-    List<SceneVisual> getVisuals();
+    LayerMap<SceneVisual> getVisualLayers();
 
     void handleInputs();
 }

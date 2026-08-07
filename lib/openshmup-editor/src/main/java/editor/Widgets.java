@@ -11,6 +11,7 @@ import types.Vec2D;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 import static editor.Style.Text.menuButtonLabelStyle;
@@ -32,7 +33,7 @@ final public class Widgets {
         RGBAValue boxBorderColor = RGBAValue.SOLID_BLACK;
         RoundedRectangle box = new RoundedRectangle(layer, size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
         ImageDisplay checkMark = new ImageDisplay(layer + 1, assetManager.getTexture(checkboxTexturePath), size, position);
-        return new BooleanField(size, position, checkMark, List.of(box), startingState);
+        return new BooleanField(size, position, checkMark, Map.of(box, 0), startingState);
     }
 
     public static TextField EditorTextField(int layer, Vec2D position, float fieldWidthPixels, String startingText) {
@@ -42,7 +43,7 @@ final public class Widgets {
         RGBAValue rectangleColor = RGBAValue.SOLID_WHITE;
         RGBAValue borderColor = RGBAValue.SOLID_BLACK;
         RoundedRectangle roundedRectangle = new RoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
-        return new TextField(layer + 1, size, position, menuTextStyle, List.of(roundedRectangle), startingText);
+        return new TextField(layer + 1, size, position, menuTextStyle, Map.of(roundedRectangle, 0), startingText);
     }
 
     public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {

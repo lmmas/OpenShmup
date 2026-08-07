@@ -4,54 +4,49 @@ import engine.menu.widget.Widget;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
+import types.LayerMap;
 
 @Getter
 final public class MenuScreen {
 
     private int backgroundLayer;
 
-    final private ArrayList<Widget> widgets;
+    final private LayerMap<Widget> widgets;
 
-    final private ArrayList<SceneVisual> otherVisuals;
+    final private LayerMap<SceneVisual> otherVisuals;
     @Setter
     private boolean isOpen;
 
     public MenuScreen(int backgroundLayer) {
         this.backgroundLayer = backgroundLayer;
-        this.widgets = new ArrayList<>();
-        this.otherVisuals = new ArrayList<>();
+        this.widgets = new LayerMap<>();
+        this.otherVisuals = new LayerMap<>();
         this.isOpen = false;
     }
 
-    public void addWidget(Widget widget) {
-        assert !widgets.contains(widget) : "widget is already present in widget list of the screen";
-        widgets.add(widget);
+    public void addWidget(Widget widget, int layer) {
+        widgets.add(widget, layer);
     }
 
     public void removeWidget(Widget widget) {
-        assert widgets.contains(widget) : "widget is not present in widget list of the screen";
         widgets.remove(widget);
     }
 
-    public void addVisual(SceneVisual visual) {
-        assert !otherVisuals.contains(visual) : "visual is already present in visual list of the screen";
-        otherVisuals.add(visual);
+    public void addVisual(SceneVisual visual, int layer) {
+        otherVisuals.add(visual, layer);
     }
 
     public void removeVisual(SceneVisual visual) {
-        assert otherVisuals.contains(visual) : "visual is not present in visual list of the screen";
         otherVisuals.remove(visual);
     }
 
     public void addElementGroup(MenuItemGroup elementGroup) {
-        elementGroup.getWidgets().forEach(this::addWidget);
-        elementGroup.getVisuals().forEach(this::addVisual);
+        elementGroup.getWidgets().forEachObject(this::addWidget);
+        elementGroup.getVisuals().forEachObject(this::addVisual);
     }
 
     public void removeElementGroup(MenuItemGroup elementGroup) {
-        elementGroup.getWidgets().forEach(this::removeWidget);
-        elementGroup.getVisuals().forEach(this::removeVisual);
+        elementGroup.getWidgets().forEachObject((widget, layer) -> widgets.remove(widget, layer));
+        elementGroup.getVisuals().forEachObject((visual, layer) -> otherVisuals.remove(visual, layer));
     }
 }

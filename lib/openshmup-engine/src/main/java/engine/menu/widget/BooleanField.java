@@ -7,16 +7,14 @@ import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.effects.ColorEffect;
-import lombok.Getter;
+import types.LayerMap;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 final public class BooleanField implements Widget {
 
-    @Getter
-    private ArrayList<SceneVisual> visuals;
+    private LayerMap<SceneVisual> visualLayers;
 
     private SceneVisual toggleVisual;
 
@@ -26,11 +24,10 @@ final public class BooleanField implements Widget {
 
     final private HitboxClickDetector hitboxClickDetector;
 
-    public BooleanField(Vec2D size, Vec2D position, SceneVisual toggleVisual, List<SceneVisual> otherVisuals, boolean startingValue) {
+    public BooleanField(Vec2D size, Vec2D position, SceneVisual toggleVisual, Map<SceneVisual, Integer> otherVisuals, boolean startingValue) {
         this.toggleVisual = toggleVisual;
-        this.visuals = new ArrayList<>();
-        this.visuals.addAll(otherVisuals);
-        this.visuals.add(toggleVisual);
+        this.visualLayers = new LayerMap<>(otherVisuals);
+        this.visualLayers.add(toggleVisual, 1);
         this.invisibilityEffect = ColorEffect.Invisibility();
         Hitbox hitbox = new SimpleRectangleHitbox(position, size);
         this.hitboxClickDetector = new HitboxClickDetector(hitbox);
@@ -54,6 +51,11 @@ final public class BooleanField implements Widget {
                 toggleVisual.addColorEffect(invisibilityEffect);
             }
         }
+    }
+
+    @Override
+    public LayerMap<SceneVisual> getVisualLayers() {
+        return visualLayers;
     }
 
     @Override

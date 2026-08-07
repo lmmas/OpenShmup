@@ -1,15 +1,24 @@
 package types;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 final public class LayerMap<T> {
     final private TreeMap<Integer, ArrayList<T>> map;
 
     public LayerMap() {
         this.map = new TreeMap<>();
+    }
+
+    public LayerMap(List<LayerEntry<? extends T>> entryList) {
+        this.map = new TreeMap<>();
+        entryList.forEach(entry -> add(entry.object(), entry.layer()));
+    }
+
+    public LayerMap(Map<? extends T, Integer> entryMap) {
+        this.map = new TreeMap<>();
+        entryMap.forEach(this::add);
     }
 
     public int getLayerCount() {
@@ -23,6 +32,15 @@ final public class LayerMap<T> {
         return map.lastKey();
     }
 
+    public boolean contains(T object) {
+        for (ArrayList<T> list : map.values()) {
+            if (list.contains(object)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void add(T newObject, int layer) {
         assert (!map.containsKey(layer)) || !map.get(layer).contains(newObject) : "object already in map";
         map.computeIfAbsent(layer, ArrayList::new).add(newObject);
@@ -31,6 +49,16 @@ final public class LayerMap<T> {
     public void remove(T object, int layer) {
         assert (map.containsKey(layer) && map.get(layer).contains(object)) : "object not found";
         map.get(layer).remove(object);
+    }
+
+    public void remove(T object) {
+        for (var list : map.values()) {
+            if (list.contains(object)) {
+                list.remove(object);
+                return;
+            }
+        }
+        assert false : "object not found";
     }
 
     public ArrayList<T> getLayer(int layer) {
@@ -44,8 +72,18 @@ final public class LayerMap<T> {
             .toList();
     }
 
+    public List<T> getObjectList() {
+        return map.values().stream()
+            .flatMap(Collection::stream)
+            .toList();
+    }
+
     public void forEachObject(BiConsumer<? super T, ? super Integer> action) {
-        map.forEach((key, value) -> value.forEach(object -> action.accept(object, key)));
+        map.forEach((layer, list) -> list.forEach(object -> action.accept(object, layer)));
+    }
+
+    public void forEachObject(Consumer<? super T> action) {
+        map.forEach((layer, list) -> list.forEach(action));
     }
 
     public void forEachLayer(BiConsumer<? super Integer, ? super ArrayList<T>> action) {

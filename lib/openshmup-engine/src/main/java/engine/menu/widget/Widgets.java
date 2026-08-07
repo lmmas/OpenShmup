@@ -13,6 +13,7 @@ import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -23,7 +24,7 @@ final public class Widgets {
     public static ActionButton TextButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
         return new ActionButton(
             new RoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
-            List.of(new TextDisplay(layer + 1, false, position, label, textStyle, TextAlignment.CENTER)),
+            Map.of(new TextDisplay(layer + 1, false, position, label, textStyle, TextAlignment.CENTER), 1),
             new SimpleRectangleHitbox(position, size),
             onClick);
     }

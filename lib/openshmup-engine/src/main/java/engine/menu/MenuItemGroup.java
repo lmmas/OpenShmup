@@ -2,48 +2,42 @@ package engine.menu;
 
 import engine.menu.widget.Widget;
 import engine.scene.visual.SceneVisual;
+import lombok.Getter;
+import types.LayerMap;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@Getter
 public class MenuItemGroup {
-    final private HashMap<SceneVisual, Integer> visualMap;
-    final private HashMap<Widget, Integer> widgetMap;
+
+    final private LayerMap<SceneVisual> visuals;
+
+    final private LayerMap<Widget> widgets;
 
     public MenuItemGroup() {
-        this.visualMap = new HashMap<>();
-        this.widgetMap = new HashMap<>();
+        this.visuals = new LayerMap<>();
+        this.widgets = new LayerMap<>();
     }
 
-    public MenuItemGroup(Map<SceneVisual, Integer> visualMap, Map<Widget, Integer> widgetMap) {
-        this.visualMap = new HashMap<>(visualMap);
-        this.widgetMap = new HashMap<>(widgetMap);
-    }
-
-    public Set<SceneVisual> getVisuals() {
-        return visualMap.keySet();
-    }
-
-    public Set<Widget> getWidgets() {
-        return widgetMap.keySet();
+    public MenuItemGroup(Map<SceneVisual, Integer> visuals, Map<Widget, Integer> widgetLayers) {
+        this.visuals = new LayerMap<>(visuals);
+        this.widgets = new LayerMap<>(widgetLayers);
     }
 
     public Set<Map.Entry<SceneVisual, Integer>> getVisualEntries() {
-        return visualMap.entrySet();
+        return visuals.entrySet();
     }
 
     public Set<Map.Entry<Widget, Integer>> getWidgetEntries() {
-        return widgetMap.entrySet();
+        return widgets.entrySet();
     }
 
     public void addVisual(SceneVisual visual, int layer) {
-        assert !visualMap.containsKey(visual) : "visual already in group";
-        visualMap.put(visual, layer);
+        visuals.add(visual, layer);
     }
 
     public void addWidget(Widget widget, int layer) {
-        assert !widgetMap.containsKey(widget) : "widget already in group";
-        widgetMap.put(widget, layer);
+        widgets.add(widget, layer);
     }
 }

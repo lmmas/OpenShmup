@@ -9,16 +9,14 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import lombok.Getter;
+import types.LayerMap;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 final public class TextField implements Widget {
 
-    @Getter
-    final private List<SceneVisual> visuals;
+    final private LayerMap<SceneVisual> visualLayers;
 
     final private TextDisplay textInputDisplay;
 
@@ -28,19 +26,22 @@ final public class TextField implements Widget {
 
     private boolean textInputActive;
 
-    public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, List<SceneVisual> otherVisuals, String startingText) {
+    public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, Map<SceneVisual, Integer> otherVisuals, String startingText) {
         this.stringBuffer = new StringBuffer(startingText);
         float textStartMargin = 6f;
         Vec2D textPosition = new Vec2D(position.x - (size.x / 2) + textStartMargin, position.y);
         this.textInputDisplay = new TextDisplay(textLayer, true, textPosition, startingText, style, TextAlignment.LEFT);
-        this.visuals = new ArrayList<>(otherVisuals);
-        this.visuals.add(textInputDisplay);
+        this.visualLayers = new LayerMap<>(otherVisuals);
+        this.visualLayers.add(textInputDisplay, textLayer);
         Hitbox clickHitbox = new SimpleRectangleHitbox(position, size);
         this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
         this.textInputActive = false;
     }
 
-
+    @Override
+    public LayerMap<SceneVisual> getVisualLayers() {
+        return visualLayers;
+    }
     @Override
     public void handleInputs() {
         InputStatesManager inputStatesManager = Engine.getInputStatesManager();

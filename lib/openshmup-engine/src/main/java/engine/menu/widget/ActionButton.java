@@ -6,33 +6,31 @@ import engine.hitbox.HitboxClickDetector;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
+import types.LayerMap;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 final public class ActionButton implements Widget {
     @Getter
     final private SceneVisual background;
-    @Getter
-    final private List<SceneVisual> otherVisuals;
+
+    final private LayerMap<SceneVisual> visualLayers;
 
     final private HitboxClickDetector hitboxClickDetector;
 
     private Runnable onClick;
 
-    public ActionButton(SceneVisual background, List<SceneVisual> otherVisuals, Hitbox clickHitbox, Runnable onClick) {
+    public ActionButton(SceneVisual background, Map<SceneVisual, Integer> otherVisuals, Hitbox clickHitbox, Runnable onClick) {
         this.background = background;
         this.onClick = onClick;
-        this.otherVisuals = otherVisuals;
+        this.visualLayers = new LayerMap<>(otherVisuals);
+        this.visualLayers.add(background, 0);
         this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
     }
 
     @Override
-    public List<SceneVisual> getVisuals() {
-        ArrayList<SceneVisual> visuals = new ArrayList<>(otherVisuals.size() + 1);
-        visuals.add(background);
-        visuals.addAll(otherVisuals);
-        return visuals;
+    public LayerMap<SceneVisual> getVisualLayers() {
+        return visualLayers;
     }
 
     @Override
