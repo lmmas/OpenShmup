@@ -55,7 +55,7 @@ public class Menu implements EngineSystem {
         assert scene != null : "no scene attached to this menu";
         menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualLayers()
             .forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + widgetLayer + visualLayer)));
-        menuScreen.getOtherVisuals().forEachObject(visual -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visual.getSceneLayerIndex()));
+        menuScreen.getOtherVisuals().forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + visualLayer));
     }
 
     public void removeMenuScreen(MenuScreen menuScreen) {
@@ -78,7 +78,7 @@ public class Menu implements EngineSystem {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         displayedMenuScreens.getLast().addWidget(widget, layer);
         if (scene != null) {
-            widget.getVisualLayers().forEachObject((visual, visualLayer) -> scene.addVisual(visual, displayedMenuScreens.getLast().getBackgroundLayer() + visualLayer));
+            widget.getVisualLayers().forEachObject((visual, visualLayer) -> scene.addVisual(visual, displayedMenuScreens.getLast().getBackgroundLayer() + layer + visualLayer));
         }
     }
 
@@ -113,9 +113,11 @@ public class Menu implements EngineSystem {
 
     public void removeFromCurrentScreen(SceneVisual visual) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
-        displayedMenuScreens.getLast().removeVisual(visual);
+        MenuScreen currentScreen = displayedMenuScreens.getLast();
+        int visualLayer = currentScreen.getOtherVisuals().getLayerOfObject(visual);
+        currentScreen.removeVisual(visual);
         if (scene != null) {
-            scene.removeVisual(visual, displayedMenuScreens.getLast().getBackgroundLayer() + visual.getSceneLayerIndex());
+            scene.removeVisual(visual, currentScreen.getBackgroundLayer() + visualLayer);
         }
     }
 
