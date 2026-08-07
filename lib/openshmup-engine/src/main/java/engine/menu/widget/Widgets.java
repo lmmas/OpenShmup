@@ -21,32 +21,32 @@ final public class Widgets {
 
     private Widgets() {}
 
-    public static ActionButton TextButton(int layer, Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
+    public static ActionButton TextButton(Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
         return new ActionButton(
-            new RoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
-            Map.of(new TextDisplay(layer + 1, false, position, label, textStyle, TextAlignment.CENTER), 1),
+            new RoundedRectangle(0, size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
+            Map.of(new TextDisplay(0, false, position, label, textStyle, TextAlignment.CENTER), 1),
             new SimpleRectangleHitbox(position, size),
             onClick);
     }
 
-    public static ActionButton TextButton(int layer, Vec2D size, Vec2D position, RoundedRectangleStyle style, TextStyle textStyle, String label, Runnable onClick) {
-        return TextButton(layer, size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, textStyle, onClick);
+    public static ActionButton TextButton(Vec2D size, Vec2D position, RoundedRectangleStyle style, TextStyle textStyle, String label, Runnable onClick) {
+        return TextButton(size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, textStyle, onClick);
     }
 
-    public static SelectorButtons StandardSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+    public static SelectorButtons StandardSelectorButtons(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         assert labels.size() == buttonCount : "Incorrect label count";
         List<SceneVisual> buttonBackgrounds = new ArrayList<>(buttonCount);
         List<Map<SceneVisual, Integer>> buttonOtherVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
-            RoundedRectangle rectangle = new RoundedRectangle(layer, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
+            RoundedRectangle rectangle = new RoundedRectangle(0, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
             if (startingValue != null && i == startingValue) {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonBackgrounds.add(rectangle);
             buttonOtherVisuals.add(Map.of(
-                new TextDisplay(layer + 1, false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
+                new TextDisplay(0, false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
                 , 1));
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }

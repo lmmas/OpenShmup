@@ -177,7 +177,7 @@ final public class EditionDataFields implements EditionDataFieldNode {
                             selectedListIndex = fieldsListIndex;
                         }
                     };
-                    Widget openListButton = Widgets.TextButton(fieldLayer, openListButtonSize, fieldPosition.add(fieldOffset), Style.editionSelectorUnselected, Style.Text.menuTextStyle, "Open", onClick);
+                    Widget openListButton = Widgets.TextButton(openListButtonSize, fieldPosition.add(fieldOffset), Style.editionSelectorUnselected, Style.Text.menuTextStyle, "Open", onClick);
                     elementGroup.addWidget(openListButton, fieldLayer);
                     childrenNodeMap.put(listAttribute, listFields);
                 }

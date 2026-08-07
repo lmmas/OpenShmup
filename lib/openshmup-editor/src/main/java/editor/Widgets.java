@@ -46,12 +46,12 @@ final public class Widgets {
         return new TextField(layer + 1, size, position, menuTextStyle, Map.of(roundedRectangle, 0), startingText);
     }
 
-    public static SelectorButtons EditorSelector(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
-        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, menuButtonLabelStyle, labels, onChange, startingValue);
+    public static SelectorButtons EditorSelector(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+        return engine.menu.widget.Widgets.StandardSelectorButtons(buttonCount, size, startPosition, stride, menuButtonStyle1, menuButtonStyle3, menuButtonLabelStyle, labels, onChange, startingValue);
     }
 
-    public static SelectorButtons TypeSelectorButtons(int layer, int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
-        return engine.menu.widget.Widgets.StandardSelectorButtons(layer, buttonCount, size, startPosition, stride, editionSelectorSelected, editionSelectorUnselected, menuButtonLabelStyle, labels, onChange, startingValue);
+    public static SelectorButtons TypeSelectorButtons(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+        return engine.menu.widget.Widgets.StandardSelectorButtons(buttonCount, size, startPosition, stride, editionSelectorSelected, editionSelectorUnselected, menuButtonLabelStyle, labels, onChange, startingValue);
     }
 
 }

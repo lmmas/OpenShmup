@@ -103,7 +103,7 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
         Vec2D fieldPosition = startPosition.add(200f, 0f);
         Vec2D selectorButtonsSize = new Vec2D(200f, buttonSize.y);
         Vec2D selectorButtonsStride = new Vec2D(220f, 0.0f);
-        this.selectorButtons = Widgets.TypeSelectorButtons(2, dataList.size(), selectorButtonsSize, fieldPosition, selectorButtonsStride, typeLabels, onChange, selectedValue);
+        this.selectorButtons = Widgets.TypeSelectorButtons(dataList.size(), selectorButtonsSize, fieldPosition, selectorButtonsStride, typeLabels, onChange, selectedValue);
         this.selectorButtons.setSelectedValue(selectedValue);
     }
 
