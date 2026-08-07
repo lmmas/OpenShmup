@@ -67,7 +67,7 @@ final public class LayerMap<T> {
 
     public int getLayerOfObject(T object) {
         for (var entry : map.entrySet()) {
-            if (entry.getValue() == object) {
+            if (entry.getValue().contains(object)) {
                 return entry.getKey();
             }
         }

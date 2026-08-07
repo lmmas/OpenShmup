@@ -57,6 +57,7 @@ public class Menu implements EngineSystem {
 
     public void removeMenuScreen(MenuScreen menuScreen) {
         assert menuScreen.isOpen() : "menu screen not open";
+        assert displayedMenuScreens.contains(menuScreen) : "menu screen not found";
         if (scene != null) {
             menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualLayers()
                 .forEachObject((visual, visualLayer) -> scene.removeVisual(visual, menuScreen.getBackgroundLayer() + widgetLayer + visualLayer)));
