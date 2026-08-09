@@ -23,8 +23,8 @@ final public class Widgets {
 
     public static ActionButton TextButton(Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
         return new ActionButton(
-            new RoundedRectangle(0, size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
-            Map.of(new TextDisplay(0, false, position, label, textStyle, TextAlignment.CENTER), 1),
+            new RoundedRectangle(size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
+            Map.of(new TextDisplay(false, position, label, textStyle, TextAlignment.CENTER), 1),
             new SimpleRectangleHitbox(position, size),
             onClick);
     }
@@ -40,13 +40,13 @@ final public class Widgets {
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
-            RoundedRectangle rectangle = new RoundedRectangle(0, size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
+            RoundedRectangle rectangle = new RoundedRectangle(size, buttonPosition, unselectedStyle.roundingRadius(), unselectedStyle.borderWidth(), unselectedStyle.rectangleColor(), unselectedStyle.borderColor());
             if (startingValue != null && i == startingValue) {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonBackgrounds.add(rectangle);
             buttonOtherVisuals.add(Map.of(
-                new TextDisplay(0, false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
+                new TextDisplay(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
                 , 1));
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }

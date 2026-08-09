@@ -14,15 +14,15 @@ final public class ScreenFilter extends SceneVisual {
 
     final private RGBAValue originalColor;
 
-    public ScreenFilter(int layer, RGBAValue color) {
-        super(layer, new ArrayList<>(1), List.of(0));
+    public ScreenFilter(RGBAValue color) {
+        super(new ArrayList<>(1), List.of(0));
         this.colorRectangleGraphic = new ColorRectangleGraphic(Engine.getNativeResolution().scalar(1.0f), Engine.getNativeResolution().scalar(0.5f), color);
         graphicsList.add(colorRectangleGraphic);
         this.originalColor = color;
     }
 
     public ScreenFilter(ScreenFilter screenFilter) {
-        super(screenFilter.sceneLayerIndex, new ArrayList<>(1), List.of(0));
+        super(new ArrayList<>(1), List.of(0));
         this.colorRectangleGraphic = new ColorRectangleGraphic(screenFilter.colorRectangleGraphic);
         graphicsList.add(colorRectangleGraphic);
         this.originalColor = new RGBAValue(screenFilter.originalColor);

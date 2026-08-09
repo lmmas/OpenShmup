@@ -23,7 +23,7 @@ final public class GameMenus {
         ActionButton blueButton = Widgets.TextButton(buttonSize, new Vec2D(500f, 500f), 5f, 1f, buttonColor, RGBAValue.SOLID_BLACK, "Restart Game", buttonTextStyle, MenuActions.reloadGame);
         pauseMenu.addWidget(blueButton, 1);
 
-        pauseMenu.addVisual(new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.7f)), 0);
+        pauseMenu.addVisual(new ScreenFilter(new RGBAValue(0.0f, 0.0f, 0.0f, 0.7f)), 0);
         return pauseMenu;
     }
 }

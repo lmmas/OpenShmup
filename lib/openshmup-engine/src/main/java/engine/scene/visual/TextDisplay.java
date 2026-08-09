@@ -39,8 +39,8 @@ final public class TextDisplay extends SceneVisual {
 
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(int layer, Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
-        super(layer, new ArrayList<>(displayedString.length()), new ArrayList<>(displayedString.length()));
+    public TextDisplay(Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
+        super(new ArrayList<>(displayedString.length()), new ArrayList<>(displayedString.length()));
         this.position = new Vec2D(position);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
@@ -53,8 +53,8 @@ final public class TextDisplay extends SceneVisual {
         updateText();
     }
 
-    public TextDisplay(int layer, boolean dynamicText, Vec2D position, String displayedString, TextStyle style, TextAlignment alignment) {
-        this(layer, assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), position, displayedString, style.textColor(), alignment);
+    public TextDisplay(boolean dynamicText, Vec2D position, String displayedString, TextStyle style, TextAlignment alignment) {
+        this(assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), position, displayedString, style.textColor(), alignment);
     }
 
     private void updateText() {
@@ -133,7 +133,7 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(sceneLayerIndex, font, dynamicText, textHeight, position, displayedString, textColor, alignment);
+        return new TextDisplay(font, dynamicText, textHeight, position, displayedString, textColor, alignment);
     }
 
     @Override

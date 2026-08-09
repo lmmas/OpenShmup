@@ -27,8 +27,8 @@ final public class Animation extends SceneVisual {
 
     private TimeReference timeReference;
 
-    public Animation(int layer, Texture animationTexture, SpritesheetInfo info, double framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
-        super(layer, new ArrayList<>(1), List.of(0));
+    public Animation(Texture animationTexture, SpritesheetInfo info, double framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
+        super(new ArrayList<>(1), List.of(0));
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
@@ -46,7 +46,7 @@ final public class Animation extends SceneVisual {
     }
 
     public Animation(Animation animation) {
-        super(animation.sceneLayerIndex, new ArrayList<>(1), List.of(0));
+        super(new ArrayList<>(1), List.of(0));
         this.imageGraphic = new ImageGraphic(animation.imageGraphic);
         this.graphicsList.add(imageGraphic);
         this.info = animation.info;

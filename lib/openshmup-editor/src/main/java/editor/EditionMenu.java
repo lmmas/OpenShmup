@@ -47,10 +47,10 @@ final public class EditionMenu {
         Menu menu = new Menu();
         MenuScreen mainScreen = new MenuScreen(0);
 
-        SceneVisual menuBackground = new ScreenFilter(0, menuBackgroundColor);
+        SceneVisual menuBackground = new ScreenFilter(menuBackgroundColor);
         mainScreen.addVisual(menuBackground, 0);
 
-        TextDisplay screenTitle = new TextDisplay(1, false, new Vec2D((float) Engine.getNativeWidth() / 2, 1020f), "Edit Game", Text.menuScreenTitleStyle, TextAlignment.CENTER);
+        TextDisplay screenTitle = new TextDisplay(false, new Vec2D((float) Engine.getNativeWidth() / 2, 1020f), "Edit Game", Text.menuScreenTitleStyle, TextAlignment.CENTER);
         mainScreen.addVisual(screenTitle, 1);
         Runnable returnToMainMenu = () -> {
             Engine.switchCurrentScene(new Scene());
@@ -145,9 +145,9 @@ final public class EditionMenu {
         EditionData editionData = node.getEditionData();
         assert editionData.getCategory() == EditionData.Category.VISUAL || editionData.getCategory() == EditionData.Category.TRAJECTORY || editionData.getCategory() == EditionData.Category.ENTITY || editionData.getCategory() == EditionData.Category.SPAWN_INFO || editionData.getType() == EditionData.Types.shot || editionData.getCategory() == EditionData.Category.CONFIG : "Incorrect editionData type: " + editionData.getType().name();
         MenuScreen editPanel = new MenuScreen(layer);
-        SceneVisual backgroundColor = new ScreenFilter(0, new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
+        SceneVisual backgroundColor = new ScreenFilter(new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f));
         editPanel.addVisual(backgroundColor, 0);
-        SceneVisual backgroundRectangle = new RoundedRectangle(1, new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
+        SceneVisual backgroundRectangle = new RoundedRectangle(new Vec2D(1800f, 950f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
         editPanel.addVisual(backgroundRectangle, 1);
 
         String panelTitleString = switch (editionData.getCategory()) {
@@ -161,7 +161,7 @@ final public class EditionMenu {
             };
             default -> "";
         };
-        TextDisplay panelTitle = new TextDisplay(2, false, new Vec2D((float) Engine.getNativeWidth() / 2, 950f), panelTitleString, Text.menuButtonLabelStyle, TextAlignment.CENTER);
+        TextDisplay panelTitle = new TextDisplay(false, new Vec2D((float) Engine.getNativeWidth() / 2, 950f), panelTitleString, Text.menuButtonLabelStyle, TextAlignment.CENTER);
         editPanel.addVisual(panelTitle, 2);
 
         node.setMenu(menu);

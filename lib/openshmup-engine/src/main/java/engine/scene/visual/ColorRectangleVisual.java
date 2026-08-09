@@ -13,8 +13,8 @@ final public class ColorRectangleVisual extends SceneVisual {
 
     final private RGBAValue originalColor;
 
-    public ColorRectangleVisual(int layer, Vec2D size, Vec2D position, RGBAValue color) {
-        super(layer, new ArrayList<>(1), List.of(0));
+    public ColorRectangleVisual(Vec2D size, Vec2D position, RGBAValue color) {
+        super(new ArrayList<>(1), List.of(0));
         this.colorRectangleGraphic = new ColorRectangleGraphic(size, position, color);
         graphicsList.add(colorRectangleGraphic);
         this.originalColor = color;
@@ -22,7 +22,7 @@ final public class ColorRectangleVisual extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new ColorRectangleVisual(this.sceneLayerIndex, colorRectangleGraphic.getScale(), colorRectangleGraphic.getPosition(), colorRectangleGraphic.getColor());
+        return new ColorRectangleVisual(colorRectangleGraphic.getScale(), colorRectangleGraphic.getPosition(), colorRectangleGraphic.getColor());
     }
 
     @Override

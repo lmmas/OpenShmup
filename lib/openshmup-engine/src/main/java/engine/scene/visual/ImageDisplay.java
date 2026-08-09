@@ -12,14 +12,14 @@ final public class ImageDisplay extends SceneVisual {
 
     ImageGraphic imageGraphic;
 
-    public ImageDisplay(int layer, ImageGraphic imageGraphic) {
-        super(layer, new ArrayList<>(1), List.of(0));
+    public ImageDisplay(ImageGraphic imageGraphic) {
+        super(new ArrayList<>(1), List.of(0));
         this.imageGraphic = new ImageGraphic(imageGraphic);
         graphicsList.add(imageGraphic);
     }
 
-    public ImageDisplay(int layer, Texture texture, Vec2D size, Vec2D position) {
-        super(layer, new ArrayList<>(1), List.of(0));
+    public ImageDisplay(Texture texture, Vec2D size, Vec2D position) {
+        super(new ArrayList<>(1), List.of(0));
         this.imageGraphic = new ImageGraphic(texture, false,
             size,
             position,
@@ -31,7 +31,7 @@ final public class ImageDisplay extends SceneVisual {
     }
     @Override
     public SceneVisual copy() {
-        return new ImageDisplay(this.sceneLayerIndex, imageGraphic);
+        return new ImageDisplay(imageGraphic);
     }
     @Override
     public void updateGraphicsColor() {

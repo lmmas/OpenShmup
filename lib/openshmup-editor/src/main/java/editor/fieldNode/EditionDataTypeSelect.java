@@ -99,7 +99,7 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
             }
         };
         this.menu = null;
-        this.typeSelectText = new TextDisplay(2, false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+        this.typeSelectText = new TextDisplay(false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
         Vec2D fieldPosition = startPosition.add(200f, 0f);
         Vec2D selectorButtonsSize = new Vec2D(200f, buttonSize.y);
         Vec2D selectorButtonsStride = new Vec2D(220f, 0.0f);

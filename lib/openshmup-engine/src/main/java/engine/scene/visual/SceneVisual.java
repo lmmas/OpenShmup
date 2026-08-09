@@ -5,7 +5,6 @@ import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
 import lombok.Getter;
-import lombok.Setter;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -18,8 +17,6 @@ abstract public class SceneVisual {
 
     private boolean reloadGraphicsFlag;
 
-    @Setter
-    protected int sceneLayerIndex;
     @Getter
     final
     protected List<Graphic<?>> graphicsList;
@@ -34,10 +31,9 @@ abstract public class SceneVisual {
 
     protected RGBAValue addedColor;
 
-    public SceneVisual(int layer, List<Graphic<?>> graphicsList, List<Integer> graphicalSubLayers) {
+    public SceneVisual(List<Graphic<?>> graphicsList, List<Integer> graphicalSubLayers) {
         this.visualShouldBeRemovedFlag = false;
         this.reloadGraphicsFlag = false;
-        this.sceneLayerIndex = layer;
         this.graphicsList = graphicsList;
         this.graphicalSubLayers = graphicalSubLayers;
         this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);

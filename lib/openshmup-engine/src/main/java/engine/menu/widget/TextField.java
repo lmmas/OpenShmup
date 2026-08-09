@@ -30,7 +30,7 @@ final public class TextField implements Widget {
         this.stringBuffer = new StringBuffer(startingText);
         float textStartMargin = 6f;
         Vec2D textPosition = new Vec2D(position.x - (size.x / 2) + textStartMargin, position.y);
-        this.textInputDisplay = new TextDisplay(textLayer, true, textPosition, startingText, style, TextAlignment.LEFT);
+        this.textInputDisplay = new TextDisplay(true, textPosition, startingText, style, TextAlignment.LEFT);
         this.visualLayers = new LayerMap<>(otherVisuals);
         this.visualLayers.add(textInputDisplay, textLayer);
         Hitbox clickHitbox = new SimpleRectangleHitbox(position, size);

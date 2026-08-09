@@ -31,8 +31,8 @@ final public class ScrollingImage extends SceneVisual {
 
     final private TimeReference timeReference;
 
-    public ScrollingImage(Texture texture, int layer, Vec2D size, float speed, boolean horizontalScrolling, TimeReference timeReference) {
-        super(layer, new ArrayList<>(2), List.of(0, 0));
+    public ScrollingImage(Texture texture, Vec2D size, float speed, boolean horizontalScrolling, TimeReference timeReference) {
+        super(new ArrayList<>(2), List.of(0, 0));
         this.size = new Vec2D(size);
         this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
         this.position2 = new Vec2D(0.0f, 0.0f);
@@ -59,7 +59,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     public ScrollingImage(ScrollingImage scrollingImage) {
-        super(scrollingImage.sceneLayerIndex, new ArrayList<>(2), List.of(0, 0));
+        super(new ArrayList<>(2), List.of(0, 0));
         this.imageGraphic1 = new ImageGraphic(scrollingImage.imageGraphic1);
         graphicsList.add(imageGraphic1);
         this.position1 = new Vec2D(scrollingImage.position1);

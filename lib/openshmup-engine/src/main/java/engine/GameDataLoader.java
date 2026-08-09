@@ -216,7 +216,7 @@ final public class GameDataLoader {
             boolean horizontalScrolling = ((BooleanAttribute) data.get(Keys.Visual.ScrollingImage.horizontalScrolling)).getValue();
             float speed = ((FloatAttribute) data.get(Keys.Visual.ScrollingImage.speed)).getValue();
 
-            return new ScrollingImage(texture, layer, size, speed, horizontalScrolling, TimeReference.LEVEL);
+            return new ScrollingImage(texture, size, speed, horizontalScrolling, TimeReference.LEVEL);
         }
 
         public static SceneVisual animationFactory(EditionData data, Path textureFolderPath) {
@@ -244,7 +244,7 @@ final public class GameDataLoader {
                 new Vec2D((float) startingPosition.x / animationResolution.x, (float) startingPosition.y / animationResolution.y),
                 new Vec2D((float) stride.x / animationResolution.x, (float) stride.y / animationResolution.y));
 
-            return new Animation(layer, texture, spritesheetInfo, framePeriodSeconds, looping, size, TimeReference.LEVEL);
+            return new Animation(texture, spritesheetInfo, framePeriodSeconds, looping, size, TimeReference.LEVEL);
         }
     }
 

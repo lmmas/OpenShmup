@@ -25,14 +25,14 @@ final public class Widgets {
 
     final private static Path checkboxTexturePath = Paths.get("lib/openshmup-editor/src/main/resources/textures/checkbox.png");
 
-    public static BooleanField Checkbox(int layer, Vec2D position, boolean startingState) {
+    public static BooleanField Checkbox(Vec2D position, boolean startingState) {
         Vec2D size = new Vec2D(32.0f, 32.0f);
         float boxRoundingRadius = 3.0f;
         float boxBorderWidth = 1.5f;
         RGBAValue boxColor = RGBAValue.SOLID_WHITE;
         RGBAValue boxBorderColor = RGBAValue.SOLID_BLACK;
-        RoundedRectangle box = new RoundedRectangle(layer, size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
-        ImageDisplay checkMark = new ImageDisplay(layer + 1, assetManager.getTexture(checkboxTexturePath), size, position);
+        RoundedRectangle box = new RoundedRectangle(size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
+        ImageDisplay checkMark = new ImageDisplay(assetManager.getTexture(checkboxTexturePath), size, position);
         return new BooleanField(size, position, checkMark, Map.of(box, 0), startingState);
     }
 
@@ -42,7 +42,7 @@ final public class Widgets {
         float borderWidth = 2f;
         RGBAValue rectangleColor = RGBAValue.SOLID_WHITE;
         RGBAValue borderColor = RGBAValue.SOLID_BLACK;
-        RoundedRectangle roundedRectangle = new RoundedRectangle(layer, size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
+        RoundedRectangle roundedRectangle = new RoundedRectangle(size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
         return new TextField(layer + 1, size, position, menuTextStyle, Map.of(roundedRectangle, 0), startingText);
     }
 
