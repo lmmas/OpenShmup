@@ -9,6 +9,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import types.LayerMap;
 import types.RGBAValue;
 
 import java.math.RoundingMode;
@@ -28,7 +29,9 @@ public class Scene implements EngineSystem {
 
     protected double lastDrawTime;
 
-    final protected TreeMap<Integer, SceneLayer> layers;
+    final protected LayerMap<SceneVisual> layers;
+
+    final protected TreeMap<Integer, Integer> layerWidths;
 
     final protected HashSet<SceneVisual> visualsToRemove;
 
@@ -40,7 +43,8 @@ public class Scene implements EngineSystem {
         this.timer = new Timer();
         this.sceneTime = 0.0d;
         this.lastDrawTime = 0.0d;
-        this.layers = new TreeMap<>();
+        this.layers = new LayerMap<>();
+        this.layerWidths = new TreeMap<>();
         this.visualsToRemove = new HashSet<>();
         this.sceneDebug = new SceneDebug();
         this.debugModeEnabled = false;
@@ -54,9 +58,8 @@ public class Scene implements EngineSystem {
     public void update() {
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
-        for (int sceneLayerIndex : layers.keySet()) {
-            SceneLayer layer = layers.get(sceneLayerIndex);
-            for (SceneVisual visual : layer.getVisuals()) {
+        layers.forEachLayer((sceneLayerIndex, visualList) -> {
+            for (SceneVisual visual : visualList) {
                 visual.update();
                 if (visual.getShouldBeRemoved()) {
                     visualsToRemove.add(visual);
@@ -72,7 +75,7 @@ public class Scene implements EngineSystem {
                     visual.setReloadGraphicsFlag(false);
                 }
             }
-        }
+        });
         for (var display : visualsToRemove) {
             removeVisual(display);
         }
@@ -89,21 +92,18 @@ public class Scene implements EngineSystem {
 
     final public void addVisual(SceneVisual visual, int sceneLayerIndex) {
         int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
-        SceneLayer sceneLayer = layers.get(sceneLayerIndex);
-        assert (sceneLayer == null) || !sceneLayer.getVisuals().contains(visual) : "visual already in layer";
+        var layerList = layers.getLayer(sceneLayerIndex);
+        assert (layerList == null) || !layerList.contains(visual) : "visual already in layer";
         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
 
         //determining how many graphical layers need to be inserted
         int graphicalLayersToInsertCount = 0;
         int sceneLayerGraphicalSubLayerCount = 0;
-        if (!layers.containsKey(sceneLayerIndex)) {
-            layers.put(sceneLayerIndex, new SceneLayer());
-            sceneLayer = layers.get(sceneLayerIndex);
+        if (layerList == null) {
             graphicalLayersToInsertCount = visualMaxGraphicalSubLayer + 1;
         }
         else {
-            assert sceneLayer != null;
-            sceneLayerGraphicalSubLayerCount = sceneLayer.getGraphicalSubLayerCount();
+            sceneLayerGraphicalSubLayerCount = layerWidths.get(sceneLayerIndex);
             if (visualMaxGraphicalSubLayer >= sceneLayerGraphicalSubLayerCount) {
                 graphicalLayersToInsertCount = visualMaxGraphicalSubLayer - sceneLayerGraphicalSubLayerCount + 1;
             }
@@ -122,9 +122,9 @@ public class Scene implements EngineSystem {
             graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
         }
 
-        sceneLayer.getVisuals().add(visual);
-        if (visualMaxGraphicalSubLayer >= sceneLayer.getGraphicalSubLayerCount()) {
-            sceneLayer.setGraphicalSubLayerCount(visualMaxGraphicalSubLayer + 1);
+        layers.add(visual, sceneLayerIndex);
+        if (visualMaxGraphicalSubLayer + 1 > sceneLayerGraphicalSubLayerCount) {
+            layerWidths.put(sceneLayerIndex, visualMaxGraphicalSubLayer + 1);
         }
         visual.init();
     }
@@ -135,18 +135,18 @@ public class Scene implements EngineSystem {
 
     private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
         int layerSum = 0;
-        for (var layerIndex : layers.keySet()) {
+        for (var layerIndex : layerWidths.keySet()) {
             if (layerIndex >= sceneLayerIndex) {
                 break;
             }
-            layerSum += layers.get(layerIndex).getGraphicalSubLayerCount();
+            layerSum += layerWidths.get(layerIndex);
         }
         return layerSum;
     }
 
     public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
-        assert layers.get(sceneLayerIndex).getVisuals().contains(visual) : "visual not found in layer";
-        layers.get(sceneLayerIndex).getVisuals().remove(visual);
+        assert layers.getLayer(sceneLayerIndex) != null && layers.getLayer(sceneLayerIndex).contains(visual) : "visual not found in layer";
+        layers.remove(visual, sceneLayerIndex);
         List<Graphic<?>> graphics = visual.getGraphicsList();
         for (var graphic : graphics) {
             graphic.remove();
