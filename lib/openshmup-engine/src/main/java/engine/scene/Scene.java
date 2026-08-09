@@ -9,6 +9,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import types.LayerEntry;
 import types.LayerMap;
 import types.RGBAValue;
 
@@ -33,7 +34,7 @@ public class Scene implements EngineSystem {
 
     final protected TreeMap<Integer, Integer> layerWidths;
 
-    final protected HashSet<SceneVisual> visualsToRemove;
+    final protected HashSet<LayerEntry<SceneVisual>> visualsToRemove;
 
     protected boolean debugModeEnabled;
 
@@ -62,7 +63,7 @@ public class Scene implements EngineSystem {
             for (SceneVisual visual : visualList) {
                 visual.update();
                 if (visual.getShouldBeRemoved()) {
-                    visualsToRemove.add(visual);
+                    visualsToRemove.add(new LayerEntry<>(visual, sceneLayerIndex));
                 }
                 if (visual.getReloadGraphicsFlag()) {
                     int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
@@ -76,8 +77,8 @@ public class Scene implements EngineSystem {
                 }
             }
         });
-        for (var display : visualsToRemove) {
-            removeVisual(display);
+        for (var entry : visualsToRemove) {
+            removeVisual(entry.object(), entry.layer());
         }
         visualsToRemove.clear();
         sceneDebug.update();
@@ -147,10 +148,6 @@ public class Scene implements EngineSystem {
         for (var graphic : graphics) {
             graphic.remove();
         }
-    }
-
-    public void removeVisual(SceneVisual visual) {
-        removeVisual(visual, visual.getSceneLayerIndex());
     }
 
     public void toggleDebug() {

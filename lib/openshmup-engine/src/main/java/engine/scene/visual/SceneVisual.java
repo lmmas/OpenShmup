@@ -17,7 +17,7 @@ abstract public class SceneVisual {
     private boolean visualShouldBeRemovedFlag;
 
     private boolean reloadGraphicsFlag;
-    @Getter
+
     @Setter
     protected int sceneLayerIndex;
     @Getter
