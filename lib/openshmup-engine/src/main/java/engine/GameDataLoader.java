@@ -144,7 +144,7 @@ final public class GameDataLoader {
             var visualFactory = visualFactories.get((Types.Visual) visualEditionData.getType());
             assert visualFactory != null : "visual factory not found: " + visualEditionData.getType().name();
             SceneVisual visual = visualFactory.build(visualEditionData, gameEditionData.paths.gameTextureFolder);
-            gameData.addVisual(EditionData.getVisualId(visualEditionData), visual);
+            gameData.addVisual(EditionData.getVisualId(visualEditionData), visual, EditionData.getVisualLayer(visualEditionData));
         }
 
         for (EditionData trajectoryEditionData : gameEditionData.getTrajectoryEditionDataList()) {
@@ -331,6 +331,7 @@ final public class GameDataLoader {
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
             int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Ship.spriteVisualId)).getValue();
             SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
+            int spriteLayer = gameData.getVisualLayer(spriteVisualId);
             Trajectory trajectory;
             int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Ship.defaultTrajectoryId)).getValue();
             trajectory = gameData.getTrajectory(defaultTrajectoryId);
@@ -340,7 +341,7 @@ final public class GameDataLoader {
             List<ExtraComponent> shotList = shotDataList.stream().map(shotData -> convertShot(shotData, (id == 0))).toList();
             extraComponents.addAll(shotList);
             int hp = ((IntegerAttribute) data.get(Keys.Entity.Ship.hp)).getValue();
-            return new Ship(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents, hp);
+            return new Ship(Vec2D.ZERO, size, 0.0f, evil, id, sprite, spriteLayer, trajectory, hitbox, deathSpawn, extraComponents, hp);
         }
 
         public Entity projectileFactory(EditionData data, GameDataManager gameData) {
@@ -354,6 +355,7 @@ final public class GameDataLoader {
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
             int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.spriteVisualId)).getValue();
             SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
+            int spriteLayer = gameData.getVisualLayer(spriteVisualId);
             Trajectory trajectory;
             int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.defaultTrajectoryId)).getValue();
             trajectory = gameData.getTrajectory(defaultTrajectoryId);
@@ -362,7 +364,7 @@ final public class GameDataLoader {
             List<EditionData> shotDataList = ((ListAttribute) data.get(Keys.Entity.Projectile.shots)).getDataList();
             List<ExtraComponent> shotList = shotDataList.stream().map(shotData -> convertShot(shotData, (id == 0))).toList();
             extraComponents.addAll(shotList);
-            return new Projectile(Vec2D.ZERO, size, 0.0f, evil, id, sprite, trajectory, hitbox, deathSpawn, extraComponents);
+            return new Projectile(Vec2D.ZERO, size, 0.0f, evil, id, sprite, spriteLayer, trajectory, hitbox, deathSpawn, extraComponents);
         }
     }
 

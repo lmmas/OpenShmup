@@ -38,6 +38,8 @@ abstract public class Entity {
     @Getter
     protected SceneVisual sprite;
     @Getter
+    private int spriteLayer;
+    @Getter
     protected Hitbox hitbox;
     @Setter
     protected Trajectory trajectory;
@@ -48,7 +50,7 @@ abstract public class Entity {
 
     protected Level level;
 
-    public Entity(EntityType type, Vec2D trajectoryReferencePos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(EntityType type, Vec2D trajectoryReferencePos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, int spriteLayer, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.type = type;
         this.level = null;
         this.trajectoryReferencePosition = trajectoryReferencePos;
@@ -57,6 +59,7 @@ abstract public class Entity {
         this.hitbox = hitbox;
         this.orientationRadians = orientationRadians;
         this.sprite = sprite;
+        this.spriteLayer = spriteLayer;
         this.trajectory = trajectory.copyIfNotReusable();
         this.evil = evil;
         this.invincible = false;

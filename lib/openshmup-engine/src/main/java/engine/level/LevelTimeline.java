@@ -69,7 +69,7 @@ final public class LevelTimeline {
         HashSet<Spawnable> allSpawnables = getAllSpawnables();
         for (var spawnable : allSpawnables) {
             if (spawnable instanceof DisplaySpawnInfo displaySpawnInfo) {
-                List<Texture> textures = gameDataManager.getTexturesOfDisplay(displaySpawnInfo.id());
+                List<Texture> textures = gameDataManager.getTexturesOfVisual(displaySpawnInfo.id());
                 allTextures.addAll(textures);
             }
             if (spawnable instanceof EntitySpawnInfo entitySpawnInfo) {

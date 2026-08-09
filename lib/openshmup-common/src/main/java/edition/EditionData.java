@@ -116,6 +116,15 @@ final public class EditionData implements Serializable {
         return idAttribute.getValue();
     }
 
+    public static int getVisualLayer(EditionData data) {
+        data.checkForCategory(Category.VISUAL);
+        IntegerAttribute idAttribute = (IntegerAttribute) switch ((Types.Visual) data.getType()) {
+            case scrollingImage -> data.get(Keys.Visual.ScrollingImage.layer);
+            case animation -> data.get(Keys.Visual.Animation.layer);
+        };
+        return idAttribute.getValue();
+    }
+
     public static int getTrajectoryId(EditionData data) {
         data.checkForCategory(Category.TRAJECTORY);
         IntegerAttribute idAttribute = (IntegerAttribute) switch ((Types.Trajectory) data.getType()) {

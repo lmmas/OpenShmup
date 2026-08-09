@@ -198,8 +198,9 @@ final public class Level implements EngineSystem {
     private void spawnDisplays() {
         for (var displaySpawn : displaysToSpawn) {
             SceneVisual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
+            int displayLayer = gameDataManager.getVisualLayer(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position());
-            scene.addVisual(newDisplay);
+            scene.addVisual(newDisplay, displayLayer);
         }
         displaysToSpawn.clear();
     }
@@ -209,7 +210,7 @@ final public class Level implements EngineSystem {
     }
 
     public void addEntity(Entity entity) {
-        scene.addVisual(entity.getSprite());
+        scene.addVisual(entity.getSprite(), entity.getSpriteLayer());
 
         for (ExtraComponent component : entity.getExtraComponents()) {
             component.init();

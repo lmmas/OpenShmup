@@ -129,10 +129,6 @@ public class Scene implements EngineSystem {
         visual.init();
     }
 
-    public void addVisual(SceneVisual visual) {
-        addVisual(visual, visual.getSceneLayerIndex());
-    }
-
     private Integer getSceneLayerGraphicalIndex(int sceneLayerIndex) {
         int layerSum = 0;
         for (var layerIndex : layerWidths.keySet()) {

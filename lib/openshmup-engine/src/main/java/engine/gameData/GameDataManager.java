@@ -9,6 +9,7 @@ import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;
 import lombok.Getter;
 import path.GamePaths;
+import types.LayerEntry;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,16 +24,12 @@ final public class GameDataManager {
     final public GamePaths paths;
 
     public GameConfig config;
-
     @Getter
-    final private HashMap<Integer, SceneVisual> visuals;
-
+    final private HashMap<Integer, LayerEntry<SceneVisual>> visuals;
     @Getter
     final private HashMap<Integer, Trajectory> trajectories;
-
     @Getter
     final private HashMap<Integer, Entity> entities;
-
     @Getter
     final private ArrayList<LevelTimeline> timelines;
 
@@ -46,16 +43,20 @@ final public class GameDataManager {
         this.timelines = new ArrayList<>();
     }
 
-    public void addVisual(int id, SceneVisual visual) {
-        visuals.put(id, visual);
+    public void addVisual(int id, SceneVisual visual, int layer) {
+        visuals.put(id, new LayerEntry<>(visual, layer));
     }
 
     public SceneVisual getGameVisual(int id) {
-        return visuals.get(id).copy();
+        return visuals.get(id).object().copy();
     }
 
-    public List<Texture> getTexturesOfDisplay(int id) {
-        return visuals.get(id).getTextures();
+    public int getVisualLayer(int id) {
+        return visuals.get(id).layer();
+    }
+
+    public List<Texture> getTexturesOfVisual(int id) {
+        return visuals.get(id).object().getTextures();
     }
 
     public void addCustomEntity(int id, Entity entity) {

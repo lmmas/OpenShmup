@@ -27,7 +27,7 @@ public class TestTextDisplay {
             myFont.getBitmap().loadInGPU();
             String displayedString = "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!";
             TextDisplay myTextDisplay = new TextDisplay(0, myFont, false, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f), TextAlignment.CENTER);
-            testScene.addVisual(myTextDisplay);
+            testScene.addVisual(myTextDisplay, 0);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
