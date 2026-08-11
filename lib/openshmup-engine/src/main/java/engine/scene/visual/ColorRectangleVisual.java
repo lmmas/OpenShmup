@@ -4,9 +4,6 @@ import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
 final public class ColorRectangleVisual extends SceneVisual {
 
     final private ColorRectangleGraphic colorRectangleGraphic;
@@ -14,9 +11,9 @@ final public class ColorRectangleVisual extends SceneVisual {
     final private RGBAValue originalColor;
 
     public ColorRectangleVisual(Vec2D size, Vec2D position, RGBAValue color) {
-        super(new ArrayList<>(1), List.of(0));
+        super();
         this.colorRectangleGraphic = new ColorRectangleGraphic(size, position, color);
-        graphicsList.add(colorRectangleGraphic);
+        getGraphicalLayers().add(colorRectangleGraphic, 0);
         this.originalColor = color;
     }
 

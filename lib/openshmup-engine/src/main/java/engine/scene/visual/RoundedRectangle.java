@@ -6,9 +6,6 @@ import lombok.Getter;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
 final public class RoundedRectangle extends SceneVisual {
 
     final private RoundedColorRectangle rectangle;
@@ -20,11 +17,11 @@ final public class RoundedRectangle extends SceneVisual {
     private RGBAValue borderBaseColor;
 
     public RoundedRectangle(Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor) {
-        super(new ArrayList<>(2), List.of(0, 1));
+        super();
         this.rectangle = new RoundedColorRectangle(size, position, roundingRadius, rectangleColor);
-        graphicsList.add(rectangle);
+        getGraphicalLayers().add(rectangle, 0);
         this.border = new RoundedRectangleBorder(size, position, roundingRadius, borderWidth, borderColor);
-        graphicsList.add(border);
+        getGraphicalLayers().add(border, 1);
         this.rectangleBaseColor = rectangleColor;
         this.borderBaseColor = borderColor;
     }

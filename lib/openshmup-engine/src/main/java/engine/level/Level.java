@@ -426,7 +426,7 @@ final public class Level implements EngineSystem {
             for (Entity entity : goodEntities) {
                 removeHitboxDebugDisplay(entity);
             }
-            levelTimeDisplay.getGraphicsList().forEach(Graphic::remove);
+            levelTimeDisplay.getGraphicalLayers().forEachObject(Graphic::remove);
         }
 
         public void toggle() {
@@ -446,7 +446,7 @@ final public class Level implements EngineSystem {
                 double levelTime = Game.getLevelTime();
                 levelTimeDisplay.setDisplayedString(df.format(levelTime) + " s");
                 levelTimeDisplay.update();
-                levelTimeDisplay.getGraphicsList().forEach(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
+                levelTimeDisplay.getGraphicalLayers().forEachObject(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
             }
         }
     }

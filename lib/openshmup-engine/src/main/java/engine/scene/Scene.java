@@ -16,7 +16,6 @@ import types.RGBAValue;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashSet;
-import java.util.List;
 import java.util.TreeMap;
 
 import static engine.GlobalVars.Paths.debugFont;
@@ -67,12 +66,8 @@ public class Scene implements EngineSystem {
                 }
                 if (visual.getReloadGraphicsFlag()) {
                     int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
-                    var graphicalLayers = visual.getGraphicalSubLayers();
-                    var graphics = visual.getGraphicsList();
-                    for (int i = 0; i < graphicalLayers.size(); i++) {
-                        Engine.getGraphicsManager().addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
-                    }
-
+                    var graphicalLayers = visual.getGraphicalLayers();
+                    graphicalLayers.forEachObject((graphic, graphicLayer) -> Engine.getGraphicsManager().addGraphic(graphic, sceneLayerGraphicalIndex + graphicLayer));
                     visual.setReloadGraphicsFlag(false);
                 }
             }
@@ -92,7 +87,8 @@ public class Scene implements EngineSystem {
 
 
     final public void addVisual(SceneVisual visual, int sceneLayerIndex) {
-        int visualMaxGraphicalSubLayer = visual.getMaxGraphicalSubLayer();
+        var graphicalLayers = visual.getGraphicalLayers();
+        int visualMaxGraphicalSubLayer = graphicalLayers.getMaxLayer();
         var layerList = layers.getLayer(sceneLayerIndex);
         assert (layerList == null) || !layerList.contains(visual) : "visual already in layer";
         int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
@@ -117,11 +113,8 @@ public class Scene implements EngineSystem {
         }
 
         //adding the graphics to the renderers
-        var graphicalLayers = visual.getGraphicalSubLayers();
-        var graphics = visual.getGraphicsList();
-        for (int i = 0; i < graphicalLayers.size(); i++) {
-            graphicsManager.addGraphic(graphics.get(i), sceneLayerGraphicalIndex + graphicalLayers.get(i));
-        }
+        graphicalLayers.forEachObject((graphic, graphicLayer) -> graphicsManager.addGraphic(graphic, sceneLayerGraphicalIndex + graphicLayer));
+
 
         layers.add(visual, sceneLayerIndex);
         if (visualMaxGraphicalSubLayer + 1 > sceneLayerGraphicalSubLayerCount) {
@@ -144,10 +137,7 @@ public class Scene implements EngineSystem {
     public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
         assert layers.getLayer(sceneLayerIndex) != null && layers.getLayer(sceneLayerIndex).contains(visual) : "visual not found in layer";
         layers.remove(visual, sceneLayerIndex);
-        List<Graphic<?>> graphics = visual.getGraphicsList();
-        for (var graphic : graphics) {
-            graphic.remove();
-        }
+        visual.getGraphicalLayers().forEachObject(Graphic::remove);
     }
 
     public void toggleDebug() {
@@ -167,7 +157,7 @@ public class Scene implements EngineSystem {
         }
 
         public void disable() {
-            fpsDisplay.getGraphicsList().forEach(Graphic::remove);
+            fpsDisplay.getGraphicalLayers().forEachObject(Graphic::remove);
         }
 
         public void toggle() {
@@ -186,7 +176,7 @@ public class Scene implements EngineSystem {
                 double fpsVal = 1 / (sceneTime - lastDrawTime);
                 fpsDisplay.setDisplayedString(df.format(fpsVal) + " FPS");
                 fpsDisplay.update();
-                fpsDisplay.getGraphicsList().forEach(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
+                fpsDisplay.getGraphicalLayers().forEachObject(graphic -> Engine.getGraphicsManager().addDebugGraphic(graphic));
             }
         }
     }

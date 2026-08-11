@@ -5,21 +5,18 @@ import engine.graphics.image.ImageGraphic;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
 final public class ImageDisplay extends SceneVisual {
 
     ImageGraphic imageGraphic;
 
     public ImageDisplay(ImageGraphic imageGraphic) {
-        super(new ArrayList<>(1), List.of(0));
+        super();
         this.imageGraphic = new ImageGraphic(imageGraphic);
-        graphicsList.add(imageGraphic);
+        getGraphicalLayers().add(imageGraphic, 0);
     }
 
     public ImageDisplay(Texture texture, Vec2D size, Vec2D position) {
-        super(new ArrayList<>(1), List.of(0));
+        super();
         this.imageGraphic = new ImageGraphic(texture, false,
             size,
             position,
@@ -27,7 +24,7 @@ final public class ImageDisplay extends SceneVisual {
             Vec2D.ZERO,
             RGBAValue.ONE,
             RGBAValue.ZERO);
-        graphicsList.add(imageGraphic);
+        this.getGraphicalLayers().add(imageGraphic, 0);
     }
     @Override
     public SceneVisual copy() {

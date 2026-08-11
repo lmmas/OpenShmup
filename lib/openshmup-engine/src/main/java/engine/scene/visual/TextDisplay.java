@@ -2,7 +2,6 @@ package engine.scene.visual;
 
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
-import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
@@ -40,7 +39,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
-        super(new ArrayList<>(displayedString.length()), new ArrayList<>(displayedString.length()));
+        super();
         this.position = new Vec2D(position);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
@@ -64,8 +63,7 @@ final public class TextDisplay extends SceneVisual {
             }
         }
         textLines.clear();
-        graphicsList.clear();
-        graphicalSubLayers.clear();
+        getGraphicalLayers().clear();
         textLines.add(new ArrayList<>());
         displayedString.codePoints().forEach(this::addCharacter);
         updateTextColor();
@@ -94,8 +92,7 @@ final public class TextDisplay extends SceneVisual {
         else {
             TextCharacter newCharacter = new TextCharacter(newCodepoint, font);
             textLines.getLast().add(newCharacter);
-            graphicsList.add(newCharacter.getImageGraphic());
-            graphicalSubLayers.add(0);
+            getGraphicalLayers().add(newCharacter.getImageGraphic(), 0);
         }
     }
 
@@ -157,11 +154,11 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public void updateGraphicsColor() {
-        for (Graphic<?> graphic : graphicsList) {
+        getGraphicalLayers().getLayer(0).forEach(graphic -> {
             ImageGraphic imageGraphic = (ImageGraphic) graphic;
             imageGraphic.setColorCoefs(colorCoefs);
             imageGraphic.setAddedColor(addedColor);
-        }
+        });
     }
 
     final public class TextCharacter {

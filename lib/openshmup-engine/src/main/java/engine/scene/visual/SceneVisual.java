@@ -5,6 +5,7 @@ import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
 import lombok.Getter;
+import types.LayerMap;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -16,14 +17,8 @@ abstract public class SceneVisual {
     private boolean visualShouldBeRemovedFlag;
 
     private boolean reloadGraphicsFlag;
-
     @Getter
-    final
-    protected List<Graphic<?>> graphicsList;
-
-    final protected List<Integer> graphicalSubLayers;
-
-    final private int maxGraphicalSubLayer;
+    final private LayerMap<Graphic<?>> graphicalLayers;
 
     final private List<ColorEffect> colorEffectList;
 
@@ -31,12 +26,10 @@ abstract public class SceneVisual {
 
     protected RGBAValue addedColor;
 
-    public SceneVisual(List<Graphic<?>> graphicsList, List<Integer> graphicalSubLayers) {
+    public SceneVisual() {
         this.visualShouldBeRemovedFlag = false;
         this.reloadGraphicsFlag = false;
-        this.graphicsList = graphicsList;
-        this.graphicalSubLayers = graphicalSubLayers;
-        this.maxGraphicalSubLayer = graphicalSubLayers.stream().mapToInt(n -> n).max().orElse(0);
+        this.graphicalLayers = new LayerMap<>();
         this.colorEffectList = new ArrayList<>();
         this.colorCoefs = RGBAValue.ONE;
         this.addedColor = RGBAValue.ZERO;
@@ -44,21 +37,13 @@ abstract public class SceneVisual {
 
     abstract public SceneVisual copy();
 
-    final public List<Integer> getGraphicalSubLayers() {
-        return graphicalSubLayers;
-    }
-
-    final public int getMaxGraphicalSubLayer() {
-        return maxGraphicalSubLayer;
-    }
-
     final public List<Texture> getTextures() {
         List<Texture> textures = new ArrayList<>();
-        for (var graphic : graphicsList) {
+        graphicalLayers.forEachObject(graphic -> {
             if (graphic instanceof ImageGraphic imageGraphic) {
                 textures.add(imageGraphic.getTexture());
             }
-        }
+        });
         return textures;
     }
 
@@ -79,11 +64,11 @@ abstract public class SceneVisual {
     }
 
     public void setScale(Vec2D scale) {
-        this.graphicsList.forEach(g -> g.setScale(scale));
+        this.graphicalLayers.forEachObject(g -> g.setScale(scale));
     }
 
     public void setPosition(Vec2D position) {
-        this.graphicsList.forEach(g -> g.setPosition(position));
+        this.graphicalLayers.forEachObject(g -> g.setPosition(position));
     }
 
     public void init() {

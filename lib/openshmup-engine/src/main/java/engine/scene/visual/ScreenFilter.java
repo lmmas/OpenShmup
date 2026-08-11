@@ -5,9 +5,6 @@ import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import types.RGBAValue;
 import types.Vec2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
 final public class ScreenFilter extends SceneVisual {
 
     final private ColorRectangleGraphic colorRectangleGraphic;
@@ -15,16 +12,16 @@ final public class ScreenFilter extends SceneVisual {
     final private RGBAValue originalColor;
 
     public ScreenFilter(RGBAValue color) {
-        super(new ArrayList<>(1), List.of(0));
+        super();
         this.colorRectangleGraphic = new ColorRectangleGraphic(Engine.getNativeResolution().scalar(1.0f), Engine.getNativeResolution().scalar(0.5f), color);
-        graphicsList.add(colorRectangleGraphic);
+        getGraphicalLayers().add(colorRectangleGraphic, 0);
         this.originalColor = color;
     }
 
     public ScreenFilter(ScreenFilter screenFilter) {
-        super(new ArrayList<>(1), List.of(0));
+        super();
         this.colorRectangleGraphic = new ColorRectangleGraphic(screenFilter.colorRectangleGraphic);
-        graphicsList.add(colorRectangleGraphic);
+        getGraphicalLayers().add(colorRectangleGraphic, 0);
         this.originalColor = new RGBAValue(screenFilter.originalColor);
     }
 
