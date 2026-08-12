@@ -9,7 +9,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import types.LayerMap;
+import layer.LayerMap;
 import types.Vec2D;
 
 import java.util.Map;

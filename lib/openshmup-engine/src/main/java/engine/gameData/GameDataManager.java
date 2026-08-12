@@ -7,9 +7,9 @@ import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
 import engine.scene.visual.SceneVisual;
+import layer.LayerEntry;
 import lombok.Getter;
 import path.GamePaths;
-import types.LayerEntry;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

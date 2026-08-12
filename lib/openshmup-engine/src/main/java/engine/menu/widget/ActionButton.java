@@ -5,8 +5,8 @@ import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
+import layer.LayerMap;
 import lombok.Getter;
-import types.LayerMap;
 
 import java.util.Map;
 

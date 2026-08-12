@@ -1,8 +1,8 @@
 package engine.scene.visual.style;
 
 import engine.scene.visual.SceneVisual;
+import layer.LayerMap;
 import lombok.Getter;
-import types.LayerMap;
 
 import java.util.Map;
 

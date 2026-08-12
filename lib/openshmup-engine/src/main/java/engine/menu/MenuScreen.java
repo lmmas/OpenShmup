@@ -2,9 +2,9 @@ package engine.menu;
 
 import engine.menu.widget.Widget;
 import engine.scene.visual.SceneVisual;
+import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
-import types.LayerMap;
 
 @Getter
 final public class MenuScreen {

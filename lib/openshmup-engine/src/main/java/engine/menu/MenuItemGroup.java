@@ -2,8 +2,8 @@ package engine.menu;
 
 import engine.menu.widget.Widget;
 import engine.scene.visual.SceneVisual;
+import layer.LayerMap;
 import lombok.Getter;
-import types.LayerMap;
 
 import java.util.Map;
 

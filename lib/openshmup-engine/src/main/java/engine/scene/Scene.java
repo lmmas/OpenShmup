@@ -9,8 +9,8 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
-import types.LayerEntry;
-import types.LayerMap;
+import layer.LayerEntry;
+import layer.LayerMap;
 import types.RGBAValue;
 
 import java.math.RoundingMode;

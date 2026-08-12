@@ -4,8 +4,8 @@ import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
+import layer.LayerMap;
 import lombok.Getter;
-import types.LayerMap;
 import types.RGBAValue;
 import types.Vec2D;
 

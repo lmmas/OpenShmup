@@ -7,7 +7,7 @@ import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.effects.ColorEffect;
-import types.LayerMap;
+import layer.LayerMap;
 import types.Vec2D;
 
 import java.util.Map;

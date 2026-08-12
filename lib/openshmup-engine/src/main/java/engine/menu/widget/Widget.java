@@ -1,7 +1,7 @@
 package engine.menu.widget;
 
 import engine.scene.visual.SceneVisual;
-import types.LayerMap;
+import layer.LayerMap;
 
 public interface Widget {
 

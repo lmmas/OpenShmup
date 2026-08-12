@@ -2,9 +2,9 @@ package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
+import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
-import types.LayerMap;
 
 import java.util.ArrayList;
 import java.util.List;
