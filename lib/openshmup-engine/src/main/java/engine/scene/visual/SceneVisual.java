@@ -18,7 +18,7 @@ abstract public class SceneVisual {
 
     private boolean reloadGraphicsFlag;
     @Getter
-    final private LayerMap<Graphic<?>> graphicalLayers;
+    final protected LayerMap<Graphic<?>> graphicalLayers;
 
     final private List<ColorEffect> colorEffectList;
 

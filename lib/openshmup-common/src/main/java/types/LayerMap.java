@@ -11,7 +11,7 @@ final public class LayerMap<T> {
         this.map = new TreeMap<>();
     }
 
-    public LayerMap(List<LayerEntry<? extends T>> entryList) {
+    public LayerMap(List<? extends LayerEntry<? extends T>> entryList) {
         this.map = new TreeMap<>();
         entryList.forEach(entry -> add(entry.object(), entry.layer()));
     }
@@ -44,6 +44,11 @@ final public class LayerMap<T> {
     public void add(T newObject, int layer) {
         assert (!map.containsKey(layer)) || !map.get(layer).contains(newObject) : "object already in map";
         map.computeIfAbsent(layer, ArrayList::new).add(newObject);
+    }
+
+    public void addLayers(LayerMap<T> otherLayers, int offset) {
+        assert offset >= 0 : "layer offset value should be positive";
+        otherLayers.forEachObject((object, layer) -> this.add(object, layer + offset));
     }
 
     public void remove(T object, int layer) {
