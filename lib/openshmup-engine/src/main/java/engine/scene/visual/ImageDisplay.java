@@ -10,13 +10,13 @@ final public class ImageDisplay extends SceneVisual {
     ImageGraphic imageGraphic;
 
     public ImageDisplay(ImageGraphic imageGraphic) {
-        super();
+        super(imageGraphic.getScale(), imageGraphic.getPosition());
         this.imageGraphic = new ImageGraphic(imageGraphic);
         getGraphicalLayers().add(imageGraphic, 0);
     }
 
     public ImageDisplay(Texture texture, Vec2D size, Vec2D position) {
-        super();
+        super(size, position);
         this.imageGraphic = new ImageGraphic(texture, false,
             size,
             position,
@@ -25,6 +25,16 @@ final public class ImageDisplay extends SceneVisual {
             RGBAValue.ONE,
             RGBAValue.ZERO);
         this.getGraphicalLayers().add(imageGraphic, 0);
+    }
+    @Override
+    public void setScale(Vec2D scale) {
+        super.setScale(scale);
+        this.imageGraphic.setScale(scale);
+    }
+    @Override
+    public void setPosition(Vec2D position) {
+        super.setPosition(position);
+        this.imageGraphic.setPosition(position);
     }
     @Override
     public SceneVisual copy() {

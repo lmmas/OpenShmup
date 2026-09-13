@@ -6,6 +6,7 @@ import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
 import layer.LayerMap;
 import lombok.Getter;
+import lombok.Setter;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -13,12 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class SceneVisual {
+    @Setter
+    @Getter
+    private Vec2D scale;
+    @Setter
+    @Getter
+    private Vec2D position;
+    @Getter
+    final protected LayerMap<Graphic<?>> graphicalLayers;
 
     private boolean visualShouldBeRemovedFlag;
 
     private boolean reloadGraphicsFlag;
-    @Getter
-    final protected LayerMap<Graphic<?>> graphicalLayers;
 
     final private List<ColorEffect> colorEffectList;
 
@@ -26,7 +33,9 @@ abstract public class SceneVisual {
 
     protected RGBAValue addedColor;
 
-    public SceneVisual() {
+    public SceneVisual(Vec2D scale, Vec2D position) {
+        this.scale = scale;
+        this.position = position;
         this.visualShouldBeRemovedFlag = false;
         this.reloadGraphicsFlag = false;
         this.graphicalLayers = new LayerMap<>();
@@ -61,14 +70,6 @@ abstract public class SceneVisual {
 
     final public void setReloadGraphicsFlag(boolean reloadGraphics) {
         this.reloadGraphicsFlag = reloadGraphics;
-    }
-
-    public void setScale(Vec2D scale) {
-        this.graphicalLayers.forEachObject(g -> g.setScale(scale));
-    }
-
-    public void setPosition(Vec2D position) {
-        this.graphicalLayers.forEachObject(g -> g.setPosition(position));
     }
 
     public void init() {

@@ -18,7 +18,6 @@ final public class TextDisplay extends SceneVisual {
 
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
-    private Vec2D position;
     @Setter
     @Getter
     private String displayedString;
@@ -39,8 +38,7 @@ final public class TextDisplay extends SceneVisual {
     final private ArrayList<Float> normalizedLineWidthsList;
 
     public TextDisplay(Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
-        super();
-        this.position = new Vec2D(position);
+        super(Vec2D.ONE, position);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
         this.font = font;
@@ -103,15 +101,15 @@ final public class TextDisplay extends SceneVisual {
             float currentLineWidth = normalizedLineWidthsList.get(lineIndex) * textHeight;
             float characterBaselineX;
             switch (alignment) {
-                case LEFT -> characterBaselineX = position.x;
-                case RIGHT -> characterBaselineX = position.x - currentLineWidth;
-                case CENTER -> characterBaselineX = position.x - currentLineWidth / 2;
+                case LEFT -> characterBaselineX = this.getPosition().x;
+                case RIGHT -> characterBaselineX = this.getPosition().x - currentLineWidth;
+                case CENTER -> characterBaselineX = this.getPosition().x - currentLineWidth / 2;
                 case null -> {
                     assert false : "uninitialized alignment";
                     characterBaselineX = 0f;
                 }
             }
-            float characterBaselineY = position.y + (((float) (lineCount - 1) / 2) - (float) lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
+            float characterBaselineY = this.getPosition().y + (((float) (lineCount - 1) / 2) - (float) lineIndex) * font.getNormalizedLineHeight() * textHeight - (textHeight / 2);
             for (TextCharacter character : currentLine) {
                 Vec2D characterPositionOffset = character.fontCharInfo.normalizedQuadPositionOffset();
                 character.setPosition(new Vec2D(characterBaselineX + characterPositionOffset.x * textHeight, characterBaselineY + characterPositionOffset.y * textHeight));
@@ -130,18 +128,13 @@ final public class TextDisplay extends SceneVisual {
 
     @Override
     public SceneVisual copy() {
-        return new TextDisplay(font, dynamicText, textHeight, position, displayedString, textColor, alignment);
+        return new TextDisplay(font, dynamicText, textHeight, getPosition(), displayedString, textColor, alignment);
     }
 
     @Override
     public void setPosition(Vec2D position) {
-        this.position = position;
+        super.setPosition(position);
         updateTextPosition();
-    }
-
-    @Override
-    public void setScale(Vec2D scale) {
-
     }
 
     @Override

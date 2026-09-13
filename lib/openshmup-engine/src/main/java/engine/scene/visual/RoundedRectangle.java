@@ -17,7 +17,7 @@ final public class RoundedRectangle extends SceneVisual {
     private RGBAValue borderBaseColor;
 
     public RoundedRectangle(Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor) {
-        super();
+        super(size, position);
         this.rectangle = new RoundedColorRectangle(size, position, roundingRadius, rectangleColor);
         getGraphicalLayers().add(rectangle, 0);
         this.border = new RoundedRectangleBorder(size, position, roundingRadius, borderWidth, borderColor);
@@ -25,12 +25,20 @@ final public class RoundedRectangle extends SceneVisual {
         this.rectangleBaseColor = rectangleColor;
         this.borderBaseColor = borderColor;
     }
-
+    @Override
+    public void setScale(Vec2D scale) {
+        super.setScale(scale);
+        this.rectangle.setScale(scale);
+    }
+    @Override
+    public void setPosition(Vec2D position) {
+        super.setPosition(position);
+        this.rectangle.setPosition(position);
+    }
     @Override
     public SceneVisual copy() {
         return null;
     }
-
     @Override
     public void updateGraphicsColor() {
         RGBAValue newRectangleColor = rectangleBaseColor.multiply(colorCoefs).add(addedColor);

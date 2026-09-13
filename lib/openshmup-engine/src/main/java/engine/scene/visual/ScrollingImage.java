@@ -29,7 +29,7 @@ final public class ScrollingImage extends SceneVisual {
     final private TimeReference timeReference;
 
     public ScrollingImage(Texture texture, Vec2D size, float speed, boolean horizontalScrolling, TimeReference timeReference) {
-        super();
+        super(size, Vec2D.ZERO);
         this.size = new Vec2D(size);
         this.position1 = new Vec2D((float) Engine.getNativeWidth() / 2, (float) Engine.getNativeHeight() / 2);
         this.position2 = new Vec2D(0.0f, 0.0f);
@@ -56,7 +56,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     public ScrollingImage(ScrollingImage scrollingImage) {
-        super();
+        super(scrollingImage.getScale(), scrollingImage.getPosition());
         this.imageGraphic1 = new ImageGraphic(scrollingImage.imageGraphic1);
         getGraphicalLayers().add(imageGraphic1, 0);
         this.position1 = new Vec2D(scrollingImage.position1);
@@ -74,9 +74,16 @@ final public class ScrollingImage extends SceneVisual {
     public SceneVisual copy() {
         return new ScrollingImage(this);
     }
-
+    @Override
+    public void setScale(Vec2D scale) {
+        super.setScale(scale);
+        this.size = scale;
+        imageGraphic1.setScale(scale);
+        imageGraphic2.setScale(scale);
+    }
     @Override
     public void setPosition(Vec2D position) {
+        super.setPosition(position);
         position1 = position;
         if (horizontalScrolling) {
             this.position2 = new Vec2D(this.position1.x - Math.signum(speed) * size.x, position1.y);
@@ -88,12 +95,6 @@ final public class ScrollingImage extends SceneVisual {
         imageGraphic2.setPosition(position2);
     }
 
-    @Override
-    public void setScale(Vec2D scale) {
-        this.size = scale;
-        imageGraphic1.setScale(scale);
-        imageGraphic2.setScale(scale);
-    }
 
     @Override
     public void init() {

@@ -25,7 +25,7 @@ final public class Animation extends SceneVisual {
     private TimeReference timeReference;
 
     public Animation(Texture animationTexture, SpritesheetInfo info, double framePeriodSeconds, boolean looping, Vec2D size, TimeReference timeReference) {
-        super();
+        super(size, Vec2D.ZERO);
         this.info = info;
         this.framePeriodSeconds = framePeriodSeconds;
         this.looping = looping;
@@ -43,7 +43,7 @@ final public class Animation extends SceneVisual {
     }
 
     public Animation(Animation animation) {
-        super();
+        super(animation.getScale(), Vec2D.ZERO);
         this.imageGraphic = new ImageGraphic(animation.imageGraphic);
         this.getGraphicalLayers().add(imageGraphic, 0);
         this.info = animation.info;
@@ -57,6 +57,18 @@ final public class Animation extends SceneVisual {
     private void updateTexturePosition() {
         Vec2D texturePosition = (info.stride().scalar(frameIndex)).add(info.startPos());
         imageGraphic.setTexturePosition(texturePosition);
+    }
+
+    @Override
+    public void setScale(Vec2D scale) {
+        super.setScale(scale);
+        this.imageGraphic.setScale(scale);
+    }
+
+    @Override
+    public void setPosition(Vec2D position) {
+        super.setPosition(position);
+        this.imageGraphic.setPosition(position);
     }
 
     @Override

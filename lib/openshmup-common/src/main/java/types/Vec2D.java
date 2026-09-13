@@ -28,12 +28,30 @@ final public class Vec2D implements Serializable {
         return new Vec2D(this.x + other.x, this.y + other.y);
     }
 
+    public Vec2D subtract(float otherX, float otherY) {
+        return new Vec2D(this.x - otherX, this.y - otherY);
+    }
+
+    public Vec2D subtract(Vec2D other) {
+        return new Vec2D(this.x - other.x, this.y - other.y);
+    }
+
     public Vec2D multiply(float xCoef, float yCoef) {
         return new Vec2D(this.x * xCoef, this.y * yCoef);
     }
 
     public Vec2D multiply(Vec2D other) {
         return new Vec2D(this.x * other.x, this.y * other.y);
+    }
+
+    public Vec2D divide(float xCoef, float yCoef) {
+        assert xCoef != 0f && yCoef != 0f : "division by 0 error";
+        return new Vec2D(this.x / xCoef, this.y / yCoef);
+    }
+
+    public Vec2D divide(Vec2D other) {
+        assert other.x != 0f && other.y != 0f : "division by 0 error";
+        return new Vec2D(this.x / other.y, this.y / other.y);
     }
 
     public Vec2D scalar(float scalar) {

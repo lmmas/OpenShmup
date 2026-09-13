@@ -25,11 +25,22 @@ final public class LayerMap<T> {
         return map.size();
     }
 
+    public Integer getFirstLayer() {
+        if (map.isEmpty()) {
+            return null;
+        }
+        return map.firstKey();
+    }
+
     public Integer getMaxLayer() {
         if (map.isEmpty()) {
             return null;
         }
         return map.lastKey();
+    }
+
+    public boolean isEmpty() {
+        return map.isEmpty();
     }
 
     public boolean contains(T object) {
@@ -42,12 +53,13 @@ final public class LayerMap<T> {
     }
 
     public void add(T newObject, int layer) {
+        assert (layer >= 0) : "layer index cannot be negative";
         assert (!map.containsKey(layer)) || !map.get(layer).contains(newObject) : "object already in map";
         map.computeIfAbsent(layer, ArrayList::new).add(newObject);
     }
 
     public void addLayers(LayerMap<T> otherLayers, int offset) {
-        assert offset >= 0 : "layer offset value should be positive";
+        assert offset >= 0 : "layer offset value cannot be negative";
         otherLayers.forEachObject((object, layer) -> this.add(object, layer + offset));
     }
 
