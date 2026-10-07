@@ -1,8 +1,8 @@
 import engine.Engine;
 import engine.assets.Font;
 import engine.scene.Scene;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
+import engine.visual.Text;
+import engine.visual.style.TextAlignment;
 import types.IVec2D;
 import types.RGBAValue;
 
@@ -28,13 +28,13 @@ public class TestDynamicText {
             myFont.getBitmap().loadInGPU();
             String displayedString = "Hello World!";
             RGBAValue color = new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f);
-            TextDisplay myTextDisplay = new TextDisplay(myFont, true, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, color, TextAlignment.CENTER);
-            testScene.addVisual(myTextDisplay, 0);
+            Text myText = new Text(myFont, true, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, color, TextAlignment.CENTER);
+            testScene.addVisual(myText, 0);
             AtomicInteger frameCount = new AtomicInteger();
             Runnable inLoopScript = () -> {
                 frameCount.getAndIncrement();
                 if (frameCount.get() == 3) {
-                    myTextDisplay.setToRemove(true);
+                    myText.setToRemove(true);
                 }
             };
             Engine.setInLoopScript(inLoopScript);

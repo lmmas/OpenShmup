@@ -1,8 +1,8 @@
 package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.style.VisualGroup;
+import engine.visual.Visual;
+import engine.visual.VisualGroup;
 import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ final public class SelectorButtons implements Widget {
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<Map<SceneVisual, Integer>> buttonVisuals, List<SceneVisual> buttonBackgrounds, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+    public SelectorButtons(List<Map<Visual, Integer>> buttonVisuals, List<Visual> buttonBackgrounds, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         this.onChange = onChange;
         this.selectedValue = startingValue;
         assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
@@ -41,7 +41,7 @@ final public class SelectorButtons implements Widget {
             });
         }
         this.actionButtons = new ArrayList<>(buttonCount);
-        LayerMap<SceneVisual> visuals = new LayerMap<>();
+        LayerMap<Visual> visuals = new LayerMap<>();
         for (int i = 0; i < buttonCount; i++) {
             this.actionButtons.add(new ActionButton(buttonVisuals.get(i), buttonBackgrounds.get(i), hitboxes.get(i), onClicks.get(i)));
             buttonVisuals.get(i).forEach(visuals::add);

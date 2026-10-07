@@ -5,8 +5,8 @@ import editor.Style;
 import editor.Widgets;
 import engine.menu.Menu;
 import engine.menu.widget.SelectorButtons;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
+import engine.visual.Text;
+import engine.visual.style.TextAlignment;
 import types.Vec2D;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
 
     final private SelectorButtons selectorButtons;
 
-    final private TextDisplay typeSelectText;
+    final private Text typeSelectText;
 
     public EditionDataTypeSelect(EditionData editionData, Vec2D startPosition) {
         assert editionData.getCategory() != Category.NONE : "Invalid editionData type";
@@ -99,7 +99,7 @@ final public class EditionDataTypeSelect implements EditionDataFieldNode {
             }
         };
         this.menu = null;
-        this.typeSelectText = new TextDisplay(false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
+        this.typeSelectText = new Text(false, startPosition, "Type:", Style.Text.menuTextStyle, TextAlignment.LEFT);
         Vec2D fieldPosition = startPosition.add(200f, 0f);
         Vec2D selectorButtonsSize = new Vec2D(200f, buttonSize.y);
         Vec2D selectorButtonsStride = new Vec2D(220f, 0.0f);

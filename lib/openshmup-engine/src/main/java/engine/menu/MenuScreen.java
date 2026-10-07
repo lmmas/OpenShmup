@@ -1,7 +1,7 @@
 package engine.menu;
 
 import engine.menu.widget.Widget;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Visual;
 import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ final public class MenuScreen {
 
     final private LayerMap<Widget> widgets;
 
-    final private LayerMap<SceneVisual> otherVisuals;
+    final private LayerMap<Visual> otherVisuals;
     @Setter
     private boolean isOpen;
 
@@ -32,11 +32,11 @@ final public class MenuScreen {
         widgets.remove(widget);
     }
 
-    public void addVisual(SceneVisual visual, int layer) {
+    public void addVisual(Visual visual, int layer) {
         otherVisuals.add(visual, layer);
     }
 
-    public void removeVisual(SceneVisual visual) {
+    public void removeVisual(Visual visual) {
         otherVisuals.remove(visual);
     }
 

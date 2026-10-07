@@ -3,7 +3,7 @@ package engine.menu;
 import engine.EngineSystem;
 import engine.menu.widget.Widget;
 import engine.scene.Scene;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Visual;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class Menu implements EngineSystem {
         }
     }
 
-    public void addToCurrentScreen(SceneVisual visual, int layer) {
+    public void addToCurrentScreen(Visual visual, int layer) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         currentScreen.addVisual(visual, layer);
         if (scene != null) {
@@ -112,7 +112,7 @@ public class Menu implements EngineSystem {
         }
     }
 
-    public void removeFromCurrentScreen(SceneVisual visual) {
+    public void removeFromCurrentScreen(Visual visual) {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         currentScreen.removeVisual(visual);
         if (scene != null) {

@@ -1,7 +1,7 @@
 package editor;
 
-import engine.scene.visual.style.RoundedRectangleStyle;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.style.RoundedRectangleStyle;
+import engine.visual.style.TextStyle;
 import types.RGBAValue;
 import types.Vec2D;
 

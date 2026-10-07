@@ -1,10 +1,10 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.assets.Font;
 import engine.assets.FontCharInfo;
 import engine.graphics.image.ImageGraphic;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import layer.LayerEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import static engine.Engine.assetManager;
 
-final public class TextDisplay extends SceneVisual {
+final public class Text extends Visual {
 
     final public static int lineBreakCodepoint = "\n".codePointAt(0);
 
@@ -38,7 +38,7 @@ final public class TextDisplay extends SceneVisual {
 
     final private ArrayList<Float> normalizedLineWidthsList;
 
-    public TextDisplay(Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
+    public Text(Font font, boolean dynamicText, float textHeight, Vec2D position, String displayedString, RGBAValue color, TextAlignment alignment) {
         super(Vec2D.ONE, position);
         this.textHeight = textHeight;
         this.displayedString = displayedString;
@@ -51,7 +51,7 @@ final public class TextDisplay extends SceneVisual {
         updateText();
     }
 
-    public TextDisplay(boolean dynamicText, Vec2D position, String displayedString, TextStyle style, TextAlignment alignment) {
+    public Text(boolean dynamicText, Vec2D position, String displayedString, TextStyle style, TextAlignment alignment) {
         this(assetManager.getFont(style.fontFilepath()), dynamicText, style.textHeight(), position, displayedString, style.textColor(), alignment);
     }
 
@@ -128,8 +128,8 @@ final public class TextDisplay extends SceneVisual {
     }
 
     @Override
-    public SceneVisual copy() {
-        return new TextDisplay(font, dynamicText, textHeight, getPosition(), displayedString, textColor, alignment);
+    public Visual copy() {
+        return new Text(font, dynamicText, textHeight, getPosition(), displayedString, textColor, alignment);
     }
 
     @Override
@@ -175,7 +175,7 @@ final public class TextDisplay extends SceneVisual {
             Vec2D bitmapTextureSize = fontCharInfo.bitmapTextureSize();
             Vec2D bitmapTexturePosition = fontCharInfo.bitmapTexturePosition();
             Vec2D imageSize = charSize.scalar(textHeight);
-            this.imageGraphic = new ImageGraphic(font.getBitmap(), TextDisplay.this.dynamicText,
+            this.imageGraphic = new ImageGraphic(font.getBitmap(), Text.this.dynamicText,
                 imageSize,
                 Vec2D.ZERO,
                 bitmapTextureSize,

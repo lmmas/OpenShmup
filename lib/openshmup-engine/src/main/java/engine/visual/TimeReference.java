@@ -1,4 +1,4 @@
-package engine.scene.visual.style;
+package engine.visual;
 
 public enum TimeReference {
     SCENE,

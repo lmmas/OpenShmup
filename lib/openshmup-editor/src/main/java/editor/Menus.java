@@ -9,9 +9,10 @@ import engine.menu.widget.ActionButton;
 import engine.menu.widget.TextField;
 import engine.menu.widget.Widgets;
 import engine.scene.Scene;
-import engine.scene.visual.*;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.*;
+import engine.visual.Text;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import json.JsonDataWriter;
 import types.RGBAValue;
 import types.Vec2D;
@@ -77,10 +78,10 @@ final public class Menus {
             MenuScreen screen = new MenuScreen(3);
             Vec2D buttonSize = new Vec2D(150, 50);
             screen.addVisual(new ScreenFilter(new RGBAValue(0.0f, 0.0f, 0.0f, 0.5f)), 0);
-            SceneVisual backgroundRectangle = new RoundedRectangle(new Vec2D(500f, 160f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
+            Visual backgroundRectangle = new RoundedRectangle(new Vec2D(500f, 160f), Engine.getNativeResolution().scalar(0.5f), menuButtonRoundingRadius, menuButtonBorderWidth, RGBAValue.SOLID_WHITE, RGBAValue.SOLID_BLACK);
             screen.addVisual(backgroundRectangle, 1);
             Vec2D fieldLabelPosition = Engine.getNativeResolution().scalar(0.5f).add(-150f, 0f);
-            SceneVisual fieldLabel = new TextDisplay(false, fieldLabelPosition, "Game Name: ", Text.menuButtonLabelStyle, TextAlignment.LEFT);
+            Visual fieldLabel = new Text(false, fieldLabelPosition, "Game Name: ", Style.Text.menuButtonLabelStyle, TextAlignment.LEFT);
             screen.addVisual(fieldLabel, 2);
             Vec2D textFieldPosition = Engine.getNativeResolution().scalar(0.5f).add(120f, 0f);
             TextField gameNameTextField = editor.Widgets.EditorTextField(2, textFieldPosition, 200f, "");
@@ -104,10 +105,10 @@ final public class Menus {
         Menu mainMenu = new Menu();
         Vec2D resolution = new Vec2D(Engine.getNativeWidth(), Engine.getNativeHeight());
         int backgroundLayer = 0;
-        SceneVisual menuBackground = new ColorRectangleVisual(resolution, resolution.scalar(0.5f), menuBackgroundColor);
+        Visual menuBackground = new ColorRectangle(resolution, resolution.scalar(0.5f), menuBackgroundColor);
 
         TextStyle menuTitleTextStyle = new TextStyle(menuFontPath, Color.titleColor, 50);
-        SceneVisual menuTitle = new TextDisplay(false, new Vec2D(resolution.x / 2, 800), "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
+        Visual menuTitle = new Text(false, new Vec2D(resolution.x / 2, 800), "OpenShmup", menuTitleTextStyle, TextAlignment.CENTER);
 
         Runnable editGameAction = () -> {
             try {

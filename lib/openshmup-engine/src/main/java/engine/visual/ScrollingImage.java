@@ -1,14 +1,13 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.Engine;
 import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
-import engine.scene.visual.style.TimeReference;
 import types.RGBAValue;
 import types.Vec2D;
 
-final public class ScrollingImage extends SceneVisual {
+final public class ScrollingImage extends Visual {
 
     private final ImageGraphic imageGraphic1;
 
@@ -71,7 +70,7 @@ final public class ScrollingImage extends SceneVisual {
     }
 
     @Override
-    public SceneVisual copy() {
+    public Visual copy() {
         return new ScrollingImage(this);
     }
     @Override

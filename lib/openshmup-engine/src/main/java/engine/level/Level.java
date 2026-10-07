@@ -24,10 +24,10 @@ import engine.menu.GameMenus;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.scene.Scene;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.Text;
+import engine.visual.Visual;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import lombok.Getter;
 import types.RGBAValue;
 import types.Vec2D;
@@ -197,7 +197,7 @@ final public class Level implements EngineSystem {
 
     private void spawnDisplays() {
         for (var displaySpawn : displaysToSpawn) {
-            SceneVisual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
+            Visual newDisplay = gameDataManager.getGameVisual(displaySpawn.id());
             int displayLayer = gameDataManager.getVisualLayer(displaySpawn.id());
             newDisplay.setPosition(displaySpawn.position());
             scene.addVisual(newDisplay, displayLayer);
@@ -345,7 +345,7 @@ final public class Level implements EngineSystem {
 
         final private TextStyle levelTimeTextStyle = new TextStyle(debugFont, levelTimeTextColor, 20f);
 
-        final private TextDisplay levelTimeDisplay = new TextDisplay(true, new Vec2D(0.9f * Engine.getNativeWidth(), 0.1f * Engine.getNativeHeight()), "", levelTimeTextStyle, TextAlignment.CENTER);
+        final private Text levelTimeDisplay = new Text(true, new Vec2D(0.9f * Engine.getNativeWidth(), 0.1f * Engine.getNativeHeight()), "", levelTimeTextStyle, TextAlignment.CENTER);
 
 
         public LevelDebug(boolean debugModeEnabled) {

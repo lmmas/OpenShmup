@@ -2,12 +2,12 @@ package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
 import engine.hitbox.SimpleRectangleHitbox;
-import engine.scene.visual.RoundedRectangle;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.RoundedRectangleStyle;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.RoundedRectangle;
+import engine.visual.Text;
+import engine.visual.Visual;
+import engine.visual.style.RoundedRectangleStyle;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -25,7 +25,7 @@ final public class Widgets {
         RoundedRectangle background = new RoundedRectangle(size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
         return new ActionButton(
             Map.of(background, 0,
-                new TextDisplay(false, position, label, textStyle, TextAlignment.CENTER), 1), background,
+                new Text(false, position, label, textStyle, TextAlignment.CENTER), 1), background,
             new SimpleRectangleHitbox(position, size),
             onClick);
     }
@@ -36,8 +36,8 @@ final public class Widgets {
 
     public static SelectorButtons StandardSelectorButtons(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         assert labels.size() == buttonCount : "Incorrect label count";
-        List<SceneVisual> buttonBackgrounds = new ArrayList<>(buttonCount);
-        List<Map<SceneVisual, Integer>> buttonVisuals = new ArrayList<>(buttonCount);
+        List<Visual> buttonBackgrounds = new ArrayList<>(buttonCount);
+        List<Map<Visual, Integer>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
@@ -48,7 +48,7 @@ final public class Widgets {
             buttonBackgrounds.add(rectangle);
             buttonVisuals.add(Map.of(
                 rectangle, 0,
-                new TextDisplay(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER), 1)
+                new Text(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER), 1)
             );
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }

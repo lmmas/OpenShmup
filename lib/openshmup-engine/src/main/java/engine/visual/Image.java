@@ -1,21 +1,21 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
 import types.RGBAValue;
 import types.Vec2D;
 
-final public class ImageDisplay extends SceneVisual {
+final public class Image extends Visual {
 
     ImageGraphic imageGraphic;
 
-    public ImageDisplay(ImageGraphic imageGraphic) {
+    public Image(ImageGraphic imageGraphic) {
         super(imageGraphic.getScale(), imageGraphic.getPosition());
         this.imageGraphic = new ImageGraphic(imageGraphic);
         getGraphicalLayers().add(imageGraphic, 0);
     }
 
-    public ImageDisplay(Texture texture, Vec2D size, Vec2D position) {
+    public Image(Texture texture, Vec2D size, Vec2D position) {
         super(size, position);
         this.imageGraphic = new ImageGraphic(texture, false,
             size,
@@ -37,8 +37,8 @@ final public class ImageDisplay extends SceneVisual {
         this.imageGraphic.setPosition(position);
     }
     @Override
-    public SceneVisual copy() {
-        return new ImageDisplay(imageGraphic);
+    public Visual copy() {
+        return new Image(imageGraphic);
     }
     @Override
     public void updateGraphicsColor() {

@@ -3,7 +3,7 @@ package engine.level;
 import engine.gameData.GameConfig;
 import engine.level.entity.Ship;
 import engine.scene.Scene;
-import engine.scene.visual.ImageDisplay;
+import engine.visual.Image;
 import types.Vec2D;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ final public class LevelUI {
 
     final private Scene scene;
 
-    final private ArrayList<ImageDisplay> playerLives;
+    final private ArrayList<Image> playerLives;
 
     private Ship playerShip;
 
@@ -40,7 +40,7 @@ final public class LevelUI {
                     Vec2D position = config.lives.position;
                     Vec2D stride = config.lives.stride;
                     Vec2D pointPosition = position.add(stride.scalar(playerLives.size()));
-                    ImageDisplay hpPointDisplay = new ImageDisplay(assetManager.getTexture(config.lives.textureFilepath), size, pointPosition);
+                    Image hpPointDisplay = new Image(assetManager.getTexture(config.lives.textureFilepath), size, pointPosition);
                     playerLives.add(hpPointDisplay);
                     scene.addVisual(hpPointDisplay, config.contentsLayer);
                 }

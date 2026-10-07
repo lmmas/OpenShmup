@@ -1,7 +1,6 @@
-package engine.scene.visual.style;
+package engine.visual;
 
 import engine.graphics.Graphic;
-import engine.scene.visual.SceneVisual;
 import layer.LayerEntry;
 import layer.LayerMap;
 import lombok.Getter;
@@ -11,17 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-final public class VisualGroup extends SceneVisual {
+final public class VisualGroup extends Visual {
     @Getter
-    final private LayerMap<SceneVisual> visualsMap;
+    final private LayerMap<Visual> visualsMap;
 
-    final private HashMap<SceneVisual, Vec2D> positionsMap;
+    final private HashMap<Visual, Vec2D> positionsMap;
     @Getter
-    final private HashMap<SceneVisual, Integer> graphicalOffsetsMap;
+    final private HashMap<Visual, Integer> graphicalOffsetsMap;
 
-    private final SceneVisual referenceVisual;
+    private final Visual referenceVisual;
 
-    public VisualGroup(LayerMap<SceneVisual> visuals) {
+    public VisualGroup(LayerMap<Visual> visuals) {
         super(Vec2D.ONE, Vec2D.ZERO);
         assert !visuals.isEmpty() : "visual map is empty";
         this.visualsMap = visuals;
@@ -32,10 +31,10 @@ final public class VisualGroup extends SceneVisual {
         int layerToMergeIndex = 0;
         int layerOffset = 0;
         while (layerToMergeIndex <= maxLayerToMerge) {
-            ArrayList<SceneVisual> layerToMerge = visuals.getLayer(layerToMergeIndex);
+            ArrayList<Visual> layerToMerge = visuals.getLayer(layerToMergeIndex);
             if (layerToMerge != null) {
                 int currentMaxLayer = 0;
-                for (SceneVisual visual : layerToMerge) {
+                for (Visual visual : layerToMerge) {
                     if (!visual.getGraphicalLayers().isEmpty()) {
                         int visualMaxLayer = visual.getGraphicalLayers().getMaxLayer();
                         if (visualMaxLayer > currentMaxLayer) {
@@ -58,7 +57,7 @@ final public class VisualGroup extends SceneVisual {
         });
     }
 
-    public VisualGroup(Map<SceneVisual, Integer> visuals) {
+    public VisualGroup(Map<Visual, Integer> visuals) {
         this(new LayerMap<>(visuals));
     }
 
@@ -73,11 +72,11 @@ final public class VisualGroup extends SceneVisual {
     }
     @Override
     public void init() {
-        visualsMap.forEachObject(SceneVisual::init);
+        visualsMap.forEachObject(Visual::init);
     }
     @Override
     public void update() {
-        visualsMap.forEachObject(SceneVisual::update);
+        visualsMap.forEachObject(Visual::update);
         visualsMap.forEachObject(visual -> {
             ArrayList<Graphic<?>> graphicsToRemove = visual.getGraphicsToRemove();
             if (!graphicsToRemove.isEmpty()) {
@@ -99,13 +98,13 @@ final public class VisualGroup extends SceneVisual {
         });
     }
     @Override
-    public SceneVisual copy() {
-        LayerMap<SceneVisual> copiesMap = new LayerMap<>();
+    public Visual copy() {
+        LayerMap<Visual> copiesMap = new LayerMap<>();
         this.visualsMap.forEachObject((visual, layer) -> copiesMap.add(visual.copy(), layer));
         return new VisualGroup(copiesMap);
     }
     @Override
     public void updateGraphicsColor() {
-        visualsMap.forEachObject(SceneVisual::updateGraphicsColor);
+        visualsMap.forEachObject(Visual::updateGraphicsColor);
     }
 }

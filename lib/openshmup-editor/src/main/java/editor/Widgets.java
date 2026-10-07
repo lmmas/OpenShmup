@@ -3,8 +3,8 @@ package editor;
 import engine.menu.widget.BooleanField;
 import engine.menu.widget.SelectorButtons;
 import engine.menu.widget.TextField;
-import engine.scene.visual.ImageDisplay;
-import engine.scene.visual.RoundedRectangle;
+import engine.visual.Image;
+import engine.visual.RoundedRectangle;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -32,7 +32,7 @@ final public class Widgets {
         RGBAValue boxColor = RGBAValue.SOLID_WHITE;
         RGBAValue boxBorderColor = RGBAValue.SOLID_BLACK;
         RoundedRectangle box = new RoundedRectangle(size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
-        ImageDisplay checkMark = new ImageDisplay(assetManager.getTexture(checkboxTexturePath), size, position);
+        Image checkMark = new Image(assetManager.getTexture(checkboxTexturePath), size, position);
         return new BooleanField(size, position, Map.of(box, 0, checkMark, 1), checkMark, startingState);
     }
 

@@ -4,7 +4,7 @@ import engine.hitbox.Hitbox;
 import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Visual;
 import types.Vec2D;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 final public class Projectile extends Entity {
 
-    public Projectile(Vec2D startingPos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, int spriteLayer, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Projectile(Vec2D startingPos, Vec2D size, float orientationRadians, boolean evil, int entityId, Visual sprite, int spriteLayer, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         super(EntityType.PROJECTILE, startingPos, size, orientationRadians, evil, entityId, sprite, spriteLayer, trajectory, hitbox, deathSpawn, extraComponents);
     }
 

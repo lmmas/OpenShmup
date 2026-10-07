@@ -1,9 +1,9 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
-import engine.scene.visual.effects.ColorEffect;
+import engine.visual.effects.ColorEffect;
 import layer.LayerEntry;
 import layer.LayerMap;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import types.Vec2D;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract public class SceneVisual {
+abstract public class Visual {
     @Setter
     @Getter
     private Vec2D scale;
@@ -36,7 +36,7 @@ abstract public class SceneVisual {
 
     protected RGBAValue addedColor;
 
-    public SceneVisual(Vec2D scale, Vec2D position) {
+    public Visual(Vec2D scale, Vec2D position) {
         this.scale = scale;
         this.position = position;
         this.visualShouldBeRemovedFlag = false;
@@ -48,7 +48,7 @@ abstract public class SceneVisual {
         this.addedColor = RGBAValue.ZERO;
     }
 
-    abstract public SceneVisual copy();
+    abstract public Visual copy();
 
     final public List<Texture> getTextures() {
         List<Texture> textures = new ArrayList<>();

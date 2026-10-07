@@ -4,8 +4,8 @@ import engine.Engine;
 import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.input.InputStatesManager;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.style.VisualGroup;
+import engine.visual.Visual;
+import engine.visual.VisualGroup;
 import lombok.Getter;
 
 import java.util.Map;
@@ -14,13 +14,13 @@ final public class ActionButton implements Widget {
 
     final private VisualGroup visualGroup;
     @Getter
-    final private SceneVisual background;
+    final private Visual background;
 
     final private HitboxClickDetector hitboxClickDetector;
 
     private Runnable onClick;
 
-    public ActionButton(Map<SceneVisual, Integer> visuals, SceneVisual background, Hitbox clickHitbox, Runnable onClick) {
+    public ActionButton(Map<Visual, Integer> visuals, Visual background, Hitbox clickHitbox, Runnable onClick) {
         assert visuals.containsKey(background) : "background not found among widget visuals";
         this.visualGroup = new VisualGroup(visuals);
         this.background = background;

@@ -2,8 +2,8 @@ package engine.menu;
 
 import engine.menu.widget.ActionButton;
 import engine.menu.widget.Widgets;
-import engine.scene.visual.ScreenFilter;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.ScreenFilter;
+import engine.visual.style.TextStyle;
 import types.RGBAValue;
 import types.Vec2D;
 

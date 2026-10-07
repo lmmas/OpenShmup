@@ -1,4 +1,4 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.graphics.colorRoundedRectangle.RoundedColorRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import types.RGBAValue;
 import types.Vec2D;
 
-final public class RoundedRectangle extends SceneVisual {
+final public class RoundedRectangle extends Visual {
 
     final private RoundedColorRectangle rectangle;
 
@@ -36,7 +36,7 @@ final public class RoundedRectangle extends SceneVisual {
         this.rectangle.setPosition(position);
     }
     @Override
-    public SceneVisual copy() {
+    public Visual copy() {
         return null;
     }
     @Override

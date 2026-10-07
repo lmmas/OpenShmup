@@ -4,9 +4,9 @@ import engine.Engine;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.effects.ColorEffect;
-import engine.scene.visual.style.VisualGroup;
+import engine.visual.Visual;
+import engine.visual.VisualGroup;
+import engine.visual.effects.ColorEffect;
 import types.Vec2D;
 
 import java.util.Map;
@@ -15,7 +15,7 @@ final public class BooleanField implements Widget {
 
     private final VisualGroup visualGroup;
 
-    private SceneVisual toggleVisual;
+    private Visual toggleVisual;
 
     final private ColorEffect invisibilityEffect;
 
@@ -23,7 +23,7 @@ final public class BooleanField implements Widget {
 
     final private HitboxClickDetector hitboxClickDetector;
 
-    public BooleanField(Vec2D size, Vec2D position, Map<SceneVisual, Integer> visuals, SceneVisual toggleVisual, boolean startingValue) {
+    public BooleanField(Vec2D size, Vec2D position, Map<Visual, Integer> visuals, Visual toggleVisual, boolean startingValue) {
         assert visuals.containsKey(toggleVisual) : "toggle visual not found among widget visuals";
         this.toggleVisual = toggleVisual;
         this.visualGroup = new VisualGroup(visuals);

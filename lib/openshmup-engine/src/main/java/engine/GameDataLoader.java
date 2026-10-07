@@ -22,11 +22,8 @@ import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.DisplaySpawnInfo;
 import engine.level.spawnable.EntitySpawnInfo;
 import engine.level.spawnable.Spawnable;
-import engine.scene.visual.Animation;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.ScrollingImage;
-import engine.scene.visual.SpritesheetInfo;
-import engine.scene.visual.style.TimeReference;
+import engine.visual.*;
+import engine.visual.Visual;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import types.IVec2D;
@@ -47,7 +44,7 @@ final public class GameDataLoader {
     @FunctionalInterface
     private interface VisualFactory {
 
-        SceneVisual build(EditionData data, Path textureFolderPath);
+        Visual build(EditionData data, Path textureFolderPath);
     }
 
     final private Map<Types.Visual, VisualFactory> visualFactories;
@@ -143,7 +140,7 @@ final public class GameDataLoader {
             visualEditionData.checkForCategory(Category.VISUAL);
             var visualFactory = visualFactories.get((Types.Visual) visualEditionData.getType());
             assert visualFactory != null : "visual factory not found: " + visualEditionData.getType().name();
-            SceneVisual visual = visualFactory.build(visualEditionData, gameEditionData.paths.gameTextureFolder);
+            Visual visual = visualFactory.build(visualEditionData, gameEditionData.paths.gameTextureFolder);
             gameData.addVisual(EditionData.getVisualId(visualEditionData), visual, EditionData.getVisualLayer(visualEditionData));
         }
 
@@ -207,7 +204,7 @@ final public class GameDataLoader {
 
         private VisualFactories() {}
 
-        public static SceneVisual scrollingImageFactory(EditionData data, Path textureFolderPath) {
+        public static Visual scrollingImageFactory(EditionData data, Path textureFolderPath) {
             data.checkForType(Types.Visual.scrollingImage);
             int layer = ((IntegerAttribute) data.get(Keys.Visual.ScrollingImage.layer)).getValue();
             Vec2D size = ((Vec2DAttribute) data.get(Keys.Visual.ScrollingImage.size)).getValue();
@@ -219,7 +216,7 @@ final public class GameDataLoader {
             return new ScrollingImage(texture, size, speed, horizontalScrolling, TimeReference.LEVEL);
         }
 
-        public static SceneVisual animationFactory(EditionData data, Path textureFolderPath) {
+        public static Visual animationFactory(EditionData data, Path textureFolderPath) {
             data.checkForType(Types.Visual.animation);
             int layer = ((IntegerAttribute) data.get(Keys.Visual.Animation.layer)).getValue();
             Vec2D size = ((Vec2DAttribute) data.get(Keys.Visual.Animation.size)).getValue();
@@ -330,7 +327,7 @@ final public class GameDataLoader {
             List<EditionData> deathSpawnList = ((ListAttribute) data.get(Keys.Entity.Ship.deathSpawn)).getDataList();
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
             int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Ship.spriteVisualId)).getValue();
-            SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
+            Visual sprite = gameData.getGameVisual(spriteVisualId);
             int spriteLayer = gameData.getVisualLayer(spriteVisualId);
             Trajectory trajectory;
             int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Ship.defaultTrajectoryId)).getValue();
@@ -354,7 +351,7 @@ final public class GameDataLoader {
             List<EditionData> deathSpawnList = ((ListAttribute) data.get(Keys.Entity.Projectile.deathSpawn)).getDataList();
             List<Spawnable> deathSpawn = deathSpawnList.stream().map(GameDataLoader.this::convertToSpawnable).toList();
             int spriteVisualId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.spriteVisualId)).getValue();
-            SceneVisual sprite = gameData.getGameVisual(spriteVisualId);
+            Visual sprite = gameData.getGameVisual(spriteVisualId);
             int spriteLayer = gameData.getVisualLayer(spriteVisualId);
             Trajectory trajectory;
             int defaultTrajectoryId = ((IntegerAttribute) data.get(Keys.Entity.Projectile.defaultTrajectoryId)).getValue();

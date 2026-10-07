@@ -1,4 +1,4 @@
-package engine.scene.visual.effects;
+package engine.visual.effects;
 
 import types.RGBAValue;
 

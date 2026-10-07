@@ -5,7 +5,7 @@ import engine.level.Level;
 import engine.level.entity.extraComponent.ExtraComponent;
 import engine.level.entity.trajectory.Trajectory;
 import engine.level.spawnable.Spawnable;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Visual;
 import lombok.Getter;
 import lombok.Setter;
 import types.Vec2D;
@@ -36,7 +36,7 @@ abstract public class Entity {
     @Getter
     protected double lifetimeSeconds;
     @Getter
-    protected SceneVisual sprite;
+    protected Visual sprite;
     @Getter
     private int spriteLayer;
     @Getter
@@ -50,7 +50,7 @@ abstract public class Entity {
 
     protected Level level;
 
-    public Entity(EntityType type, Vec2D trajectoryReferencePos, Vec2D size, float orientationRadians, boolean evil, int entityId, SceneVisual sprite, int spriteLayer, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
+    public Entity(EntityType type, Vec2D trajectoryReferencePos, Vec2D size, float orientationRadians, boolean evil, int entityId, Visual sprite, int spriteLayer, Trajectory trajectory, Hitbox hitbox, List<Spawnable> deathSpawn, ArrayList<ExtraComponent> extraComponents) {
         this.type = type;
         this.level = null;
         this.trajectoryReferencePosition = trajectoryReferencePos;

@@ -4,11 +4,11 @@ import engine.Engine;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
-import engine.scene.visual.style.VisualGroup;
+import engine.visual.Text;
+import engine.visual.Visual;
+import engine.visual.VisualGroup;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import layer.LayerMap;
 import types.Vec2D;
 
@@ -18,7 +18,7 @@ final public class TextField implements Widget {
 
     final private VisualGroup visualGroup;
 
-    final private TextDisplay textInputDisplay;
+    final private Text textInputDisplay;
 
     final private StringBuffer stringBuffer;
 
@@ -26,12 +26,12 @@ final public class TextField implements Widget {
 
     private boolean textInputActive;
 
-    public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, Map<SceneVisual, Integer> otherVisuals, String startingText) {
+    public TextField(int textLayer, Vec2D size, Vec2D position, TextStyle style, Map<Visual, Integer> otherVisuals, String startingText) {
         this.stringBuffer = new StringBuffer(startingText);
         float textStartMargin = 6f;
         Vec2D textPosition = new Vec2D(position.x - (size.x / 2) + textStartMargin, position.y);
-        this.textInputDisplay = new TextDisplay(true, textPosition, startingText, style, TextAlignment.LEFT);
-        LayerMap<SceneVisual> visuals = new LayerMap<>(otherVisuals);
+        this.textInputDisplay = new Text(true, textPosition, startingText, style, TextAlignment.LEFT);
+        LayerMap<Visual> visuals = new LayerMap<>(otherVisuals);
         visuals.add(textInputDisplay, textLayer);
         this.visualGroup = new VisualGroup(visuals);
         this.hitboxClickDetector = new HitboxClickDetector(new SimpleRectangleHitbox(position, size));

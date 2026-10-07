@@ -1,16 +1,16 @@
 package engine.menu;
 
 import engine.menu.widget.Widget;
-import engine.scene.visual.SceneVisual;
+import engine.visual.Visual;
 import layer.LayerMap;
 import lombok.Getter;
 
 import java.util.Map;
 
 @Getter
-public class MenuItemGroup {
+public final class MenuItemGroup {
 
-    final private LayerMap<SceneVisual> visuals;
+    final private LayerMap<Visual> visuals;
 
     final private LayerMap<Widget> widgets;
 
@@ -19,12 +19,12 @@ public class MenuItemGroup {
         this.widgets = new LayerMap<>();
     }
 
-    public MenuItemGroup(Map<SceneVisual, Integer> visuals, Map<Widget, Integer> widgetLayers) {
+    public MenuItemGroup(Map<Visual, Integer> visuals, Map<Widget, Integer> widgetLayers) {
         this.visuals = new LayerMap<>(visuals);
         this.widgets = new LayerMap<>(widgetLayers);
     }
 
-    public void addVisual(SceneVisual visual, int layer) {
+    public void addVisual(Visual visual, int layer) {
         visuals.add(visual, layer);
     }
 

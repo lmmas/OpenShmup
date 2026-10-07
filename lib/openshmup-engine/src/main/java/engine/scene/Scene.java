@@ -5,10 +5,10 @@ import engine.EngineSystem;
 import engine.Timer;
 import engine.graphics.Graphic;
 import engine.graphics.GraphicsManager;
-import engine.scene.visual.SceneVisual;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
-import engine.scene.visual.style.TextStyle;
+import engine.visual.Text;
+import engine.visual.Visual;
+import engine.visual.style.TextAlignment;
+import engine.visual.style.TextStyle;
 import layer.LayerEntry;
 import layer.LayerMap;
 import types.RGBAValue;
@@ -31,11 +31,11 @@ public class Scene implements EngineSystem {
 
     protected double lastDrawTime;
 
-    final protected LayerMap<SceneVisual> layers;
+    final protected LayerMap<Visual> layers;
 
     final protected TreeMap<Integer, Integer> layerWidths;
 
-    final protected HashSet<LayerEntry<SceneVisual>> visualsToRemove;
+    final protected HashSet<LayerEntry<Visual>> visualsToRemove;
 
     protected boolean debugModeEnabled;
 
@@ -61,8 +61,8 @@ public class Scene implements EngineSystem {
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
         layers.forEachLayer((sceneLayerIndex, visualList) -> {
-            List<SceneVisual> visualListCopy = new ArrayList<>(visualList);
-            for (SceneVisual visual : visualListCopy) {
+            List<Visual> visualListCopy = new ArrayList<>(visualList);
+            for (Visual visual : visualListCopy) {
                 visual.update();
                 int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
                 var graphicsToRemove = visual.getGraphicsToRemove();
@@ -99,7 +99,7 @@ public class Scene implements EngineSystem {
     }
 
 
-    final public void addVisual(SceneVisual visual, int sceneLayerIndex) {
+    final public void addVisual(Visual visual, int sceneLayerIndex) {
         var graphicalLayers = visual.getGraphicalLayers();
         int visualMaxGraphicalSubLayer = graphicalLayers.getMaxLayer();
         var layerList = layers.getLayer(sceneLayerIndex);
@@ -158,7 +158,7 @@ public class Scene implements EngineSystem {
 
         final private TextStyle fpsDisplayTextStyle = new TextStyle(debugFont, fpsDisplayTextColor, 20f);
 
-        final private TextDisplay fpsDisplay = new TextDisplay(true, Engine.getNativeResolution().scalar(0.9f), "", fpsDisplayTextStyle, TextAlignment.CENTER);
+        final private Text fpsDisplay = new Text(true, Engine.getNativeResolution().scalar(0.9f), "", fpsDisplayTextStyle, TextAlignment.CENTER);
 
         public void enable() {
         }

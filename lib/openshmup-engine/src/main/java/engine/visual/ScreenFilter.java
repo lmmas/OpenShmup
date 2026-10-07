@@ -1,11 +1,11 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.Engine;
 import engine.graphics.colorRectangle.ColorRectangleGraphic;
 import types.RGBAValue;
 import types.Vec2D;
 
-final public class ScreenFilter extends SceneVisual {
+final public class ScreenFilter extends Visual {
 
     final private ColorRectangleGraphic colorRectangleGraphic;
 
@@ -26,7 +26,7 @@ final public class ScreenFilter extends SceneVisual {
     }
 
     @Override
-    public SceneVisual copy() {
+    public Visual copy() {
         return new ScreenFilter(this);
     }
 

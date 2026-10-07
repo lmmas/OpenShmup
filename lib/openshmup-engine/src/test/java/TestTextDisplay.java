@@ -1,8 +1,8 @@
 import engine.Engine;
 import engine.assets.Font;
 import engine.scene.Scene;
-import engine.scene.visual.TextDisplay;
-import engine.scene.visual.style.TextAlignment;
+import engine.visual.Text;
+import engine.visual.style.TextAlignment;
 import types.IVec2D;
 import types.RGBAValue;
 
@@ -26,8 +26,8 @@ public class TestTextDisplay {
             Font myFont = Font.createFromTTF(Paths.get("lib/openshmup-engine/src/test/resources/fonts/testFont.ttf"));
             myFont.getBitmap().loadInGPU();
             String displayedString = "Hello World!\nThis is a test\nall sizes work, any number of lines work, this is heaven!";
-            TextDisplay myTextDisplay = new TextDisplay(myFont, false, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f), TextAlignment.CENTER);
-            testScene.addVisual(myTextDisplay, 0);
+            Text myText = new Text(myFont, false, 24.0f, Engine.getNativeResolution().scalar(0.5f), displayedString, new RGBAValue(1.0f, 1.0f, 1.0f, 1.0f), TextAlignment.CENTER);
+            testScene.addVisual(myText, 0);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

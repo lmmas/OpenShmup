@@ -1,6 +1,6 @@
 package engine.menu.widget;
 
-import engine.scene.visual.style.VisualGroup;
+import engine.visual.VisualGroup;
 
 public interface Widget {
 

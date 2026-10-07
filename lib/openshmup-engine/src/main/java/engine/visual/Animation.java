@@ -1,14 +1,13 @@
-package engine.scene.visual;
+package engine.visual;
 
 import engine.Engine;
 import engine.Game;
 import engine.assets.Texture;
 import engine.graphics.image.ImageGraphic;
-import engine.scene.visual.style.TimeReference;
 import types.RGBAValue;
 import types.Vec2D;
 
-final public class Animation extends SceneVisual {
+final public class Animation extends Visual {
 
     final private ImageGraphic imageGraphic;
 
