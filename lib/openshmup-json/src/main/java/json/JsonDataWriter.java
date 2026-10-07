@@ -102,7 +102,7 @@ final public class JsonDataWriter {
         ArrayNode timelineSpawnInfosNode = buildJsonNodeOfList(gameEditionData.getTimelineDataList());
         ObjectNode timelineNode = mapper.createObjectNode();
         timelineNode.put("duration", 3000.0d);
-        timelineNode.set("spawns", timelineSpawnInfosNode);
+        timelineNode.set("spawnInfos", timelineSpawnInfosNode);
         ObjectNode configNode = mapper.createObjectNode();
         ObjectNode generalConfigNode = configNode.putObject(Types.Config.general.name());
         gameEditionData.configs.get(Types.Config.general).getAttributesList().forEach(attribute -> addToNode(attribute, generalConfigNode));
