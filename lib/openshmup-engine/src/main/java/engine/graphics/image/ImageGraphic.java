@@ -18,12 +18,15 @@ import static engine.Engine.assetManager;
 final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
 
     final static public Path defaultShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/simpleImage2D.glsl");
+    @Getter
+    final private Texture texture;
 
     final private ImageVertex vertex;
 
     public ImageGraphic(Texture texture, boolean dynamic, Vec2D imageSize, Vec2D imagePosition, Vec2D textureSize, Vec2D texturePosition, RGBAValue textureColorCoefs, RGBAValue addedColor, Shader shader) {
         super(dynamic ? RenderType.DYNAMIC_IMAGE : RenderType.STATIC_IMAGE, shader, new ArrayList<>(1));
-        this.vertex = new ImageVertex(texture, imageSize, imagePosition, textureSize, texturePosition, textureColorCoefs, addedColor);
+        this.texture = texture;
+        this.vertex = new ImageVertex(imageSize, imagePosition, textureSize, texturePosition, textureColorCoefs, addedColor);
         this.getVertexList().add(vertex);
     }
 
@@ -33,6 +36,7 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
 
     public ImageGraphic(ImageGraphic imageGraphic) {
         super(imageGraphic);
+        this.texture = imageGraphic.getTexture();
         this.vertex = this.getVertexList().getFirst();
     }
 
@@ -64,10 +68,6 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
         return vertex.imageSize;
     }
 
-    public Texture getTexture() {
-        return vertex.texture;
-    }
-
     @Override
     public void remove() {
         vertex.setShouldBeRemoved();
@@ -87,8 +87,6 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
     @AllArgsConstructor
     public class ImageVertex extends Graphic<ImageVertex>.Vertex<ImageVertex> {
 
-        private final Texture texture;
-
         private Vec2D imageSize;
 
         private Vec2D imagePosition;
@@ -104,7 +102,6 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
         public ImageVertex(ImageVertex imageVertex) {
             this.imagePosition = imageVertex.imagePosition;
             this.imageSize = imageVertex.imageSize;
-            this.texture = imageVertex.texture;
             this.texturePosition = imageVertex.texturePosition;
             this.textureSize = imageVertex.textureSize;
             this.textureColorCoefs = imageVertex.textureColorCoefs;
@@ -114,6 +111,10 @@ final public class ImageGraphic extends Graphic<ImageGraphic.ImageVertex> {
         @Override
         public ImageVertex copy() {
             return new ImageVertex(this);
+        }
+
+        public Texture getTexture() {
+            return ImageGraphic.this.getTexture();
         }
     }
 }
