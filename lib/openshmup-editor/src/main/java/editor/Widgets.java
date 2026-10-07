@@ -33,7 +33,7 @@ final public class Widgets {
         RGBAValue boxBorderColor = RGBAValue.SOLID_BLACK;
         RoundedRectangle box = new RoundedRectangle(size, position, boxRoundingRadius, boxBorderWidth, boxColor, boxBorderColor);
         ImageDisplay checkMark = new ImageDisplay(assetManager.getTexture(checkboxTexturePath), size, position);
-        return new BooleanField(size, position, checkMark, Map.of(box, 0), startingState);
+        return new BooleanField(size, position, Map.of(box, 0, checkMark, 1), checkMark, startingState);
     }
 
     public static TextField EditorTextField(int layer, Vec2D position, float fieldWidthPixels, String startingText) {

@@ -15,7 +15,9 @@ import types.RGBAValue;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TreeMap;
 
 import static engine.GlobalVars.Paths.debugFont;
@@ -59,23 +61,32 @@ public class Scene implements EngineSystem {
         sceneTime = this.timer.getTimeSeconds();
         Engine.setSceneTime(sceneTime);
         layers.forEachLayer((sceneLayerIndex, visualList) -> {
-            for (SceneVisual visual : visualList) {
+            List<SceneVisual> visualListCopy = new ArrayList<>(visualList);
+            for (SceneVisual visual : visualListCopy) {
                 visual.update();
                 if (visual.getShouldBeRemoved()) {
-                    visualsToRemove.add(new LayerEntry<>(visual, sceneLayerIndex));
+                    visual.getGraphicalLayers().forEachObject(Graphic::remove);
+                    layers.remove(visual, sceneLayerIndex);
+                    continue;
                 }
-                if (visual.getReloadGraphicsFlag()) {
-                    int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
-                    var graphicalLayers = visual.getGraphicalLayers();
-                    graphicalLayers.forEachObject((graphic, graphicLayer) -> Engine.getGraphicsManager().addGraphic(graphic, sceneLayerGraphicalIndex + graphicLayer));
-                    visual.setReloadGraphicsFlag(false);
+
+                int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
+                var graphicsToRemove = visual.getGraphicsToRemove();
+                if (!graphicsToRemove.isEmpty()) {
+                    for (var graphic : graphicsToRemove) {
+                        graphic.remove();
+                    }
+                    graphicsToRemove.clear();
+                }
+                var graphicsToAdd = visual.getGraphicsToAdd();
+                if (!graphicsToAdd.isEmpty()) {
+                    for (var entry : graphicsToAdd) {
+                        Engine.getGraphicsManager().addGraphic(entry.object(), sceneLayerGraphicalIndex + entry.layer());
+                    }
+                    graphicsToAdd.clear();
                 }
             }
         });
-        for (var entry : visualsToRemove) {
-            removeVisual(entry.object(), entry.layer());
-        }
-        visualsToRemove.clear();
         sceneDebug.update();
         lastDrawTime = sceneTime;
     }
@@ -132,12 +143,6 @@ public class Scene implements EngineSystem {
             layerSum += layerWidths.get(layerIndex);
         }
         return layerSum;
-    }
-
-    public void removeVisual(SceneVisual visual, int sceneLayerIndex) {
-        assert layers.getLayer(sceneLayerIndex) != null && layers.getLayer(sceneLayerIndex).contains(visual) : "visual not found in layer";
-        layers.remove(visual, sceneLayerIndex);
-        visual.getGraphicalLayers().forEachObject(Graphic::remove);
     }
 
     public void toggleDebug() {

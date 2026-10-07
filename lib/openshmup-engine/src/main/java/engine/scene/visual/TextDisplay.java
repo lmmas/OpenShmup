@@ -5,6 +5,7 @@ import engine.assets.FontCharInfo;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import layer.LayerEntry;
 import lombok.Getter;
 import lombok.Setter;
 import types.RGBAValue;
@@ -30,7 +31,7 @@ final public class TextDisplay extends SceneVisual {
     private RGBAValue textColor;
 
     private final TextAlignment alignment;
-
+    @Getter
     final private boolean dynamicText;
 
     final private ArrayList<ArrayList<TextCharacter>> textLines;
@@ -57,7 +58,7 @@ final public class TextDisplay extends SceneVisual {
     private void updateText() {
         for (var line : textLines) {
             for (TextCharacter character : line) {
-                character.imageGraphic.remove();
+                graphicsToRemove.add(character.imageGraphic);
             }
         }
         textLines.clear();
@@ -141,7 +142,11 @@ final public class TextDisplay extends SceneVisual {
     public void update() {
         if (dynamicText) {
             updateText();
-            this.setReloadGraphicsFlag(true);
+            for (var line : textLines) {
+                for (TextCharacter character : line) {
+                    graphicsToAdd.add(new LayerEntry<>(character.imageGraphic, 0));
+                }
+            }
         }
     }
 

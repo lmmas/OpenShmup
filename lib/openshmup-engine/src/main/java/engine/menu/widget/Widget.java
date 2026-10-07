@@ -1,11 +1,10 @@
 package engine.menu.widget;
 
-import engine.scene.visual.SceneVisual;
-import layer.LayerMap;
+import engine.scene.visual.style.VisualGroup;
 
 public interface Widget {
 
-    LayerMap<SceneVisual> getVisualLayers();
+    VisualGroup getVisualGroup();
 
     void handleInputs();
 }

@@ -5,32 +5,27 @@ import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
-import layer.LayerMap;
+import engine.scene.visual.style.VisualGroup;
 import lombok.Getter;
 
 import java.util.Map;
 
 final public class ActionButton implements Widget {
+
+    final private VisualGroup visualGroup;
     @Getter
     final private SceneVisual background;
-
-    final private LayerMap<SceneVisual> visualLayers;
 
     final private HitboxClickDetector hitboxClickDetector;
 
     private Runnable onClick;
 
-    public ActionButton(SceneVisual background, Map<SceneVisual, Integer> otherVisuals, Hitbox clickHitbox, Runnable onClick) {
+    public ActionButton(Map<SceneVisual, Integer> visuals, SceneVisual background, Hitbox clickHitbox, Runnable onClick) {
+        assert visuals.containsKey(background) : "background not found among widget visuals";
+        this.visualGroup = new VisualGroup(visuals);
         this.background = background;
         this.onClick = onClick;
-        this.visualLayers = new LayerMap<>(otherVisuals);
-        this.visualLayers.add(background, 0);
         this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
-    }
-
-    @Override
-    public LayerMap<SceneVisual> getVisualLayers() {
-        return visualLayers;
     }
 
     @Override
@@ -41,4 +36,6 @@ final public class ActionButton implements Widget {
             onClick.run();
         }
     }
+    @Override
+    public VisualGroup getVisualGroup() {return this.visualGroup;}
 }

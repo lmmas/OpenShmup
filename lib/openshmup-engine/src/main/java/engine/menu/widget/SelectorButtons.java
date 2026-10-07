@@ -2,6 +2,7 @@ package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
 import engine.scene.visual.SceneVisual;
+import engine.scene.visual.style.VisualGroup;
 import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +17,19 @@ final public class SelectorButtons implements Widget {
     @Getter
     final private List<ActionButton> actionButtons;
 
-    final private LayerMap<SceneVisual> visualLayers;
+    final private VisualGroup visualGroup;
+
     @Getter
     @Setter
     private Integer selectedValue;
 
     final private BiConsumer<SelectorButtons, Integer> onChange;
 
-    public SelectorButtons(List<SceneVisual> buttonBackgrounds, List<Map<SceneVisual, Integer>> otherButtonVisuals, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
+    public SelectorButtons(List<Map<SceneVisual, Integer>> buttonVisuals, List<SceneVisual> buttonBackgrounds, List<Hitbox> hitboxes, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         this.onChange = onChange;
         this.selectedValue = startingValue;
-        assert otherButtonVisuals.size() == hitboxes.size() : "list size mismatch";
-        int buttonCount = otherButtonVisuals.size();
+        assert buttonVisuals.size() == hitboxes.size() : "list size mismatch";
+        int buttonCount = buttonVisuals.size();
         ArrayList<Runnable> onClicks = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             final int buttonValue = i;
@@ -39,17 +41,17 @@ final public class SelectorButtons implements Widget {
             });
         }
         this.actionButtons = new ArrayList<>(buttonCount);
-        this.visualLayers = new LayerMap<>();
+        LayerMap<SceneVisual> visuals = new LayerMap<>();
         for (int i = 0; i < buttonCount; i++) {
-            this.actionButtons.add(new ActionButton(buttonBackgrounds.get(i), otherButtonVisuals.get(i), hitboxes.get(i), onClicks.get(i)));
-            this.visualLayers.add(buttonBackgrounds.get(i), 0);
-            otherButtonVisuals.get(i).forEach(visualLayers::add);
+            this.actionButtons.add(new ActionButton(buttonVisuals.get(i), buttonBackgrounds.get(i), hitboxes.get(i), onClicks.get(i)));
+            buttonVisuals.get(i).forEach(visuals::add);
         }
+        this.visualGroup = new VisualGroup(visuals);
     }
 
     @Override
-    public LayerMap<SceneVisual> getVisualLayers() {
-        return visualLayers;
+    public VisualGroup getVisualGroup() {
+        return visualGroup;
     }
 
     @Override

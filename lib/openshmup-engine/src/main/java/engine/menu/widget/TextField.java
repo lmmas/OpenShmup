@@ -1,7 +1,6 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
@@ -9,6 +8,7 @@ import engine.scene.visual.SceneVisual;
 import engine.scene.visual.TextDisplay;
 import engine.scene.visual.style.TextAlignment;
 import engine.scene.visual.style.TextStyle;
+import engine.scene.visual.style.VisualGroup;
 import layer.LayerMap;
 import types.Vec2D;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 
 final public class TextField implements Widget {
 
-    final private LayerMap<SceneVisual> visualLayers;
+    final private VisualGroup visualGroup;
 
     final private TextDisplay textInputDisplay;
 
@@ -31,16 +31,16 @@ final public class TextField implements Widget {
         float textStartMargin = 6f;
         Vec2D textPosition = new Vec2D(position.x - (size.x / 2) + textStartMargin, position.y);
         this.textInputDisplay = new TextDisplay(true, textPosition, startingText, style, TextAlignment.LEFT);
-        this.visualLayers = new LayerMap<>(otherVisuals);
-        this.visualLayers.add(textInputDisplay, textLayer);
-        Hitbox clickHitbox = new SimpleRectangleHitbox(position, size);
-        this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
+        LayerMap<SceneVisual> visuals = new LayerMap<>(otherVisuals);
+        visuals.add(textInputDisplay, textLayer);
+        this.visualGroup = new VisualGroup(visuals);
+        this.hitboxClickDetector = new HitboxClickDetector(new SimpleRectangleHitbox(position, size));
         this.textInputActive = false;
     }
 
     @Override
-    public LayerMap<SceneVisual> getVisualLayers() {
-        return visualLayers;
+    public VisualGroup getVisualGroup() {
+        return visualGroup;
     }
     @Override
     public void handleInputs() {

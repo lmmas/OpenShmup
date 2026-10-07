@@ -22,9 +22,10 @@ final public class Widgets {
     private Widgets() {}
 
     public static ActionButton TextButton(Vec2D size, Vec2D position, float roundingRadius, float borderWidth, RGBAValue rectangleColor, RGBAValue borderColor, String label, TextStyle textStyle, Runnable onClick) {
+        RoundedRectangle background = new RoundedRectangle(size, position, roundingRadius, borderWidth, rectangleColor, borderColor);
         return new ActionButton(
-            new RoundedRectangle(size, position, roundingRadius, borderWidth, rectangleColor, borderColor),
-            Map.of(new TextDisplay(false, position, label, textStyle, TextAlignment.CENTER), 1),
+            Map.of(background, 0,
+                new TextDisplay(false, position, label, textStyle, TextAlignment.CENTER), 1), background,
             new SimpleRectangleHitbox(position, size),
             onClick);
     }
@@ -36,7 +37,7 @@ final public class Widgets {
     public static SelectorButtons StandardSelectorButtons(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         assert labels.size() == buttonCount : "Incorrect label count";
         List<SceneVisual> buttonBackgrounds = new ArrayList<>(buttonCount);
-        List<Map<SceneVisual, Integer>> buttonOtherVisuals = new ArrayList<>(buttonCount);
+        List<Map<SceneVisual, Integer>> buttonVisuals = new ArrayList<>(buttonCount);
         List<Hitbox> hitboxes = new ArrayList<>(buttonCount);
         for (int i = 0; i < buttonCount; i++) {
             Vec2D buttonPosition = startPosition.add(stride.scalar(i));
@@ -45,9 +46,10 @@ final public class Widgets {
                 rectangle.setRectangleBaseColor(selectedStyle.rectangleColor());
             }
             buttonBackgrounds.add(rectangle);
-            buttonOtherVisuals.add(Map.of(
-                new TextDisplay(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER)
-                , 1));
+            buttonVisuals.add(Map.of(
+                rectangle, 0,
+                new TextDisplay(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER), 1)
+            );
             hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
         }
         BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {
@@ -64,6 +66,6 @@ final public class Widgets {
                 onChange.accept(selector, newValue);
             }
         };
-        return new SelectorButtons(buttonBackgrounds, buttonOtherVisuals, hitboxes, onChangeWithStyleChange, startingValue);
+        return new SelectorButtons(buttonVisuals, buttonBackgrounds, hitboxes, onChangeWithStyleChange, startingValue);
     }
 }

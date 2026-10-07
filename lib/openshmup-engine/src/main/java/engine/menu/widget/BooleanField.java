@@ -1,20 +1,19 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.hitbox.Hitbox;
 import engine.hitbox.HitboxClickDetector;
 import engine.hitbox.SimpleRectangleHitbox;
 import engine.input.InputStatesManager;
 import engine.scene.visual.SceneVisual;
 import engine.scene.visual.effects.ColorEffect;
-import layer.LayerMap;
+import engine.scene.visual.style.VisualGroup;
 import types.Vec2D;
 
 import java.util.Map;
 
 final public class BooleanField implements Widget {
 
-    private LayerMap<SceneVisual> visualLayers;
+    private final VisualGroup visualGroup;
 
     private SceneVisual toggleVisual;
 
@@ -24,13 +23,12 @@ final public class BooleanField implements Widget {
 
     final private HitboxClickDetector hitboxClickDetector;
 
-    public BooleanField(Vec2D size, Vec2D position, SceneVisual toggleVisual, Map<SceneVisual, Integer> otherVisuals, boolean startingValue) {
+    public BooleanField(Vec2D size, Vec2D position, Map<SceneVisual, Integer> visuals, SceneVisual toggleVisual, boolean startingValue) {
+        assert visuals.containsKey(toggleVisual) : "toggle visual not found among widget visuals";
         this.toggleVisual = toggleVisual;
-        this.visualLayers = new LayerMap<>(otherVisuals);
-        this.visualLayers.add(toggleVisual, 1);
+        this.visualGroup = new VisualGroup(visuals);
         this.invisibilityEffect = ColorEffect.Invisibility();
-        Hitbox hitbox = new SimpleRectangleHitbox(position, size);
-        this.hitboxClickDetector = new HitboxClickDetector(hitbox);
+        this.hitboxClickDetector = new HitboxClickDetector(new SimpleRectangleHitbox(position, size));
         this.booleanVal = startingValue;
         if (!booleanVal) {
             toggleVisual.addColorEffect(invisibilityEffect);
@@ -54,8 +52,8 @@ final public class BooleanField implements Widget {
     }
 
     @Override
-    public LayerMap<SceneVisual> getVisualLayers() {
-        return visualLayers;
+    public VisualGroup getVisualGroup() {
+        return visualGroup;
     }
 
     @Override

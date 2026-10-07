@@ -1,6 +1,8 @@
 package engine.scene.visual.style;
 
+import engine.graphics.Graphic;
 import engine.scene.visual.SceneVisual;
+import layer.LayerEntry;
 import layer.LayerMap;
 import lombok.Getter;
 import types.Vec2D;
@@ -9,20 +11,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-final public class GroupVisual extends SceneVisual {
+final public class VisualGroup extends SceneVisual {
     @Getter
     final private LayerMap<SceneVisual> visualsMap;
 
-    final private Map<SceneVisual, Vec2D> positionsMap;
+    final private HashMap<SceneVisual, Vec2D> positionsMap;
+    @Getter
+    final private HashMap<SceneVisual, Integer> graphicalOffsetsMap;
 
     private final SceneVisual referenceVisual;
 
-    public GroupVisual(LayerMap<SceneVisual> visuals) {
+    public VisualGroup(LayerMap<SceneVisual> visuals) {
         super(Vec2D.ONE, Vec2D.ZERO);
         assert !visuals.isEmpty() : "visual map is empty";
         this.visualsMap = visuals;
 
         //fusing the visual layers while preserving correct graphical layer order
+        this.graphicalOffsetsMap = new HashMap<>();
         int maxLayerToMerge = visuals.getMaxLayer();
         int layerToMergeIndex = 0;
         int layerOffset = 0;
@@ -31,12 +36,14 @@ final public class GroupVisual extends SceneVisual {
             if (layerToMerge != null) {
                 int currentMaxLayer = 0;
                 for (SceneVisual visual : layerToMerge) {
-                    assert !visual.getGraphicalLayers().isEmpty() : "empty visual";
-                    int visualMaxLayer = visual.getGraphicalLayers().getMaxLayer();
-                    if (visualMaxLayer > currentMaxLayer) {
-                        currentMaxLayer = visualMaxLayer;
+                    if (!visual.getGraphicalLayers().isEmpty()) {
+                        int visualMaxLayer = visual.getGraphicalLayers().getMaxLayer();
+                        if (visualMaxLayer > currentMaxLayer) {
+                            currentMaxLayer = visualMaxLayer;
+                        }
+                        this.graphicalLayers.addLayers(visual.getGraphicalLayers(), layerOffset);
                     }
-                    this.graphicalLayers.addLayers(visual.getGraphicalLayers(), layerOffset);
+                    graphicalOffsetsMap.put(visual, layerOffset);
                 }
                 layerOffset = layerOffset + currentMaxLayer + 1;
             }
@@ -51,7 +58,7 @@ final public class GroupVisual extends SceneVisual {
         });
     }
 
-    public GroupVisual(Map<SceneVisual, Integer> visuals) {
+    public VisualGroup(Map<SceneVisual, Integer> visuals) {
         this(new LayerMap<>(visuals));
     }
 
@@ -71,12 +78,31 @@ final public class GroupVisual extends SceneVisual {
     @Override
     public void update() {
         visualsMap.forEachObject(SceneVisual::update);
+        visualsMap.forEachObject(visual -> {
+            ArrayList<Graphic<?>> graphicsToRemove = visual.getGraphicsToRemove();
+            if (!graphicsToRemove.isEmpty()) {
+                for (var graphicToRemove : graphicsToRemove) {
+                    graphicalLayers.remove(graphicToRemove);
+                }
+                this.graphicsToRemove.addAll(graphicsToRemove);
+                graphicsToRemove.clear();
+            }
+            ArrayList<LayerEntry<Graphic<?>>> graphicsToAdd = visual.getGraphicsToAdd();
+            if (!graphicsToAdd.isEmpty()) {
+                int offset = this.graphicalOffsetsMap.get(visual);
+                for (var entry : graphicsToAdd) {
+                    graphicalLayers.add(entry.object(), offset + entry.layer());
+                    this.graphicsToAdd.add(new LayerEntry<>(entry.object(), offset + entry.layer()));
+                }
+                graphicsToAdd.clear();
+            }
+        });
     }
     @Override
     public SceneVisual copy() {
         LayerMap<SceneVisual> copiesMap = new LayerMap<>();
         this.visualsMap.forEachObject((visual, layer) -> copiesMap.add(visual.copy(), layer));
-        return new GroupVisual(copiesMap);
+        return new VisualGroup(copiesMap);
     }
     @Override
     public void updateGraphicsColor() {

@@ -4,6 +4,7 @@ import engine.assets.Texture;
 import engine.graphics.Graphic;
 import engine.graphics.image.ImageGraphic;
 import engine.scene.visual.effects.ColorEffect;
+import layer.LayerEntry;
 import layer.LayerMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,10 @@ abstract public class SceneVisual {
     final protected LayerMap<Graphic<?>> graphicalLayers;
 
     private boolean visualShouldBeRemovedFlag;
-
-    private boolean reloadGraphicsFlag;
+    @Getter
+    final protected ArrayList<LayerEntry<Graphic<?>>> graphicsToAdd;
+    @Getter
+    final protected ArrayList<Graphic<?>> graphicsToRemove;
 
     final private List<ColorEffect> colorEffectList;
 
@@ -37,8 +40,9 @@ abstract public class SceneVisual {
         this.scale = scale;
         this.position = position;
         this.visualShouldBeRemovedFlag = false;
-        this.reloadGraphicsFlag = false;
         this.graphicalLayers = new LayerMap<>();
+        this.graphicsToAdd = new ArrayList<>();
+        this.graphicsToRemove = new ArrayList<>();
         this.colorEffectList = new ArrayList<>();
         this.colorCoefs = RGBAValue.ONE;
         this.addedColor = RGBAValue.ZERO;
@@ -60,16 +64,8 @@ abstract public class SceneVisual {
         return visualShouldBeRemovedFlag;
     }
 
-    final public void setShouldBeRemoved() {
+    final public void setToRemove() {
         visualShouldBeRemovedFlag = true;
-    }
-
-    final public boolean getReloadGraphicsFlag() {
-        return reloadGraphicsFlag;
-    }
-
-    final public void setReloadGraphicsFlag(boolean reloadGraphics) {
-        this.reloadGraphicsFlag = reloadGraphics;
     }
 
     public void init() {
