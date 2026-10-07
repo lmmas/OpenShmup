@@ -72,15 +72,16 @@ public class Scene implements EngineSystem {
                     }
                     graphicsToRemove.clear();
                 }
+                var graphicsToAdd = visual.getGraphicsToAdd();
 
                 if (visual.getShouldBeRemoved()) {
+                    graphicsToAdd.clear();
                     visual.getGraphicalLayers().forEachObject(Graphic::remove);
                     layers.remove(visual, sceneLayerIndex);
                     visual.setToRemove(false);
                     continue;
                 }
 
-                var graphicsToAdd = visual.getGraphicsToAdd();
                 if (!graphicsToAdd.isEmpty()) {
                     for (var entry : graphicsToAdd) {
                         Engine.getGraphicsManager().addGraphic(entry.object(), sceneLayerGraphicalIndex + entry.layer());
