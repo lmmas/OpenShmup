@@ -64,12 +64,6 @@ public class Scene implements EngineSystem {
             List<SceneVisual> visualListCopy = new ArrayList<>(visualList);
             for (SceneVisual visual : visualListCopy) {
                 visual.update();
-                if (visual.getShouldBeRemoved()) {
-                    visual.getGraphicalLayers().forEachObject(Graphic::remove);
-                    layers.remove(visual, sceneLayerIndex);
-                    continue;
-                }
-
                 int sceneLayerGraphicalIndex = getSceneLayerGraphicalIndex(sceneLayerIndex);
                 var graphicsToRemove = visual.getGraphicsToRemove();
                 if (!graphicsToRemove.isEmpty()) {
@@ -78,6 +72,13 @@ public class Scene implements EngineSystem {
                     }
                     graphicsToRemove.clear();
                 }
+
+                if (visual.getShouldBeRemoved()) {
+                    visual.getGraphicalLayers().forEachObject(Graphic::remove);
+                    layers.remove(visual, sceneLayerIndex);
+                    continue;
+                }
+
                 var graphicsToAdd = visual.getGraphicsToAdd();
                 if (!graphicsToAdd.isEmpty()) {
                     for (var entry : graphicsToAdd) {
