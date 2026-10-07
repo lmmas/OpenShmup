@@ -76,6 +76,7 @@ public class Scene implements EngineSystem {
                 if (visual.getShouldBeRemoved()) {
                     visual.getGraphicalLayers().forEachObject(Graphic::remove);
                     layers.remove(visual, sceneLayerIndex);
+                    visual.setToRemove(false);
                     continue;
                 }
 

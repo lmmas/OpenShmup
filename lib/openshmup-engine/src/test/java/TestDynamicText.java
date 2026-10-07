@@ -34,7 +34,7 @@ public class TestDynamicText {
             Runnable inLoopScript = () -> {
                 frameCount.getAndIncrement();
                 if (frameCount.get() == 3) {
-                    myTextDisplay.setToRemove();
+                    myTextDisplay.setToRemove(true);
                 }
             };
             Engine.setInLoopScript(inLoopScript);

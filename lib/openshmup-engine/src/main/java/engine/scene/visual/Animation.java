@@ -102,7 +102,7 @@ final public class Animation extends SceneVisual {
                     frameIndex = 0;
                 }
                 else {
-                    this.setToRemove();
+                    this.setToRemove(true);
                     return;
                 }
             }

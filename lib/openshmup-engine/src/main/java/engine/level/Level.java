@@ -234,7 +234,7 @@ final public class Level implements EngineSystem {
         else {
             goodEntities.remove(entity);
         }
-        entity.getSprite().setToRemove();
+        entity.getSprite().setToRemove(true);
         List<ExtraComponent> extraComponentsList = entity.getExtraComponents();
         for (var component : extraComponentsList) {
             component.onRemove();

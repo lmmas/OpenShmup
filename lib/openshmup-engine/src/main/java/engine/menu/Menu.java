@@ -59,8 +59,8 @@ public class Menu implements EngineSystem {
         assert menuScreen.isOpen() : "menu screen not open";
         assert displayedMenuScreens.contains(menuScreen) : "menu screen not found";
         if (scene != null) {
-            menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualGroup().setToRemove());
-            menuScreen.getOtherVisuals().forEachObject((visual, visualLayer) -> visual.setToRemove());
+            menuScreen.getWidgets().forEachObject((widget, widgetLayer) -> widget.getVisualGroup().setToRemove(true));
+            menuScreen.getOtherVisuals().forEachObject((visual, visualLayer) -> visual.setToRemove(true));
         }
         displayedMenuScreens.remove(menuScreen);
         menuScreen.setOpen(false);
@@ -108,7 +108,7 @@ public class Menu implements EngineSystem {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         currentScreen.removeWidget(widget);
         if (scene != null) {
-            widget.getVisualGroup().setToRemove();
+            widget.getVisualGroup().setToRemove(true);
         }
     }
 
@@ -116,7 +116,7 @@ public class Menu implements EngineSystem {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         currentScreen.removeVisual(visual);
         if (scene != null) {
-            visual.setToRemove();
+            visual.setToRemove(true);
         }
     }
 
@@ -124,8 +124,8 @@ public class Menu implements EngineSystem {
         assert !displayedMenuScreens.isEmpty() : "no menu screen in menu";
         currentScreen.removeElementGroup(menuItemGroup);
         if (scene != null) {
-            menuItemGroup.getVisuals().forEachObject((visual, visualLayer) -> visual.setToRemove());
-            menuItemGroup.getWidgets().forEachObject(((widget, widgetLayer) -> widget.getVisualGroup().setToRemove()));
+            menuItemGroup.getVisuals().forEachObject((visual, visualLayer) -> visual.setToRemove(true));
+            menuItemGroup.getWidgets().forEachObject(((widget, widgetLayer) -> widget.getVisualGroup().setToRemove(true)));
         }
     }
 }

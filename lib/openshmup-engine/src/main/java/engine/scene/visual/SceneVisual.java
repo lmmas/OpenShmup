@@ -64,8 +64,8 @@ abstract public class SceneVisual {
         return visualShouldBeRemovedFlag;
     }
 
-    final public void setToRemove() {
-        visualShouldBeRemovedFlag = true;
+    final public void setToRemove(boolean value) {
+        visualShouldBeRemovedFlag = value;
     }
 
     public void init() {
