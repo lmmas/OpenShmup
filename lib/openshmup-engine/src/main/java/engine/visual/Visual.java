@@ -2,6 +2,7 @@ package engine.visual;
 
 import engine.assets.Texture;
 import engine.graphics.Graphic;
+import engine.graphics.ScissorBox;
 import engine.graphics.image.ImageGraphic;
 import engine.visual.effects.ColorEffect;
 import layer.LayerEntry;
@@ -98,6 +99,10 @@ abstract public class Visual {
             this.addedColor = addedColorResult;
         }
         updateGraphicsColor();
+    }
+
+    public void setScissorBox(ScissorBox scissorBox) {
+        graphicalLayers.forEachObject((graphic) -> graphic.setScissorBox(scissorBox));
     }
 
 }

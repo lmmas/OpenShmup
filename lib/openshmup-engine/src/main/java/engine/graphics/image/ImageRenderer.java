@@ -6,6 +6,7 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
+import engine.graphics.ScissorBox;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -19,7 +20,7 @@ import static org.lwjgl.opengl.GL33.*;
 final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.ImageVertex> {
 
     protected Batch createBatchFromGraphic(ImageGraphic graphic) {
-        return new ImageBatch(graphic.getShader(), graphic.getTexture());
+        return new ImageBatch(graphic.getShader(), graphic.getScissorBox(), graphic.getTexture());
     }
 
     public ImageRenderer(RenderType type) {
@@ -33,8 +34,8 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
 
         protected ArrayList<Integer> textureIndices;
 
-        public ImageBatch(Shader shader, Texture texture) {
-            super(shader);
+        public ImageBatch(Shader shader, ScissorBox scissorBox, Texture texture) {
+            super(shader, scissorBox);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
             this.textureIndices = new ArrayList<>();
             this.textures.add(texture);
@@ -71,7 +72,13 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
         protected boolean canReceiveVertexFrom(ImageGraphic graphic) {
             if (vertices.size() + 1 > batchSize)
                 return false;
-            return graphic.getShader() == this.shader && (textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS);
+            if (graphic.getShader() != this.shader) {
+                return false;
+            }
+            if (graphic.getScissorBox() != this.getScissorBox()) {
+                return false;
+            }
+            return textures.contains(graphic.getTexture()) || textures.size() < GlobalVars.MAX_TEXTURE_SLOTS;
         }
 
         @Override

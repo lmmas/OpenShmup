@@ -1,26 +1,36 @@
 package engine.graphics;
 
 import engine.assets.Shader;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import types.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
 public abstract class Graphic<T extends Graphic<T>.Vertex<T>> {
 
     final protected RenderType renderType;
 
     final protected Shader shader;
+    @Getter
+    @Setter
+    private ScissorBox scissorBox;
 
     final private List<T> vertexList;
+
+    public Graphic(RenderType renderType, Shader shader, List<T> vertexList) {
+        this.renderType = renderType;
+        this.shader = shader;
+        this.scissorBox = null;
+        this.vertexList = vertexList;
+    }
 
     public Graphic(Graphic<T> graphic) {
         this.renderType = graphic.renderType;
         this.shader = graphic.shader;
+        this.scissorBox = null;
         this.vertexList = new ArrayList<>(graphic.vertexList.size());
         for (var vertex : graphic.vertexList) {
             this.vertexList.add(vertex.copy());

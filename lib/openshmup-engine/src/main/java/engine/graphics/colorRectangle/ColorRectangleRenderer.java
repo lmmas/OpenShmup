@@ -4,6 +4,7 @@ import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
+import engine.graphics.ScissorBox;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -21,13 +22,13 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
 
     @Override
     protected Batch createBatchFromGraphic(ColorRectangleGraphic graphic) {
-        return new ColorRectangleBatch(graphic.getShader());
+        return new ColorRectangleBatch(graphic.getShader(), graphic.getScissorBox());
     }
 
     public class ColorRectangleBatch extends Renderer<ColorRectangleGraphic, ColorRectangleGraphic.ColorRectangleVertex>.Batch {
 
-        public ColorRectangleBatch(Shader shader) {
-            super(shader);
+        public ColorRectangleBatch(Shader shader, ScissorBox scissorBox) {
+            super(shader, scissorBox);
         }
 
         @Override
@@ -35,7 +36,10 @@ final public class ColorRectangleRenderer extends Renderer<ColorRectangleGraphic
             if (vertices.size() >= batchSize) {
                 return false;
             }
-            return graphic.getShader() == shader;
+            if (graphic.getShader() != shader) {
+                return false;
+            }
+            return graphic.getScissorBox() == this.getScissorBox();
         }
 
         @Override

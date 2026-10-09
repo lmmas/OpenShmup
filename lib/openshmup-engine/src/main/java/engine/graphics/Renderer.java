@@ -75,13 +75,16 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
         protected ArrayList<V> vertices;
         @Getter
         protected Shader shader;
+        @Getter
+        private final ScissorBox scissorBox;
         protected ByteBuffer dataBuffer;
         private boolean dataHasChangedFlag;
 
-        protected Batch(Shader shader) {
+        protected Batch(Shader shader, ScissorBox scissorBox) {
             this.vboID = glGenBuffers();
             this.vertices = new ArrayList<>(batchSize);
             this.shader = shader;
+            this.scissorBox = scissorBox;
             this.dataBuffer = BufferUtils.createByteBuffer(batchSize * vboStrideBytes);
             glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
             glBufferData(GL_ARRAY_BUFFER, dataBuffer, drawingType);
@@ -168,7 +171,12 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
                 vertices.forEach(V::resetDataHasChanged);
                 dataHasChangedFlag = false;
             }
+            if (this.scissorBox != null) {
+                glEnable(GL_SCISSOR_TEST);
+                glScissor(scissorBox.x(), scissorBox.y(), scissorBox.width(), scissorBox.height());
+            }
             this.draw();
+            glDisable(GL_SCISSOR_TEST);
         }
     }
 }
