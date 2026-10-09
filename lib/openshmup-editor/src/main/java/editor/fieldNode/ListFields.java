@@ -3,7 +3,7 @@ package editor.fieldNode;
 import edition.EditionData;
 import editor.EditionMenu;
 import editor.Style;
-import engine.graphics.ScissorBox;
+import engine.hitbox.RectangleBox;
 import engine.menu.Menu;
 import engine.menu.MenuScreen;
 import engine.menu.widget.ActionButton;
@@ -44,7 +44,7 @@ final public class ListFields implements FieldNode {
 
     private Menu menu;
 
-    final private ScissorBox scissorBox;
+    final private RectangleBox scissorBox;
 
     public ListFields(EditionData.Category category, ArrayList<EditionData> dataList, Vec2D startPosition, boolean openInNewScreen) {
         this.category = category;
@@ -75,7 +75,7 @@ final public class ListFields implements FieldNode {
             this.fieldsStartPosition = startPosition.add(200f, 0f);
         }
         this.isActive = false;
-        this.scissorBox = new ScissorBox(800, 300, 300, 600);
+        this.scissorBox = new RectangleBox(listStartPosition.add(0f, -200f + 25f), new Vec2D(200, 400f));
         this.selectButtons = new ArrayList<>(dataList.size());
         this.deleteButtons = new ArrayList<>(dataList.size());
         for (EditionData data : dataList) {
@@ -204,7 +204,7 @@ final public class ListFields implements FieldNode {
             default -> itemIndex + 1;
         });
         ActionButton newSelect = TextButton(selectButtonSize, selectButtonPosition, Style.menuButtonStyle1, Style.Text.menuButtonLabelStyle, buttonLabel, () -> selectListItem(itemIndex));
-        //newSelect.getVisualGroup().setScissorBox(scissorBox);
+        newSelect.getVisualGroup().setScissorBox(scissorBox);
         Vec2D deleteButtonSize = new Vec2D(60f, 50f);
         Vec2D deleteButtonPosition = selectButtonPosition.add(130f, 0f);
         ActionButton newDelete = TextButton(deleteButtonSize, deleteButtonPosition, Style.menuButtonStyle1, Style.Text.menuButtonLabelStyle, "X", () -> deleteItem(itemIndex));

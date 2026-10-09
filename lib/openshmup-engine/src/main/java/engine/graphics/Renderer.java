@@ -1,6 +1,7 @@
 package engine.graphics;
 
 import engine.assets.Shader;
+import engine.hitbox.RectangleBox;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
@@ -76,11 +77,11 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
         @Getter
         protected Shader shader;
         @Getter
-        private final ScissorBox scissorBox;
+        private final RectangleBox scissorBox;
         protected ByteBuffer dataBuffer;
         private boolean dataHasChangedFlag;
 
-        protected Batch(Shader shader, ScissorBox scissorBox) {
+        protected Batch(Shader shader, RectangleBox scissorBox) {
             this.vboID = glGenBuffers();
             this.vertices = new ArrayList<>(batchSize);
             this.shader = shader;
@@ -173,7 +174,11 @@ public abstract class Renderer<G extends Graphic<V>, V extends Graphic<V>.Vertex
             }
             if (this.scissorBox != null) {
                 glEnable(GL_SCISSOR_TEST);
-                glScissor(scissorBox.x(), scissorBox.y(), scissorBox.width(), scissorBox.height());
+                int x = (int) scissorBox.getLeftBound();
+                int y = (int) scissorBox.getDownBound();
+                int width = (int) scissorBox.getSize().x;
+                int height = (int) scissorBox.getSize().y;
+                glScissor(x, y, width, height);
             }
             this.draw();
             glDisable(GL_SCISSOR_TEST);

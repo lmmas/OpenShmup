@@ -4,7 +4,7 @@ import engine.Engine;
 import engine.assets.Shader;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import engine.graphics.ScissorBox;
+import engine.hitbox.RectangleBox;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -26,7 +26,7 @@ final public class ColorRoundedRectangleRenderer extends Renderer<RoundedColorRe
 
     public class ColorRoundedRectangleBatch extends Renderer<RoundedColorRectangle, RoundedColorRectangle.ColorRoundedRectangleVertex>.Batch {
 
-        public ColorRoundedRectangleBatch(Shader shader, ScissorBox scissorBox) {
+        public ColorRoundedRectangleBatch(Shader shader, RectangleBox scissorBox) {
             super(shader, scissorBox);
         }
 

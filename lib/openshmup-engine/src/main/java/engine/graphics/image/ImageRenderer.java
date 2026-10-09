@@ -6,7 +6,7 @@ import engine.assets.Shader;
 import engine.assets.Texture;
 import engine.graphics.RenderType;
 import engine.graphics.Renderer;
-import engine.graphics.ScissorBox;
+import engine.hitbox.RectangleBox;
 import types.RGBAValue;
 import types.Vec2D;
 
@@ -34,7 +34,7 @@ final public class ImageRenderer extends Renderer<ImageGraphic, ImageGraphic.Ima
 
         protected ArrayList<Integer> textureIndices;
 
-        public ImageBatch(Shader shader, ScissorBox scissorBox, Texture texture) {
+        public ImageBatch(Shader shader, RectangleBox scissorBox, Texture texture) {
             super(shader, scissorBox);
             this.textures = new ArrayList<>(GlobalVars.MAX_TEXTURE_SLOTS);
             this.textureIndices = new ArrayList<>();

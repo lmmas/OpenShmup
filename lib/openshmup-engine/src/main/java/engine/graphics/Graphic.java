@@ -1,6 +1,7 @@
 package engine.graphics;
 
 import engine.assets.Shader;
+import engine.hitbox.RectangleBox;
 import lombok.Getter;
 import lombok.Setter;
 import types.Vec2D;
@@ -16,7 +17,7 @@ public abstract class Graphic<T extends Graphic<T>.Vertex<T>> {
     final protected Shader shader;
     @Getter
     @Setter
-    private ScissorBox scissorBox;
+    private RectangleBox scissorBox;
 
     final private List<T> vertexList;
 

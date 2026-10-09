@@ -2,8 +2,8 @@ package engine.visual;
 
 import engine.assets.Texture;
 import engine.graphics.Graphic;
-import engine.graphics.ScissorBox;
 import engine.graphics.image.ImageGraphic;
+import engine.hitbox.RectangleBox;
 import engine.visual.effects.ColorEffect;
 import layer.LayerEntry;
 import layer.LayerMap;
@@ -101,7 +101,7 @@ abstract public class Visual {
         updateGraphicsColor();
     }
 
-    public void setScissorBox(ScissorBox scissorBox) {
+    public void setScissorBox(RectangleBox scissorBox) {
         graphicalLayers.forEachObject((graphic) -> graphic.setScissorBox(scissorBox));
     }
 
