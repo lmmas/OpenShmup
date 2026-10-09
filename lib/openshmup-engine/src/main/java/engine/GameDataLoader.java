@@ -8,7 +8,7 @@ import engine.gameData.GameConfig;
 import engine.gameData.GameDataManager;
 import engine.hitbox.CompositeHitbox;
 import engine.hitbox.Hitbox;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.level.LevelTimeline;
 import engine.level.entity.Entity;
 import engine.level.entity.Projectile;
@@ -283,7 +283,7 @@ final public class GameDataLoader {
         public static Hitbox rectangleHitboxFactory(EditionData data, Path path) {
             data.checkForType(Types.Hitbox.rectangle);
             Vec2D size = ((Vec2DAttribute) data.get(Keys.Hitbox.RectangleHitbox.size)).getValue();
-            return new SimpleRectangleHitbox(Vec2D.ZERO, size);
+            return new RectangleBox(Vec2D.ZERO, size);
         }
 
         public static Hitbox customHitboxFactory(EditionData data, Path path) {

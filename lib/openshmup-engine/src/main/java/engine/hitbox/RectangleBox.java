@@ -1,30 +1,32 @@
 package engine.hitbox;
 
+import lombok.Getter;
 import types.Vec2D;
 
-final public class SimpleRectangleHitbox implements Hitbox {
+@Getter
+final public class RectangleBox implements Hitbox {
 
-    public Vec2D position;
+    private Vec2D position;
 
-    public Vec2D size;
+    private Vec2D size;
 
-    public float leftBound;
+    private float leftBound;
 
-    public float rightBound;
+    private float rightBound;
 
-    public float upBound;
+    private float upBound;
 
-    public float downBound;
+    private float downBound;
 
-    public SimpleRectangleHitbox(Vec2D position, Vec2D size) {
+    public RectangleBox(Vec2D position, Vec2D size) {
         this.position = position;
         this.size = size;
         updateBounds();
     }
 
     @Override
-    public SimpleRectangleHitbox copy() {
-        return new SimpleRectangleHitbox(position, size);
+    public RectangleBox copy() {
+        return new RectangleBox(position, size);
     }
 
     @Override
@@ -54,9 +56,5 @@ final public class SimpleRectangleHitbox implements Hitbox {
         this.rightBound = position.x + (size.x / 2);
         this.upBound = position.y + (size.y / 2);
         this.downBound = position.y - (size.y / 2);
-    }
-
-    public boolean intersects(SimpleRectangleHitbox otherRectangle) {
-        return !(this.downBound > otherRectangle.upBound) && !(this.upBound < otherRectangle.downBound) && !(this.rightBound < otherRectangle.leftBound) && !(this.leftBound > otherRectangle.rightBound);
     }
 }

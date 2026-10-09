@@ -2,7 +2,7 @@ package engine.menu.widget;
 
 import engine.Engine;
 import engine.hitbox.HitboxClickDetector;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.input.InputStatesManager;
 import engine.visual.Text;
 import engine.visual.Visual;
@@ -34,7 +34,7 @@ final public class TextField implements Widget {
         LayerMap<Visual> visuals = new LayerMap<>(otherVisuals);
         visuals.add(textInputDisplay, textLayer);
         this.visualGroup = new VisualGroup(visuals);
-        this.hitboxClickDetector = new HitboxClickDetector(new SimpleRectangleHitbox(position, size));
+        this.hitboxClickDetector = new HitboxClickDetector(new RectangleBox(position, size));
         this.textInputActive = false;
     }
 

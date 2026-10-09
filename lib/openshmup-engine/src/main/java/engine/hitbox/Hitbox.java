@@ -4,7 +4,7 @@ import types.Vec2D;
 
 import java.util.ArrayList;
 
-public sealed interface Hitbox permits CompositeHitbox, SimpleRectangleHitbox {
+public sealed interface Hitbox permits CompositeHitbox, RectangleBox {
 
     boolean containsPoint(Vec2D position);
 
@@ -20,9 +20,9 @@ public sealed interface Hitbox permits CompositeHitbox, SimpleRectangleHitbox {
         if (hitbox == null || otherHitbox == null) {
             return false;
         }
-        if (hitbox instanceof SimpleRectangleHitbox simpleRectangleHitbox) {
-            if (otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox) {
-                return !(simpleRectangleHitbox.downBound > otherSimpleHitbox.upBound) && !(simpleRectangleHitbox.upBound < otherSimpleHitbox.downBound) && !(simpleRectangleHitbox.rightBound < otherSimpleHitbox.leftBound) && !(simpleRectangleHitbox.leftBound > otherSimpleHitbox.rightBound);
+        if (hitbox instanceof RectangleBox rectangleBox) {
+            if (otherHitbox instanceof RectangleBox otherSimpleHitbox) {
+                return !(rectangleBox.getDownBound() > otherSimpleHitbox.getUpBound()) && !(rectangleBox.getUpBound() < otherSimpleHitbox.getDownBound()) && !(rectangleBox.getRightBound() < otherSimpleHitbox.getLeftBound()) && !(rectangleBox.getLeftBound() > otherSimpleHitbox.getRightBound());
             }
             CompositeHitbox otherCompositeHitbox = (CompositeHitbox) otherHitbox;
             ArrayList<Hitbox> rectangleList = otherCompositeHitbox.getRectangleList();
@@ -34,7 +34,7 @@ public sealed interface Hitbox permits CompositeHitbox, SimpleRectangleHitbox {
             return false;
         }
         CompositeHitbox compositeHitbox = (CompositeHitbox) hitbox;
-        if (otherHitbox instanceof SimpleRectangleHitbox otherSimpleHitbox) {
+        if (otherHitbox instanceof RectangleBox otherSimpleHitbox) {
             for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
                 if (intersection(rectangle, otherSimpleHitbox)) {
                     return true;

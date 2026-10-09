@@ -139,7 +139,7 @@ final public class CompositeHitbox implements Hitbox {
         }
         this.rectangleList = new ArrayList<>(rectangleRelativePositions.size());
         for (int i = 0; i < rectangleRelativePositions.size(); i++) {
-            rectangleList.add(new SimpleRectangleHitbox(Vec2D.ZERO, Vec2D.ZERO));
+            rectangleList.add(new RectangleBox(Vec2D.ZERO, Vec2D.ZERO));
         }
         setSize(size);
     }

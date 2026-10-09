@@ -2,7 +2,7 @@ package engine.level.entity.extraComponent;
 
 import engine.Engine;
 import engine.graphics.colorRectangle.ColorRectangleGraphic;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.level.Level;
 import engine.level.entity.Entity;
 import engine.level.spawnable.Spawnable;
@@ -18,13 +18,13 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     final static public Path hitboxDebugShader = Paths.get("lib/openshmup-engine/src/main/resources/shaders/debugRectangle.glsl");
 
-    private final SimpleRectangleHitbox simpleRectangleHitbox;
+    private final RectangleBox rectangleBox;
 
     private final ColorRectangleGraphic debugDisplay;
 
-    public HitboxDebugRectangle(SimpleRectangleHitbox simpleRectangleHitbox, RGBAValue color) {
-        this.simpleRectangleHitbox = simpleRectangleHitbox;
-        this.debugDisplay = new ColorRectangleGraphic(simpleRectangleHitbox.size, simpleRectangleHitbox.position, color, assetManager.getShader(hitboxDebugShader));
+    public HitboxDebugRectangle(RectangleBox rectangleBox, RGBAValue color) {
+        this.rectangleBox = rectangleBox;
+        this.debugDisplay = new ColorRectangleGraphic(rectangleBox.getSize(), rectangleBox.getPosition(), color, assetManager.getShader(hitboxDebugShader));
     }
 
     @Override
@@ -49,7 +49,7 @@ final public class HitboxDebugRectangle implements ExtraComponent {
 
     @Override
     public void update(Entity entity, Level level) {
-        debugDisplay.setPosition(simpleRectangleHitbox.position);
-        debugDisplay.setScale(simpleRectangleHitbox.size);
+        debugDisplay.setPosition(rectangleBox.getPosition());
+        debugDisplay.setScale(rectangleBox.getSize());
     }
 }

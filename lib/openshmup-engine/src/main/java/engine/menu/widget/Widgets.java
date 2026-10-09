@@ -1,7 +1,7 @@
 package engine.menu.widget;
 
 import engine.hitbox.Hitbox;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.visual.RoundedRectangle;
 import engine.visual.Text;
 import engine.visual.Visual;
@@ -26,7 +26,7 @@ final public class Widgets {
         return new ActionButton(
             Map.of(background, 0,
                 new Text(false, position, label, textStyle, TextAlignment.CENTER), 1), background,
-            new SimpleRectangleHitbox(position, size),
+            new RectangleBox(position, size),
             onClick);
     }
 
@@ -50,7 +50,7 @@ final public class Widgets {
                 rectangle, 0,
                 new Text(false, buttonPosition, labels.get(i), textStyle, TextAlignment.CENTER), 1)
             );
-            hitboxes.add(new SimpleRectangleHitbox(buttonPosition, size));
+            hitboxes.add(new RectangleBox(buttonPosition, size));
         }
         BiConsumer<SelectorButtons, Integer> onChangeWithStyleChange = (selector, newValue) -> {
             Integer oldValue = selector.getSelectedValue();

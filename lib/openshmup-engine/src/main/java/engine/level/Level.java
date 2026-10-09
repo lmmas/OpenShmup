@@ -10,7 +10,7 @@ import engine.gameData.GameDataManager;
 import engine.graphics.Graphic;
 import engine.hitbox.CompositeHitbox;
 import engine.hitbox.Hitbox;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.input.GameControl;
 import engine.level.entity.Entity;
 import engine.level.entity.EntityType;
@@ -361,13 +361,13 @@ final public class Level implements EngineSystem {
                 return;
             }
             switch (entityHitbox) {
-                case SimpleRectangleHitbox simpleRectangleHitbox -> {
-                    HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(simpleRectangleHitbox, hitboxColor);
+                case RectangleBox rectangleBox -> {
+                    HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(rectangleBox, hitboxColor);
                     addComponent(entity, debugDisplay);
                 }
                 case CompositeHitbox compositeHitbox -> {
                     for (Hitbox rectangle : compositeHitbox.getRectangleList()) {
-                        if (rectangle instanceof SimpleRectangleHitbox simpleRectangle) {
+                        if (rectangle instanceof RectangleBox simpleRectangle) {
                             HitboxDebugRectangle debugDisplay = new HitboxDebugRectangle(simpleRectangle, hitboxColor);
                             addComponent(entity, debugDisplay);
                         }

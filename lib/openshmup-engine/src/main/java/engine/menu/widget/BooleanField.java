@@ -2,7 +2,7 @@ package engine.menu.widget;
 
 import engine.Engine;
 import engine.hitbox.HitboxClickDetector;
-import engine.hitbox.SimpleRectangleHitbox;
+import engine.hitbox.RectangleBox;
 import engine.input.InputStatesManager;
 import engine.visual.Visual;
 import engine.visual.VisualGroup;
@@ -28,7 +28,7 @@ final public class BooleanField implements Widget {
         this.toggleVisual = toggleVisual;
         this.visualGroup = new VisualGroup(visuals);
         this.invisibilityEffect = ColorEffect.Invisibility();
-        this.hitboxClickDetector = new HitboxClickDetector(new SimpleRectangleHitbox(position, size));
+        this.hitboxClickDetector = new HitboxClickDetector(new RectangleBox(position, size));
         this.booleanVal = startingValue;
         if (!booleanVal) {
             toggleVisual.addColorEffect(invisibilityEffect);
