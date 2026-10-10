@@ -1,7 +1,7 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.hitbox.HitboxClickDetector;
+import engine.hitbox.HitboxClickListener;
 import engine.hitbox.RectangleBox;
 import engine.input.InputStatesManager;
 import engine.visual.Text;
@@ -22,7 +22,7 @@ final public class TextField implements Widget {
 
     final private StringBuffer stringBuffer;
 
-    final private HitboxClickDetector hitboxClickDetector;
+    final private HitboxClickListener hitboxClickListener;
 
     private boolean textInputActive;
 
@@ -34,7 +34,7 @@ final public class TextField implements Widget {
         LayerMap<Visual> visuals = new LayerMap<>(otherVisuals);
         visuals.add(textInputDisplay, textLayer);
         this.visualGroup = new VisualGroup(visuals);
-        this.hitboxClickDetector = new HitboxClickDetector(new RectangleBox(position, size));
+        this.hitboxClickListener = new HitboxClickListener(new RectangleBox(position, size));
         this.textInputActive = false;
     }
 
@@ -56,7 +56,7 @@ final public class TextField implements Widget {
         }
 
         else {
-            if (hitboxClickDetector.result(leftClickState, inputStatesManager.getCursorPosition())) {
+            if (hitboxClickListener.result(leftClickState, inputStatesManager.getCursorPosition())) {
                 inputStatesManager.addTextInput(stringBuffer);
                 textInputActive = true;
             }

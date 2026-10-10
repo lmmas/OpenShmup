@@ -2,7 +2,7 @@ package engine.menu.widget;
 
 import engine.Engine;
 import engine.hitbox.Hitbox;
-import engine.hitbox.HitboxClickDetector;
+import engine.hitbox.HitboxClickListener;
 import engine.input.InputStatesManager;
 import engine.visual.Visual;
 import engine.visual.VisualGroup;
@@ -16,7 +16,7 @@ final public class ActionButton implements Widget {
     @Getter
     final private Visual background;
 
-    final private HitboxClickDetector hitboxClickDetector;
+    final private HitboxClickListener hitboxClickListener;
 
     private Runnable onClick;
 
@@ -25,14 +25,14 @@ final public class ActionButton implements Widget {
         this.visualGroup = new VisualGroup(visuals);
         this.background = background;
         this.onClick = onClick;
-        this.hitboxClickDetector = new HitboxClickDetector(clickHitbox);
+        this.hitboxClickListener = new HitboxClickListener(clickHitbox);
     }
 
     @Override
     public void handleInputs() {
         InputStatesManager inputStatesManager = Engine.getInputStatesManager();
 
-        if (hitboxClickDetector.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
+        if (hitboxClickListener.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
             onClick.run();
         }
     }

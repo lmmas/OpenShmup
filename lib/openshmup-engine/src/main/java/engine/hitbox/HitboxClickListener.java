@@ -2,14 +2,14 @@ package engine.hitbox;
 
 import types.Vec2D;
 
-final public class HitboxClickDetector {
+final public class HitboxClickListener {
 
     final private Hitbox hitbox;
 
     private boolean leftClickPressedOnHitbox;
 
 
-    public HitboxClickDetector(Hitbox hitbox) {
+    public HitboxClickListener(Hitbox hitbox) {
         this.hitbox = hitbox;
         this.leftClickPressedOnHitbox = false;
     }

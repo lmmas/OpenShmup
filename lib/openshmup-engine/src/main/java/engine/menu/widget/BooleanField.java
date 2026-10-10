@@ -1,7 +1,7 @@
 package engine.menu.widget;
 
 import engine.Engine;
-import engine.hitbox.HitboxClickDetector;
+import engine.hitbox.HitboxClickListener;
 import engine.hitbox.RectangleBox;
 import engine.input.InputStatesManager;
 import engine.visual.Visual;
@@ -21,14 +21,14 @@ final public class BooleanField implements Widget {
 
     private boolean booleanVal;
 
-    final private HitboxClickDetector hitboxClickDetector;
+    final private HitboxClickListener hitboxClickListener;
 
     public BooleanField(Vec2D size, Vec2D position, Map<Visual, Integer> visuals, Visual toggleVisual, boolean startingValue) {
         assert visuals.containsKey(toggleVisual) : "toggle visual not found among widget visuals";
         this.toggleVisual = toggleVisual;
         this.visualGroup = new VisualGroup(visuals);
         this.invisibilityEffect = ColorEffect.Invisibility();
-        this.hitboxClickDetector = new HitboxClickDetector(new RectangleBox(position, size));
+        this.hitboxClickListener = new HitboxClickListener(new RectangleBox(position, size));
         this.booleanVal = startingValue;
         if (!booleanVal) {
             toggleVisual.addColorEffect(invisibilityEffect);
@@ -59,7 +59,7 @@ final public class BooleanField implements Widget {
     @Override
     public void handleInputs() {
         InputStatesManager inputStatesManager = Engine.getInputStatesManager();
-        if (hitboxClickDetector.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
+        if (hitboxClickListener.result(inputStatesManager.getLeftClickState(), inputStatesManager.getCursorPosition())) {
             setValue(!booleanVal);
         }
     }
