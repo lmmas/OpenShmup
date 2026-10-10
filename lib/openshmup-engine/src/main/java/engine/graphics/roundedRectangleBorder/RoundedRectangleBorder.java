@@ -62,6 +62,16 @@ final public class RoundedRectangleBorder extends Graphic<RoundedRectangleBorder
         vertex.setDataHasChanged();
     }
 
+    public void setRoundingRadius(float roundingRadius) {
+        vertex.roundingRadius = roundingRadius;
+        vertex.setDataHasChanged();
+    }
+
+    public void setBorderWidth(float borderWidth) {
+        vertex.borderWidth = borderWidth;
+        vertex.setDataHasChanged();
+    }
+
     @Getter
     @AllArgsConstructor
     public class RoundedRectangleBorderVertex extends Graphic<RoundedRectangleBorderVertex>.Vertex<RoundedRectangleBorderVertex> {

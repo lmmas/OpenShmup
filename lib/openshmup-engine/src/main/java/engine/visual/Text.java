@@ -23,7 +23,7 @@ final public class Text extends Visual {
     @Getter
     private String displayedString;
 
-    private final Font font;
+    private Font font;
 
     private float textHeight;
     @Getter
@@ -46,7 +46,7 @@ final public class Text extends Visual {
         this.dynamicText = dynamicText;
         this.textLines = new ArrayList<>();
         this.normalizedLineWidthsList = new ArrayList<>();
-        this.textColor = new RGBAValue(color);
+        this.textColor = color;
         this.alignment = alignment;
         updateText();
     }
@@ -148,6 +148,13 @@ final public class Text extends Visual {
                 }
             }
         }
+    }
+
+    public void setStyle(TextStyle style) {
+        font = assetManager.getFont(style.fontFilepath());
+        this.textHeight = style.textHeight();
+        this.textColor = style.textColor();
+        updateText();
     }
 
     @Override

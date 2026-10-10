@@ -60,4 +60,8 @@ final public class Style {
     final public static RoundedRectangleStyle editionSelectorSelected = new RoundedRectangleStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.menuButtonColor, Color.menuButtonBorderColor);
 
     final public static RoundedRectangleStyle editionSelectorUnselected = new RoundedRectangleStyle(menuButtonRoundingRadius, menuButtonBorderWidth, Color.blue1, Color.menuButtonBorderColor);
+
+    final public static RoundedRectangleStyle listElementUnselected = new RoundedRectangleStyle(3f, 1f, SOLID_WHITE, Color.grey1);
+
+    final public static RoundedRectangleStyle listElementSelected = new RoundedRectangleStyle(3f, 1f, Color.grey1, Color.grey1);
 }

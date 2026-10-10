@@ -2,6 +2,7 @@ package engine.visual;
 
 import engine.graphics.colorRoundedRectangle.RoundedColorRectangle;
 import engine.graphics.roundedRectangleBorder.RoundedRectangleBorder;
+import engine.visual.style.RoundedRectangleStyle;
 import lombok.Getter;
 import types.RGBAValue;
 import types.Vec2D;
@@ -54,6 +55,15 @@ final public class RoundedRectangle extends Visual {
 
     public void setBorderBaseColor(RGBAValue newColor) {
         this.borderBaseColor = newColor;
+        updateGraphicsColor();
+    }
+
+    public void setStyle(RoundedRectangleStyle style) {
+        rectangleBaseColor = style.rectangleColor();
+        rectangle.setRoundingRadius(style.roundingRadius());
+        border.setRoundingRadius(style.roundingRadius());
+        borderBaseColor = style.borderColor();
+        border.setBorderWidth(style.borderWidth());
         updateGraphicsColor();
     }
 }

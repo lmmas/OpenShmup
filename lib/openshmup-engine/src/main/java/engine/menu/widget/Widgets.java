@@ -34,6 +34,13 @@ final public class Widgets {
         return TextButton(size, position, style.roundingRadius(), style.borderWidth(), style.rectangleColor(), style.borderColor(), label, textStyle, onClick);
     }
 
+    public static void setTextButtonStyle(ActionButton textButton, RoundedRectangleStyle roundedRectangleStyle, TextStyle textStyle) {
+        RoundedRectangle roundedRectangle = (RoundedRectangle) textButton.getBackground();
+        roundedRectangle.setStyle(roundedRectangleStyle);
+        Text text = (Text) textButton.getVisualGroup().getVisualsMap().getLayer(1).getFirst();
+        text.setStyle(textStyle);
+    }
+
     public static SelectorButtons StandardSelectorButtons(int buttonCount, Vec2D size, Vec2D startPosition, Vec2D stride, RoundedRectangleStyle unselectedStyle, RoundedRectangleStyle selectedStyle, TextStyle textStyle, List<String> labels, BiConsumer<SelectorButtons, Integer> onChange, Integer startingValue) {
         assert labels.size() == buttonCount : "Incorrect label count";
         List<Visual> buttonBackgrounds = new ArrayList<>(buttonCount);
