@@ -195,7 +195,13 @@ final public class Engine {
 
     public static void switchCurrentMenu(Menu menu) {
         currentMenu.set(menu);
-        if (menu != null) {
+        if (menu == null) {
+            setCurrentMenuActive(false);
+        }
+        else {
+            if (getCurrentScene() == null) {
+                Engine.switchCurrentScene(new Scene());
+            }
             menu.setScene(getCurrentScene());
             setCurrentMenuActive(true);
         }

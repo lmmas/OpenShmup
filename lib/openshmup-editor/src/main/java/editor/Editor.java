@@ -3,7 +3,6 @@ package editor;
 import edition.GameEditionData;
 import engine.Engine;
 import engine.GlobalVars;
-import engine.scene.Scene;
 import json.readers.GameDataReader;
 import lombok.Getter;
 import types.IVec2D;
@@ -35,7 +34,6 @@ final public class Editor {
         Engine.setNativeResolution(new IVec2D(1920, 1000));
         Engine.initInputStatesManager();
         Engine.initGraphicsManager();
-        Engine.switchCurrentScene(new Scene());
         Engine.switchCurrentMenu(Menus.MainMenu());
 
         Engine.window.show();

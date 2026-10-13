@@ -60,13 +60,12 @@ final public class Game {
     public static void gameStart() {
         gameDataManager.getTimeline(0).resetTime();
         Scene levelScene = new Scene();
-        Menu gameMenu = new Menu();
         Engine.switchCurrentScene(levelScene);
-        Engine.switchCurrentMenu(gameMenu);
-        currentLevel.set(new Level(Engine.getCurrentScene(), gameDataManager.getTimeline(0)));
+        Engine.switchCurrentMenu(new Menu());
+        Level level = new Level(levelScene, gameDataManager.getTimeline(0));
+        currentLevel.set(level);
         setCurrentLevelActive(true);
-        Engine.getCurrentScene().startTimer();
-        getCurrentLevel().start();
+        level.start();
     }
 
     public static Level getCurrentLevel() {
